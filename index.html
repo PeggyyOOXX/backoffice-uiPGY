@@ -1,0 +1,858 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>101 Backoffice — UI Redesign Prototype</title>
+  <style>
+    :root{--navy:#15233f;--navy2:#1d3158;--blue:#4f7cff;--blue2:#eaf0ff;--bg:#f4f6fa;--card:#fff;--text:#17233b;--muted:#69758a;--line:#e5e9f0;--green:#18a875;--red:#e85a66;--amber:#d98b18;--shadow:0 12px 32px rgba(21,35,63,.08)}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,"Noto Sans TC","Microsoft JhengHei",sans-serif;font-size:14px}button,input,select{font:inherit}button{cursor:pointer}.app{min-height:100vh}.sidebar{position:fixed;inset:0 auto 0 0;width:248px;background:var(--navy);color:#fff;z-index:30;display:flex;flex-direction:column;transition:.25s}.brand{height:72px;display:flex;align-items:center;gap:12px;padding:0 22px;border-bottom:1px solid rgba(255,255,255,.08)}.brand-mark{width:34px;height:34px;border-radius:11px;background:linear-gradient(145deg,#7a9cff,#4168e7);display:grid;place-items:center;font-weight:800;box-shadow:0 7px 18px rgba(79,124,255,.35)}.brand strong{font-size:17px;letter-spacing:.3px}.brand small{display:block;color:#9dadca;font-size:10px;margin-top:2px}.nav-label{padding:24px 22px 8px;font-size:10px;letter-spacing:1.3px;color:#7485a5}.nav{padding:0 12px;overflow:auto}.nav-item{height:44px;padding:0 12px;border-radius:10px;display:flex;align-items:center;gap:12px;color:#b9c5db;margin:3px 0;transition:.18s}.nav-item:hover{background:rgba(255,255,255,.07);color:#fff}.nav-item.active{background:linear-gradient(90deg,#4f7cff,#6b8cff);color:#fff;box-shadow:0 6px 18px rgba(42,83,190,.35)}.ico{width:22px;text-align:center;font-size:16px}.chev{margin-left:auto;opacity:.55}.profile-mini{margin:auto 14px 16px;padding:12px;background:rgba(255,255,255,.07);border-radius:12px;display:flex;gap:10px;align-items:center}.avatar{width:34px;height:34px;border-radius:50%;background:#dbe4ff;color:#3459c7;display:grid;place-items:center;font-weight:800}.profile-mini small{color:#8fa0bf}.main{margin-left:248px;min-width:0}.topbar{height:72px;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;display:flex;align-items:center;padding:0 28px;gap:16px}.menu-btn{display:none}.topbar-title{font-weight:700}.crumb{color:var(--muted);font-size:12px}.top-actions{margin-left:auto;display:flex;align-items:center;gap:9px}.icon-btn{width:38px;height:38px;border:1px solid var(--line);background:white;border-radius:10px;color:var(--navy);position:relative}.dot{position:absolute;width:7px;height:7px;border-radius:50%;background:var(--red);right:7px;top:7px;border:2px solid white}.language{border:0;background:transparent;color:var(--muted)}.page{padding:26px 28px 44px;max-width:1680px;margin:auto}.page-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:22px}.page-head h1{margin:0 0 6px;font-size:26px;letter-spacing:-.6px}.page-head p{margin:0;color:var(--muted)}.primary{border:0;background:var(--blue);color:#fff;border-radius:10px;padding:11px 16px;font-weight:700;box-shadow:0 6px 14px rgba(79,124,255,.22)}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:17px 18px;display:flex;align-items:center;gap:13px}.stat-icon{width:42px;height:42px;border-radius:12px;background:var(--blue2);display:grid;place-items:center;font-size:18px}.stat-label{font-size:12px;color:var(--muted);margin-bottom:4px}.stat-value{font-size:21px;font-weight:800}.delta{font-size:11px;color:var(--green);margin-left:5px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 3px 14px rgba(21,35,63,.025)}.filters{padding:18px;margin-bottom:16px}.filter-row{display:grid;grid-template-columns:1.25fr 1fr 1fr 1.25fr auto;gap:10px;align-items:end}.field label{display:block;font-size:11px;font-weight:700;color:#627087;margin-bottom:7px}.control{width:100%;height:40px;border:1px solid #dce2eb;border-radius:9px;background:white;padding:0 12px;color:var(--text);outline:none}.control:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(79,124,255,.1)}.filter-actions{display:flex;gap:8px}.secondary{height:40px;border:1px solid var(--line);background:#fff;border-radius:9px;padding:0 14px;color:var(--text);font-weight:650}.mobile-filter{display:none}.table-card{overflow:hidden}.table-toolbar{padding:17px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}.table-toolbar h2{font-size:16px;margin:0}.count{background:var(--blue2);color:#4369d7;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:700}.toolbar-right{margin-left:auto;display:flex;gap:8px}.table-wrap{overflow:auto}table{border-collapse:collapse;width:100%;min-width:920px}th{background:#f7f8fb;color:#68758b;font-size:11px;text-align:left;padding:12px 16px;white-space:nowrap;border-bottom:1px solid var(--line)}td{padding:15px 16px;border-bottom:1px solid #edf0f4;white-space:nowrap}tbody tr:hover{background:#f9fbff}.user{display:flex;align-items:center;gap:10px}.user .avatar{width:36px;height:36px;font-size:12px}.user strong{display:block;font-size:13px}.user small{color:var(--muted)}.badge{display:inline-flex;align-items:center;gap:5px;border-radius:20px;padding:5px 9px;font-size:11px;font-weight:700}.badge:before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}.active-b{color:var(--green);background:#e9f8f2}.risk-b{color:var(--red);background:#feedef}.pending-b{color:var(--amber);background:#fff5df}.level{font-weight:700;color:#4e6bc2}.action{border:0;background:transparent;color:var(--blue);font-weight:700;padding:6px}.pagination{padding:15px 18px;display:flex;align-items:center;color:var(--muted);font-size:12px}.pages{margin-left:auto;display:flex;gap:5px}.page-btn{border:1px solid var(--line);background:#fff;width:31px;height:31px;border-radius:8px}.page-btn.active{background:var(--blue);color:white;border-color:var(--blue)}.mobile-list{display:none}.overlay{position:fixed;inset:0;background:rgba(12,23,44,.42);z-index:50;opacity:0;pointer-events:none;transition:.2s}.overlay.open{opacity:1;pointer-events:auto}.drawer{position:absolute;right:0;top:0;height:100%;width:min(470px,100%);background:white;transform:translateX(100%);transition:.25s;display:flex;flex-direction:column}.open .drawer{transform:none}.drawer-head{height:72px;padding:0 22px;border-bottom:1px solid var(--line);display:flex;align-items:center}.drawer-head h2{margin:0;font-size:18px}.close{margin-left:auto;border:0;background:#f1f3f7;border-radius:9px;width:36px;height:36px}.drawer-body{padding:22px;overflow:auto}.person-hero{display:flex;align-items:center;gap:14px;padding-bottom:20px;border-bottom:1px solid var(--line)}.person-hero .avatar{width:52px;height:52px}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 12px;margin-top:22px}.detail label{display:block;color:var(--muted);font-size:11px;margin-bottom:5px}.detail strong{font-size:13px}.risk-box{background:#fff6f6;border:1px solid #ffdcdc;border-radius:12px;padding:14px;margin-top:22px;color:#a83d47}.drawer-foot{margin-top:auto;padding:16px 22px;border-top:1px solid var(--line);display:flex;gap:10px}.drawer-foot button{flex:1}.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:#17233b;color:#fff;padding:11px 16px;border-radius:10px;opacity:0;pointer-events:none;transition:.2s;z-index:80}.toast.show{opacity:1;transform:translate(-50%,0)}
+    @media(max-width:1100px){.stats{grid-template-columns:repeat(2,1fr)}.filter-row{grid-template-columns:repeat(2,1fr)}.filter-actions{grid-column:span 2;justify-content:flex-end}}
+    @media(max-width:720px){body{font-size:13px}.sidebar{transform:translateX(-100%);width:276px}.sidebar.mobile-open{transform:none}.sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(12,23,44,.45);z-index:29}.sidebar-backdrop.show{display:block}.main{margin-left:0}.topbar{height:60px;padding:0 14px}.menu-btn{display:block}.topbar-title,.language,.clock{display:none}.page{padding:18px 14px 32px}.page-head{align-items:center}.page-head h1{font-size:21px}.page-head p{font-size:12px}.page-head .primary{font-size:0;width:40px;height:40px;padding:0}.page-head .primary:after{content:"＋";font-size:22px}.stats{grid-template-columns:repeat(2,1fr);gap:9px}.stat{padding:12px;gap:9px}.stat-icon{width:34px;height:34px}.stat-value{font-size:17px}.delta{display:none}.filters{display:none}.mobile-filter{display:flex;margin-bottom:12px;gap:8px}.mobile-filter .secondary{flex:1;text-align:left}.mobile-filter .primary{width:42px;padding:0}.table-card{display:none}.mobile-list{display:block}.mobile-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:9px}.mobile-card-top{display:flex;align-items:center}.mobile-card .badge{margin-left:auto}.mobile-meta{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:15px;padding-top:13px;border-top:1px solid var(--line)}.mobile-meta label{display:block;font-size:10px;color:var(--muted);margin-bottom:3px}.mobile-card-bottom{display:flex;align-items:center;margin-top:12px}.mobile-card-bottom .action{margin-left:auto}.filter-sheet{position:absolute;inset:auto 0 0;width:100%;height:auto;max-height:88vh;border-radius:20px 20px 0 0;transform:translateY(100%)}.open .filter-sheet{transform:none}.filter-sheet .filter-row{display:block}.filter-sheet .field{margin-bottom:14px}.filter-sheet .filter-actions{display:flex}.detail-grid{grid-template-columns:1fr 1fr}}
+  </style>
+  <style id="warm-card-theme">
+    :root{
+      --navy:#191514;
+      --navy2:#292221;
+      --blue:#ee6d58;
+      --blue2:#fff0ec;
+      --bg:#e8e7e3;
+      --card:#ffffff;
+      --text:#201b19;
+      --muted:#807672;
+      --line:#eee8e5;
+      --green:#2f9d76;
+      --red:#d94f59;
+      --amber:#cc832e;
+      --shadow:0 24px 60px rgba(42,32,28,.14);
+    }
+    body{background:linear-gradient(145deg,#deddd8 0%,#f0efec 48%,#dfded9 100%)}
+    .sidebar{inset:18px auto 18px 18px;width:240px;height:auto;border-radius:22px;background:linear-gradient(180deg,#171312,#211b19);box-shadow:0 22px 55px rgba(28,21,18,.24);overflow:hidden}
+    .brand-mark{background:linear-gradient(145deg,#f58a73,#df5a47);box-shadow:0 7px 18px rgba(238,109,88,.3)}
+    .nav-item.active{background:linear-gradient(90deg,#ee6d58,#f28a70);box-shadow:0 7px 18px rgba(238,109,88,.25)}
+    .profile-mini{background:rgba(255,255,255,.08)}
+    .main{margin:18px 18px 18px 276px;min-height:calc(100vh - 36px);background:#fff;border:1px solid rgba(255,255,255,.9);border-radius:22px;box-shadow:var(--shadow);overflow:clip}
+    .topbar{position:sticky;height:66px;padding:0 26px;background:rgba(255,255,255,.97);border-bottom:1px solid var(--line);border-radius:22px 22px 0 0}
+    .page{max-width:none;padding:25px 28px 42px;background:#fff}
+    .card,.stat{box-shadow:none;border-color:var(--line);background:#fff}
+    .stat{background:linear-gradient(145deg,#fff,#fdfaf9)}
+    .stat-icon{color:#d95743}
+    .primary{background:linear-gradient(135deg,#f07b65,#e65e49);box-shadow:0 7px 18px rgba(238,109,88,.23)}
+    .count{color:#d95743;background:#fff0ec}
+    .level,.action{color:#df624e}
+    .control:focus{border-color:#ee6d58;box-shadow:0 0 0 3px rgba(238,109,88,.11)}
+    .page-btn.active{background:#ee6d58;border-color:#ee6d58}
+    .bar{background:linear-gradient(#f49a84,#e96853)}
+    .donut{background:conic-gradient(#ee6d58 0 46%,#2f9d76 46% 73%,#e7a04d 73% 89%,#eee8e5 89%)}
+    .progress i{background:#ee6d58}
+    .setting-nav .on{background:#fff0ec;color:#d95743}
+    .switch{background:#ee6d58}
+    ::-webkit-scrollbar-thumb{background:#d9aaa0}
+    @media(max-width:720px){
+      body{background:#fff}
+      .sidebar{inset:0 auto 0 0;width:276px;height:100%;border-radius:0}
+      .main{margin:0;min-height:100vh;border:0;border-radius:0;box-shadow:none}
+      .topbar{height:60px;padding:0 14px;border-radius:0}
+      .page{padding:18px 14px 32px}
+    }
+  </style>
+  <style id="teal-full-shell-theme">
+    :root{
+      --navy:#111c24;
+      --navy2:#172832;
+      --blue:#168b83;
+      --blue2:#e4f4f1;
+      --bg:#e9efed;
+      --card:#ffffff;
+      --text:#172522;
+      --muted:#71807c;
+      --line:#e2eae7;
+      --green:#188c68;
+      --red:#d45866;
+      --amber:#bf852c;
+      --shadow:0 14px 36px rgba(22,55,50,.08);
+    }
+    html,body,.app{min-height:100%;background:#e9efed}
+    .sidebar{
+      inset:0 auto 0 0;
+      width:248px;
+      height:100vh;
+      border-radius:0;
+      background:linear-gradient(180deg,#0f1920 0%,#13242c 100%);
+      box-shadow:8px 0 28px rgba(15,28,35,.12);
+      overflow:hidden;
+    }
+    .brand{height:70px;padding:0 21px}
+    .brand-mark{background:linear-gradient(145deg,#2eaca2,#14766f);box-shadow:0 7px 18px rgba(22,139,131,.27)}
+    .nav-item.active{background:linear-gradient(90deg,#147d76,#1b9990);box-shadow:0 7px 18px rgba(15,105,99,.28)}
+    .main{
+      margin:0 0 0 248px;
+      min-height:100vh;
+      background:#e9efed;
+      border:0;
+      border-radius:0;
+      box-shadow:none;
+      overflow:visible;
+    }
+    .topbar{
+      position:sticky;
+      top:0;
+      width:100%;
+      height:70px;
+      padding:0 28px;
+      background:rgba(255,255,255,.98);
+      border:0;
+      border-bottom:1px solid var(--line);
+      border-radius:0;
+      box-shadow:0 4px 16px rgba(26,59,54,.045);
+    }
+    .page{
+      max-width:none;
+      min-height:calc(100vh - 94px);
+      margin:20px;
+      padding:26px 28px 42px;
+      background:#fff;
+      border:1px solid rgba(255,255,255,.9);
+      border-radius:18px;
+      box-shadow:var(--shadow);
+    }
+    .card,.stat{border-color:var(--line);background:#fff}
+    .stat{background:linear-gradient(145deg,#fff,#f9fcfb)}
+    .stat-icon{color:#117b74;background:#e4f4f1}
+    .primary{background:linear-gradient(135deg,#219b92,#147d76);box-shadow:0 7px 18px rgba(22,139,131,.2)}
+    .count{color:#117b74;background:#e4f4f1}
+    .level,.action{color:#168b83}
+    .control:focus{border-color:#168b83;box-shadow:0 0 0 3px rgba(22,139,131,.11)}
+    .page-btn.active{background:#168b83;border-color:#168b83}
+    .bar{background:linear-gradient(#52bab1,#168b83)}
+    .donut{background:conic-gradient(#168b83 0 46%,#5f83c7 46% 73%,#d4a046 73% 89%,#e2eae7 89%)}
+    .progress i{background:#168b83}
+    .setting-nav .on{background:#e4f4f1;color:#117b74}
+    .switch{background:#168b83}
+    ::-webkit-scrollbar-thumb{background:#83bcb7}
+    @media(max-width:720px){
+      html,body,.app{background:#f3f7f5}
+      .sidebar{inset:0 auto 0 0;width:276px;height:100vh;border-radius:0}
+      .main{margin:0;min-height:100vh;background:#f3f7f5}
+      .topbar{height:60px;padding:0 14px}
+      .page{min-height:calc(100vh - 72px);margin:10px;padding:18px 14px 32px;border-radius:15px}
+    }
+  </style>
+  <style id="blue-framed-dashboard-theme">
+    :root{
+      --navy:#111827;
+      --navy2:#17243a;
+      --blue:#3d6df2;
+      --blue2:#edf2ff;
+      --bg:#dfe3e8;
+      --card:#ffffff;
+      --text:#182238;
+      --muted:#748095;
+      --line:#e5e9f0;
+      --green:#218b6a;
+      --red:#d55766;
+      --amber:#b98228;
+      --shadow:0 22px 60px rgba(24,34,56,.15);
+    }
+    html,body{min-height:100%;background:#dfe3e8}
+    body{padding:34px;background:linear-gradient(145deg,#e5e8ec,#d9dde2)}
+    .app{
+      position:relative;
+      width:min(1480px,100%);
+      min-height:calc(100vh - 68px);
+      margin:0 auto;
+      background:#111827;
+      border-radius:24px;
+      box-shadow:0 28px 75px rgba(23,31,47,.2);
+      overflow:hidden;
+    }
+    .sidebar{
+      position:absolute;
+      inset:0 auto 0 0;
+      width:248px;
+      height:100%;
+      min-height:calc(100vh - 68px);
+      border-radius:0;
+      background:linear-gradient(180deg,#0d1422 0%,#111c30 100%);
+      box-shadow:none;
+    }
+    .brand{height:84px;padding:0 22px;border-bottom-color:rgba(255,255,255,.06)}
+    .brand-mark{background:linear-gradient(145deg,#6790ff,#315bd2);box-shadow:0 7px 18px rgba(61,109,242,.28)}
+    .nav-item.active{background:linear-gradient(90deg,rgba(77,118,232,.34),rgba(77,118,232,.15));box-shadow:inset 0 0 0 1px rgba(126,157,245,.22);color:#fff}
+    .nav-item.active:before{content:'';width:3px;height:20px;border-radius:3px;background:#6d93ff;margin-left:-12px}
+    .main{
+      position:relative;
+      margin:0 0 0 248px;
+      min-height:calc(100vh - 68px);
+      background:#fff;
+      border:0;
+      border-radius:24px 0 0 24px;
+      box-shadow:-12px 0 32px rgba(7,16,32,.08);
+      overflow:hidden;
+    }
+    .topbar{
+      position:relative;
+      top:auto;
+      width:100%;
+      height:84px;
+      padding:0 30px 0 34px;
+      background:#fff;
+      border:0;
+      border-bottom:1px solid #f0f2f6;
+      border-radius:24px 0 0 0;
+      box-shadow:none;
+    }
+    .topbar-title{font-size:22px;color:#182238}
+    .page{
+      max-width:none;
+      min-height:calc(100vh - 152px);
+      margin:0;
+      padding:24px 26px 38px;
+      background:#fff;
+      border:0;
+      border-radius:0;
+      box-shadow:none;
+    }
+    .page-head{
+      align-items:center;
+      min-height:112px;
+      margin-bottom:20px;
+      padding:22px 24px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fff;
+    }
+    .page-head h1{font-size:21px;margin-bottom:7px}
+    .card,.stat{border-color:var(--line);border-radius:13px;background:#fff;box-shadow:none}
+    .stat{background:#fff}
+    .stat-icon{color:#315ed8;background:#edf2ff}
+    .primary{background:linear-gradient(135deg,#4c79f4,#315ed8);box-shadow:0 7px 17px rgba(61,109,242,.2)}
+    .count{color:#315ed8;background:#edf2ff}
+    .level,.action{color:#3d6df2}
+    .control:focus{border-color:#3d6df2;box-shadow:0 0 0 3px rgba(61,109,242,.1)}
+    .page-btn.active{background:#3d6df2;border-color:#3d6df2}
+    .bar{background:linear-gradient(#7397fa,#3d6df2)}
+    .donut{background:conic-gradient(#3d6df2 0 46%,#6d8fe5 46% 73%,#55a6bd 73% 89%,#e5e9f0 89%)}
+    .progress i{background:#3d6df2}
+    .setting-nav .on{background:#edf2ff;color:#315ed8}
+    .switch{background:#3d6df2}
+    ::-webkit-scrollbar-thumb{background:#9eafe0}
+    @media(max-width:900px){
+      body{padding:18px}
+      .app{min-height:calc(100vh - 36px);border-radius:20px}
+      .sidebar{min-height:calc(100vh - 36px)}
+      .main{min-height:calc(100vh - 36px)}
+    }
+    @media(max-width:720px){
+      html,body{background:#fff}
+      body{padding:0}
+      .app{width:100%;min-height:100vh;border-radius:0;overflow:visible;box-shadow:none;background:#fff}
+      .sidebar{position:fixed;inset:0 auto 0 0;width:276px;height:100vh;min-height:100vh;border-radius:0;transform:translateX(-100%)}
+      .sidebar.mobile-open{transform:none}
+      .main{margin:0;min-height:100vh;border-radius:0;box-shadow:none;background:#f5f7fb;overflow:visible}
+      .topbar{position:sticky;top:0;height:60px;padding:0 14px;border-radius:0}
+      .page{min-height:calc(100vh - 60px);margin:0;padding:12px 10px 28px;background:#f5f7fb}
+      .page-head{min-height:auto;margin-bottom:12px;padding:16px;border-radius:13px}
+    }
+  </style>
+  <style id="full-viewport-override">
+    html,body{width:100%;min-height:100%;background:#fff}
+    body{padding:0}
+    .app{width:100%;max-width:none;min-height:100vh;margin:0;border-radius:0;box-shadow:none}
+    .sidebar{height:100vh;min-height:100vh}
+    .main{min-height:100vh}
+    @media(max-width:900px){
+      body{padding:0}
+      .app,.sidebar,.main{min-height:100vh}
+      .app{border-radius:0}
+    }
+  </style>
+  <style id="workspace-top-gap-override">
+    .main{
+      margin:12px 0 0 248px;
+      min-height:calc(100vh - 12px);
+      border-radius:24px 0 0 0;
+    }
+    .topbar{border-radius:24px 0 0 0}
+    @media(max-width:720px){
+      .main{margin:0;min-height:100vh;border-radius:0}
+      .topbar{border-radius:0}
+    }
+  </style>
+  <style id="compact-density-override">
+    /* Compact desktop density: keep readability while maximizing visible data. */
+    .brand{height:64px;padding:0 16px;gap:9px}
+    .brand-mark{width:30px;height:30px;border-radius:9px;font-size:12px}
+    .brand strong{font-size:15px}.nav-label{padding:15px 16px 5px}
+    .nav{padding:0 8px}.nav-item{height:36px;padding:0 9px;gap:8px;margin:2px 0;border-radius:7px}
+    .profile-mini{margin:auto 9px 10px;padding:8px;border-radius:9px}
+    .topbar{height:60px;padding:0 20px 0 22px;gap:10px}.topbar-title{font-size:19px}.top-actions{gap:6px}
+    .icon-btn{width:34px;height:34px;border-radius:8px}.avatar{width:32px;height:32px}
+    .page{min-height:calc(100vh - 72px);padding:12px 14px 24px}
+    .page-head{min-height:76px;margin-bottom:10px;padding:12px 14px;border-radius:10px}
+    .page-head h1{font-size:20px;margin-bottom:3px}.page-head p{font-size:12px}
+    .stats{gap:8px;margin-bottom:9px}.stat{padding:10px 11px;gap:8px;border-radius:9px}
+    .stat-icon{width:34px;height:34px;border-radius:8px}.stat-label{margin-bottom:2px}.stat-value{font-size:19px}
+    .card{border-radius:10px}.filters{padding:11px;margin-bottom:9px}.filter-row{gap:7px}
+    .field label{margin-bottom:4px;font-size:12px}.control{height:34px;padding:0 9px;border-radius:7px}
+    .primary{padding:8px 12px;border-radius:7px}.secondary{height:34px;padding:0 10px;border-radius:7px}
+    .filter-actions{gap:5px}.table-toolbar{padding:9px 11px;gap:7px}.table-toolbar h2{font-size:15px}
+    th{padding:8px 11px;font-size:12px}td{padding:9px 11px}.user{gap:7px}.user .avatar{width:32px;height:32px}
+    .badge{padding:4px 7px}.action{padding:4px}.pagination{padding:9px 11px}.pages{gap:3px}.page-btn{width:28px;height:28px;border-radius:6px}
+    .chart-grid,.split{gap:9px;margin-bottom:9px}.chart-card,.mini-card{padding:12px}.section-title{margin-bottom:10px}
+    .bars{height:190px;gap:8px;padding-top:10px}.activity{gap:8px;padding:8px 0}.activity-icon{width:30px;height:30px;border-radius:7px}
+    .review-row{padding:10px 11px;gap:8px}.campaign-grid{gap:8px}.campaign{padding:12px;min-height:150px}
+    .campaign h3{margin:7px 0 4px}.campaign p{line-height:1.4}.campaign .progress{margin-top:auto}
+    .setting-layout{grid-template-columns:190px 1fr;gap:9px}.setting-nav{padding:7px}.setting-nav div{padding:8px 9px;margin:1px;border-radius:7px}
+    .setting-form{padding:14px}.setting-section{padding-bottom:14px;margin-bottom:14px}.setting-section p{margin-bottom:10px}.form-grid{gap:8px}.setting-line{padding:8px 0}
+    .detail-grid{gap:12px 9px;margin-top:14px}.drawer-body{padding:15px}.drawer-foot{padding:10px 15px}.risk-box{padding:10px;margin-top:14px}
+    @media(max-width:720px){
+      .topbar{height:56px;padding:0 10px}.icon-btn{width:40px;height:40px}
+      .page{min-height:calc(100vh - 56px);padding:8px 8px 20px}.page-head{padding:12px;margin-bottom:8px}
+      .stats{gap:7px}.stat{padding:10px}.control{height:44px;font-size:16px}.primary,.secondary{min-height:42px}
+      .mobile-filter{margin-bottom:8px}.mobile-card{padding:12px;margin-bottom:7px;border-radius:10px}
+      .mobile-meta{gap:9px;margin-top:10px;padding-top:9px}.mobile-card-bottom{margin-top:8px}
+      .campaign-grid,.chart-grid,.split,.setting-layout{gap:7px}.campaign{min-height:138px}
+    }
+  </style>
+  <style id="member-source-layout">
+    .source-filter{padding:10px;margin-bottom:8px}
+    .source-filter-grid{display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));gap:7px;align-items:center}
+    .source-filter-grid>.compound{grid-column:span 2}
+    .compound{display:flex;align-items:center;gap:5px;min-width:0}.compound .control{min-width:0}.compound select{flex:0 1 42%}.compound input{flex:1}.compound .amount{width:86px;flex:1}.compound span{flex:none;color:var(--muted)}
+    .source-filter-actions{display:flex;gap:5px;justify-content:flex-end}.source-filter-actions button{min-width:36px}
+    .member-data-card{overflow:hidden}.member-actions{padding:8px 10px;border-bottom:1px solid var(--line)}.icon-add{width:36px;height:34px;padding:0;font-size:18px}
+    .member-source-table{min-width:1590px}.member-source-table th,.member-source-table td{text-align:center}.member-source-table th{white-space:normal;line-height:1.25;min-width:90px}
+    .member-source-table th:nth-child(6),.member-source-table th:nth-child(7),.member-source-table th:nth-child(11){min-width:142px}
+    .tag-dots{display:flex;align-items:center;justify-content:center;gap:4px}.tag-dots i{display:block;width:12px;height:12px;border-radius:50%;border:1px solid rgba(0,0,0,.08)}
+    .status-control{height:28px;min-width:70px;border:1px solid var(--line);border-radius:6px;background:#fff;padding:0 5px;color:var(--text)}
+    .row-actions{display:flex;justify-content:center;gap:4px}.row-actions button{width:29px;height:29px;border:0;border-radius:6px;background:var(--blue);color:#fff}
+    .member-mobile-only{display:none}.member-card-head{display:flex;align-items:center}.member-card-head small{display:block;color:var(--muted);margin-top:3px}.member-card-head .status-control{margin-left:auto}
+    .login-record-list{margin-top:14px}.login-record-list div{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--line)}.login-record-list span{color:var(--muted)}
+    /* Long translations may wrap; controls grow instead of clipping labels. */
+    .source-filter-grid .control{width:100%;min-width:0}.source-filter-grid select{text-overflow:ellipsis}.member-source-table th{overflow-wrap:anywhere}
+    @media(max-width:1180px){.source-filter-grid{grid-template-columns:repeat(3,minmax(150px,1fr))}}
+    @media(max-width:900px){.source-filter-grid{grid-template-columns:repeat(2,minmax(140px,1fr))}}
+    @media(max-width:720px){
+      .source-filter{display:none}.member-data-card{background:transparent;border:0}.member-actions{padding:0 0 8px;border:0;display:flex;justify-content:flex-end}
+      .member-data-card>.table-wrap,.member-data-card>.pagination{display:none}.member-mobile-only{display:block}.member-card-head{gap:8px}
+      .member-card-head strong{font-size:14px}.member-mobile-only .mobile-card{background:#fff}.member-mobile-only .row-actions{margin-left:auto}
+      .member-mobile-only .tag-dots{justify-content:flex-start}.login-record-list div{display:block}.login-record-list span{display:block;margin-top:4px}
+    }
+  </style>
+  <style id="blue-teal-palette-override">
+    :root{
+      --navy:#10202b;
+      --navy2:#172d3a;
+      --blue:#287f98;
+      --blue2:#e8f4f5;
+      --text:#17282e;
+      --muted:#718087;
+      --line:#e1e9e9;
+    }
+    .sidebar{background:linear-gradient(180deg,#0d1b25 0%,#122a35 100%)}
+    .brand-mark{background:linear-gradient(145deg,#55aabd,#23768c);box-shadow:0 7px 18px rgba(40,127,152,.27)}
+    .nav-item.active{background:linear-gradient(90deg,rgba(43,137,157,.38),rgba(43,137,157,.16));box-shadow:inset 0 0 0 1px rgba(103,180,194,.23)}
+    .nav-item.active:before{background:#64b8c5}
+    .stat-icon{color:#23768c;background:#e8f4f5}
+    .primary{background:linear-gradient(135deg,#3d96aa,#23768c);box-shadow:0 7px 17px rgba(40,127,152,.2)}
+    .count{color:#23768c;background:#e8f4f5}
+    .level,.action{color:#287f98}
+    .control:focus{border-color:#287f98;box-shadow:0 0 0 3px rgba(40,127,152,.11)}
+    .page-btn.active,.row-actions button{background:#287f98;border-color:#287f98}
+    .bar{background:linear-gradient(#61aebe,#287f98)}
+    .donut{background:conic-gradient(#287f98 0 46%,#4e8cb2 46% 73%,#58a692 73% 89%,#e1e9e9 89%)}
+    .progress i,.switch{background:#287f98}
+    .setting-nav .on{background:#e8f4f5;color:#23768c}
+    ::-webkit-scrollbar-thumb{background:#8fb9c2}
+  </style>
+  <style id="labeled-filter-component-override">
+    .source-filter{padding:10px 11px}
+    .source-filter-grid{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(150px,1fr)) max-content;
+      gap:8px;
+      align-items:end;
+    }
+    .filter-field{display:flex;flex-direction:column;min-width:0}
+    .filter-field>label{
+      min-height:18px;
+      margin:0 0 3px;
+      color:var(--muted);
+      font-size:12px;
+      font-weight:650;
+      line-height:1.25;
+      overflow-wrap:anywhere;
+    }
+    .filter-span-2{grid-column:span 2}
+    .source-filter-actions{
+      grid-column:5;
+      grid-row:1 / span 3;
+      align-self:end;
+      display:flex;
+      gap:5px;
+      padding-bottom:0;
+      white-space:nowrap;
+    }
+    .source-filter-actions .secondary,.source-filter-actions .primary{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-width:auto;height:34px}
+    @media(max-width:1180px){
+      .source-filter-grid{grid-template-columns:repeat(3,minmax(150px,1fr))}
+      .source-filter-actions{grid-column:3;grid-row:auto;justify-self:end}
+    }
+    @media(max-width:900px){
+      .source-filter-grid{grid-template-columns:repeat(2,minmax(140px,1fr))}
+      .source-filter-actions{grid-column:2;grid-row:auto;justify-self:end}
+    }
+    @media(max-width:720px){
+      .source-filter-grid{grid-template-columns:1fr}
+      .filter-span-2,.source-filter-actions{grid-column:1}
+      .source-filter-actions{position:sticky;bottom:0;width:100%;padding:9px 0 0;background:#fff}
+      .source-filter-actions button{flex:1}
+    }
+  </style>
+  <style id="quick-tabs-and-grid-alignment">
+    .quick-tabs{height:39px;padding:6px 14px;display:flex;gap:5px;align-items:center;overflow-x:auto;overflow-y:hidden;background:#eef2f8;border-bottom:1px solid #e2e8f1;scrollbar-width:thin}
+    .quick-tabs button{height:27px;flex:none;display:inline-flex;align-items:center;gap:6px;padding:0 9px;border:1px solid #cbd8ec;border-radius:5px;background:#fff;color:#748095;font-size:12px;white-space:nowrap}
+    .quick-tabs button.active{border-color:var(--blue);background:var(--blue);color:#fff}.quick-tabs button span{font-size:15px;line-height:1;color:inherit;opacity:.8}
+    .page{min-height:calc(100vh - 111px)}
+    .source-filter-grid>.filter-field:nth-child(1){grid-column:1;grid-row:1}
+    .source-filter-grid>.filter-field:nth-child(2){grid-column:2 / span 2;grid-row:1}
+    .source-filter-grid>.filter-field:nth-child(3){grid-column:4;grid-row:1}
+    .source-filter-grid>.filter-field:nth-child(4){grid-column:1;grid-row:2}
+    .source-filter-grid>.filter-field:nth-child(5){grid-column:2;grid-row:2}
+    .source-filter-grid>.filter-field:nth-child(6){grid-column:3 / span 2;grid-row:2}
+    .source-filter-grid>.filter-field:nth-child(7){grid-column:1;grid-row:3}
+    .source-filter-grid>.filter-field:nth-child(8){grid-column:2 / span 3;grid-row:3}
+    @media(max-width:1180px){
+      .source-filter-grid>.filter-field{grid-column:auto!important;grid-row:auto!important}
+      .source-filter-grid>.filter-span-2{grid-column:span 2!important}
+      .source-filter-actions{grid-column:3!important}
+    }
+    @media(max-width:900px){.source-filter-actions{grid-column:2!important}}
+    @media(max-width:720px){
+      .quick-tabs{height:38px;padding:5px 8px}.page{min-height:calc(100vh - 94px)}
+      .source-filter-grid>.filter-field,.source-filter-grid>.filter-span-2,.source-filter-actions{grid-column:1!important}
+    }
+  </style>
+  <style id="semantic-button-system">
+    .semantic-btn{min-height:34px;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:0 12px;border:1px solid transparent;border-radius:7px;color:#fff;font-weight:700;white-space:nowrap;transition:filter .16s,transform .16s,box-shadow .16s}
+    .semantic-btn:hover:not(:disabled){filter:brightness(.95);box-shadow:0 4px 11px rgba(24,34,56,.12)}.semantic-btn:active:not(:disabled){transform:translateY(1px)}.semantic-btn:focus-visible{outline:3px solid rgba(40,127,152,.2);outline-offset:2px}.semantic-btn:disabled{opacity:.42;cursor:not-allowed}
+    .btn-search{background:#287f98;border-color:#287f98}.btn-add{background:#238864;border-color:#238864}.btn-edit{background:#5069c8!important;border-color:#5069c8!important}.btn-record{background:#7658b5!important;border-color:#7658b5!important}.btn-export{background:#287ebc;border-color:#287ebc}.btn-warning{background:#b97922;border-color:#b97922}.btn-danger{background:#c94f5e;border-color:#c94f5e}.btn-neutral{background:#667085;border-color:#667085}
+    .semantic-btn.outline{background:#fff!important;color:var(--button-color);border-color:currentColor}.btn-search.outline{--button-color:#287f98}.btn-add.outline{--button-color:#238864}.btn-edit.outline{--button-color:#5069c8}.btn-record.outline{--button-color:#7658b5}.btn-export.outline{--button-color:#287ebc}.btn-warning.outline{--button-color:#b97922}.btn-danger.outline{--button-color:#c94f5e}.btn-neutral.outline{--button-color:#667085}
+    .member-actions .btn-add{min-width:74px}.row-actions button.btn-edit{background:#5069c8!important}.row-actions button.btn-record{background:#7658b5!important}
+    .button-guide-grid{display:grid;grid-template-columns:repeat(4,minmax(210px,1fr));gap:8px;margin-bottom:9px}.button-spec{padding:14px}.button-spec-top{display:flex;align-items:center}.button-spec-top code{margin-left:auto;padding:4px 6px;border-radius:5px;background:#f4f6f8;color:var(--muted);font-size:11px}.button-spec h3{font-size:15px;margin:13px 0 5px}.button-spec p{min-height:48px;margin:0;color:var(--muted);font-size:12px;line-height:1.5}.button-states{display:flex;flex-wrap:wrap;gap:5px;margin-top:13px;padding-top:11px;border-top:1px solid var(--line)}.button-states .semantic-btn{min-height:30px;padding:0 9px;font-size:12px}.guide-rules{padding:14px}.guide-rules h2{margin:0 0 12px;font-size:16px}.rule-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.rule-grid>div{padding-left:10px;border-left:3px solid var(--blue)}.rule-grid p{margin:4px 0 0;color:var(--muted);font-size:12px;line-height:1.45}
+    @media(max-width:1180px){.button-guide-grid{grid-template-columns:repeat(2,minmax(210px,1fr))}.rule-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:720px){.semantic-btn{min-height:42px}.button-guide-grid,.rule-grid{grid-template-columns:1fr}.button-spec p{min-height:auto}.button-states .semantic-btn{min-height:38px}}
+  </style>
+  <style id="compact-quick-tab-spacing">
+    .quick-tabs{gap:4px}
+    .quick-tabs button{gap:3px;padding:0 6px}
+    .quick-tabs button span{margin-left:1px}
+  </style>
+  <style id="bright-semantic-button-palette">
+    :root{--blue:#1596ad;--blue2:#e7f7fa}
+    .btn-search{background:#1596ad!important;border-color:#1596ad!important}
+    .btn-add{background:#18a874!important;border-color:#18a874!important}
+    .btn-edit,.row-actions button.btn-edit{background:#4278ed!important;border-color:#4278ed!important}
+    .btn-record,.row-actions button.btn-record{background:#12a5c7!important;border-color:#12a5c7!important}
+    .btn-export{background:#2587d8!important;border-color:#2587d8!important}
+    .btn-warning{background:#e59a2d!important;border-color:#e59a2d!important}
+    .btn-danger{background:#e45765!important;border-color:#e45765!important}
+    .btn-neutral{background:#788596!important;border-color:#788596!important}
+    .btn-search.outline{--button-color:#1596ad}.btn-add.outline{--button-color:#18a874}.btn-edit.outline{--button-color:#4278ed}.btn-record.outline{--button-color:#12a5c7}.btn-export.outline{--button-color:#2587d8}.btn-warning.outline{--button-color:#d88918}.btn-danger.outline{--button-color:#e45765}.btn-neutral.outline{--button-color:#687586}
+    .semantic-btn:hover:not(:disabled){filter:brightness(1.06);box-shadow:0 5px 13px rgba(28,98,120,.18)}
+    .button-spec-top code{background:#f1f6f7;color:#536b72}
+  </style>
+  <style id="high-contrast-semantic-palette">
+    .btn-search{background:#1596ad!important;border-color:#1596ad!important}
+    .btn-add{background:#20a05a!important;border-color:#20a05a!important}
+    .btn-edit,.row-actions button.btn-edit{background:#3f6fe5!important;border-color:#3f6fe5!important}
+    .btn-record,.row-actions button.btn-record{background:#bd7138!important;border-color:#bd7138!important}
+    .btn-export{background:#536579!important;border-color:#536579!important}
+    .btn-warning{background:#d99a18!important;border-color:#d99a18!important}
+    .btn-danger{background:#df5261!important;border-color:#df5261!important}
+    .btn-neutral{background:#87919e!important;border-color:#87919e!important}
+    .btn-search.outline{--button-color:#1596ad}.btn-add.outline{--button-color:#20a05a}.btn-edit.outline{--button-color:#3f6fe5}.btn-record.outline{--button-color:#bd7138}.btn-export.outline{--button-color:#536579}.btn-warning.outline{--button-color:#c88a0e}.btn-danger.outline{--button-color:#df5261}.btn-neutral.outline{--button-color:#77828f}
+  </style>
+  <style id="list-toolbar-action-palette">
+    .member-actions{display:flex;align-items:center;justify-content:flex-start;flex-wrap:wrap;gap:5px}
+    .toolbar-demo{padding:14px;margin-bottom:9px}.toolbar-demo h2{margin:0 0 4px;font-size:16px}.toolbar-demo p{margin:0 0 12px;color:var(--muted);font-size:12px}
+    .member-actions .semantic-btn{min-width:auto}
+    .btn-add{background:#4f6bed!important;border-color:#4f6bed!important}
+    .btn-export{background:#20a05a!important;border-color:#20a05a!important}
+    .btn-edit,.row-actions button.btn-edit{background:#3f6fe5!important;border-color:#3f6fe5!important}
+    .btn-add.outline{--button-color:#4f6bed}.btn-export.outline{--button-color:#20a05a}.btn-edit.outline{--button-color:#3f6fe5}
+    @media(max-width:720px){.member-actions{overflow-x:auto;flex-wrap:nowrap;padding-bottom:3px}.member-actions .semantic-btn{flex:none}}
+  </style>
+  <style id="strict-semantic-token-mapping">
+    /* Every list action below maps to a documented semantic token. */
+    .btn-add{background:#6758e8!important;border-color:#6758e8!important}
+    .btn-export{background:#20a05a!important;border-color:#20a05a!important}
+    .btn-edit,.row-actions button.btn-edit{background:#3f6fe5!important;border-color:#3f6fe5!important}
+    .btn-neutral{background:#87919e!important;border-color:#87919e!important}
+    .btn-danger{background:#df5261!important;border-color:#df5261!important}
+    .btn-add.outline{--button-color:#6758e8}.btn-export.outline{--button-color:#20a05a}.btn-edit.outline{--button-color:#3f6fe5}.btn-neutral.outline{--button-color:#87919e}.btn-danger.outline{--button-color:#df5261}
+  </style>
+  <style id="strict-four-column-filter-grid">
+    .source-filter-grid{grid-template-columns:repeat(4,minmax(0,1fr)) max-content;grid-auto-flow:row}
+    .source-filter-grid>.filter-field{grid-column:auto!important;grid-row:auto!important;width:100%;min-width:0}
+    .source-filter-grid>.filter-field .control{width:100%;min-width:0}
+    .source-filter-actions{grid-column:5!important;grid-row:1 / span 3!important;align-self:end}
+    @media(max-width:1180px){
+      .source-filter-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .source-filter-actions{grid-column:3!important;grid-row:auto!important}
+    }
+    @media(max-width:900px){
+      .source-filter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .source-filter-actions{grid-column:2!important}
+    }
+    @media(max-width:720px){
+      .source-filter-grid{grid-template-columns:1fr}
+      .source-filter-actions{grid-column:1!important}
+    }
+  </style>
+  <style id="single-column-amount-range">
+    .amount-range-control{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:5px;width:100%;min-width:0}
+    .amount-range-control .amount{width:100%;min-width:0}
+    .amount-range-control .amount::placeholder{font:inherit;color:inherit;opacity:.58}
+    .amount-range-control span{color:var(--muted);line-height:1;text-align:center}
+  </style>
+  <style id="unified-filter-typography">
+    .source-filter .control{font-size:14px;font-weight:400;color:var(--text)}
+    .source-filter .control::placeholder{font-family:inherit;font-size:14px;font-weight:400;color:var(--text);opacity:.58}
+    .source-filter .filter-field>label{color:var(--text);font-size:12px;font-weight:650}
+  </style>
+  <style id="input-component-standard">
+    :root{--input-placeholder:#98a2b3;--input-text:#17282e;--input-border:#d7e0e4;--input-focus:#1596ad;--input-error:#df5261;--input-disabled-bg:#f2f4f6}
+    input::placeholder,textarea::placeholder,.source-filter .control::placeholder,.amount-range-control .amount::placeholder{font-family:inherit!important;font-size:14px!important;font-weight:400!important;color:var(--input-placeholder)!important;opacity:1!important}
+    .guide-section-heading{display:flex;align-items:baseline;gap:10px;margin:15px 2px 8px}.guide-section-heading h2{margin:0;font-size:18px}.guide-section-heading p{margin:0;color:var(--muted);font-size:12px}
+    .input-guide-grid{display:grid;grid-template-columns:repeat(4,minmax(210px,1fr));gap:8px;margin-bottom:9px}.input-spec{padding:13px}.input-spec h3{margin:0 0 11px;font-size:14px}.input-spec label{display:block;min-height:18px;margin-bottom:3px;font-size:12px;font-weight:650;color:var(--text)}.input-spec small{display:block;min-height:32px;margin-top:7px;color:var(--muted);font-size:11px;line-height:1.4}
+    .guide-input{display:block;width:100%;height:34px;padding:0 10px;border:1px solid var(--input-border);border-radius:7px;background:#fff;color:var(--input-text);font:400 14px/1.4 Inter,"Noto Sans TC","Microsoft JhengHei",sans-serif;outline:none}.guide-input:hover:not(:disabled):not(:read-only){border-color:#aebdc3}.guide-input:focus,.guide-input.demo-focus{border-color:var(--input-focus);box-shadow:0 0 0 3px rgba(21,150,173,.12)}.guide-input:disabled{background:var(--input-disabled-bg);border-color:#e2e6e9;color:#98a2b3;cursor:not-allowed}.guide-input:read-only{background:#f8fafb;color:#53616a}.guide-input.is-error{border-color:var(--input-error);box-shadow:0 0 0 3px rgba(223,82,97,.1)}.input-spec small.error-text{min-height:0;color:var(--input-error);font-size:12px}
+    .input-loading,.counted-input,.affix-input{position:relative}.input-loading .guide-input{padding-right:34px}.input-loading i{position:absolute;right:11px;top:9px;width:15px;height:15px;border:2px solid #cbd5da;border-top-color:var(--input-focus);border-radius:50%;animation:input-spin .8s linear infinite}.counted-input .guide-input{padding-right:52px}.counted-input span{position:absolute;right:9px;top:9px;color:var(--input-placeholder);font-size:11px}.affix-input{display:flex;align-items:center;border:1px solid var(--input-border);border-radius:7px;background:#fff;overflow:hidden}.affix-input .guide-input{border:0;border-radius:0;box-shadow:none}.affix-input>span{padding:0 9px;color:#6f7c84;font-size:12px}.guide-textarea{height:64px;padding:8px 10px;resize:none}.input-token-table{padding:14px;margin-bottom:9px}.input-token-table h2{margin:0 0 11px;font-size:16px}.input-token-table>div{display:grid;grid-template-columns:repeat(6,max-content 1fr);gap:6px 10px;align-items:center}.input-token-table span{color:var(--muted);font-size:11px}.input-token-table strong{font-size:12px}
+    @keyframes input-spin{to{transform:rotate(360deg)}}
+    @media(max-width:1180px){.input-guide-grid{grid-template-columns:repeat(3,minmax(210px,1fr))}.input-token-table>div{grid-template-columns:repeat(3,max-content 1fr)}}
+    @media(max-width:900px){.input-guide-grid{grid-template-columns:repeat(2,minmax(200px,1fr))}.input-token-table>div{grid-template-columns:repeat(2,max-content 1fr)}}
+    @media(max-width:720px){.guide-section-heading{display:block}.guide-section-heading p{margin-top:4px}.input-guide-grid{grid-template-columns:1fr}.guide-input{height:44px;font-size:16px}.input-token-table>div{grid-template-columns:max-content 1fr}}
+  </style>
+  <style id="active-nav-connector">
+    .nav-item{position:relative;overflow:visible}
+    .nav-item.active::after{
+      content:"";
+      position:absolute;
+      top:50%;
+      right:-8px;
+      width:0;
+      height:0;
+      transform:translateY(-50%);
+      border-top:9px solid transparent;
+      border-bottom:9px solid transparent;
+      border-right:10px solid #fff;
+      z-index:3;
+      pointer-events:none;
+    }
+    @media(max-width:720px){
+      .nav-item.active::after{right:-8px;border-right-color:#f5f7fb}
+    }
+  </style>
+  <style id="horizontal-brand-logo">
+    .brand{justify-content:flex-start;padding:0 16px}
+    .brand-logo{display:block;width:auto;max-width:174px;height:auto;max-height:42px;object-fit:contain;object-position:left center}
+    @media(max-width:720px){.brand-logo{max-width:184px;max-height:44px}}
+  </style>
+  <style id="three-level-sidebar-navigation">
+    .chev{display:none!important}
+    .nav-tree,.nav-children,.nav-subchildren{width:100%}
+    .nav-children,.nav-subchildren{display:none}
+    .nav-tree.is-open>.nav-children,.nav-subchildren.is-open{display:block}
+    .nav-level-2{padding-left:34px;color:#98adba;font-size:13px}
+    .nav-level-3{height:34px;padding-left:48px;color:#8ea5b2;font-size:12px}
+    .hierarchy-mark{position:absolute;left:21px;width:7px;height:7px;border-left:1px solid #55717d;border-bottom:1px solid #55717d}
+    .nav-level-3 .hierarchy-mark{left:35px;width:6px;height:6px}
+    .nav-item.active{
+      color:#fff;
+      background:rgba(73,157,175,.16);
+      border:0;
+      box-shadow:inset 3px 0 0 #55b4c3;
+      font-weight:700;
+    }
+    .nav-item.active::before{display:none!important}
+    .nav-item.active:hover{background:rgba(73,157,175,.2)}
+    .nav-level-3.active{background:rgba(73,157,175,.13);box-shadow:inset 3px 0 0 #55b4c3}
+  </style>
+  <style id="sidebar-selection-variant-two">
+    .brand{justify-content:center;padding-left:12px;padding-right:12px}
+    .brand-logo{object-position:center center;margin:0 auto}
+    .nav-primary{padding-top:12px}
+    .nav-item.active{
+      color:#123642;
+      background:#dff3f5;
+      box-shadow:0 3px 10px rgba(2,19,27,.15);
+      font-weight:750;
+    }
+    .nav-item.active .ico{color:#147e91}
+    .nav-item.active:hover{background:#e8f8f9}
+    .nav-level-3.active{color:#123642;background:#dff3f5;box-shadow:0 3px 10px rgba(2,19,27,.15)}
+    [data-toggle]::after{
+      content:"";
+      position:absolute;
+      top:50%;
+      right:12px;
+      width:6px;
+      height:6px;
+      border-right:1.5px solid #7f9aa5;
+      border-bottom:1.5px solid #7f9aa5;
+      transform:translateY(-65%) rotate(-45deg);
+      transition:transform .18s ease;
+      pointer-events:none;
+    }
+    [data-toggle].expanded::after{transform:translateY(-35%) rotate(45deg)}
+  </style>
+  <style id="sidebar-selection-variant-three">
+    .nav-item.active,
+    .nav-level-3.active{
+      width:calc(100% + 16px);
+      margin-left:-8px;
+      margin-right:-8px;
+      border-radius:0;
+      color:#fff;
+      background:linear-gradient(90deg,#416fd5 0%,#2589b4 52%,#1596ad 100%);
+      box-shadow:none;
+    }
+    .nav-item.active .ico{color:#fff}
+    .nav-item.active:hover{background:linear-gradient(90deg,#4777df 0%,#2b93be 52%,#1aa2ba 100%)}
+    .nav-item.active::after{right:0}
+  </style>
+  <style id="original-101best-active-gradient">
+    .nav-item.active,
+    .nav-level-3.active{
+      color:#10202b;
+      font-weight:400;
+      background:linear-gradient(90deg,#73aaff 0%,#b6bff6 100%);
+    }
+    .nav-item.active .ico{color:#10202b}
+    .nav-item.active:hover{background:linear-gradient(90deg,#73aaff 0%,#b6bff6 100%)}
+  </style>
+  <style id="uniform-sidebar-font-size">
+    .nav-item,
+    .nav-level-1,
+    .nav-level-2,
+    .nav-level-3{font-size:14px}
+  </style>
+  <style id="sidebar-active-size-and-indent-only">
+    .nav-item.active{font-size:16px;padding-left:17px}
+    .nav-level-2.active{padding-left:42px}
+    .nav-level-3.active{padding-left:56px}
+    .nav-level-2 .hierarchy-mark,
+    .nav-level-3 .hierarchy-mark{display:none}
+  </style>
+  <style id="six-column-member-filter">
+    @media(min-width:1181px){
+      .source-filter-grid{grid-template-columns:repeat(6,minmax(0,1fr))}
+      .source-filter-actions{
+        grid-column:6!important;
+        grid-row:2!important;
+        align-self:end;
+        justify-self:end;
+      }
+    }
+  </style>
+  <style id="member-filter-bottom-accent">
+    .source-filter{
+      position:relative;
+      box-shadow:0 0 10px rgba(34,124,143,.13);
+    }
+  </style>
+  <style id="original-101best-pagination">
+    .member-data-card .pagination{justify-content:flex-end;gap:8px}
+    .member-data-card .pagination-total{margin-right:0;color:var(--muted)}
+    .member-data-card .page-size-select{
+      width:156px;height:32px;border:1px solid #6e94f9;border-radius:8px;
+      padding:0 10px;background:#fff;color:var(--text);font-size:14px;
+    }
+    .member-data-card .pages{margin-left:0;gap:5px}
+    .member-data-card .page-btn{
+      width:32px;height:32px;border:1px solid #6e94f9;border-radius:8px;
+      background:#fff;color:#34569f;font-weight:400;
+    }
+    .member-data-card .page-btn.active{background:#6e94f9;color:#fff;border-color:#6e94f9}
+    .member-data-card .page-btn:disabled{opacity:.4;cursor:not-allowed}
+  </style>
+  <style id="fixed-sidebar-independent-content-scroll">
+    @media(min-width:721px){
+      html,body{height:100%;overflow:hidden}
+      .app{height:100vh;overflow:hidden}
+      .sidebar{height:100vh;overflow:hidden}
+      .sidebar .nav{flex:0 1 auto;overflow-y:auto;overflow-x:hidden}
+      .main{height:100vh;overflow-y:auto;overflow-x:hidden}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="sidebar-backdrop" id="sideBackdrop"></div>
+    <aside class="sidebar" id="sidebar">
+      <div class="brand"><img class="brand-logo" src="./logo-sample.png" alt="101 BEST Backoffice" /></div>
+      <nav class="nav nav-primary">
+        <div class="nav-item"><span class="ico">⌂</span>營運總覽</div>
+        <div class="nav-item active"><span class="ico">♙</span>會員管理</div>
+        <div class="nav-item"><span class="ico">♧</span>代理管理</div>
+        <div class="nav-tree is-open">
+          <div class="nav-item nav-level-1 expanded" data-toggle="finance-tree"><span class="ico">＄</span>財務中心</div>
+          <div class="nav-children">
+            <div class="nav-item nav-level-2 expanded" data-toggle="deposit-tree"><span class="hierarchy-mark"></span>存提款管理</div>
+            <div class="nav-subchildren is-open">
+              <div class="nav-item nav-level-3" data-route-key="財務中心"><span class="hierarchy-mark"></span>存款審核</div>
+            </div>
+          </div>
+        </div>
+        <div class="nav-item"><span class="ico">▥</span>報表分析</div>
+        <div class="nav-item"><span class="ico">◈</span>行銷活動</div>
+      </nav>
+      <div class="nav-label">系統</div><nav class="nav"><div class="nav-item"><span class="ico">⚙</span>平台設定</div><div class="nav-item"><span class="ico">◉</span>風險控管</div><div class="nav-item"><span class="ico">◫</span>樣式規範</div></nav>
+    </aside>
+    <main class="main">
+      <header class="topbar"><button class="icon-btn menu-btn" id="menuBtn">☰</button><div><div class="topbar-title">會員管理</div><div class="crumb">會員中心 / 會員列表</div></div><div class="top-actions"><span class="clock" style="color:var(--muted)">GMT+8 · 14:32</span><select class="language"><option>繁體中文</option><option>English</option></select><button class="icon-btn">⌕</button><button class="icon-btn">♢<span class="dot"></span></button><div class="avatar">PG</div></div></header>
+      <div class="quick-tabs" id="quickTabs"><button data-page="營運總覽">首頁</button><button data-page="會員管理" class="active">會員管理 <span>×</span></button><button data-page="財務中心">存款審核 <span>×</span></button><button data-page="報表分析">遊戲營收報表 <span>×</span></button><button data-page="行銷活動">行銷活動 <span>×</span></button><button data-page="平台設定">平台設定 <span>×</span></button><button data-page="樣式規範">樣式規範 <span>×</span></button></div>
+      <div class="page">
+        <div class="page-head"><div><h1>會員管理</h1><p>查看會員狀態、錢包與近期風險訊號</p></div><button class="primary" id="addBtn">＋ 新增會員</button></div>
+        <section class="stats"><div class="stat"><div class="stat-icon">♙</div><div><div class="stat-label">會員總數</div><span class="stat-value">24,860</span><span class="delta">+3.2%</span></div></div><div class="stat"><div class="stat-icon">●</div><div><div class="stat-label">今日活躍</div><span class="stat-value">3,284</span><span class="delta">+8.4%</span></div></div><div class="stat"><div class="stat-icon">＄</div><div><div class="stat-label">總錢包餘額</div><span class="stat-value">$8.42M</span></div></div><div class="stat"><div class="stat-icon">!</div><div><div class="stat-label">風險關注</div><span class="stat-value">28</span><span class="delta" style="color:var(--red)">需處理</span></div></div></section>
+        <section class="card filters"><div class="filter-row"><div class="field"><label>會員搜尋</label><input class="control searchInput" placeholder="帳號、UID 或手機號碼" /></div><div class="field"><label>會員狀態</label><select class="control statusSelect"><option value="all">全部狀態</option><option value="正常">正常</option><option value="風險關注">風險關注</option><option value="待驗證">待驗證</option></select></div><div class="field"><label>會員等級</label><select class="control"><option>全部等級</option><option>VIP 5</option><option>VIP 4</option></select></div><div class="field"><label>註冊日期</label><input class="control" value="2026/09/01 — 2026/09/15" /></div><div class="filter-actions"><button class="secondary resetBtn">重設</button><button class="primary searchBtn">搜尋</button></div></div></section>
+        <div class="mobile-filter"><button class="secondary" id="filterBtn">☷ 篩選條件 <span class="count">2</span></button><button class="primary searchBtn">⌕</button></div>
+        <section class="card table-card"><div class="table-toolbar"><h2>會員列表</h2><span class="count" id="resultCount">6 筆</span><div class="toolbar-right"><button class="secondary">⇩ 匯出</button><button class="secondary">⚙ 欄位</button></div></div><div class="table-wrap"><table><thead><tr><th>會員</th><th>狀態</th><th>等級</th><th>錢包餘額</th><th>近 30 日輸贏</th><th>最後登入</th><th>代理</th><th></th></tr></thead><tbody id="tableBody"></tbody></table></div><div class="pagination"><span>顯示 1–6，共 24,860 筆</span><div class="pages"><button class="page-btn">‹</button><button class="page-btn active">1</button><button class="page-btn">2</button><button class="page-btn">3</button><button class="page-btn">›</button></div></div></section>
+        <section class="mobile-list" id="mobileList"></section>
+      </div>
+    </main>
+  </div>
+  <div class="overlay" id="detailOverlay"><aside class="drawer"><div class="drawer-head"><h2>會員詳情</h2><button class="close closeOverlay">×</button></div><div class="drawer-body" id="detailBody"></div><div class="drawer-foot"><button class="secondary closeOverlay">關閉</button><button class="primary" id="reviewBtn">檢視完整資料</button></div></aside></div>
+  <div class="overlay" id="filterOverlay"><aside class="drawer filter-sheet"><div class="drawer-head"><h2>篩選條件</h2><button class="close closeFilter">×</button></div><div class="drawer-body"><div class="filter-row"><div class="field"><label>會員搜尋</label><input class="control searchInput" placeholder="帳號、UID 或手機號碼" /></div><div class="field"><label>會員狀態</label><select class="control statusSelect"><option value="all">全部狀態</option><option value="正常">正常</option><option value="風險關注">風險關注</option><option value="待驗證">待驗證</option></select></div><div class="field"><label>會員等級</label><select class="control"><option>全部等級</option><option>VIP 5</option><option>VIP 4</option></select></div><div class="field"><label>註冊日期</label><input class="control" value="2026/09/01 — 2026/09/15" /></div><div class="filter-actions"><button class="secondary resetBtn">重設</button><button class="primary searchBtn">套用篩選</button></div></div></div></aside></div>
+  <div class="toast" id="toast"></div>
+  <script>
+    const users=[
+      {name:'Ava Chen',id:'MB-009821',status:'正常',level:'VIP 5',balance:'$128,420.00',win:'+$12,580',login:'今天 14:28',agent:'AG_10188',risk:'低',initial:'AC'},
+      {name:'David Lin',id:'MB-009774',status:'風險關注',level:'VIP 4',balance:'$86,132.50',win:'-$42,720',login:'今天 13:52',agent:'AG_20861',risk:'高',initial:'DL'},
+      {name:'Mina Wu',id:'MB-009652',status:'正常',level:'VIP 3',balance:'$42,876.00',win:'+$8,322',login:'今天 12:17',agent:'AG_10188',risk:'低',initial:'MW'},
+      {name:'Lucas Huang',id:'MB-009541',status:'待驗證',level:'VIP 2',balance:'$18,220.40',win:'-$1,430',login:'昨天 23:42',agent:'直屬會員',risk:'中',initial:'LH'},
+      {name:'Emma Tsai',id:'MB-009328',status:'正常',level:'VIP 5',balance:'$226,840.00',win:'+$32,540',login:'昨天 19:18',agent:'AG_36220',risk:'低',initial:'ET'},
+      {name:'Noah Wang',id:'MB-009214',status:'風險關注',level:'VIP 4',balance:'$64,991.20',win:'-$26,310',login:'09/13 08:26',agent:'AG_20861',risk:'高',initial:'NW'}
+    ];
+    const badge=s=>s==='正常'?'active-b':s==='風險關注'?'risk-b':'pending-b';
+    function render(list=users){document.querySelector('#resultCount').textContent=list.length+' 筆';document.querySelector('#tableBody').innerHTML=list.map((u,i)=>`<tr><td><div class="user"><div class="avatar">${u.initial}</div><div><strong>${u.name}</strong><small>${u.id}</small></div></div></td><td><span class="badge ${badge(u.status)}">${u.status}</span></td><td class="level">${u.level}</td><td><strong>${u.balance}</strong></td><td style="color:${u.win[0]==='+'?'var(--green)':'var(--red)'}">${u.win}</td><td>${u.login}</td><td>${u.agent}</td><td><button class="action" onclick="openDetail(${i})">查看 ›</button></td></tr>`).join('');document.querySelector('#mobileList').innerHTML=list.map((u,i)=>`<article class="mobile-card"><div class="mobile-card-top"><div class="user"><div class="avatar">${u.initial}</div><div><strong>${u.name}</strong><small>${u.id}</small></div></div><span class="badge ${badge(u.status)}">${u.status}</span></div><div class="mobile-meta"><div><label>錢包餘額</label><strong>${u.balance}</strong></div><div><label>會員等級</label><strong class="level">${u.level}</strong></div><div><label>近 30 日輸贏</label><strong style="color:${u.win[0]==='+'?'var(--green)':'var(--red)'}">${u.win}</strong></div><div><label>最後登入</label><strong>${u.login}</strong></div></div><div class="mobile-card-bottom"><span style="color:var(--muted)">${u.agent}</span><button class="action" onclick="openDetail(${i})">查看詳情 ›</button></div></article>`).join('')}
+    function openDetail(i){const u=users[i];document.querySelector('#detailBody').innerHTML=`<div class="person-hero"><div class="avatar">${u.initial}</div><div><h3 style="margin:0 0 4px">${u.name}</h3><span style="color:var(--muted)">${u.id} · ${u.level}</span></div><span class="badge ${badge(u.status)}" style="margin-left:auto">${u.status}</span></div><div class="detail-grid"><div class="detail"><label>錢包餘額</label><strong>${u.balance}</strong></div><div class="detail"><label>近 30 日輸贏</label><strong>${u.win}</strong></div><div class="detail"><label>所屬代理</label><strong>${u.agent}</strong></div><div class="detail"><label>最後登入</label><strong>${u.login}</strong></div><div class="detail"><label>手機驗證</label><strong>已驗證</strong></div><div class="detail"><label>裝置數量</label><strong>${u.risk==='高'?6:2} 台</strong></div></div>${u.risk==='高'?'<div class="risk-box"><strong>風險提示</strong><div style="margin-top:6px;font-size:12px">近期提款頻率異常，且偵測到多裝置快速切換。建議進一步檢查登入與金流紀錄。</div></div>':''}`;document.querySelector('#detailOverlay').classList.add('open')}
+    const toast=t=>{const el=document.querySelector('#toast');el.textContent=t;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),1800)};
+    render();
+    document.querySelector('#menuBtn').onclick=()=>{sidebar.classList.add('mobile-open');sideBackdrop.classList.add('show')};sideBackdrop.onclick=()=>{sidebar.classList.remove('mobile-open');sideBackdrop.classList.remove('show')};
+    document.querySelectorAll('.closeOverlay').forEach(x=>x.onclick=()=>detailOverlay.classList.remove('open'));detailOverlay.onclick=e=>{if(e.target===detailOverlay)detailOverlay.classList.remove('open')};
+    filterBtn.onclick=()=>filterOverlay.classList.add('open');document.querySelectorAll('.closeFilter').forEach(x=>x.onclick=()=>filterOverlay.classList.remove('open'));filterOverlay.onclick=e=>{if(e.target===filterOverlay)filterOverlay.classList.remove('open')};
+    document.querySelectorAll('.searchBtn').forEach(b=>b.onclick=()=>{const q=[...document.querySelectorAll('.searchInput')].find(x=>x.value)?.value.toLowerCase()||'';const st=[...document.querySelectorAll('.statusSelect')].find(x=>x.value!=='all')?.value||'all';render(users.filter(u=>(u.name.toLowerCase().includes(q)||u.id.toLowerCase().includes(q))&&(st==='all'||u.status===st)));filterOverlay.classList.remove('open');toast('篩選結果已更新')});
+    document.querySelectorAll('.resetBtn').forEach(b=>b.onclick=()=>{document.querySelectorAll('.searchInput').forEach(x=>x.value='');document.querySelectorAll('.statusSelect').forEach(x=>x.value='all');render();toast('已清除篩選條件')});
+    addBtn.onclick=()=>toast('新增會員流程將在下一版設計');reviewBtn.onclick=()=>toast('已進入完整會員資料');
+    // Member page mirrors the current /member structure in the 101 BEST project.
+    const memberRows=[
+      {uid:'1009821',account:'ava_chen',agent:'agent_10188',name:'Ava Chen',tags:['#3d6df2','#22a06b'],register:'2026-09-15 09:18:22',regIp:'118.163.21.45',loginIp:'118.163.21.45',balance:'128,420.00',deposit:'386,000.00',withdraw:'214,500.00',last:'2026-09-15 14:28:06',status:'啟用'},
+      {uid:'1009774',account:'david_lin',agent:'agent_20861',name:'David Lin',tags:['#d6a13a'],register:'2026-09-14 18:42:10',regIp:'61.220.72.18',loginIp:'220.130.16.92',balance:'86,132.50',deposit:'245,000.00',withdraw:'198,200.00',last:'2026-09-15 13:52:41',status:'啟用'},
+      {uid:'1009652',account:'mina_wu',agent:'agent_10188',name:'Mina Wu',tags:['#8d63cc','#22a06b'],register:'2026-09-13 11:06:55',regIp:'36.225.14.71',loginIp:'36.225.14.71',balance:'42,876.00',deposit:'132,600.00',withdraw:'96,300.00',last:'2026-09-15 12:17:30',status:'啟用'},
+      {uid:'1009541',account:'lucas_h',agent:'-',name:'Lucas Huang',tags:[],register:'2026-09-12 16:30:04',regIp:'114.32.91.62',loginIp:'114.32.91.62',balance:'18,220.40',deposit:'50,000.00',withdraw:'24,800.00',last:'2026-09-14 23:42:18',status:'停用'},
+      {uid:'1009328',account:'emma_tsai',agent:'agent_36220',name:'Emma Tsai',tags:['#3d6df2'],register:'2026-09-10 08:22:49',regIp:'211.72.31.16',loginIp:'211.72.31.16',balance:'226,840.00',deposit:'682,000.00',withdraw:'405,600.00',last:'2026-09-14 19:18:52',status:'啟用'},
+      {uid:'1009214',account:'noah_wang',agent:'agent_20861',name:'Noah Wang',tags:['#d6a13a'],register:'2026-09-09 15:41:28',regIp:'203.69.82.17',loginIp:'203.69.82.21',balance:'64,991.20',deposit:'188,400.00',withdraw:'126,900.00',last:'2026-09-14 17:06:35',status:'啟用'},
+      {uid:'1009176',account:'sophia_lee',agent:'agent_10188',name:'Sophia Lee',tags:['#22a06b'],register:'2026-09-08 10:12:44',regIp:'60.251.33.74',loginIp:'60.251.33.74',balance:'93,570.00',deposit:'294,000.00',withdraw:'175,200.00',last:'2026-09-14 15:32:19',status:'啟用'},
+      {uid:'1009088',account:'ethan_kuo',agent:'agent_45102',name:'Ethan Kuo',tags:['#8d63cc'],register:'2026-09-07 21:05:13',regIp:'101.12.27.91',loginIp:'101.12.27.91',balance:'31,205.80',deposit:'96,000.00',withdraw:'72,500.00',last:'2026-09-13 22:48:07',status:'停用'},
+      {uid:'1008963',account:'olivia_hsu',agent:'agent_36220',name:'Olivia Hsu',tags:['#3d6df2','#d6a13a'],register:'2026-09-06 13:47:36',regIp:'61.216.45.103',loginIp:'61.216.45.108',balance:'175,430.00',deposit:'520,000.00',withdraw:'318,700.00',last:'2026-09-13 18:21:42',status:'啟用'},
+      {uid:'1008841',account:'liam_chang',agent:'-',name:'Liam Chang',tags:[],register:'2026-09-05 09:33:51',regIp:'111.250.16.44',loginIp:'111.250.16.44',balance:'9,860.50',deposit:'32,000.00',withdraw:'21,600.00',last:'2026-09-12 20:15:30',status:'啟用'},
+      {uid:'1008725',account:'isla_chen',agent:'agent_45102',name:'Isla Chen',tags:['#22a06b','#8d63cc'],register:'2026-09-04 17:26:08',regIp:'210.61.148.29',loginIp:'210.61.148.29',balance:'58,790.00',deposit:'164,800.00',withdraw:'102,400.00',last:'2026-09-12 16:44:11',status:'啟用'},
+      {uid:'1008619',account:'mason_lai',agent:'agent_20861',name:'Mason Lai',tags:['#d6a13a'],register:'2026-09-03 12:18:47',regIp:'114.136.92.57',loginIp:'114.136.92.60',balance:'27,340.75',deposit:'88,500.00',withdraw:'55,900.00',last:'2026-09-11 23:09:54',status:'停用'},
+      {uid:'1008502',account:'mia_lin',agent:'agent_10188',name:'Mia Lin',tags:['#3d6df2'],register:'2026-09-02 08:54:20',regIp:'122.116.73.12',loginIp:'122.116.73.12',balance:'142,680.00',deposit:'436,000.00',withdraw:'278,300.00',last:'2026-09-11 19:37:26',status:'啟用'}
+    ];
+    let memberPage=1,memberPageSize=10,memberCurrentRows=memberRows;
+    function memberTable(rows=memberCurrentRows){
+      const pages=Math.max(1,Math.ceil(rows.length/memberPageSize));
+      memberPage=Math.min(memberPage,pages);
+      const start=(memberPage-1)*memberPageSize;
+      const visibleRows=rows.slice(start,start+memberPageSize);
+      return `<div class="table-wrap"><table class="member-source-table"><thead><tr><th>UID</th><th>帳號</th><th>上層代理</th><th>姓名</th><th>會員標籤</th><th>註冊時間</th><th>註冊／最後登入 IP</th><th>總餘額</th><th>總存款</th><th>總提款</th><th>最後登入</th><th>狀態</th><th>操作</th></tr></thead><tbody>${visibleRows.map((u,i)=>`<tr><td>${u.uid}</td><td>${u.account}</td><td>${u.agent}</td><td>${u.name}</td><td><div class="tag-dots">${u.tags.length?u.tags.map(c=>`<i style="background:${c}"></i>`).join(''):'-'}</div></td><td>${u.register}</td><td><span>${u.regIp}</span><br><span>${u.loginIp}</span></td><td>${u.balance}</td><td>${u.deposit}</td><td>${u.withdraw}</td><td>${u.last}</td><td><select class="status-control"><option>${u.status}</option><option>${u.status==='啟用'?'停用':'啟用'}</option></select></td><td><div class="row-actions"><button class="btn-edit" title="編輯" onclick="toast('開啟會員編輯頁')">✎</button><button class="btn-record" title="登入紀錄" onclick="openLoginRecords(${start+i})">◷</button></div></td></tr>`).join('')}</tbody></table></div><div class="pagination"><span class="pagination-total">共 ${rows.length} 筆</span><select class="page-size-select" onchange="changeMemberPageSize(this.value)"><option value="10" ${memberPageSize===10?'selected':''}>10 筆／頁</option><option value="20" ${memberPageSize===20?'selected':''}>20 筆／頁</option><option value="50" ${memberPageSize===50?'selected':''}>50 筆／頁</option><option value="100" ${memberPageSize===100?'selected':''}>100 筆／頁</option></select><div class="pages"><button class="page-btn" onclick="changeMemberPage(${memberPage-1})" ${memberPage===1?'disabled':''}>‹</button>${Array.from({length:pages},(_,i)=>`<button class="page-btn ${memberPage===i+1?'active':''}" onclick="changeMemberPage(${i+1})">${i+1}</button>`).join('')}<button class="page-btn" onclick="changeMemberPage(${memberPage+1})" ${memberPage===pages?'disabled':''}>›</button></div></div>`
+    }
+    function memberCards(rows=memberCurrentRows){const start=(memberPage-1)*memberPageSize;return `<div class="member-mobile-only">${rows.slice(start,start+memberPageSize).map((u,i)=>`<article class="mobile-card"><div class="member-card-head"><div><span>${u.account}</span><small>UID ${u.uid}</small></div><select class="status-control"><option>${u.status}</option><option>${u.status==='啟用'?'停用':'啟用'}</option></select></div><div class="mobile-meta"><div><label>上層代理</label><strong>${u.agent}</strong></div><div><label>姓名</label><strong>${u.name}</strong></div><div><label>總餘額</label><strong>${u.balance}</strong></div><div><label>最後登入</label><strong>${u.last}</strong></div></div><div class="mobile-card-bottom"><div class="tag-dots">${u.tags.length?u.tags.map(c=>`<i style="background:${c}"></i>`).join(''):'-'}</div><div class="row-actions"><button class="btn-edit" onclick="toast('開啟會員編輯頁')">✎</button><button class="btn-record" onclick="openLoginRecords(${start+i})">◷</button></div></div></article>`).join('')}</div>`}
+    function renderMemberResults(){const el=document.querySelector('#memberResults');if(el)el.innerHTML=memberTable(memberCurrentRows)+memberCards(memberCurrentRows)}
+    function changeMemberPage(page){const pages=Math.max(1,Math.ceil(memberCurrentRows.length/memberPageSize));memberPage=Math.max(1,Math.min(page,pages));renderMemberResults()}
+    function changeMemberPageSize(size){memberPageSize=Number(size);memberPage=1;renderMemberResults()}
+    function actualMemberPage(){return `<div class="source-filter card"><div class="source-filter-grid">
+      <div class="filter-field"><label>平台名稱</label><select class="control"><option>101 BEST</option><option>Demo Platform With Longer Name</option></select></div>
+      <div class="filter-field"><label>會員搜尋</label><select class="control"><option>會員帳號</option><option>UID</option><option>手機號碼</option></select></div>
+      <div class="filter-field"><label class="continuation-label">會員搜尋關鍵字</label><input id="memberKeyword" class="control" placeholder="請輸入關鍵字"></div>
+      <div class="filter-field"><label>代理帳號</label><input class="control" placeholder="請輸入代理帳號"></div>
+      <div class="filter-field"><label>會員狀態</label><select id="memberStatus" class="control"><option value="all">全部狀態</option><option>啟用</option><option>停用</option></select></div>
+      <div class="filter-field"><label>會員等級</label><select class="control"><option>全部等級</option><option>VIP 1</option><option>VIP 2</option></select></div>
+      <div class="filter-field"><label>時間範圍</label><select class="control"><option>註冊時間</option><option>最後登入</option></select></div>
+      <div class="filter-field"><label class="continuation-label">日期區間</label><input class="control date-wide" value="2026-09-15 00:00:00 ～ 2026-09-15 23:59:59"></div>
+      <div class="filter-field"><label>會員標籤</label><select class="control"><option>全部會員標籤</option><option>一般會員</option><option>關注會員</option></select></div>
+      <div class="filter-field"><label>金額範圍</label><select class="control"><option>總餘額</option><option>總存款</option><option>總提款</option></select></div>
+      <div class="filter-field amount-range-field"><label class="continuation-label">最低／最高金額</label><div class="amount-range-control"><input class="control amount" placeholder="最低" aria-label="最低金額"><span>～</span><input class="control amount" placeholder="最高" aria-label="最高金額"></div></div>
+      <div class="source-filter-actions"><button class="semantic-btn btn-neutral" onclick="resetMemberSource()"><span>↺</span> 重設</button><button class="semantic-btn btn-search" onclick="filterMemberSource()"><span>⌕</span> 搜尋</button></div>
+      </div></div>
+      <div class="card member-data-card"><div class="member-actions">
+        <button class="semantic-btn btn-add" onclick="toast('開啟新增會員頁')"><span>＋</span> 新增</button>
+        <button class="semantic-btn btn-export" onclick="toast('開始匯出 Excel')"><span>⇩</span> 匯出</button>
+        <button class="semantic-btn btn-edit" onclick="toast('進入排序模式')"><span>⇅</span> 排序</button>
+        <button class="semantic-btn btn-edit" onclick="toast('開啟批次處理')"><span>▣</span> 批次處理</button>
+        <button class="semantic-btn btn-edit" onclick="toast('開啟批次審核')"><span>✓</span> 批次審核</button>
+        <button class="semantic-btn btn-neutral" onclick="toast('列表已刷新')"><span>↻</span> 刷新</button>
+        <button class="semantic-btn btn-danger" onclick="toast('請先選擇需要清除的資料')"><span>×</span> 批次清除</button>
+      </div><div id="memberResults">${memberTable()}${memberCards()}</div></div>`}
+    function filterMemberSource(){const q=(document.querySelector('#memberKeyword')?.value||'').toLowerCase();const st=document.querySelector('#memberStatus')?.value||'all';memberCurrentRows=memberRows.filter(u=>(u.account.toLowerCase().includes(q)||u.uid.includes(q)||u.name.toLowerCase().includes(q))&&(st==='all'||u.status===st));memberPage=1;renderMemberResults();toast('搜尋完成')}
+    function resetMemberSource(){document.querySelector('#memberKeyword').value='';document.querySelector('#memberStatus').value='all';memberCurrentRows=memberRows;memberPage=1;renderMemberResults();toast('已重設搜尋條件')}
+    function openLoginRecords(i){const u=memberRows[i];document.querySelector('#detailBody').innerHTML=`<div class="person-hero"><div class="avatar">${u.name.split(' ').map(x=>x[0]).join('')}</div><div><h3 style="margin:0 0 4px">${u.account}</h3><span style="color:var(--muted)">UID ${u.uid}</span></div></div><div class="login-record-list"><div><strong>${u.last}</strong><span>${u.loginIp}</span></div><div><strong>2026-09-14 10:21:36</strong><span>${u.regIp}</span></div><div><strong>2026-09-12 22:04:18</strong><span>${u.regIp}</span></div></div>`;document.querySelector('#detailOverlay .drawer-head h2').textContent='登入紀錄';document.querySelector('#detailOverlay').classList.add('open')}
+    pageElInitial=document.querySelector('.page');pageElInitial.innerHTML=actualMemberPage();
+    // Prototype multi-page navigation
+    const originalMemberPage=document.querySelector('.page').innerHTML;
+    const shellTitle=document.querySelector('.topbar-title');
+    const shellCrumb=document.querySelector('.crumb');
+    const pageEl=document.querySelector('.page');
+    const money=n=>new Intl.NumberFormat('zh-TW').format(n);
+    const sharedStyles=`<style>
+      .chart-grid{display:grid;grid-template-columns:1.65fr 1fr;gap:16px;margin-bottom:16px}.chart-card{padding:20px}.section-title{display:flex;align-items:center;margin-bottom:18px}.section-title h2{font-size:16px;margin:0}.section-title span{margin-left:auto;color:var(--muted);font-size:12px}.bars{height:220px;display:flex;align-items:flex-end;gap:13px;padding:20px 4px 0;border-bottom:1px solid var(--line);background:repeating-linear-gradient(to bottom,transparent 0,transparent 54px,#edf0f5 55px)}.bar{flex:1;background:linear-gradient(#7194ff,#4f7cff);border-radius:7px 7px 2px 2px;min-height:20px;position:relative}.bar:hover{filter:brightness(.94)}.bar small{position:absolute;bottom:-25px;left:50%;transform:translateX(-50%);color:var(--muted)}.activity{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}.activity:last-child{border:0}.activity-icon{width:34px;height:34px;border-radius:10px;background:var(--blue2);display:grid;place-items:center;flex:none}.activity p{margin:0 0 4px;font-weight:650}.activity small{color:var(--muted)}.split{display:grid;grid-template-columns:1.4fr .8fr;gap:16px}.review-row{padding:16px 18px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:1.2fr .8fr .8fr .7fr auto;align-items:center;gap:12px}.review-row:last-child{border:0}.amount{font-size:16px;font-weight:800}.risk-meter{height:6px;border-radius:6px;background:#edf0f5;overflow:hidden;margin-top:7px}.risk-meter i{display:block;height:100%;background:var(--red)}.mini-card{padding:18px}.donut{width:148px;height:148px;margin:22px auto;border-radius:50%;background:conic-gradient(var(--blue) 0 46%,#28b58a 46% 73%,#f0aa3c 73% 89%,#e9edf4 89%);display:grid;place-items:center}.donut:after{content:'總計\\A 42,680';white-space:pre;text-align:center;display:grid;place-items:center;background:#fff;width:92px;height:92px;border-radius:50%;font-weight:800;line-height:1.6}.legend{display:grid;grid-template-columns:1fr 1fr;gap:10px}.legend span:before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--blue);margin-right:7px}.campaign-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.campaign{padding:18px;min-height:180px;display:flex;flex-direction:column}.campaign-kicker{font-size:11px;color:var(--blue);font-weight:800;letter-spacing:.7px}.campaign h3{font-size:17px;margin:11px 0 7px}.campaign p{margin:0;color:var(--muted);line-height:1.55}.progress{height:7px;background:#edf0f4;border-radius:7px;margin-top:auto;overflow:hidden}.progress i{display:block;height:100%;background:var(--blue);border-radius:7px}.setting-layout{display:grid;grid-template-columns:220px 1fr;gap:16px}.setting-nav{padding:10px}.setting-nav div{padding:11px 12px;border-radius:9px;color:var(--muted);margin:2px}.setting-nav .on{background:var(--blue2);color:var(--blue);font-weight:750}.setting-form{padding:22px}.setting-section{padding-bottom:22px;margin-bottom:22px;border-bottom:1px solid var(--line)}.setting-section h3{margin:0 0 5px}.setting-section p{color:var(--muted);margin:0 0 17px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.switch{width:42px;height:24px;border-radius:20px;background:var(--blue);padding:3px;margin-left:auto}.switch:after{content:'';display:block;width:18px;height:18px;border-radius:50%;background:white;margin-left:auto}.setting-line{display:flex;align-items:center;padding:12px 0}.setting-line strong{display:block}.setting-line small{color:var(--muted)}
+      @media(max-width:720px){.chart-grid,.split,.campaign-grid,.setting-layout{grid-template-columns:1fr}.bars{height:175px}.review-row{grid-template-columns:1fr auto}.review-row>div:nth-child(3),.review-row>div:nth-child(4){display:none}.campaign-grid{gap:9px}.campaign{min-height:150px}.setting-nav{display:flex;overflow:auto}.setting-nav div{white-space:nowrap}.form-grid{grid-template-columns:1fr}}
+    </style>`;
+    document.head.insertAdjacentHTML('beforeend',sharedStyles);
+    const head=(title,desc,button='')=>`<div class="page-head"><div><h1>${title}</h1><p>${desc}</p></div>${button}</div>`;
+    const stat=(icon,label,value,delta='')=>`<div class="stat"><div class="stat-icon">${icon}</div><div><div class="stat-label">${label}</div><span class="stat-value">${value}</span>${delta?`<span class="delta">${delta}</span>`:''}</div></div>`;
+    const dashboard=()=>`${head('營運總覽','掌握今日平台金流、會員與待辦狀態','<button class="secondary">2026/09/15⌄</button>')}<section class="stats">${stat('＄','今日存款','$1.82M','+12.4%')}${stat('↗','今日提款','$964K','+3.1%')}${stat('♙','活躍會員','3,284','+8.4%')}${stat('!','待審核','42','立即處理')}</section><section class="chart-grid"><div class="card chart-card"><div class="section-title"><h2>近 7 日資金趨勢</h2><span>存款金額</span></div><div class="bars">${[48,67,54,82,71,92,76].map((h,i)=>`<div class="bar" style="height:${h}%"><small>${['09/09','09/10','09/11','09/12','09/13','09/14','今天'][i]}</small></div>`).join('')}</div></div><div class="card chart-card"><div class="section-title"><h2>即時動態</h2><span>查看全部</span></div>${[['✓','一筆 $82,000 存款已完成','2 分鐘前'],['!','會員 David Lin 觸發風險規則','8 分鐘前'],['♙','新增 28 位會員','21 分鐘前'],['＄','一筆 $120,000 提款待審核','32 分鐘前']].map(a=>`<div class="activity"><div class="activity-icon">${a[0]}</div><div><p>${a[1]}</p><small>${a[2]}</small></div></div>`).join('')}</div></section><section class="card"><div class="table-toolbar"><h2>今日待辦</h2><span class="count">42</span></div>${[['提款風控審核','18 筆','最久等待 24 分鐘'],['財務提款審核','11 筆','最久等待 18 分鐘'],['會員身分驗證','8 筆','最久等待 1 小時'],['代理申請','5 筆','最久等待 3 小時']].map((x,i)=>`<div class="review-row"><strong>${x[0]}</strong><span class="badge ${i<2?'risk-b':'pending-b'}">${x[1]}</span><span>${x[2]}</span><span></span><button class="action">前往處理 ›</button></div>`).join('')}</section>`;
+    const finance=()=>`${head('提款審核','優先處理高風險與等待時間較長的申請','<button class="primary">開始批次審核</button>')}<section class="stats">${stat('⌛','待風控審核','18','+3')}${stat('✓','今日已核准','126')}${stat('×','今日已拒絕','9')}${stat('＄','待審金額','$684K')}</section><section class="split"><div class="card"><div class="table-toolbar"><h2>待審核申請</h2><span class="count">18 筆</span><div class="toolbar-right"><button class="secondary">☷ 篩選</button></div></div>${[['David Lin','WD-260915-8821','$120,000','高風險','92'],['Noah Wang','WD-260915-8814','$82,500','高風險','84'],['Mina Wu','WD-260915-8802','$46,000','一般','34'],['Ava Chen','WD-260915-8796','$28,600','一般','18']].map((x,i)=>`<div class="review-row"><div class="user"><div class="avatar">${x[0].split(' ').map(v=>v[0]).join('')}</div><div><strong>${x[0]}</strong><small>${x[1]}</small></div></div><div class="amount">${x[2]}</div><div><span class="badge ${i<2?'risk-b':'active-b'}">${x[3]}</span><div class="risk-meter"><i style="width:${x[4]}%"></i></div></div><span>${i*7+6} 分鐘</span><button class="action" onclick="toast('已開啟審核詳情')">審核 ›</button></div>`).join('')}</div><aside class="card mini-card"><div class="section-title"><h2>今日審核效率</h2></div><div class="donut"></div><div class="legend"><span>已核准 126</span><span style="color:var(--green)">自動通過 74</span><span style="color:var(--amber)">審核中 18</span><span style="color:var(--red)">已拒絕 9</span></div><div class="risk-box" style="margin-top:24px"><strong>平均處理時間 6m 42s</strong><div style="font-size:12px;margin-top:5px">較昨日快 12%</div></div></aside></section>`;
+    const reports=()=>`${head('報表分析','即時追蹤平台營運與遊戲績效','<button class="secondary">⇩ 匯出報表</button>')}<section class="card filters" style="display:block"><div class="filter-row"><div class="field"><label>報表類型</label><select class="control"><option>整體營運</option><option>遊戲營收</option></select></div><div class="field"><label>幣別</label><select class="control"><option>TWD</option></select></div><div class="field"><label>平台</label><select class="control"><option>全部平台</option></select></div><div class="field"><label>日期範圍</label><input class="control" value="2026/09/01 — 2026/09/15"></div><button class="primary">更新</button></div></section><section class="stats">${stat('＄','總投注','$42.68M','+9.2%')}${stat('↙','有效投注','$39.14M','+8.7%')}${stat('◇','平台輸贏','+$3.54M','+14.1%')}${stat('%','返還率','91.7%')}</section><section class="chart-grid"><div class="card chart-card"><div class="section-title"><h2>營收趨勢</h2><span>每日平台輸贏</span></div><div class="bars">${[62,45,71,56,84,68,91,77,64,88,72,96].map((h,i)=>`<div class="bar" style="height:${h}%"><small>${i+1}日</small></div>`).join('')}</div></div><div class="card mini-card"><div class="section-title"><h2>遊戲類別占比</h2></div><div class="donut"></div><div class="legend"><span>電子 46%</span><span style="color:var(--green)">真人 27%</span><span style="color:var(--amber)">體育 16%</span><span style="color:var(--muted)">其他 11%</span></div></div></section>`;
+    const marketing=()=>`${head('行銷活動','管理進行中的促銷活動與成效','<button class="primary">＋ 建立活動</button>')}<section class="stats">${stat('◈','進行中活動','8')}${stat('♙','參與人次','18,420','+16.8%')}${stat('＄','已發獎勵','$428K')}${stat('%','平均轉換率','24.6%','+2.1%')}</section><section class="campaign-grid">${[['DAILY CHECK-IN','每日簽到加碼','連續簽到 7 日，最高領取 $1,888','68'],['VIP EXCLUSIVE','VIP 專屬返水','VIP 會員本週限定加碼返水','42'],['INVITE FRIENDS','好友邀請獎勵','完成邀請任務，雙方皆可獲得獎勵','81'],['LUCKY WHEEL','週末幸運轉盤','每週六日登入即可獲得轉盤機會','56'],['DEPOSIT BONUS','首存加碼 100%','新會員首次存款限時加碼','73'],['REBATE','電子遊戲返水','每日結算電子遊戲有效投注返水','89']].map((x,i)=>`<article class="card campaign"><div class="campaign-kicker">${x[0]}</div><h3>${x[1]}</h3><p>${x[2]}</p><div style="display:flex;margin:17px 0 7px"><span class="badge ${i===1?'pending-b':'active-b'}">${i===1?'排程中':'進行中'}</span><button class="action" style="margin-left:auto">管理 ›</button></div><div class="progress"><i style="width:${x[3]}%"></i></div></article>`).join('')}</section>`;
+    const settings=()=>`${head('平台設定','管理品牌資訊、通知與安全性設定','<button class="primary" onclick="toast(\'設定已儲存\')">儲存變更</button>')}<section class="setting-layout"><aside class="card setting-nav"><div class="on">基本設定</div><div>品牌外觀</div><div>語系與時區</div><div>通知設定</div><div>安全性</div><div>API 與串接</div></aside><div class="card setting-form"><div class="setting-section"><h3>基本資訊</h3><p>顯示於後台及系統通知中的平台資訊</p><div class="form-grid"><div class="field"><label>平台名稱</label><input class="control" value="101 Entertainment"></div><div class="field"><label>營運時區</label><select class="control"><option>GMT+8 Asia/Taipei</option></select></div><div class="field"><label>預設語系</label><select class="control"><option>繁體中文</option></select></div><div class="field"><label>預設幣別</label><select class="control"><option>TWD — 新台幣</option></select></div></div></div><div class="setting-section"><h3>系統通知</h3><p>設定需要即時推播與聲音提醒的事件</p>${[['大額提款通知','單筆提款超過門檻時通知管理員'],['風險事件通知','會員觸發高風險規則時立即通知'],['審核逾時提醒','待審項目超過 15 分鐘時提醒']].map(x=>`<div class="setting-line"><div><strong>${x[0]}</strong><small>${x[1]}</small></div><div class="switch"></div></div>`).join('')}</div><div><h3>工作階段</h3><p>閒置 30 分鐘後自動登出，以保護後台帳號安全。</p></div></div></section>`;
+    const buttonGuide=()=>`${head('樣式規範','統一按鈕與輸入元件的語意、狀態和多語系行為')}<div class="guide-section-heading"><h2>按鈕 Button</h2><p>依操作意圖使用固定語意色，讓使用者在不同頁面建立一致預期。</p></div><section class="button-guide-grid">
+      ${[
+        ['品牌主要操作','btn-search','搜尋','用於搜尋、確認、儲存與下一步；每個區塊原則上只保留一個主要按鈕。','#1596AD'],
+        ['建立／新增','btn-add','新增','用於新增會員、建立活動、加入項目；藍紫色代表建立新資料。','#6758E8'],
+        ['編輯／調整','btn-edit','編輯','用於修改既有資料或進入編輯模式，不與主要提交操作競爭。','#3F6FE5'],
+        ['查看／紀錄','btn-record','登入紀錄','用於詳情、歷程、預覽及資訊類操作。','#BD7138'],
+        ['匯出／下載','btn-export','匯出','用於下載、匯出或產生報表檔案。','#20A05A'],
+        ['提醒／注意','btn-warning','暫停','用於暫停、待確認或可能影響流程但可恢復的操作。','#D99A18'],
+        ['危險操作','btn-danger','刪除','只用於刪除、拒絕、永久停用等高風險操作。','#DF5261'],
+        ['中性／工具操作','btn-neutral','刷新','用於刷新、取消、返回、關閉與重設；不改變資料內容。','#87919E']
+      ].map(x=>`<article class="card button-spec"><div class="button-spec-top"><button class="semantic-btn ${x[1]}">${x[2]}</button><code>${x[4]}</code></div><h3>${x[0]}</h3><p>${x[3]}</p><div class="button-states"><button class="semantic-btn ${x[1]}">預設</button><button class="semantic-btn ${x[1]} outline">次要</button><button class="semantic-btn ${x[1]}" disabled>停用</button></div></article>`).join('')}
+      </section><section class="card toolbar-demo"><h2>列表工具列組合</h2><p>所有操作只使用上方已定義的語意色：排序、批次處理與批次審核都歸類為編輯／調整。</p><div class="member-actions"><button class="semantic-btn btn-add">＋ 新增</button><button class="semantic-btn btn-export">⇩ 匯出</button><button class="semantic-btn btn-edit">⇅ 排序</button><button class="semantic-btn btn-edit">▣ 批次處理</button><button class="semantic-btn btn-edit">✓ 批次審核</button><button class="semantic-btn btn-neutral">↻ 刷新</button><button class="semantic-btn btn-danger">× 批次清除</button></div></section>
+      <div class="guide-section-heading"><h2>輸入元件 Input</h2><p>依 101 BEST 專案現有的 Element Plus Input、驗證、權限及載入用法整理。</p></div>
+      <section class="input-guide-grid">
+        <article class="card input-spec"><h3>預設／Placeholder</h3><label>會員帳號</label><input class="guide-input" placeholder="請輸入會員帳號"><small>Placeholder：14px／400／#98A2B3</small></article>
+        <article class="card input-spec"><h3>已輸入</h3><label>會員帳號</label><input class="guide-input" value="member_10188"><small>輸入文字使用一般正文色，不使用 Placeholder 色。</small></article>
+        <article class="card input-spec"><h3>Focus</h3><label>會員帳號</label><input class="guide-input demo-focus" value="member_10188"><small>品牌色邊框＋3px 淺色 Focus ring。</small></article>
+        <article class="card input-spec"><h3>Disabled／檢視模式</h3><label>平台名稱</label><input class="guide-input" value="101 BEST" disabled><small>用於無權限、條件未滿足及專案目前的檢視模式。</small></article>
+        <article class="card input-spec"><h3>Readonly</h3><label>系統識別碼</label><input class="guide-input" value="USR-1009821" readonly><small>資料可閱讀及複製，但不可編輯。</small></article>
+        <article class="card input-spec"><h3>Error</h3><label>代理帳號</label><input class="guide-input is-error" value="ab"><small class="error-text">帳號至少需要 3 個字元</small></article>
+        <article class="card input-spec"><h3>Loading</h3><label>會員帳號</label><div class="input-loading"><input class="guide-input" value="正在取得資料" disabled><i></i></div><small>對應專案 v-loading 狀態，載入時不可操作。</small></article>
+        <article class="card input-spec"><h3>字數限制</h3><label>標題</label><div class="counted-input"><input class="guide-input" value="活動公告"><span>4 / 20</span></div><small>對應 maxlength 與 show-word-limit。</small></article>
+        <article class="card input-spec"><h3>密碼</h3><label>密碼</label><div class="affix-input"><input class="guide-input" type="password" value="password"><span>◉</span></div><small>對應登入頁 show-password 顯示／隱藏操作。</small></article>
+        <article class="card input-spec"><h3>前後綴</h3><label>手續費</label><div class="affix-input"><span>$</span><input class="guide-input" value="1,200"><span>%</span></div><small>用於幣別、百分比與單位提示。</small></article>
+        <article class="card input-spec"><h3>數字／金額</h3><label>金額範圍</label><div class="amount-range-control"><input class="guide-input" placeholder="最低"><span>～</span><input class="guide-input" placeholder="最高"></div><small>對應 AmountInput，限制數字、14 位整數及 2 位小數。</small></article>
+        <article class="card input-spec"><h3>Textarea</h3><label>備註</label><textarea class="guide-input guide-textarea" placeholder="請輸入備註"></textarea><small>多行內容與字數統計保留底部空間。</small></article>
+      </section>
+      <section class="card input-token-table"><h2>Input Token</h2><div><span>高度（Desktop）</span><strong>34px</strong><span>高度（Mobile）</span><strong>44px</strong><span>字級／字重</span><strong>14px / 400</strong><span>Placeholder</span><strong>#98A2B3</strong><span>圓角</span><strong>7px</strong><span>錯誤色</span><strong>#DF5261</strong></div></section>
+      <section class="card guide-rules"><h2>使用規則</h2><div class="rule-grid"><div><strong>一個主要焦點</strong><p>同一操作區避免同時出現兩個實心主要按鈕。</p></div><div><strong>Placeholder 不取代 Label</strong><p>Placeholder 只提供格式或輸入提示，輸入後仍應看得到欄位名稱。</p></div><div><strong>多語系自適應</strong><p>Label 可換行、Input 保持對齊；元件不可用固定文字寬度裁切翻譯。</p></div><div><strong>狀態不能只靠顏色</strong><p>錯誤需搭配文字；Loading、Disabled 與 Readonly 必須有明確視覺差異。</p></div></div></section>`;
+    const routes={'營運總覽':['營運總覽','首頁',dashboard],'會員管理':['會員管理','會員中心 / 會員列表',()=>originalMemberPage],'財務中心':['提款審核','財務中心 / 提款審核',finance],'報表分析':['報表分析','報表中心 / 整體營運',reports],'行銷活動':['行銷活動','行銷中心 / 活動列表',marketing],'平台設定':['平台設定','系統 / 平台設定',settings],'樣式規範':['樣式規範','設計系統 / 元件規範',buttonGuide]};
+    document.querySelectorAll('.nav-item').forEach(item=>{if(item.dataset.toggle)return;const key=item.dataset.routeKey||Object.keys(routes).find(k=>item.textContent.includes(k));if(!key)return;item.style.cursor='pointer';item.onclick=()=>{if(key==='會員管理'){location.reload();return}document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));item.classList.add('active');const r=routes[key];shellTitle.textContent=r[0];shellCrumb.textContent=r[1];pageEl.innerHTML=r[2]();sidebar.classList.remove('mobile-open');sideBackdrop.classList.remove('show');window.scrollTo({top:0,behavior:'smooth'})};item.addEventListener('click',()=>setActiveQuickTab(key))});
+    document.querySelectorAll('[data-toggle]').forEach(item=>item.addEventListener('click',()=>{const target=item.dataset.toggle==='finance-tree'?item.closest('.nav-tree'):item.nextElementSibling;if(!target)return;target.classList.toggle('is-open');item.classList.toggle('expanded',target.classList.contains('is-open'))}));
+    function setActiveQuickTab(key){document.querySelectorAll('#quickTabs button').forEach(b=>b.classList.toggle('active',b.dataset.page===key))}
+    document.querySelector('#quickTabs').addEventListener('click',e=>{const close=e.target.closest('span');const button=e.target.closest('button');if(!button)return;if(close){e.stopPropagation();const wasActive=button.classList.contains('active');button.remove();if(wasActive)document.querySelector('#quickTabs button[data-page="營運總覽"]')?.click();return}const key=button.dataset.page;setActiveQuickTab(key);const nav=[...document.querySelectorAll('.nav-item')].find(n=>n.dataset.routeKey===key||(!n.dataset.toggle&&n.textContent.includes(key)));nav?.click()});
+  </script>
+</body>
+</html>
