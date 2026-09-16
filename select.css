@@ -1,0 +1,15 @@
+.bo-select-host{width:100%;min-width:0;--el-color-primary:#1596ad;--el-border-radius-base:7px;--el-font-size-base:14px}
+.bo-select-host .el-select__wrapper{min-height:34px;padding:0 9px;border-radius:7px;box-shadow:0 0 0 1px #dce2eb inset;font-size:14px;font-weight:400}
+.bo-select-host .el-select__wrapper.is-focused{box-shadow:0 0 0 1px #1596ad inset,0 0 0 3px rgba(21,150,173,.1)}
+.bo-select-host .el-select__selected-item{color:var(--text)}
+.bo-select-host .el-select__placeholder.is-transparent{color:#98a2b3}
+.bo-select-popper{--el-color-primary:#1596ad;border-radius:7px!important;border-color:#dce2eb!important;box-shadow:0 0 12px rgba(21,35,63,.1)!important}
+.bo-select-popper .el-select-dropdown__list{padding:5px}
+.bo-select-popper .el-select-dropdown__item{height:34px;line-height:34px;padding:0 9px;border-radius:5px;font-size:14px;color:#10202b}
+.bo-select-popper .el-select-dropdown__item.is-hovering,.bo-select-popper .el-select-dropdown__item.is-selected{background:#e7f7fa;color:#1596ad;font-weight:400}
+.bo-select-status{width:86px;display:inline-block}
+.bo-select-status .el-select__wrapper{min-height:28px}
+.member-card-head .bo-select-status{margin-left:auto}
+.bo-select-page-size{width:156px;flex:none}
+.bo-select-page-size .el-select__wrapper{min-height:32px;box-shadow:0 0 0 1px #1596ad inset}
+.page select[hidden]{display:none!important}

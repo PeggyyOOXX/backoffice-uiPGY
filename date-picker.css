@@ -1,0 +1,33 @@
+.date-range-host{min-width:0;width:100%;--el-color-primary:#1596ad;--el-border-radius-base:7px}
+.date-range-host .el-date-editor.bo-date-range{width:100%;height:34px;min-height:34px;padding:0 8px;box-sizing:border-box;box-shadow:0 0 0 1px #dce2eb inset}
+.date-range-host .el-date-editor.bo-date-range.is-active{box-shadow:0 0 0 1px #1596ad inset}
+.date-range-host .bo-date-range .el-range-input{min-width:0;width:0;flex:1;font-size:13px;color:var(--text);background:transparent}
+.date-range-host .bo-date-range .el-range-separator{flex:none;padding:0 3px;font-size:12px}
+.date-range-host .bo-date-range .el-range__icon{margin-right:4px;font-size:14px}
+.date-range-host .bo-date-range .el-range__close-icon{width:14px;margin-left:2px}
+.bo-date-range-popper{--el-color-primary:#1596ad}
+@media(max-width:720px){
+  .bo-date-range-popper{max-width:calc(100vw - 16px)}
+  .bo-date-range-popper .el-date-range-picker{width:calc(100vw - 24px);max-height:70vh;overflow-y:auto}
+  .bo-date-range-popper .el-picker-panel__sidebar{position:static;width:100%;display:flex;border-right:0;border-bottom:1px solid var(--el-border-color-light);padding:8px;box-sizing:border-box}
+  .bo-date-range-popper .el-picker-panel__shortcut{width:auto;flex:1;text-align:center}
+  .bo-date-range-popper .el-picker-panel__sidebar + .el-picker-panel__body{margin-left:0}
+  .bo-date-range-popper .el-date-range-picker__content{width:100%;float:none;padding:12px;box-sizing:border-box}
+  .bo-date-range-popper .el-date-range-picker__time-header{display:flex;flex-wrap:wrap;gap:6px}
+  .bo-date-range-popper .el-date-range-picker__time-header>.el-icon{display:none}
+  .bo-date-range-popper .el-date-range-picker__time-picker-wrap{width:100%;float:none}
+}
+/* Date picker actions follow the shared semantic button specification. */
+.bo-date-range-popper .el-picker-panel__footer{display:flex;justify-content:flex-end;gap:6px;padding:10px 12px}
+.bo-date-range-popper .el-picker-panel__footer .el-button{height:34px;min-height:34px;margin:0;padding:0 12px;border:1px solid transparent;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:inherit;font-size:14px;font-weight:700;line-height:1;white-space:nowrap;color:#fff;background:#1596ad;border-color:#1596ad;transition:filter .16s,transform .16s,box-shadow .16s}
+.bo-date-range-popper .el-picker-panel__footer .el-button.is-text{background:#87919e;border-color:#87919e}
+.bo-date-range-popper .el-picker-panel__footer .el-button:hover:not(:disabled){filter:brightness(1.06);box-shadow:0 5px 13px rgba(28,98,120,.18)}
+.bo-date-range-popper .el-picker-panel__footer .el-button:active:not(:disabled){transform:translateY(1px)}
+.bo-date-range-popper .el-picker-panel__footer .el-button:focus-visible{outline:3px solid rgba(40,127,152,.2);outline-offset:2px}
+.bo-date-range-popper .el-picker-panel__footer .el-button:disabled{opacity:.42;cursor:not-allowed}
+.date-picker-guide{padding:16px;margin-bottom:16px}
+.date-picker-guide h3{margin:0 0 8px;font-size:15px}
+.date-picker-guide p{color:var(--muted);line-height:1.6;margin:8px 0 12px}
+.date-picker-guide .date-range-host{max-width:340px}
+.date-picker-guide .date-picker-rules{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:14px;color:var(--muted);font-size:12px}
+@media(max-width:720px){.bo-date-range-popper .el-picker-panel__footer .el-button{height:42px;min-height:42px}}
