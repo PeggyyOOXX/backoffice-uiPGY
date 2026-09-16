@@ -335,7 +335,7 @@
     @media(max-width:900px){.source-filter-grid{grid-template-columns:repeat(2,minmax(140px,1fr))}}
     @media(max-width:720px){
       .source-filter{display:none}.member-data-card{background:transparent;border:0}.member-actions{padding:0 0 8px;border:0;display:flex;justify-content:flex-end}
-      .member-data-card>.table-wrap,.member-data-card>.pagination{display:none}.member-mobile-only{display:block}.member-card-head{gap:8px}
+      .member-data-card #memberResults{display:flex;flex-direction:column}.member-data-card .table-wrap{display:none}.member-data-card .pagination{order:2}.member-mobile-only{display:block;order:1}.member-card-head{gap:8px}
       .member-card-head strong{font-size:14px}.member-mobile-only .mobile-card{background:#fff}.member-mobile-only .row-actions{margin-left:auto}
       .member-mobile-only .tag-dots{justify-content:flex-start}.login-record-list div{display:block}.login-record-list span{display:block;margin-top:4px}
     }
@@ -532,7 +532,8 @@
     @keyframes input-spin{to{transform:rotate(360deg)}}
     @media(max-width:1180px){.input-guide-grid{grid-template-columns:repeat(3,minmax(210px,1fr))}.input-token-table>div{grid-template-columns:repeat(3,max-content 1fr)}}
     @media(max-width:900px){.input-guide-grid{grid-template-columns:repeat(2,minmax(200px,1fr))}.input-token-table>div{grid-template-columns:repeat(2,max-content 1fr)}}
-    @media(max-width:720px){.guide-section-heading{display:block}.guide-section-heading p{margin-top:4px}.input-guide-grid{grid-template-columns:1fr}.guide-input{height:44px;font-size:16px}.input-token-table>div{grid-template-columns:max-content 1fr}}
+    @media(max-width:720px){.guide-section-heading{display:block}.guide-section-heading p{margin-top:4px}.input-guide-grid{grid-template-columns:1fr}.guide-input{height:34px;padding:0 9px;border-radius:7px;font-size:14px}.input-token-table>div{grid-template-columns:max-content 1fr}}
+    .guide-select{appearance:none;padding-right:28px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23627087' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 9px center;background-size:10px 6px}.guide-select-wrap{position:relative}.guide-select-clear{position:absolute;right:27px;top:8px;color:#98a2b3;font-size:13px}.guide-select-menu{margin-top:5px;padding:5px;border:1px solid #dce2eb;border-radius:7px;background:#fff;box-shadow:0 0 12px rgba(21,35,63,.1)}.guide-select-option{padding:7px 9px;border-radius:5px;color:var(--input-text);font-size:14px}.guide-select-option:hover,.guide-select-option.is-selected{background:#e7f7fa;color:#1596ad}.guide-multi-select{display:flex;align-items:center;gap:5px;height:34px;padding:0 28px 0 7px;border:1px solid #dce2eb;border-radius:7px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23627087' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 9px center}.guide-select-tag{padding:3px 6px;border-radius:4px;background:#e7f7fa;color:#1596ad;font-size:11px;white-space:nowrap}
   </style>
   <style id="active-nav-connector">
     .nav-item{position:relative;overflow:visible}
@@ -623,6 +624,7 @@
     .nav-item.active::after{right:0}
   </style>
   <style id="original-101best-active-gradient">
+    .nav-item.active::after{display:none!important}
     .nav-item.active,
     .nav-level-3.active{
       color:#10202b;
@@ -666,15 +668,15 @@
     .member-data-card .pagination{justify-content:flex-end;gap:8px}
     .member-data-card .pagination-total{margin-right:0;color:var(--muted)}
     .member-data-card .page-size-select{
-      width:156px;height:32px;border:1px solid #6e94f9;border-radius:8px;
+      width:156px;height:32px;border:1px solid #1596ad;border-radius:8px;
       padding:0 10px;background:#fff;color:var(--text);font-size:14px;
     }
     .member-data-card .pages{margin-left:0;gap:5px}
     .member-data-card .page-btn{
-      width:32px;height:32px;border:1px solid #6e94f9;border-radius:8px;
-      background:#fff;color:#34569f;font-weight:400;
+      width:32px;height:32px;border:1px solid #1596ad;border-radius:8px;
+      background:#fff;color:#1596ad;font-weight:400;
     }
-    .member-data-card .page-btn.active{background:#6e94f9;color:#fff;border-color:#6e94f9}
+    .member-data-card .page-btn.active{background:#1596ad;color:#fff;border-color:#1596ad}
     .member-data-card .page-btn:disabled{opacity:.4;cursor:not-allowed}
   </style>
   <style id="fixed-sidebar-independent-content-scroll">
@@ -686,6 +688,289 @@
       .main{height:100vh;overflow-y:auto;overflow-x:hidden}
     }
   </style>
+  <style id="mobile-wrapped-static-navigation-and-actions">
+    .mobile-member-search-toggle{display:none}
+    .mobile-more-actions-toggle{display:none}
+    @media(max-width:720px){
+      html,body,.app,.main{
+        max-width:100%;
+        overflow-x:hidden;
+      }
+      .sidebar-backdrop{
+        position:fixed!important;
+        inset:0!important;
+        z-index:39!important;
+        width:100vw;
+        height:100vh;
+        background:rgba(12,23,44,.56)!important;
+        backdrop-filter:blur(1px);
+      }
+      .sidebar{
+        top:8px!important;
+        right:auto!important;
+        bottom:8px!important;
+        left:8px!important;
+        z-index:40!important;
+        width:min(276px,calc(100vw - 56px))!important;
+        height:auto!important;
+        min-height:0!important;
+        border-radius:12px!important;
+        box-shadow:8px 0 28px rgba(5,17,30,.28);
+        overflow:hidden;
+      }
+      .sidebar:not(.mobile-open){
+        transform:translateX(calc(-100% - 24px))!important;
+        box-shadow:none;
+      }
+      .sidebar.mobile-open{
+        transform:translateX(0)!important;
+        box-shadow:8px 0 28px rgba(5,17,30,.28);
+      }
+      .main{
+        padding-top:90px;
+      }
+      .main:has(.mobile-member-search-toggle){
+        padding-top:132px;
+      }
+      .main:has(.mobile-member-search-toggle)::before{
+        content:"";
+        position:fixed;
+        top:0;
+        left:0;
+        right:0;
+        z-index:27;
+        width:100vw;
+        height:136px;
+        background:linear-gradient(to bottom,#eef2f8 0,#eef2f8 88px,#fff 88px,#fff 136px);
+        pointer-events:none;
+      }
+      .main:has(.mobile-member-search-toggle) .page{
+        padding-top:4px;
+      }
+      .topbar{
+        position:fixed!important;
+        top:0;
+        left:0;
+        right:0;
+        z-index:30;
+        width:100vw;
+        max-width:100vw;
+        height:46px!important;
+        min-height:46px;
+        padding:0 8px!important;
+        border-bottom:0!important;
+        box-shadow:none!important;
+      }
+      .topbar .menu-btn,
+      .topbar .icon-btn{
+        width:32px;
+        height:32px;
+      }
+      .topbar .top-actions{
+        gap:6px;
+      }
+      .quick-tabs{
+        position:fixed;
+        top:50px;
+        left:0;
+        right:0;
+        z-index:29;
+        height:38px;
+        min-height:38px;
+        flex-wrap:nowrap!important;
+        align-content:center;
+        overflow-x:auto!important;
+        overflow-y:hidden!important;
+        width:100vw;
+        max-width:100vw;
+        padding:5px 7px;
+        gap:4px;
+      }
+      .quick-tabs button{
+        height:28px;
+        padding:0 5px;
+        gap:3px;
+        font-size:12px;
+        flex:0 1 auto;
+      }
+      .member-actions{
+        display:flex!important;
+        position:relative;
+        top:auto;
+        z-index:3;
+        left:auto;
+        right:auto;
+        width:100%!important;
+        max-width:100%!important;
+        justify-content:flex-start;
+        flex-wrap:wrap!important;
+        overflow:visible!important;
+        padding:6px 8px;
+        gap:4px;
+        background:#fff;
+        border-bottom:1px solid var(--line);
+        border-radius:10px 10px 0 0;
+        box-shadow:none;
+      }
+      .member-data-card #memberResults{
+        padding-top:0;
+      }
+      .member-actions .semantic-btn{
+        width:auto;
+        flex:0 0 auto!important;
+        min-height:34px;
+        min-width:0;
+        padding:0 5px;
+        gap:3px;
+        font-size:13px;
+      }
+      .member-actions .semantic-btn span{
+        font-size:14px;
+      }
+      .mobile-member-search-toggle{
+        display:flex;
+        position:fixed;
+        top:92px;
+        left:8px;
+        right:8px;
+        z-index:28;
+        width:calc(100vw - 16px);
+        height:40px;
+        margin:0;
+        padding:0 14px;
+        align-items:center;
+        justify-content:space-between;
+        border:1px solid #cbd8ec;
+        border:1px solid #dce2eb;
+        border-radius:10px;
+        background:#fff;
+        color:var(--text);
+        font-size:13px;
+        font-weight:400;
+        box-shadow:0 0 12px rgba(21,35,63,.09);
+      }
+      .mobile-member-search-toggle .search-toggle-arrow{
+        width:7px;
+        height:7px;
+        margin-right:3px;
+        border-right:1.5px solid var(--blue);
+        border-bottom:1.5px solid var(--blue);
+        transform:rotate(45deg);
+        transition:transform .2s ease;
+      }
+      .mobile-member-search-toggle.is-open .search-toggle-arrow{
+        transform:rotate(225deg);
+      }
+      .source-filter.mobile-open{
+        display:block;
+        position:fixed;
+        top:136px;
+        left:8px;
+        right:8px;
+        z-index:32;
+        max-height:calc(100vh - 140px);
+        margin:0;
+        padding:12px;
+        overflow-y:auto;
+        box-shadow:0 0 20px rgba(21,35,63,.18);
+      }
+      .source-filter.mobile-open .source-filter-grid{
+        display:grid;
+        grid-template-columns:1fr;
+        gap:10px;
+      }
+      .source-filter.mobile-open .control{
+        height:34px;
+        min-height:34px;
+        padding:0 9px;
+        border-radius:7px;
+        font-size:14px;
+      }
+      .source-filter.mobile-open .source-filter-actions{
+        position:static;
+        display:flex;
+        gap:6px;
+        padding-top:2px;
+      }
+      .member-actions .mobile-secondary-action{
+        display:none;
+      }
+      .member-data-card{
+        overflow:hidden!important;
+        padding:0!important;
+        background:#fff!important;
+        border:1px solid var(--line)!important;
+        border-radius:12px!important;
+        box-shadow:0 0 10px rgba(21,35,63,.06);
+      }
+      .member-data-card .member-actions{
+        margin:0;
+        border:0;
+        border-bottom:1px solid var(--line);
+        border-radius:0;
+        box-shadow:none;
+      }
+      .member-data-card #memberResults{
+        padding:8px;
+        background:#fff;
+      }
+      .member-data-card .member-mobile-only .mobile-card{
+        margin:0 0 8px;
+        padding:12px;
+        border:1px solid var(--line);
+        border-radius:10px;
+        box-shadow:0 0 8px rgba(21,35,63,.05);
+      }
+      .member-data-card .member-mobile-only .mobile-card:last-child{
+        margin-bottom:0;
+      }
+      .member-data-card .pagination{
+        margin-top:8px;
+        border:1px solid var(--line);
+        border-radius:10px;
+        background:#fff;
+      }
+      .main:has(.mobile-member-search-toggle) .page,
+      .main:has(.mobile-member-search-toggle) .member-mobile-only{
+        background:#fff;
+      }
+      .member-actions .mobile-more-actions-toggle{
+        display:inline-flex;
+        margin-left:auto;
+        background:#fff!important;
+        color:#1596ad!important;
+        border:1px solid #1596ad!important;
+        box-shadow:none!important;
+      }
+      .member-actions.show-mobile-more .mobile-secondary-action{
+        display:inline-flex;
+      }
+    }
+  </style>
+  <style id="unified-source-filter-select-chevron">
+    .source-filter select.control,
+    select.guide-select{
+      appearance:none;
+      height:34px;
+      padding:0 28px 0 9px;
+      border:1px solid #dce2eb;
+      border-radius:7px;
+      background-color:#fff!important;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23627087' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")!important;
+      background-repeat:no-repeat!important;
+      background-position:right 9px center!important;
+      background-size:10px 6px!important;
+      color:var(--text);
+      font-size:14px;
+      font-weight:400;
+    }
+  </style>
+  <style id="input-standard-page">
+    .input-standard-intro{padding:16px;margin-bottom:10px}.input-standard-intro h2{margin:0 0 5px;font-size:18px}.input-standard-intro p{margin:0;color:var(--muted);line-height:1.55}
+    .input-standard-grid{display:grid;grid-template-columns:repeat(3,minmax(220px,1fr));gap:10px;margin-bottom:10px}.input-standard-card{padding:14px}.input-standard-card h3{margin:0 0 4px;font-size:14px}.input-standard-card>p{min-height:34px;margin:0 0 12px;color:var(--muted);font-size:11px;line-height:1.45}.input-demo-row{display:grid;grid-template-columns:1fr 1fr;gap:9px}.input-demo-row label{display:block;margin-bottom:4px;color:#627087;font-size:11px}.input-demo-mobile{max-width:210px}.standard-select{appearance:none;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23627087' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 9px center;padding-right:28px}.standard-choice-row{display:flex;flex-wrap:wrap;align-items:center;gap:12px;height:34px}.standard-switch{width:42px;height:24px;padding:3px;border:0;border-radius:20px;background:#1596ad}.standard-switch:after{content:"";display:block;width:18px;height:18px;margin-left:auto;border-radius:50%;background:#fff}.standard-upload{display:grid;place-items:center;height:68px;border:1px dashed #9fb0bb;border-radius:7px;background:#fafcfd;color:#627087;font-size:12px}.standard-editor{height:76px;border:1px solid #dce2eb;border-radius:7px;background:linear-gradient(#f5f7f9 28px,#fff 28px);padding:8px;color:#627087;font-size:12px}.input-standard-tokens{padding:14px}.input-standard-tokens table{min-width:0}.input-standard-tokens th,.input-standard-tokens td{padding:9px 10px;text-align:left;white-space:normal}
+    @media(max-width:1100px){.input-standard-grid{grid-template-columns:repeat(2,minmax(220px,1fr))}}
+    @media(max-width:720px){.input-standard-grid{grid-template-columns:1fr}.input-standard-card{padding:12px}.input-demo-row{grid-template-columns:1fr}.input-demo-mobile{max-width:none}.input-standard-card>p{min-height:0}.input-standard-tokens{overflow-x:auto}.input-standard-tokens table{min-width:560px}}
+  </style>
 </head>
 <body>
   <div class="app">
@@ -693,28 +978,24 @@
     <aside class="sidebar" id="sidebar">
       <div class="brand"><img class="brand-logo" src="./logo-sample.png" alt="101 BEST Backoffice" /></div>
       <nav class="nav nav-primary">
-        <div class="nav-item"><span class="ico">⌂</span>營運總覽</div>
-        <div class="nav-item active"><span class="ico">♙</span>會員管理</div>
-        <div class="nav-item"><span class="ico">♧</span>代理管理</div>
+        <div class="nav-item active" data-route-key="搜尋結果頁面"><span class="ico">⌕</span>搜尋結果頁面</div>
         <div class="nav-tree is-open">
-          <div class="nav-item nav-level-1 expanded" data-toggle="finance-tree"><span class="ico">＄</span>財務中心</div>
+          <div class="nav-item nav-level-1 expanded" data-toggle="finance-tree"><span class="ico">▤</span>第一層</div>
           <div class="nav-children">
-            <div class="nav-item nav-level-2 expanded" data-toggle="deposit-tree"><span class="hierarchy-mark"></span>存提款管理</div>
+            <div class="nav-item nav-level-2 expanded" data-toggle="deposit-tree"><span class="hierarchy-mark"></span>第二層</div>
             <div class="nav-subchildren is-open">
-              <div class="nav-item nav-level-3" data-route-key="財務中心"><span class="hierarchy-mark"></span>存款審核</div>
+              <div class="nav-item nav-level-3" data-route-key="第三層"><span class="hierarchy-mark"></span>第三層</div>
             </div>
           </div>
         </div>
-        <div class="nav-item"><span class="ico">▥</span>報表分析</div>
-        <div class="nav-item"><span class="ico">◈</span>行銷活動</div>
       </nav>
-      <div class="nav-label">系統</div><nav class="nav"><div class="nav-item"><span class="ico">⚙</span>平台設定</div><div class="nav-item"><span class="ico">◉</span>風險控管</div><div class="nav-item"><span class="ico">◫</span>樣式規範</div></nav>
+      <nav class="nav"><div class="nav-item" data-route-key="樣式規範"><span class="ico">◫</span>樣式規範</div></nav>
     </aside>
     <main class="main">
-      <header class="topbar"><button class="icon-btn menu-btn" id="menuBtn">☰</button><div><div class="topbar-title">會員管理</div><div class="crumb">會員中心 / 會員列表</div></div><div class="top-actions"><span class="clock" style="color:var(--muted)">GMT+8 · 14:32</span><select class="language"><option>繁體中文</option><option>English</option></select><button class="icon-btn">⌕</button><button class="icon-btn">♢<span class="dot"></span></button><div class="avatar">PG</div></div></header>
-      <div class="quick-tabs" id="quickTabs"><button data-page="營運總覽">首頁</button><button data-page="會員管理" class="active">會員管理 <span>×</span></button><button data-page="財務中心">存款審核 <span>×</span></button><button data-page="報表分析">遊戲營收報表 <span>×</span></button><button data-page="行銷活動">行銷活動 <span>×</span></button><button data-page="平台設定">平台設定 <span>×</span></button><button data-page="樣式規範">樣式規範 <span>×</span></button></div>
+      <header class="topbar"><button class="icon-btn menu-btn" id="menuBtn">☰</button><div><div class="topbar-title">搜尋結果頁面</div><div class="crumb">搜尋結果頁面</div></div><div class="top-actions"><span class="clock" style="color:var(--muted)">GMT+8 · 14:32</span><select class="language"><option>繁體中文</option><option>English</option></select><button class="icon-btn">⌕</button><button class="icon-btn">♢<span class="dot"></span></button><div class="avatar">PG</div></div></header>
+      <div class="quick-tabs" id="quickTabs"><button data-page="搜尋結果頁面" class="active">搜尋結果頁面 <span>×</span></button><button data-page="第三層">第三層 <span>×</span></button><button data-page="樣式規範">樣式規範 <span>×</span></button></div>
       <div class="page">
-        <div class="page-head"><div><h1>會員管理</h1><p>查看會員狀態、錢包與近期風險訊號</p></div><button class="primary" id="addBtn">＋ 新增會員</button></div>
+        <div class="page-head"><div><h1>搜尋結果頁面</h1><p>查看會員狀態、錢包與近期風險訊號</p></div><button class="primary" id="addBtn">＋ 新增會員</button></div>
         <section class="stats"><div class="stat"><div class="stat-icon">♙</div><div><div class="stat-label">會員總數</div><span class="stat-value">24,860</span><span class="delta">+3.2%</span></div></div><div class="stat"><div class="stat-icon">●</div><div><div class="stat-label">今日活躍</div><span class="stat-value">3,284</span><span class="delta">+8.4%</span></div></div><div class="stat"><div class="stat-icon">＄</div><div><div class="stat-label">總錢包餘額</div><span class="stat-value">$8.42M</span></div></div><div class="stat"><div class="stat-icon">!</div><div><div class="stat-label">風險關注</div><span class="stat-value">28</span><span class="delta" style="color:var(--red)">需處理</span></div></div></section>
         <section class="card filters"><div class="filter-row"><div class="field"><label>會員搜尋</label><input class="control searchInput" placeholder="帳號、UID 或手機號碼" /></div><div class="field"><label>會員狀態</label><select class="control statusSelect"><option value="all">全部狀態</option><option value="正常">正常</option><option value="風險關注">風險關注</option><option value="待驗證">待驗證</option></select></div><div class="field"><label>會員等級</label><select class="control"><option>全部等級</option><option>VIP 5</option><option>VIP 4</option></select></div><div class="field"><label>註冊日期</label><input class="control" value="2026/09/01 — 2026/09/15" /></div><div class="filter-actions"><button class="secondary resetBtn">重設</button><button class="primary searchBtn">搜尋</button></div></div></section>
         <div class="mobile-filter"><button class="secondary" id="filterBtn">☷ 篩選條件 <span class="count">2</span></button><button class="primary searchBtn">⌕</button></div>
@@ -774,7 +1055,7 @@
     function renderMemberResults(){const el=document.querySelector('#memberResults');if(el)el.innerHTML=memberTable(memberCurrentRows)+memberCards(memberCurrentRows)}
     function changeMemberPage(page){const pages=Math.max(1,Math.ceil(memberCurrentRows.length/memberPageSize));memberPage=Math.max(1,Math.min(page,pages));renderMemberResults()}
     function changeMemberPageSize(size){memberPageSize=Number(size);memberPage=1;renderMemberResults()}
-    function actualMemberPage(){return `<div class="source-filter card"><div class="source-filter-grid">
+    function actualMemberPage(){return `<button class="mobile-member-search-toggle" type="button" onclick="toggleMobileMemberSearch(this)"><span>⌕ 搜尋條件</span><span class="search-toggle-arrow" aria-hidden="true"></span></button><div class="source-filter card"><div class="source-filter-grid">
       <div class="filter-field"><label>平台名稱</label><select class="control"><option>101 BEST</option><option>Demo Platform With Longer Name</option></select></div>
       <div class="filter-field"><label>會員搜尋</label><select class="control"><option>會員帳號</option><option>UID</option><option>手機號碼</option></select></div>
       <div class="filter-field"><label class="continuation-label">會員搜尋關鍵字</label><input id="memberKeyword" class="control" placeholder="請輸入關鍵字"></div>
@@ -791,14 +1072,17 @@
       <div class="card member-data-card"><div class="member-actions">
         <button class="semantic-btn btn-add" onclick="toast('開啟新增會員頁')"><span>＋</span> 新增</button>
         <button class="semantic-btn btn-export" onclick="toast('開始匯出 Excel')"><span>⇩</span> 匯出</button>
-        <button class="semantic-btn btn-edit" onclick="toast('進入排序模式')"><span>⇅</span> 排序</button>
-        <button class="semantic-btn btn-edit" onclick="toast('開啟批次處理')"><span>▣</span> 批次處理</button>
-        <button class="semantic-btn btn-edit" onclick="toast('開啟批次審核')"><span>✓</span> 批次審核</button>
-        <button class="semantic-btn btn-neutral" onclick="toast('列表已刷新')"><span>↻</span> 刷新</button>
-        <button class="semantic-btn btn-danger" onclick="toast('請先選擇需要清除的資料')"><span>×</span> 批次清除</button>
+        <button class="semantic-btn btn-edit mobile-secondary-action" onclick="toast('進入排序模式')"><span>⇅</span> 排序</button>
+        <button class="semantic-btn btn-edit mobile-secondary-action" onclick="toast('開啟批次處理')"><span>▣</span> 批次處理</button>
+        <button class="semantic-btn btn-edit mobile-secondary-action" onclick="toast('開啟批次審核')"><span>✓</span> 批次審核</button>
+        <button class="semantic-btn btn-neutral mobile-secondary-action" onclick="toast('列表已刷新')"><span>↻</span> 刷新</button>
+        <button class="semantic-btn btn-danger mobile-secondary-action" onclick="toast('請先選擇需要清除的資料')"><span>×</span> 批次清除</button>
+        <button class="semantic-btn mobile-more-actions-toggle" onclick="toggleMobileMoreActions(this)">更多</button>
       </div><div id="memberResults">${memberTable()}${memberCards()}</div></div>`}
     function filterMemberSource(){const q=(document.querySelector('#memberKeyword')?.value||'').toLowerCase();const st=document.querySelector('#memberStatus')?.value||'all';memberCurrentRows=memberRows.filter(u=>(u.account.toLowerCase().includes(q)||u.uid.includes(q)||u.name.toLowerCase().includes(q))&&(st==='all'||u.status===st));memberPage=1;renderMemberResults();toast('搜尋完成')}
     function resetMemberSource(){document.querySelector('#memberKeyword').value='';document.querySelector('#memberStatus').value='all';memberCurrentRows=memberRows;memberPage=1;renderMemberResults();toast('已重設搜尋條件')}
+    function toggleMobileMemberSearch(button){const panel=document.querySelector('.source-filter');if(!panel)return;const open=panel.classList.toggle('mobile-open');button.classList.toggle('is-open',open)}
+    function toggleMobileMoreActions(button){const toolbar=button.closest('.member-actions');if(!toolbar)return;const open=toolbar.classList.toggle('show-mobile-more');button.textContent=open?'收合':'更多'}
     function openLoginRecords(i){const u=memberRows[i];document.querySelector('#detailBody').innerHTML=`<div class="person-hero"><div class="avatar">${u.name.split(' ').map(x=>x[0]).join('')}</div><div><h3 style="margin:0 0 4px">${u.account}</h3><span style="color:var(--muted)">UID ${u.uid}</span></div></div><div class="login-record-list"><div><strong>${u.last}</strong><span>${u.loginIp}</span></div><div><strong>2026-09-14 10:21:36</strong><span>${u.regIp}</span></div><div><strong>2026-09-12 22:04:18</strong><span>${u.regIp}</span></div></div>`;document.querySelector('#detailOverlay .drawer-head h2').textContent='登入紀錄';document.querySelector('#detailOverlay').classList.add('open')}
     pageElInitial=document.querySelector('.page');pageElInitial.innerHTML=actualMemberPage();
     // Prototype multi-page navigation
@@ -815,7 +1099,7 @@
     const head=(title,desc,button='')=>`<div class="page-head"><div><h1>${title}</h1><p>${desc}</p></div>${button}</div>`;
     const stat=(icon,label,value,delta='')=>`<div class="stat"><div class="stat-icon">${icon}</div><div><div class="stat-label">${label}</div><span class="stat-value">${value}</span>${delta?`<span class="delta">${delta}</span>`:''}</div></div>`;
     const dashboard=()=>`${head('營運總覽','掌握今日平台金流、會員與待辦狀態','<button class="secondary">2026/09/15⌄</button>')}<section class="stats">${stat('＄','今日存款','$1.82M','+12.4%')}${stat('↗','今日提款','$964K','+3.1%')}${stat('♙','活躍會員','3,284','+8.4%')}${stat('!','待審核','42','立即處理')}</section><section class="chart-grid"><div class="card chart-card"><div class="section-title"><h2>近 7 日資金趨勢</h2><span>存款金額</span></div><div class="bars">${[48,67,54,82,71,92,76].map((h,i)=>`<div class="bar" style="height:${h}%"><small>${['09/09','09/10','09/11','09/12','09/13','09/14','今天'][i]}</small></div>`).join('')}</div></div><div class="card chart-card"><div class="section-title"><h2>即時動態</h2><span>查看全部</span></div>${[['✓','一筆 $82,000 存款已完成','2 分鐘前'],['!','會員 David Lin 觸發風險規則','8 分鐘前'],['♙','新增 28 位會員','21 分鐘前'],['＄','一筆 $120,000 提款待審核','32 分鐘前']].map(a=>`<div class="activity"><div class="activity-icon">${a[0]}</div><div><p>${a[1]}</p><small>${a[2]}</small></div></div>`).join('')}</div></section><section class="card"><div class="table-toolbar"><h2>今日待辦</h2><span class="count">42</span></div>${[['提款風控審核','18 筆','最久等待 24 分鐘'],['財務提款審核','11 筆','最久等待 18 分鐘'],['會員身分驗證','8 筆','最久等待 1 小時'],['代理申請','5 筆','最久等待 3 小時']].map((x,i)=>`<div class="review-row"><strong>${x[0]}</strong><span class="badge ${i<2?'risk-b':'pending-b'}">${x[1]}</span><span>${x[2]}</span><span></span><button class="action">前往處理 ›</button></div>`).join('')}</section>`;
-    const finance=()=>`${head('提款審核','優先處理高風險與等待時間較長的申請','<button class="primary">開始批次審核</button>')}<section class="stats">${stat('⌛','待風控審核','18','+3')}${stat('✓','今日已核准','126')}${stat('×','今日已拒絕','9')}${stat('＄','待審金額','$684K')}</section><section class="split"><div class="card"><div class="table-toolbar"><h2>待審核申請</h2><span class="count">18 筆</span><div class="toolbar-right"><button class="secondary">☷ 篩選</button></div></div>${[['David Lin','WD-260915-8821','$120,000','高風險','92'],['Noah Wang','WD-260915-8814','$82,500','高風險','84'],['Mina Wu','WD-260915-8802','$46,000','一般','34'],['Ava Chen','WD-260915-8796','$28,600','一般','18']].map((x,i)=>`<div class="review-row"><div class="user"><div class="avatar">${x[0].split(' ').map(v=>v[0]).join('')}</div><div><strong>${x[0]}</strong><small>${x[1]}</small></div></div><div class="amount">${x[2]}</div><div><span class="badge ${i<2?'risk-b':'active-b'}">${x[3]}</span><div class="risk-meter"><i style="width:${x[4]}%"></i></div></div><span>${i*7+6} 分鐘</span><button class="action" onclick="toast('已開啟審核詳情')">審核 ›</button></div>`).join('')}</div><aside class="card mini-card"><div class="section-title"><h2>今日審核效率</h2></div><div class="donut"></div><div class="legend"><span>已核准 126</span><span style="color:var(--green)">自動通過 74</span><span style="color:var(--amber)">審核中 18</span><span style="color:var(--red)">已拒絕 9</span></div><div class="risk-box" style="margin-top:24px"><strong>平均處理時間 6m 42s</strong><div style="font-size:12px;margin-top:5px">較昨日快 12%</div></div></aside></section>`;
+    const finance=()=>`${head('第三層','優先處理高風險與等待時間較長的申請','<button class="primary">開始批次審核</button>')}<section class="stats">${stat('⌛','待風控審核','18','+3')}${stat('✓','今日已核准','126')}${stat('×','今日已拒絕','9')}${stat('＄','待審金額','$684K')}</section><section class="split"><div class="card"><div class="table-toolbar"><h2>待審核申請</h2><span class="count">18 筆</span><div class="toolbar-right"><button class="secondary">☷ 篩選</button></div></div>${[['David Lin','WD-260915-8821','$120,000','高風險','92'],['Noah Wang','WD-260915-8814','$82,500','高風險','84'],['Mina Wu','WD-260915-8802','$46,000','一般','34'],['Ava Chen','WD-260915-8796','$28,600','一般','18']].map((x,i)=>`<div class="review-row"><div class="user"><div class="avatar">${x[0].split(' ').map(v=>v[0]).join('')}</div><div><strong>${x[0]}</strong><small>${x[1]}</small></div></div><div class="amount">${x[2]}</div><div><span class="badge ${i<2?'risk-b':'active-b'}">${x[3]}</span><div class="risk-meter"><i style="width:${x[4]}%"></i></div></div><span>${i*7+6} 分鐘</span><button class="action" onclick="toast('已開啟審核詳情')">審核 ›</button></div>`).join('')}</div><aside class="card mini-card"><div class="section-title"><h2>今日審核效率</h2></div><div class="donut"></div><div class="legend"><span>已核准 126</span><span style="color:var(--green)">自動通過 74</span><span style="color:var(--amber)">審核中 18</span><span style="color:var(--red)">已拒絕 9</span></div><div class="risk-box" style="margin-top:24px"><strong>平均處理時間 6m 42s</strong><div style="font-size:12px;margin-top:5px">較昨日快 12%</div></div></aside></section>`;
     const reports=()=>`${head('報表分析','即時追蹤平台營運與遊戲績效','<button class="secondary">⇩ 匯出報表</button>')}<section class="card filters" style="display:block"><div class="filter-row"><div class="field"><label>報表類型</label><select class="control"><option>整體營運</option><option>遊戲營收</option></select></div><div class="field"><label>幣別</label><select class="control"><option>TWD</option></select></div><div class="field"><label>平台</label><select class="control"><option>全部平台</option></select></div><div class="field"><label>日期範圍</label><input class="control" value="2026/09/01 — 2026/09/15"></div><button class="primary">更新</button></div></section><section class="stats">${stat('＄','總投注','$42.68M','+9.2%')}${stat('↙','有效投注','$39.14M','+8.7%')}${stat('◇','平台輸贏','+$3.54M','+14.1%')}${stat('%','返還率','91.7%')}</section><section class="chart-grid"><div class="card chart-card"><div class="section-title"><h2>營收趨勢</h2><span>每日平台輸贏</span></div><div class="bars">${[62,45,71,56,84,68,91,77,64,88,72,96].map((h,i)=>`<div class="bar" style="height:${h}%"><small>${i+1}日</small></div>`).join('')}</div></div><div class="card mini-card"><div class="section-title"><h2>遊戲類別占比</h2></div><div class="donut"></div><div class="legend"><span>電子 46%</span><span style="color:var(--green)">真人 27%</span><span style="color:var(--amber)">體育 16%</span><span style="color:var(--muted)">其他 11%</span></div></div></section>`;
     const marketing=()=>`${head('行銷活動','管理進行中的促銷活動與成效','<button class="primary">＋ 建立活動</button>')}<section class="stats">${stat('◈','進行中活動','8')}${stat('♙','參與人次','18,420','+16.8%')}${stat('＄','已發獎勵','$428K')}${stat('%','平均轉換率','24.6%','+2.1%')}</section><section class="campaign-grid">${[['DAILY CHECK-IN','每日簽到加碼','連續簽到 7 日，最高領取 $1,888','68'],['VIP EXCLUSIVE','VIP 專屬返水','VIP 會員本週限定加碼返水','42'],['INVITE FRIENDS','好友邀請獎勵','完成邀請任務，雙方皆可獲得獎勵','81'],['LUCKY WHEEL','週末幸運轉盤','每週六日登入即可獲得轉盤機會','56'],['DEPOSIT BONUS','首存加碼 100%','新會員首次存款限時加碼','73'],['REBATE','電子遊戲返水','每日結算電子遊戲有效投注返水','89']].map((x,i)=>`<article class="card campaign"><div class="campaign-kicker">${x[0]}</div><h3>${x[1]}</h3><p>${x[2]}</p><div style="display:flex;margin:17px 0 7px"><span class="badge ${i===1?'pending-b':'active-b'}">${i===1?'排程中':'進行中'}</span><button class="action" style="margin-left:auto">管理 ›</button></div><div class="progress"><i style="width:${x[3]}%"></i></div></article>`).join('')}</section>`;
     const settings=()=>`${head('平台設定','管理品牌資訊、通知與安全性設定','<button class="primary" onclick="toast(\'設定已儲存\')">儲存變更</button>')}<section class="setting-layout"><aside class="card setting-nav"><div class="on">基本設定</div><div>品牌外觀</div><div>語系與時區</div><div>通知設定</div><div>安全性</div><div>API 與串接</div></aside><div class="card setting-form"><div class="setting-section"><h3>基本資訊</h3><p>顯示於後台及系統通知中的平台資訊</p><div class="form-grid"><div class="field"><label>平台名稱</label><input class="control" value="101 Entertainment"></div><div class="field"><label>營運時區</label><select class="control"><option>GMT+8 Asia/Taipei</option></select></div><div class="field"><label>預設語系</label><select class="control"><option>繁體中文</option></select></div><div class="field"><label>預設幣別</label><select class="control"><option>TWD — 新台幣</option></select></div></div></div><div class="setting-section"><h3>系統通知</h3><p>設定需要即時推播與聲音提醒的事件</p>${[['大額提款通知','單筆提款超過門檻時通知管理員'],['風險事件通知','會員觸發高風險規則時立即通知'],['審核逾時提醒','待審項目超過 15 分鐘時提醒']].map(x=>`<div class="setting-line"><div><strong>${x[0]}</strong><small>${x[1]}</small></div><div class="switch"></div></div>`).join('')}</div><div><h3>工作階段</h3><p>閒置 30 分鐘後自動登出，以保護後台帳號安全。</p></div></div></section>`;
@@ -845,14 +1129,41 @@
         <article class="card input-spec"><h3>前後綴</h3><label>手續費</label><div class="affix-input"><span>$</span><input class="guide-input" value="1,200"><span>%</span></div><small>用於幣別、百分比與單位提示。</small></article>
         <article class="card input-spec"><h3>數字／金額</h3><label>金額範圍</label><div class="amount-range-control"><input class="guide-input" placeholder="最低"><span>～</span><input class="guide-input" placeholder="最高"></div><small>對應 AmountInput，限制數字、14 位整數及 2 位小數。</small></article>
         <article class="card input-spec"><h3>Textarea</h3><label>備註</label><textarea class="guide-input guide-textarea" placeholder="請輸入備註"></textarea><small>多行內容與字數統計保留底部空間。</small></article>
+        <article class="card input-spec"><h3>下拉／預設</h3><label>會員狀態</label><select class="guide-input guide-select"><option>請選擇</option><option>啟用</option><option>停用</option></select><small>高度、字級、圓角與文字 Input 完全一致；箭頭距右側 9px。</small></article>
+        <article class="card input-spec"><h3>下拉／已選取＋可清除</h3><label>會員等級</label><div class="guide-select-wrap"><select class="guide-input guide-select"><option>VIP 1</option><option>VIP 2</option></select><span class="guide-select-clear">×</span></div><small>Clear icon 位於箭頭左側，不改變欄位高度與文字起點。</small></article>
+        <article class="card input-spec"><h3>下拉／搜尋與展開</h3><label>代理帳號</label><input class="guide-input" value="agent_10188"><div class="guide-select-menu"><div class="guide-select-option is-selected">agent_10188</div><div class="guide-select-option">agent_20861</div><div class="guide-select-option">agent_36220</div></div><small>選單使用相同 7px 圓角；Hover／Selected 使用主色淺底。</small></article>
+        <article class="card input-spec"><h3>下拉／多選</h3><label>會員標籤</label><div class="guide-multi-select"><span class="guide-select-tag">一般會員 ×</span><span class="guide-select-tag">關注 ×</span></div><small>標籤使用主色淺底，過多時收合為「+N」。</small></article>
       </section>
-      <section class="card input-token-table"><h2>Input Token</h2><div><span>高度（Desktop）</span><strong>34px</strong><span>高度（Mobile）</span><strong>44px</strong><span>字級／字重</span><strong>14px / 400</strong><span>Placeholder</span><strong>#98A2B3</strong><span>圓角</span><strong>7px</strong><span>錯誤色</span><strong>#DF5261</strong></div></section>
+      <section class="card input-token-table"><h2>Input／Select Token</h2><div><span>高度（Desktop）</span><strong>34px</strong><span>高度（Mobile）</span><strong>34px</strong><span>字級／字重</span><strong>14px / 400</strong><span>水平內距</span><strong>9px</strong><span>箭頭右距</span><strong>9px</strong><span>圓角</span><strong>7px</strong><span>Placeholder</span><strong>#98A2B3</strong><span>錯誤色</span><strong>#DF5261</strong></div></section>
       <section class="card guide-rules"><h2>使用規則</h2><div class="rule-grid"><div><strong>一個主要焦點</strong><p>同一操作區避免同時出現兩個實心主要按鈕。</p></div><div><strong>Placeholder 不取代 Label</strong><p>Placeholder 只提供格式或輸入提示，輸入後仍應看得到欄位名稱。</p></div><div><strong>多語系自適應</strong><p>Label 可換行、Input 保持對齊；元件不可用固定文字寬度裁切翻譯。</p></div><div><strong>狀態不能只靠顏色</strong><p>錯誤需搭配文字；Loading、Disabled 與 Readonly 必須有明確視覺差異。</p></div></div></section>`;
-    const routes={'營運總覽':['營運總覽','首頁',dashboard],'會員管理':['會員管理','會員中心 / 會員列表',()=>originalMemberPage],'財務中心':['提款審核','財務中心 / 提款審核',finance],'報表分析':['報表分析','報表中心 / 整體營運',reports],'行銷活動':['行銷活動','行銷中心 / 活動列表',marketing],'平台設定':['平台設定','系統 / 平台設定',settings],'樣式規範':['樣式規範','設計系統 / 元件規範',buttonGuide]};
-    document.querySelectorAll('.nav-item').forEach(item=>{if(item.dataset.toggle)return;const key=item.dataset.routeKey||Object.keys(routes).find(k=>item.textContent.includes(k));if(!key)return;item.style.cursor='pointer';item.onclick=()=>{if(key==='會員管理'){location.reload();return}document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));item.classList.add('active');const r=routes[key];shellTitle.textContent=r[0];shellCrumb.textContent=r[1];pageEl.innerHTML=r[2]();sidebar.classList.remove('mobile-open');sideBackdrop.classList.remove('show');window.scrollTo({top:0,behavior:'smooth'})};item.addEventListener('click',()=>setActiveQuickTab(key))});
+    const inputStandardPage=()=>`${head('Input 樣式規範','依 101 BEST Backoffice 實際元件盤點，統一桌機與手機輸入體驗')}
+      <section class="card input-standard-intro"><h2>Input Foundations</h2><p>所有輸入元件沿用相同的 Label、邊框、圓角、Focus、錯誤與 Disabled 規則。手機版不另造外觀，只調整排列與觸控範圍。</p></section>
+      <section class="input-standard-grid">
+        ${[
+          ['一般文字輸入','帳號、姓名、代理帳號與一般關鍵字。',`<input class="guide-input" placeholder="請輸入會員帳號">`],
+          ['搜尋／可清除','列表搜尋、遊戲名稱與 UID 查詢。',`<div class="affix-input"><span>⌕</span><input class="guide-input" value="ava_chen"><span>×</span></div>`],
+          ['密碼','登入密碼、交易密碼及確認密碼。',`<div class="affix-input"><input class="guide-input" type="password" value="password"><span>◉</span></div>`],
+          ['數字／金額','金額、比率、權重與上下限。',`<div class="amount-range-control"><input class="guide-input" placeholder="最低"><span>～</span><input class="guide-input" placeholder="最高"></div>`],
+          ['前綴／後綴','幣別、百分比及固定單位。',`<div class="affix-input"><span>$</span><input class="guide-input" value="1,200"><span>%</span></div>`],
+          ['Textarea','備註、描述、拒絕原因與訊息內容。',`<textarea class="guide-input guide-textarea" placeholder="請輸入備註"></textarea>`],
+          ['單選下拉 Select','狀態、等級、平台、語言與類型。',`<select class="guide-input standard-select"><option>請選擇</option><option>啟用</option><option>停用</option></select>`],
+          ['可搜尋／可清除下拉','代理、遊戲供應商、會員標籤等大量選項。',`<div class="affix-input"><span>⌕</span><input class="guide-input" placeholder="搜尋並選擇"><span>⌄</span></div>`],
+          ['多選下拉','會員標籤、語言、遊戲分類與批次條件。',`<div class="affix-input"><span style="background:#e8f4f5;border-radius:4px">VIP 1 ×</span><input class="guide-input" placeholder="新增"></div>`],
+          ['日期 Date Picker','單日、開始日與結束日。',`<div class="affix-input"><span>▣</span><input class="guide-input" value="2026-09-16"></div>`],
+          ['日期時間範圍','報表、註冊時間、登入時間與活動期間。',`<div class="affix-input"><span>▣</span><input class="guide-input" value="09-01 ～ 09-16"></div>`],
+          ['Radio 單選','互斥設定、審核方式與活動機制。',`<div class="standard-choice-row"><label><input type="radio" checked> 固定值</label><label><input type="radio"> 百分比</label></div>`],
+          ['Checkbox 複選','欄位啟用、批次選取與條件設定。',`<div class="standard-choice-row"><label><input type="checkbox" checked> 手機</label><label><input type="checkbox"> Email</label></div>`],
+          ['Switch 開關','功能啟閉、前台顯示及自動刷新。',`<div class="standard-choice-row"><button class="standard-switch" aria-label="已開啟"></button><span>已開啟</span></div>`],
+          ['檔案／圖片上傳','Logo、Banner、遊戲圖片與附件。',`<div class="standard-upload">＋ 點擊或拖曳上傳</div>`],
+          ['富文字編輯器','公告、文章、活動規則與站內訊息。',`<div class="standard-editor">B　I　U　≡<br><br>請輸入內容…</div>`]
+        ].map(item=>`<article class="card input-standard-card"><h3>${item[0]}</h3><p>${item[1]}</p><div class="input-demo-row"><div><label>Desktop · 34px</label>${item[2]}</div><div class="input-demo-mobile"><label>Mobile · 同元件規格</label>${item[2]}</div></div></article>`).join('')}
+      </section>
+      <section class="card input-standard-tokens"><h2>共用規格</h2><table><thead><tr><th>項目</th><th>Desktop</th><th>Mobile</th><th>原則</th></tr></thead><tbody><tr><td>Input 高度</td><td>34px</td><td>34px</td><td>外觀一致；複雜觸控元件可增加外部點擊區</td></tr><tr><td>字級／字重</td><td>14px / 400</td><td>14px / 400</td><td>Label 12px，Placeholder 不取代 Label</td></tr><tr><td>左右內距</td><td>9–10px</td><td>9–10px</td><td>箭頭及尾綴固定距右側 9px</td></tr><tr><td>圓角</td><td>7px</td><td>7px</td><td>所有文字、數字、日期及 Select 統一</td></tr><tr><td>狀態</td><td colspan="2">Default / Hover / Focus / Filled / Disabled / Readonly / Error / Loading</td><td>錯誤不可只靠顏色，必須附文字</td></tr></tbody></table></section>`;
+    const routes={'搜尋結果頁面':['搜尋結果頁面','搜尋結果頁面',()=>originalMemberPage],'第三層':['第三層','第一層 / 第二層 / 第三層',finance],'樣式規範':['樣式規範','設計系統 / 元件規範',buttonGuide]};
+    document.querySelectorAll('.nav-item').forEach(item=>{if(item.dataset.toggle)return;const key=item.dataset.routeKey||Object.keys(routes).find(k=>item.textContent.includes(k));if(!key)return;item.style.cursor='pointer';item.onclick=()=>{if(key==='搜尋結果頁面'){location.reload();return}document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));item.classList.add('active');const r=routes[key];shellTitle.textContent=r[0];shellCrumb.textContent=r[1];pageEl.innerHTML=r[2]();sidebar.classList.remove('mobile-open');sideBackdrop.classList.remove('show');window.scrollTo({top:0,behavior:'smooth'})};item.addEventListener('click',()=>setActiveQuickTab(key))});
     document.querySelectorAll('[data-toggle]').forEach(item=>item.addEventListener('click',()=>{const target=item.dataset.toggle==='finance-tree'?item.closest('.nav-tree'):item.nextElementSibling;if(!target)return;target.classList.toggle('is-open');item.classList.toggle('expanded',target.classList.contains('is-open'))}));
     function setActiveQuickTab(key){document.querySelectorAll('#quickTabs button').forEach(b=>b.classList.toggle('active',b.dataset.page===key))}
-    document.querySelector('#quickTabs').addEventListener('click',e=>{const close=e.target.closest('span');const button=e.target.closest('button');if(!button)return;if(close){e.stopPropagation();const wasActive=button.classList.contains('active');button.remove();if(wasActive)document.querySelector('#quickTabs button[data-page="營運總覽"]')?.click();return}const key=button.dataset.page;setActiveQuickTab(key);const nav=[...document.querySelectorAll('.nav-item')].find(n=>n.dataset.routeKey===key||(!n.dataset.toggle&&n.textContent.includes(key)));nav?.click()});
+    document.querySelector('#quickTabs').addEventListener('click',e=>{const close=e.target.closest('span');const button=e.target.closest('button');if(!button)return;if(close){e.stopPropagation();const wasActive=button.classList.contains('active');button.remove();if(wasActive)document.querySelector('#quickTabs button[data-page="搜尋結果頁面"]')?.click();return}const key=button.dataset.page;setActiveQuickTab(key);const nav=[...document.querySelectorAll('.nav-item')].find(n=>n.dataset.routeKey===key||(!n.dataset.toggle&&n.textContent.includes(key)));nav?.click()});
   </script>
 </body>
 </html>
