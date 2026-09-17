@@ -45,7 +45,12 @@ function mountPickers() {
     const app = createApp({ render: () => h(ElConfigProvider, { locale: zhTw, zIndex: 3000 }, {
       default: () => h(ElDatePicker, {
         modelValue: value.value, 'onUpdate:modelValue': update,
-        appendTo: modal || undefined, type: 'datetimerange', format: 'YYYY/MM/DD',
+        appendTo: modal || undefined, type: 'datetimerange', format: host.dataset.dateFormat || 'YYYY/MM/DD',
+        disabledDate: host.hasAttribute('data-past-year') ? date => {
+          const end = new Date(); end.setHours(23,59,59,999)
+          const start = new Date(); start.setFullYear(start.getFullYear()-1); start.setHours(0,0,0,0)
+          return date < start || date > end
+        } : undefined,
         dateFormat: 'YYYY/MM/DD', timeFormat: 'HH:mm:ss',
         rangeSeparator: '～', startPlaceholder: '開始日期', endPlaceholder: '結束日期',
         shortcuts, clearable: true, editable: false, unlinkPanels: true,

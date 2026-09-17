@@ -23,7 +23,7 @@ function mountSelects() {
         'onUpdate:modelValue': next => { value.value = next; select.value = next; select.dispatchEvent(new Event('change', { bubbles: true })) },
         teleported: !select.closest('dialog'), disabled: select.disabled, clearable: select.hasAttribute('data-clearable'),
         placeholder: '請選擇', popperClass: 'bo-select-popper',
-        ariaLabel: select.closest('.filter-field, .input-spec')?.querySelector('label')?.textContent || (select.classList.contains('page-size-select') ? '每頁筆數' : '會員狀態'),
+        ariaLabel: select.getAttribute('aria-label') || select.closest('.filter-field, .input-spec')?.querySelector('label')?.textContent || (select.classList.contains('page-size-select') ? '每頁筆數' : '會員狀態'),
       }, { default: () => options.map(option => h(ElOption, { ...option, key: option.value })) })
     }) })
     instances.set(select, { host, app, sync: () => { value.value = select.value } })

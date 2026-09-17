@@ -12,6 +12,7 @@ export function prepareModal(dialog){
  const body=frame.querySelector(':scope > .settings-snapshot-body, :scope > .activity-type-dialog-body, :scope > .drawer-body, :scope > .bo-modal-body');body.classList.add('bo-modal-body')
  let footer=frame.querySelector(':scope > footer, :scope > .drawer-foot');if(!footer){footer=document.createElement('footer');const actions=body.querySelector('.filter-actions');if(actions){footer.append(...actions.children);actions.remove()}frame.append(footer)}footer.classList.add('bo-modal-footer')
  dialog.querySelectorAll('input.control, textarea.control, select.control').forEach(input=>input.classList.add('guide-input'))
+ dialog.querySelectorAll('input[required],textarea[required],select[required]').forEach(input=>{const label=input.closest('label')||dialog.querySelector('label[for="'+input.id+'"]');if(label&&!label.querySelector('.required-mark')){const mark=document.createElement('span');mark.className='required-mark';mark.textContent=' *';mark.setAttribute('aria-hidden','true');label.insertBefore(mark,input)}})
  dialog.querySelectorAll('select').forEach(input=>input.classList.add('guide-select'))
  footer.querySelectorAll('button').forEach(button=>{if(!button.classList.contains('semantic-btn')){const primary=button.classList.contains('primary');button.classList.remove('primary','secondary');button.classList.add('semantic-btn',primary?(button.id==='reviewBtn'?'btn-record':'btn-search'):'btn-neutral')}})
  dialog.addEventListener('close',()=>dialog._modalTrigger?.focus())
