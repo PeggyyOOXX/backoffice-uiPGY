@@ -3902,20 +3902,20 @@
         </div>
       </main>
     </div>
-    <div class="overlay" id="detailOverlay">
-      <aside class="drawer">
+    <div class="overlay" id="detailOverlay" inert aria-hidden="true">
+      <aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="detailDrawerTitle">
         <div class="drawer-head">
-          <h2>會員詳情</h2>
-          <button class="close closeOverlay">×</button>
+          <h2 id="detailDrawerTitle">會員詳情</h2>
+          <button class="close closeOverlay" type="button" aria-label="關閉詳情">×</button>
         </div>
         <div class="drawer-body" id="detailBody"></div>
         <div class="drawer-foot">
-          <button class="secondary closeOverlay">關閉</button
-          ><button class="primary" id="reviewBtn">檢視完整資料</button>
+          <button class="semantic-btn btn-neutral closeOverlay">關閉</button
+          ><button class="semantic-btn btn-record" id="reviewBtn">檢視完整資料</button>
         </div>
       </aside>
     </div>
-    <div class="overlay" id="filterOverlay">
+    <dialog class="overlay" id="filterOverlay">
       <aside class="drawer filter-sheet">
         <div class="drawer-head">
           <h2>篩選條件</h2>
@@ -3958,7 +3958,7 @@
           </div>
         </div>
       </aside>
-    </div>
+    </dialog>
     <div class="toast" id="toast"></div>
     <script>
       const users = [
@@ -4053,11 +4053,31 @@
           )
           .join("");
       }
+      let detailDrawerTrigger=null;
+      function openDetailDrawer(){
+        detailDrawerTrigger=document.activeElement;
+        const overlay=document.querySelector('#detailOverlay');
+        overlay.inert=false;overlay.setAttribute('aria-hidden','false');overlay.classList.add('open');
+        overlay.querySelector('.closeOverlay').focus();
+      }
+      function closeDetailDrawer(){
+        const overlay=document.querySelector('#detailOverlay');
+        overlay.classList.remove('open');overlay.inert=true;overlay.setAttribute('aria-hidden','true');
+        if(detailDrawerTrigger?.isConnected)detailDrawerTrigger.focus();
+      }
+      document.querySelector('#detailOverlay').addEventListener('keydown',event=>{
+        if(event.key==='Escape'){event.preventDefault();closeDetailDrawer();return}
+        if(event.key!=='Tab')return;
+        const controls=[...event.currentTarget.querySelectorAll('button:not(:disabled),a[href],input:not(:disabled),select:not(:disabled),textarea:not(:disabled),[tabindex="0"]')].filter(el=>el.getClientRects().length);
+        const first=controls[0],last=controls.at(-1);
+        if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus()}
+        else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus()}
+      });
       function openDetail(i) {
         const u = users[i];
         document.querySelector("#detailBody").innerHTML =
           `<div class="person-hero"><div class="avatar">${u.initial}</div><div><h3 style="margin:0 0 4px">${u.name}</h3><span style="color:var(--muted)">${u.id} · ${u.level}</span></div><span class="badge ${badge(u.status)}" style="margin-left:auto">${u.status}</span></div><div class="detail-grid"><div class="detail"><label>錢包餘額</label><strong>${u.balance}</strong></div><div class="detail"><label>近 30 日輸贏</label><strong>${u.win}</strong></div><div class="detail"><label>所屬代理</label><strong>${u.agent}</strong></div><div class="detail"><label>最後登入</label><strong>${u.login}</strong></div><div class="detail"><label>手機驗證</label><strong>已驗證</strong></div><div class="detail"><label>裝置數量</label><strong>${u.risk === "高" ? 6 : 2} 台</strong></div></div>${u.risk === "高" ? '<div class="risk-box"><strong>風險提示</strong><div style="margin-top:6px;font-size:12px">近期提款頻率異常，且偵測到多裝置快速切換。建議進一步檢查登入與金流紀錄。</div></div>' : ""}`;
-        document.querySelector("#detailOverlay").classList.add("open");
+        openDetailDrawer();
       }
       const toast = (t) => {
         const el = document.querySelector("#toast");
@@ -4077,19 +4097,19 @@
       document
         .querySelectorAll(".closeOverlay")
         .forEach(
-          (x) => (x.onclick = () => detailOverlay.classList.remove("open")),
+          (x) => (x.onclick = () => closeDetailDrawer()),
         );
       detailOverlay.onclick = (e) => {
-        if (e.target === detailOverlay) detailOverlay.classList.remove("open");
+        if (e.target === detailOverlay) closeDetailDrawer();
       };
-      filterBtn.onclick = () => filterOverlay.classList.add("open");
+      filterBtn.onclick = () => window.showStandardModal(filterOverlay);
       document
         .querySelectorAll(".closeFilter")
         .forEach(
-          (x) => (x.onclick = () => filterOverlay.classList.remove("open")),
+          (x) => (x.onclick = () => filterOverlay.close()),
         );
       filterOverlay.onclick = (e) => {
-        if (e.target === filterOverlay) filterOverlay.classList.remove("open");
+        if (e.target === filterOverlay) filterOverlay.close();
       };
       document.querySelectorAll(".searchBtn").forEach(
         (b) =>
@@ -4110,7 +4130,7 @@
                   (st === "all" || u.status === st),
               ),
             );
-            filterOverlay.classList.remove("open");
+            filterOverlay.close();
             toast("篩選結果已更新");
           }),
       );
@@ -4335,7 +4355,7 @@
         memberPage = Math.min(memberPage, pages);
         const start = (memberPage - 1) * memberPageSize;
         const visibleRows = rows.slice(start, start + memberPageSize);
-        return `<div class="table-wrap"><table class="member-source-table"><thead><tr><th>UID</th><th>帳號</th><th>上層代理</th><th>姓名</th><th>會員標籤</th><th>註冊時間</th><th>註冊／最後登入 IP</th><th>總餘額</th><th>總存款</th><th>總提款</th><th>最後登入</th><th>狀態</th><th>操作</th></tr></thead><tbody>${visibleRows.map((u, i) => `<tr><td>${u.uid}</td><td>${u.account}</td><td>${u.agent}</td><td>${u.name}</td><td><div class="tag-dots">${u.tags.length ? u.tags.map((c) => `<i style="background:${c}"></i>`).join("") : "-"}</div></td><td>${u.register}</td><td><span>${u.regIp}</span><br><span>${u.loginIp}</span></td><td>${u.balance}</td><td>${u.deposit}</td><td>${u.withdraw}</td><td>${u.last}</td><td><select class="status-control"><option>${u.status}</option><option>${u.status === "啟用" ? "停用" : "啟用"}</option></select></td><td><div class="row-actions"><button class="btn-edit" title="編輯" onclick="toast('開啟會員編輯頁')">✎</button><button class="btn-record" title="登入紀錄" onclick="openLoginRecords(${start + i})">◷</button></div></td></tr>`).join("")}</tbody></table></div><div class="pagination"><span class="pagination-total">共 ${rows.length} 筆</span><select class="page-size-select" onchange="changeMemberPageSize(this.value)"><option value="10" ${memberPageSize === 10 ? "selected" : ""}>10 筆／頁</option><option value="20" ${memberPageSize === 20 ? "selected" : ""}>20 筆／頁</option><option value="50" ${memberPageSize === 50 ? "selected" : ""}>50 筆／頁</option><option value="100" ${memberPageSize === 100 ? "selected" : ""}>100 筆／頁</option></select><div class="pages"><button class="page-btn" onclick="changeMemberPage(${memberPage - 1})" ${memberPage === 1 ? "disabled" : ""}>‹</button>${Array.from({ length: pages }, (_, i) => `<button class="page-btn ${memberPage === i + 1 ? "active" : ""}" onclick="changeMemberPage(${i + 1})">${i + 1}</button>`).join("")}<button class="page-btn" onclick="changeMemberPage(${memberPage + 1})" ${memberPage === pages ? "disabled" : ""}>›</button></div></div>`;
+        return `<div class="table-wrap"><table class="member-source-table"><thead><tr><th>UID</th><th>帳號</th><th>上層代理</th><th>姓名</th><th>會員標籤</th><th>註冊時間</th><th>註冊／最後登入 IP</th><th>總餘額</th><th>總存款</th><th>總提款</th><th>最後登入</th><th>狀態</th><th>操作</th></tr></thead><tbody>${visibleRows.map((u, i) => `<tr><td>${u.uid}</td><td><a class="settings-promotion-link" href="#member-${u.uid}" aria-label="查看 ${u.account} 的會員摘要" onclick="event.preventDefault();openMemberSummary('${u.uid}')">${u.account}</a></td><td>${u.agent}</td><td>${u.name}</td><td><div class="tag-dots">${u.tags.length ? u.tags.map((c) => `<i style="background:${c}"></i>`).join("") : "-"}</div></td><td>${u.register}</td><td><span>${u.regIp}</span><br><span>${u.loginIp}</span></td><td>${u.balance}</td><td>${u.deposit}</td><td>${u.withdraw}</td><td>${u.last}</td><td><select class="status-control"><option>${u.status}</option><option>${u.status === "啟用" ? "停用" : "啟用"}</option></select></td><td><div class="row-actions"><button class="btn-edit" title="編輯" onclick="toast('開啟會員編輯頁')">✎</button><button class="btn-record" title="登入紀錄" onclick="openLoginRecords(${memberRows.indexOf(u)})">◷</button></div></td></tr>`).join("")}</tbody></table></div><div class="pagination"><span class="pagination-total">共 ${rows.length} 筆</span><select class="page-size-select" onchange="changeMemberPageSize(this.value)"><option value="10" ${memberPageSize === 10 ? "selected" : ""}>10 筆／頁</option><option value="20" ${memberPageSize === 20 ? "selected" : ""}>20 筆／頁</option><option value="50" ${memberPageSize === 50 ? "selected" : ""}>50 筆／頁</option><option value="100" ${memberPageSize === 100 ? "selected" : ""}>100 筆／頁</option></select><div class="pages"><button class="page-btn" onclick="changeMemberPage(${memberPage - 1})" ${memberPage === 1 ? "disabled" : ""}>‹</button>${Array.from({ length: pages }, (_, i) => `<button class="page-btn ${memberPage === i + 1 ? "active" : ""}" onclick="changeMemberPage(${i + 1})">${i + 1}</button>`).join("")}<button class="page-btn" onclick="changeMemberPage(${memberPage + 1})" ${memberPage === pages ? "disabled" : ""}>›</button></div></div>`;
       }
       function memberCards(rows = memberCurrentRows) {
         const start = (memberPage - 1) * memberPageSize;
@@ -4343,7 +4363,7 @@
           .slice(start, start + memberPageSize)
           .map(
             (u, i) =>
-              `<article class="mobile-card"><div class="member-card-head"><div><span>${u.account}</span><small>UID ${u.uid}</small></div><select class="status-control"><option>${u.status}</option><option>${u.status === "啟用" ? "停用" : "啟用"}</option></select></div><div class="mobile-meta"><div><label>上層代理</label><strong>${u.agent}</strong></div><div><label>姓名</label><strong>${u.name}</strong></div><div><label>總餘額</label><strong>${u.balance}</strong></div><div><label>最後登入</label><strong>${u.last}</strong></div></div><div class="mobile-card-bottom"><div class="tag-dots">${u.tags.length ? u.tags.map((c) => `<i style="background:${c}"></i>`).join("") : "-"}</div><div class="row-actions"><button class="btn-edit" onclick="toast('開啟會員編輯頁')">✎</button><button class="btn-record" onclick="openLoginRecords(${start + i})">◷</button></div></div></article>`,
+              `<article class="mobile-card"><div class="member-card-head"><div><a class="settings-promotion-link" href="#member-${u.uid}" onclick="event.preventDefault();openMemberSummary('${u.uid}')">${u.account}</a><small>UID ${u.uid}</small></div><select class="status-control"><option>${u.status}</option><option>${u.status === "啟用" ? "停用" : "啟用"}</option></select></div><div class="mobile-meta"><div><label>上層代理</label><strong>${u.agent}</strong></div><div><label>姓名</label><strong>${u.name}</strong></div><div><label>總餘額</label><strong>${u.balance}</strong></div><div><label>最後登入</label><strong>${u.last}</strong></div></div><div class="mobile-card-bottom"><div class="tag-dots">${u.tags.length ? u.tags.map((c) => `<i style="background:${c}"></i>`).join("") : "-"}</div><div class="row-actions"><button class="btn-edit" onclick="toast('開啟會員編輯頁')">✎</button><button class="btn-record" onclick="openLoginRecords(${memberRows.indexOf(u)})">◷</button></div></div></article>`,
           )
           .join("")}</div>`;
       }
@@ -4383,38 +4403,11 @@
       </div></div>`;
       }
       function componentExamples() {
-        const examples = [
-          ["搜尋區塊很多欄位", null],
-          ["搜尋區塊1個欄位", [0]],
-          ["搜尋區塊6個欄位", [0, 1, 2, 7, 9, 10]],
-        ];
-        return (
-          '<div class="component-examples">' +
-          examples
-            .map(([title, indices]) => {
-              const template = document.createElement("template");
-              template.innerHTML = memberSearchBlock(true);
-              const panel = template.content.querySelector(".source-filter");
-              if (indices)
-                panel
-                  .querySelectorAll(".filter-field")
-                  .forEach((field, index) => {
-                    if (!indices.includes(index)) field.remove();
-                  });
-              panel
-                .querySelectorAll("[id]")
-                .forEach((control) => control.removeAttribute("id"));
-              return (
-                '<section class="component-example"><h2>' +
-                title +
-                "</h2>" +
-                panel.outerHTML +
-                "</section>"
-              );
-            })
-            .join("") +
-          "</div>"
-        );
+        const examples=[['搜尋區塊／單一欄位',[0]],['搜尋區塊／六個欄位',[0,1,2,7,9,10]],['搜尋區塊／完整條件',null]];
+        const searches=examples.map(([title,indices])=>{const template=document.createElement('template');template.innerHTML=memberSearchBlock(true);const panel=template.content.querySelector('.source-filter');if(indices)panel.querySelectorAll('.filter-field').forEach((field,index)=>{if(!indices.includes(index))field.remove()});panel.querySelectorAll('[id]').forEach(control=>control.removeAttribute('id'));return '<section class="component-example"><h2>'+title+'</h2>'+panel.outerHTML+'</section>'}).join('');
+        const template=document.createElement('template');template.innerHTML=actualMemberPage();
+        const memberList=template.content.querySelector('.member-data-card').outerHTML;
+        return '<div class="component-examples"><nav class="component-directory" aria-label="組件分類"><a href="#components-search">搜尋篩選</a><a href="#components-settings">設定表單</a><a href="#components-lists">資料列表</a><a href="#components-overlays">彈窗與抽屜</a></nav><div id="components-search" class="component-group">'+searches+'</div><div id="components-settings" class="component-group">'+(window.settingsFormExamples?.()||'')+'</div><div id="components-lists" class="component-group"><section class="component-example"><h2>搜尋結果／會員列表</h2><p class="component-description">列表工具列、會員摘要入口、標籤、狀態選擇、單筆操作、分頁及手機卡片。</p>'+memberList+'</section>'+(window.promotionListExample?.()||'')+'</div><div id="components-overlays" class="component-group">'+(window.modalExamples?.()||'')+drawerExamples()+'</div></div>';
       }
       function resetComponentSearch(button) {
         const panel = button.closest(".source-filter");
@@ -4480,8 +4473,24 @@
         const open = toolbar.classList.toggle("show-mobile-more");
         button.textContent = open ? "收合" : "更多";
       }
+
+      const drawerEscape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+      function drawerFields(fields){return '<div class="detail-grid">'+fields.map(([label,value])=>`<div class="detail"><label>${drawerEscape(label)}</label><strong>${drawerEscape(value)}</strong></div>`).join('')+'</div>'}
+      function setDetailFooter(extra=''){document.querySelector('#detailOverlay .drawer-foot').innerHTML=extra+'<button type="button" class="semantic-btn btn-neutral" onclick="closeDetailDrawer()">關閉</button>'}
+      function openMemberSummary(uid){
+        const u=memberRows.find(item=>String(item.uid)===String(uid));if(!u)return;
+        document.querySelector('#detailDrawerTitle').textContent='會員詳情摘要';
+        document.querySelector('#detailBody').innerHTML=`<div class="person-hero"><div><h3>${drawerEscape(u.account)}</h3><span>UID ${drawerEscape(u.uid)} · ${drawerEscape(u.status)}</span></div></div>`+drawerFields([['姓名',u.name],['上層代理',u.agent],['總餘額',u.balance],['總存款',u.deposit],['總提款',u.withdraw],['註冊時間',u.register],['最後登入',u.last],['註冊 IP',u.regIp],['最後登入 IP',u.loginIp]]);
+        setDetailFooter(`<button type="button" class="semantic-btn btn-record" onclick="openLoginRecords(${memberRows.indexOf(u)})">登入紀錄</button>`);
+        if(!document.querySelector('#detailOverlay').classList.contains('open'))openDetailDrawer();
+      }
+      const reviewDrawerRows=[['David Lin','WD-260915-8821','$120,000','高風險',92],['Noah Wang','WD-260915-8814','$82,500','高風險',84],['Mina Wu','WD-260915-8802','$46,000','一般',34],['Ava Chen','WD-260915-8796','$28,600','一般',18]];
+      function openReviewDetails(index){const row=reviewDrawerRows[index];if(!row)return;document.querySelector('#detailDrawerTitle').textContent='提款審核詳情';document.querySelector('#detailBody').innerHTML=`<div class="person-hero"><div><h3>${row[1]}</h3><span>${row[0]}</span></div></div>`+drawerFields([['申請金額',row[2]],['風險等級',row[3]],['風險分數',row[4]],['等待時間',(index*7+6)+' 分鐘'],['處理狀態','待審核']])+'<p class="settings-note">此為審核摘要範例，尚未提供完整審核歷程。</p>';setDetailFooter();openDetailDrawer()}
+      function drawerExamples(){return '<section class="component-example"><h2>右側抽屜</h2><div class="card modal-example-card"><p>保留列表位置，查看單筆資料與相關紀錄。</p><div class="modal-example-actions"><button type="button" class="semantic-btn btn-record" onclick="openMemberSummary(memberRows[0].uid)">會員詳情摘要</button><button type="button" class="semantic-btn btn-record" onclick="openLoginRecords(0)">登入紀錄</button><button type="button" class="semantic-btn btn-record" onclick="openReviewDetails(0)">單筆審核詳情</button></div></div></section>'}
+
       function openLoginRecords(i) {
         const u = memberRows[i];
+        if(!u)return;setDetailFooter();
         document.querySelector("#detailBody").innerHTML =
           `<div class="person-hero"><div class="avatar">${u.name
             .split(" ")
@@ -4491,7 +4500,7 @@
             )}</div><div><h3 style="margin:0 0 4px">${u.account}</h3><span style="color:var(--muted)">UID ${u.uid}</span></div></div><div class="login-record-list"><div><strong>${u.last}</strong><span>${u.loginIp}</span></div><div><strong>2026-09-14 10:21:36</strong><span>${u.regIp}</span></div><div><strong>2026-09-12 22:04:18</strong><span>${u.regIp}</span></div></div>`;
         document.querySelector("#detailOverlay .drawer-head h2").textContent =
           "登入紀錄";
-        document.querySelector("#detailOverlay").classList.add("open");
+        if(!document.querySelector("#detailOverlay").classList.contains("open"))openDetailDrawer();
       }
       pageElInitial = document.querySelector(".page");
       pageElInitial.innerHTML = actualMemberPage();
@@ -4547,7 +4556,7 @@
                 .map((v) => v[0])
                 .join(
                   "",
-                )}</div><div><strong>${x[0]}</strong><small>${x[1]}</small></div></div><div class="amount">${x[2]}</div><div><span class="badge ${i < 2 ? "risk-b" : "active-b"}">${x[3]}</span><div class="risk-meter"><i style="width:${x[4]}%"></i></div></div><span>${i * 7 + 6} 分鐘</span><button class="action" onclick="toast('已開啟審核詳情')">審核 ›</button></div>`,
+                )}</div><div><strong>${x[0]}</strong><small>${x[1]}</small></div></div><div class="amount">${x[2]}</div><div><span class="badge ${i < 2 ? "risk-b" : "active-b"}">${x[3]}</span><div class="risk-meter"><i style="width:${x[4]}%"></i></div></div><span>${i * 7 + 6} 分鐘</span><button class="semantic-btn btn-record" onclick="openReviewDetails(${i})">審核 ›</button></div>`,
           )
           .join(
             "",

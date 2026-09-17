@@ -32,7 +32,10 @@ function mountPickers() {
   }
   document.querySelectorAll('[data-date-range]').forEach(host => {
     if (mounted.has(host)) return
-    const value = ref(initial())
+    const parse=value=>value ? new Date(value.replace(' ', 'T')) : null
+    const start=parse(host.dataset.start),end=parse(host.dataset.end)
+    const value = ref(start && end ? [start,end] : host.hasAttribute('data-empty') ? null : initial())
+    const modal=host.closest('dialog')
     const update = next => {
       value.value = next
       host.dataset.start = next?.[0] ? serialize(next[0]) : ''
@@ -42,7 +45,7 @@ function mountPickers() {
     const app = createApp({ render: () => h(ElConfigProvider, { locale: zhTw, zIndex: 3000 }, {
       default: () => h(ElDatePicker, {
         modelValue: value.value, 'onUpdate:modelValue': update,
-        type: 'datetimerange', format: 'YYYY/MM/DD',
+        appendTo: modal || undefined, type: 'datetimerange', format: 'YYYY/MM/DD',
         dateFormat: 'YYYY/MM/DD', timeFormat: 'HH:mm:ss',
         rangeSeparator: '～', startPlaceholder: '開始日期', endPlaceholder: '結束日期',
         shortcuts, clearable: true, editable: false, unlinkPanels: true,
@@ -59,4 +62,4 @@ window.resetDateRanges = container => {
   for (const [host, entry] of mounted) if (container?.contains(host)) entry.reset()
 }
 mountPickers()
-new MutationObserver(mountPickers).observe(document.querySelector('.page'), { childList: true, subtree: true })
+new MutationObserver(mountPickers).observe(document.body, { childList: true, subtree: true })

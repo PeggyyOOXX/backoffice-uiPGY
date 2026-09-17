@@ -12,4 +12,4 @@
 .member-card-head .bo-select-status{margin-left:auto}
 .bo-select-page-size{width:156px;flex:none}
 .bo-select-page-size .el-select__wrapper{min-height:32px;box-shadow:0 0 0 1px #1596ad inset}
-.page select[hidden]{display:none!important}
+.page select[hidden],.bo-modal select[hidden]{display:none!important}

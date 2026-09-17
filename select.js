@@ -9,7 +9,7 @@ function mountSelects() {
   for (const [select, entry] of instances) {
     if (!select.isConnected) { entry.app.unmount(); entry.host.remove(); instances.delete(select) }
   }
-  document.querySelectorAll('.page .source-filter select, .page select.guide-select, .page .member-data-card select').forEach(select => {
+  document.querySelectorAll('.page .source-filter select, .page select.guide-select, .page .member-data-card select, .bo-modal select.guide-select').forEach(select => {
     if (instances.has(select)) return
     const options = [...select.options].map(option => ({ value: option.value, label: option.text, disabled: option.disabled }))
     const value = ref(select.value)
@@ -21,7 +21,7 @@ function mountSelects() {
       default: () => h(ElSelect, {
         modelValue: value.value,
         'onUpdate:modelValue': next => { value.value = next; select.value = next; select.dispatchEvent(new Event('change', { bubbles: true })) },
-        disabled: select.disabled, clearable: select.hasAttribute('data-clearable'),
+        teleported: !select.closest('dialog'), disabled: select.disabled, clearable: select.hasAttribute('data-clearable'),
         placeholder: '請選擇', popperClass: 'bo-select-popper',
         ariaLabel: select.closest('.filter-field, .input-spec')?.querySelector('label')?.textContent || (select.classList.contains('page-size-select') ? '每頁筆數' : '會員狀態'),
       }, { default: () => options.map(option => h(ElOption, { ...option, key: option.value })) })
@@ -32,4 +32,4 @@ function mountSelects() {
 }
 window.syncSelects = () => { for (const entry of instances.values()) entry.sync() }
 mountSelects()
-new MutationObserver(mountSelects).observe(document.querySelector('.page'), { childList: true, subtree: true })
+new MutationObserver(mountSelects).observe(document.body, { childList: true, subtree: true })
