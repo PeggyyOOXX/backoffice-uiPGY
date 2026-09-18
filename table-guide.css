@@ -1,0 +1,12 @@
+.table-guide{padding:16px}
+.table-guide h3{font-size:14px}
+.table-guide-wrap{overflow:auto;border:1px solid var(--line);border-radius:8px}
+.page .table-guide-sample{min-width:640px}
+.table-guide dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:16px 0 0;padding-top:16px;border-top:1px solid var(--line)}
+.table-guide dt{font-size:12px;color:#718096}
+.table-guide dd{margin:6px 0 0;font-size:13px}
+.table-guide-rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:16px}
+.table-guide-rules>div{border:1px solid var(--line);border-radius:8px;padding:14px}
+.table-guide-rules strong{display:block;font-size:13px;margin-bottom:6px}
+.table-guide-rules p{margin:0;font-size:12px;color:#718096;line-height:1.7}
+@media(max-width:720px){.table-guide{padding:12px}}

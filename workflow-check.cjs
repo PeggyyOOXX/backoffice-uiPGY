@@ -1,13 +1,20 @@
 const {JSDOM}=require('jsdom');
 const fs=require('fs'),assert=require('node:assert/strict');
-const dom=new JSDOM('<main class="page"></main><div id="detailOverlay"><h2 id="detailDrawerTitle"></h2><div id="detailBody"></div><div class="drawer-foot"></div></div>',{runScripts:'outside-only'});
+const dom=new JSDOM('<main class="page"></main><div id="detailOverlay"><h2 id="detailDrawerTitle"></h2><div id="detailBody"></div><div class="drawer-foot"></div></div>',{runScripts:'outside-only',pretendToBeVisual:true});
 const w=dom.window,d=w.document;
+const intervals=new Map();let timerId=0;
+w.setInterval=fn=>{intervals.set(++timerId,fn);return timerId};w.clearInterval=id=>intervals.delete(id);
 w.HTMLDialogElement.prototype.showModal=function(){this.open=true};
 w.HTMLDialogElement.prototype.close=function(){this.open=false;this.dispatchEvent(new w.Event('close'))};
 w.openDetailDrawer=()=>d.querySelector('#detailOverlay').classList.add('open');
 w.closeDetailDrawer=()=>d.querySelector('#detailOverlay').classList.remove('open');
-const strip=s=>s.replace(/^import .*$/gm,'').replaceAll('export function ','function ');
+const strip=s=>s.replace(/^import .*$/gm,'').replace(/^export /gm,'');
 w.eval(strip(fs.readFileSync('modal-system.js','utf8')));
+w.eval(strip(fs.readFileSync('tooltip.js','utf8'))+';window.tooltipAttrs=tooltipAttrs');
+w.eval('const tooltipAttrs=window.tooltipAttrs;'+strip(fs.readFileSync('icon-button.js','utf8'))+';window.iconButton=iconButton');
+w.eval(strip(fs.readFileSync('choice-controls.js','utf8'))+';window.choiceControl=choiceControl;window.choiceCard=choiceCard');
+w.eval('const iconButton=window.iconButton;'+strip(fs.readFileSync('table-guide.js','utf8')));
+w.eval('const iconButton=window.iconButton,choiceControl=window.choiceControl,choiceCard=window.choiceCard;'+strip(fs.readFileSync('bulk-switch.js','utf8')));
 w.eval('(function(){'+strip(fs.readFileSync('risk-audit.js','utf8'))+';window.renderRiskAudit=renderRiskAudit;})()');
 w.eval('const renderRiskAudit=window.renderRiskAudit;'+strip(fs.readFileSync('workflow-examples.js','utf8')));
 const q=s=>{const e=d.querySelector(s);assert.ok(e,s);return e};
@@ -40,7 +47,10 @@ risk('reset');input('[name="ip"]','999.1.1.1');search();assert.ok(q('[data-risk-
 risk('reset');const firstId=q('[data-risk-row]').dataset.riskRow;
 input('[name="order"]',firstId.toLowerCase());search();assert.equal(d.querySelectorAll('[data-risk-row]').length,1);
 risk('details');assert.ok(q('#detailOverlay').classList.contains('open'));for(const label of ['玩家註冊時間','第三方訂單號','會員實收','銀行卡姓名','設備指紋'])assert.ok(q('#detailBody').textContent.includes(label),label);
-risk('close-drawer');risk('audit');assert.equal(d.querySelectorAll('.risk-audit-detail-table th').length,10);risk('close-modal');
+risk('close-drawer');risk('audit');assert.ok(q('#detailOverlay').classList.contains('open')); // Read-only detail uses the drawer, not a dialog.
+assert.equal(d.querySelectorAll('.risk-audit-entry').length,2);
+for(const label of ['總扣除行政費','稽核%','稽核倍數','行政費%','要求有效投注','實際有效投注','扣除額'])assert.ok(q('#detailBody').textContent.includes(label),label);
+risk('close-drawer');
 risk('reject');assert.ok(q('dialog').textContent.includes('確認不通過'));assert.equal(q('dialog form').checkValidity(),true); // Original remarks are optional.
 input('dialog [name="remark"]','資料不符');input('dialog [name="frontendRemark"]','請確認資料');assert.equal(q('[data-note-count="remark"]').textContent,'4 / 200');
 risk('close-modal');assert.ok(q('[data-risk-row]').textContent.includes('Peggy 處理中')); // Claim persists after cancel, as in original.
@@ -48,6 +58,37 @@ risk('reject');q('dialog form').dispatchEvent(new w.Event('submit',{bubbles:true
 risk('reset');risk('approve');q('dialog form').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));assert.equal(q('.pagination-total').textContent,'共 12 筆');
 risk('reset');input('[name="uid"]','mina_wu');search();risk('details');assert.ok(q('#detailBody').textContent.includes('TRC20'));risk('close-drawer');
 risk('reset');input('[name="uid"]','emma_tsai');search();risk('details');assert.ok(q('#detailBody').textContent.includes('手機號碼'));risk('close-drawer');
-risk('auto');assert.equal(q('[data-risk-action="auto"]').getAttribute('aria-checked'),'true');risk('auto');assert.equal(q('[data-risk-action="auto"]').getAttribute('aria-checked'),'false');
-console.log('PASS: complex settings regression; 17 original columns, pagination, ownership, filters/validation, full detail/payment variants, 10-column audit, optional notes, claim/cancel/review and auto-refresh toggle.');
-setTimeout(()=>dom.window.close(),0);
+risk('auto');assert.equal(q('[data-risk-action="auto"]').getAttribute('aria-checked'),'true');
+const tick=[...intervals.values()][0];for(let i=0;i<15;i++)tick();assert.ok(q('.workflow-feedback').textContent.includes('已刷新'));
+risk('approve');tick();assert.equal(q('[data-risk-countdown]').textContent,'15 秒後刷新');risk('close-modal');
+risk('auto');assert.equal(intervals.size,0);assert.equal(q('[data-risk-action="auto"]').getAttribute('aria-checked'),'false');
+risk('auto');q('.page').innerHTML=w.renderComplexSettings();
+q('.page').innerHTML=w.iconButtonGuide()+w.tableGuide()+w.choiceControlsGuide()+w.tooltipGuide();
+assert.equal(d.querySelectorAll('.semantic-btn.icon-action').length,18); // 12 in the icon guide, 6 in the table sample.
+assert.equal(d.querySelectorAll('.table-guide-sample tbody tr').length,3);
+assert.equal(q('.icon-action-wrap[data-tooltip]').querySelector('button').disabled,true); // Disabled buttons fire no pointer events, so the tooltip sits on the wrapper.
+const icon=q('.semantic-btn.icon-action[data-tooltip]');
+icon.dispatchEvent(new w.FocusEvent('focusin',{bubbles:true}));
+assert.equal(q('#bo-tooltip').textContent,'編輯');assert.equal(icon.getAttribute('aria-describedby'),'bo-tooltip');
+icon.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
+assert.equal(q('#bo-tooltip').classList.contains('is-open'),false);assert.equal(icon.getAttribute('aria-describedby'),null);
+assert.equal(d.querySelectorAll('.choice-group').length,7);
+assert.equal(d.querySelectorAll('.choice-card').length,3);
+q('.page').innerHTML=w.renderBulkSwitch();
+assert.equal(d.querySelectorAll('.bulk-option').length,3);
+const bulkPick=i=>{const el=d.querySelectorAll('[data-bulk-row][data-panel="bar"]')[i];el.focus();el.checked=true;el.dispatchEvent(new w.Event('change',{bubbles:true}))};
+bulkPick(1);bulkPick(3);
+assert.equal(q('.bulk-selection-count').textContent,'已選 2 筆');
+assert.equal(d.activeElement.id,'bulk-bar-pick-G-1004'); // Focus survives the redraw.
+q('[data-bulk-bar][data-key="front"][data-value="1"]').click();
+assert.ok(q('.bulk-feedback').textContent.includes('已將 2 筆'));
+q('[data-bulk-undo][data-panel="bar"]').click();assert.ok(q('.bulk-feedback').textContent.includes('已復原'));
+q('[data-bulk-menu="hot"][data-panel="head"]').click();assert.equal(q('.bulk-menu[data-bulk-menu-for="hot"]').hidden,false);
+q('[data-bulk-head-action][data-key="hot"][data-value="1"][data-scope="all"]').click();
+assert.ok([...d.querySelectorAll('.bulk-feedback')][1].textContent.includes('已將 8 筆'));
+q('[data-bulk-open-dialog]').click();assert.equal(q('dialog [type="submit"]').disabled,true); // Nothing chosen yet.
+const field=q('dialog [data-bulk-field="home"][value="on"]');field.checked=true;field.dispatchEvent(new w.Event('change',{bubbles:true}));
+assert.equal(q('dialog [type="submit"]').disabled,false);
+q('dialog form').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));
+assert.ok([...d.querySelectorAll('.bulk-feedback')][2].textContent.includes('已調整 8 筆'));
+setTimeout(()=>{assert.equal(intervals.size,0);assert.equal(q('[data-choice-mixed]').indeterminate,true);console.log('PASS: complex settings regression; 17 original columns, pagination, ownership, filters/validation, full detail/payment variants, audit detail drawer, optional notes, claim/cancel/review, 15-second refresh and timer cleanup; icon buttons, table spec, tooltip, choice controls and three bulk-switch designs.');dom.window.close()},0);

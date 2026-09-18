@@ -2819,25 +2819,25 @@
         padding: 8px 10px;
         resize: none;
       }
-      .input-token-table {
+      .token-table {
         padding: 14px;
         margin-bottom: 9px;
       }
-      .input-token-table h2 {
+      .token-table h2 {
         margin: 0 0 11px;
         font-size: 16px;
       }
-      .input-token-table > div {
+      .token-table > div {
         display: grid;
         grid-template-columns: repeat(6, max-content 1fr);
         gap: 6px 10px;
         align-items: center;
       }
-      .input-token-table span {
+      .token-table span {
         color: var(--muted);
         font-size: 11px;
       }
-      .input-token-table strong {
+      .token-table strong {
         font-size: 12px;
       }
       @keyframes input-spin {
@@ -2849,7 +2849,7 @@
         .input-guide-grid {
           grid-template-columns: repeat(3, minmax(210px, 1fr));
         }
-        .input-token-table > div {
+        .token-table > div {
           grid-template-columns: repeat(3, max-content 1fr);
         }
       }
@@ -2857,7 +2857,7 @@
         .input-guide-grid {
           grid-template-columns: repeat(2, minmax(200px, 1fr));
         }
-        .input-token-table > div {
+        .token-table > div {
           grid-template-columns: repeat(2, max-content 1fr);
         }
       }
@@ -2877,7 +2877,7 @@
           border-radius: 7px;
           font-size: 14px;
         }
-        .input-token-table > div {
+        .token-table > div {
           grid-template-columns: max-content 1fr;
         }
       }
@@ -3621,6 +3621,7 @@
       .standard-switch[aria-checked="false"]{background:#c5cdd7}
       .standard-switch[aria-checked="false"]:after{margin-left:0}
       .standard-switch:focus-visible{outline:3px solid #1596ad55;outline-offset:3px}
+      .standard-switch:disabled{opacity:.45;cursor:not-allowed}
       .standard-switch:after {
         content: "";
         display: block;
@@ -3657,8 +3658,6 @@
       }
       .input-standard-tokens th,
       .input-standard-tokens td {
-        padding: 9px 10px;
-        text-align: left;
         white-space: normal;
       }
       @media (max-width: 1100px) {
@@ -3713,6 +3712,101 @@
         justify-self: end;
       }
     </style>
+    <style id="unified-table-system">
+      /* One table look everywhere, taken from the member list table. Per-table CSS
+         only sets structure (min-width, layout, sticky column), never these. */
+      .page table,
+      .bo-modal table {
+        width: 100%;
+      }
+      .page th,
+      .bo-modal th {
+        padding: 8px 11px;
+        background: #f7f8fb;
+        color: #68758b;
+        font-size: 12px;
+        line-height: 1.25;
+        text-align: center;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        border-bottom: 1px solid var(--line);
+      }
+      .page td,
+      .bo-modal td {
+        padding: 9px 11px;
+        text-align: center;
+        border-bottom: 1px solid #edf0f4;
+      }
+      .page th,
+      .bo-modal th {
+        border-right: 1px solid var(--line);
+      }
+      .page td,
+      .bo-modal td {
+        border-right: 1px solid #edf0f4;
+      }
+      .page tr > *:last-child,
+      .bo-modal tr > *:last-child {
+        border-right: 0;
+      }
+      .page tbody tr:hover,
+      .bo-modal tbody tr:hover {
+        background: #f1f8fa;
+      }
+      .page tfoot td,
+      .bo-modal tfoot td {
+        background: #f7f8fb;
+      }
+      .bo-modal table {
+        border-collapse: collapse;
+      }
+    </style>
+    <style id="style-guide-rhythm">
+      /* 樣式規範 page: 20px between every section, 8px under every section title. */
+      .page .style-guide {
+        margin-top: 10px;
+      }
+      .page .style-guide > * {
+        margin: 0 0 20px;
+      }
+      .page .style-guide > *:last-child {
+        margin-bottom: 0;
+      }
+      .page .style-guide > .guide-section-heading {
+        margin: 0 2px 8px;
+      }
+      .page .style-guide h2 {
+        margin: 0 0 8px;
+      }
+      .page .style-guide .guide-section-heading h2 {
+        margin: 0;
+      }
+      .page .style-guide h3 {
+        margin: 20px 0 8px;
+      }
+      .page .style-guide h3:first-child,
+      .page .style-guide h3:first-of-type {
+        margin-top: 0;
+      }
+      .page .style-guide h4 {
+        margin: 0 0 8px;
+      }
+    </style>
+    <style id="button-corner-radius">
+      /* All button shapes share one radius; change it here only. */
+      .semantic-btn,
+      .primary,
+      .secondary,
+      .action,
+      .icon-btn,
+      .close,
+      .quick-tabs button,
+      .page-btn,
+      .member-data-card .page-btn,
+      .row-actions button {
+        border-radius: 4px;
+      }
+    </style>
   </head>
   <body>
     <div class="app">
@@ -3753,7 +3847,7 @@
           </div>
         </nav>
         <nav class="nav">
-          <div class="nav-item" data-route-key="審核操作"><span class="ico">✓</span>審核操作</div><div class="nav-item" data-route-key="複雜設定"><span class="ico">⚙</span>複雜設定</div>
+          <div class="nav-item" data-route-key="審核操作"><span class="ico">✓</span>審核操作</div><div class="nav-item" data-route-key="複雜設定"><span class="ico">⚙</span>複雜設定</div><div class="nav-item" data-route-key="批量開關"><span class="ico">⇄</span>批量開關</div>
           <div class="nav-item" data-route-key="內容編輯"><span class="ico">✎</span>內容編輯</div>
           <div class="nav-item" data-route-key="組件範例">
             <span class="ico">◫</span>組件範例
@@ -4413,7 +4507,7 @@
         const searches=examples.map(([title,indices])=>{const template=document.createElement('template');template.innerHTML=memberSearchBlock(true);const panel=template.content.querySelector('.source-filter');if(indices)panel.querySelectorAll('.filter-field').forEach((field,index)=>{if(!indices.includes(index))field.remove()});panel.querySelectorAll('[id]').forEach(control=>control.removeAttribute('id'));return '<section class="component-example"><h2>'+title+'</h2>'+panel.outerHTML+'</section>'}).join('');
         const template=document.createElement('template');template.innerHTML=actualMemberPage();
         const memberList=template.content.querySelector('.member-data-card').outerHTML;
-        return '<div class="component-examples"><nav class="component-directory" aria-label="組件分類"><a href="#components-search">搜尋篩選</a><a href="#components-settings">設定表單</a><a href="#components-lists">資料列表</a><a href="#components-advanced">進階列表</a><a href="#components-overlays">彈窗與抽屜</a></nav><div id="components-search" class="component-group">'+searches+'</div><div id="components-settings" class="component-group">'+(window.settingsFormExamples?.()||'')+'</div><div id="components-lists" class="component-group"><section class="component-example"><h2>搜尋結果／會員列表</h2><p class="component-description">列表工具列、會員摘要入口、標籤、狀態選擇、單筆操作、分頁及手機卡片。</p>'+memberList+'</section>'+(window.promotionListExample?.()||'')+'</div><div class="component-group">'+(window.tableSortExamples?.()||'')+(window.renderAdvancedList?.()||'')+(window.workflowExamples?.()||'')+'</div><div id="components-overlays" class="component-group">'+(window.modalExamples?.()||'')+drawerExamples()+'</div></div>';
+        return '<div class="component-examples"><nav class="component-directory" aria-label="組件分類"><a href="#components-search">搜尋篩選</a><a href="#components-settings">設定表單</a><a href="#components-lists">資料列表</a><a href="#components-advanced">進階列表</a><a href="#components-overlays">彈窗與抽屜</a></nav><div id="components-search" class="component-group">'+searches+'</div><div id="components-settings" class="component-group">'+(window.settingsFormExamples?.()||'')+'</div><div id="components-lists" class="component-group"><section class="component-example"><h2>搜尋結果／會員列表</h2><p class="component-description">列表工具列、會員摘要入口、標籤、狀態選擇、單筆操作、分頁及手機卡片。</p>'+memberList+'</section>'+'</div><div class="component-group">'+(window.renderAdvancedList?.()||'')+(window.workflowExamples?.()||'')+'</div><div id="components-overlays" class="component-group">'+(window.modalExamples?.()||'')+drawerExamples()+'</div></div>';
       }
       function resetComponentSearch(button) {
         const panel = button.closest(".source-filter");
@@ -4601,13 +4695,13 @@
         ]
           .map(
             (x) =>
-              `<div class="setting-line"><div><strong>${x[0]}</strong><small>${x[1]}</small></div><div class="switch"></div></div>`,
+              `<div class="settings-row"><button type="button" class="standard-switch" role="switch" aria-checked="true" aria-label="${x[0]}" data-switch-layout-demo></button><div><strong>${x[0]}</strong><small>${x[1]}</small></div></div>`,
           )
           .join(
             "",
           )}</div><div><h3>工作階段</h3><p>閒置 30 分鐘後自動登出，以保護後台帳號安全。</p></div></div></section>`;
       const buttonGuide =
-        () => `${head("樣式規範", "統一按鈕與輸入元件的語意、狀態和多語系行為")}<div class="guide-section-heading"><h2>按鈕 Button</h2><p>依操作意圖使用固定語意色，讓使用者在不同頁面建立一致預期。</p></div><section class="button-guide-grid">
+        () => `${head("樣式規範", "統一按鈕與輸入元件的語意、狀態和多語系行為")}<div class="style-guide"><div class="guide-section-heading"><h2>按鈕 Button</h2><p>依操作意圖使用固定語意色，讓使用者在不同頁面建立一致預期。</p></div><section class="button-guide-grid">
       ${[
         [
           "品牌主要操作",
@@ -4672,6 +4766,13 @@
         )
         .join("")}
       </section><section class="card toolbar-demo"><h2>列表工具列組合</h2><p>所有操作只使用上方已定義的語意色：排序、批次處理與批次審核都歸類為編輯／調整。</p><div class="member-actions"><button class="semantic-btn btn-add">＋ 新增</button><button class="semantic-btn btn-export">⇩ 匯出</button><button class="semantic-btn btn-edit">⇅ 排序</button><button class="semantic-btn btn-edit">▣ 批次處理</button><button class="semantic-btn btn-edit">✓ 批次審核</button><button class="semantic-btn btn-neutral">↻ 刷新</button><button class="semantic-btn btn-danger">× 批次清除</button></div></section>
+      ${window.iconButtonGuide?.() || ""}
+      <section class="card token-table"><h2>Button Token</h2><div><span>高度</span><strong>34px</strong><span>圓角</span><strong>4px</strong><span>水平內距</span><strong>12px</strong><span>字級／字重</span><strong>14px / 700</strong><span>圖示按鈕</span><strong>34 × 34px</strong><span>觸控裝置</span><strong>44 × 44px</strong><span>按鈕間距</span><strong>8px</strong><span>Focus ring</span><strong>3px</strong></div></section>
+      ${window.switchLayoutGuide?.() || ""}
+      ${window.tableGuide?.() || ""}
+      ${window.tableSortExamples?.() || ""}
+      ${window.choiceControlsGuide?.() || ""}
+      ${window.tooltipGuide?.() || ""}
       <div class="guide-section-heading"><h2>輸入元件 Input</h2><p>依 101 BEST 專案現有的 Element Plus Input、驗證、權限及載入用法整理。</p></div>
       <section class="input-guide-grid">
         <article class="card input-spec"><h3>預設／Placeholder</h3><label>會員帳號</label><input class="guide-input" placeholder="請輸入會員帳號"><small>Placeholder：14px／400／#98A2B3</small></article>
@@ -4693,8 +4794,8 @@
       </section>
       <div class="guide-section-heading"><h2>日期區間 Date Range Picker</h2><p>搜尋列維持單一欄位，展開後選擇完整日期與時間。</p></div>
       <section class="card date-picker-guide"><h3>互動範例</h3><p>點擊欄位開啟日曆，可選起訖日期與時間，或使用本日、本週、本月快捷選項。本週為週一至週日。</p><div class="date-range-host" data-date-range></div><div class="date-picker-rules"><span>清空：中性灰 #87919E，移除已選條件</span><span>確認：主要色 #1596AD，套用選取區間</span><span>按鈕：桌面 34px／手機 42px，圓角 7px</span><span>欄位顯示日期；完整時間保留至秒</span></div></section>
-      <section class="card input-token-table"><h2>Input／Select Token</h2><div><span>高度（Desktop）</span><strong>34px</strong><span>高度（Mobile）</span><strong>34px</strong><span>字級／字重</span><strong>14px / 400</strong><span>水平內距</span><strong>9px</strong><span>箭頭右距</span><strong>9px</strong><span>圓角</span><strong>7px</strong><span>Placeholder</span><strong>#98A2B3</strong><span>錯誤色</span><strong>#DF5261</strong></div></section>
-      <section class="card guide-rules"><h2>使用規則</h2><div class="rule-grid"><div><strong>一個主要焦點</strong><p>同一操作區避免同時出現兩個實心主要按鈕。</p></div><div><strong>Placeholder 不取代 Label</strong><p>Placeholder 只提供格式或輸入提示，輸入後仍應看得到欄位名稱。</p></div><div><strong>多語系自適應</strong><p>Label 可換行、Input 保持對齊；元件不可用固定文字寬度裁切翻譯。</p></div><div><strong>狀態不能只靠顏色</strong><p>錯誤需搭配文字；Loading、Disabled 與 Readonly 必須有明確視覺差異。</p></div></div></section>`;
+      <section class="card token-table"><h2>Input／Select Token</h2><div><span>高度（Desktop）</span><strong>34px</strong><span>高度（Mobile）</span><strong>34px</strong><span>字級／字重</span><strong>14px / 400</strong><span>水平內距</span><strong>9px</strong><span>箭頭右距</span><strong>9px</strong><span>圓角</span><strong>7px</strong><span>Placeholder</span><strong>#98A2B3</strong><span>錯誤色</span><strong>#DF5261</strong></div></section>
+      <section class="card guide-rules"><h2>使用規則</h2><div class="rule-grid"><div><strong>一個主要焦點</strong><p>同一操作區避免同時出現兩個實心主要按鈕。</p></div><div><strong>Placeholder 不取代 Label</strong><p>Placeholder 只提供格式或輸入提示，輸入後仍應看得到欄位名稱。</p></div><div><strong>多語系自適應</strong><p>Label 可換行、Input 保持對齊；元件不可用固定文字寬度裁切翻譯。</p></div><div><strong>狀態不能只靠顏色</strong><p>錯誤需搭配文字；Loading、Disabled 與 Readonly 必須有明確視覺差異。</p></div></div></section></div>`;
       const inputStandardPage =
         () => `${head("Input 樣式規範", "依 101 BEST Backoffice 實際元件盤點，統一桌機與手機輸入體驗")}
       <section class="card input-standard-intro"><h2>Input Foundations</h2><p>所有輸入元件沿用相同的 Label、邊框、圓角、Focus、錯誤與 Disabled 規則。手機版不另造外觀，只調整排列與觸控範圍。</p></section>
@@ -4768,7 +4869,7 @@
           [
             "Switch 開關",
             "功能啟閉、前台顯示及自動刷新。",
-            `<div class="standard-choice-row"><button class="standard-switch" aria-label="已開啟"></button><span>已開啟</span></div>`,
+            `<div class="settings-row"><button type="button" role="switch" aria-checked="true" data-switch-layout-demo class="standard-switch" aria-label="已開啟"></button><span>已開啟</span></div>`,
           ],
           [
             "檔案／圖片上傳",
@@ -4787,11 +4888,12 @@
           )
           .join("")}
       </section>
-      ${window.tableSortExamples?.() || ""}<section class="card input-standard-tokens"><h2>共用規格</h2><table><thead><tr><th>項目</th><th>Desktop</th><th>Mobile</th><th>原則</th></tr></thead><tbody><tr><td>Input 高度</td><td>34px</td><td>34px</td><td>外觀一致；複雜觸控元件可增加外部點擊區</td></tr><tr><td>字級／字重</td><td>14px / 400</td><td>14px / 400</td><td>Label 12px，Placeholder 不取代 Label</td></tr><tr><td>左右內距</td><td>9–10px</td><td>9–10px</td><td>箭頭及尾綴固定距右側 9px</td></tr><tr><td>圓角</td><td>7px</td><td>7px</td><td>所有文字、數字、日期及 Select 統一</td></tr><tr><td>狀態</td><td colspan="2">Default / Hover / Focus / Filled / Disabled / Readonly / Error / Loading</td><td>錯誤不可只靠顏色，必須附文字</td></tr></tbody></table></section>`;
+      <section class="card input-standard-tokens"><h2>共用規格</h2><table><thead><tr><th>項目</th><th>Desktop</th><th>Mobile</th><th>原則</th></tr></thead><tbody><tr><td>Input 高度</td><td>34px</td><td>34px</td><td>外觀一致；複雜觸控元件可增加外部點擊區</td></tr><tr><td>字級／字重</td><td>14px / 400</td><td>14px / 400</td><td>Label 12px，Placeholder 不取代 Label</td></tr><tr><td>左右內距</td><td>9–10px</td><td>9–10px</td><td>箭頭及尾綴固定距右側 9px</td></tr><tr><td>圓角</td><td>7px</td><td>7px</td><td>所有文字、數字、日期及 Select 統一</td></tr><tr><td>狀態</td><td colspan="2">Default / Hover / Focus / Filled / Disabled / Readonly / Error / Loading</td><td>錯誤不可只靠顏色，必須附文字</td></tr></tbody></table></section>`;
       const routes = {
         設定相關頁面: ["設定相關頁面", "設定相關頁面", () => window.renderSettingsPage()],
         審核操作: ["審核操作", "審核操作", () => window.renderAuditPage()],
         複雜設定: ["複雜設定", "複雜設定", () => window.renderComplexSettings()],
+        批量開關: ["批量開關", "批量開關", () => window.renderBulkSwitch()],
         內容編輯: ["內容編輯", "內容編輯", () => window.renderContentEditor()],
         組件範例: ["組件範例", "組件範例", componentExamples],
         搜尋結果頁面: [

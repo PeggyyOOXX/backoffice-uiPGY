@@ -1,0 +1,19 @@
+.bo-tooltip{position:fixed;top:0;left:0;z-index:60;max-width:300px;padding:6px 10px;border-radius:6px;background:#17233b;color:#fff;font-size:12px;font-weight:400;line-height:1.5;text-align:left;white-space:pre-line;overflow-wrap:anywhere;box-shadow:0 6px 20px rgba(12,23,44,.24);opacity:0;transition:opacity .12s ease;pointer-events:none}
+.bo-tooltip[hidden]{display:none}
+.bo-tooltip.is-open{opacity:1}
+.bo-tooltip:after{content:"";position:absolute;width:8px;height:8px;background:#17233b;transform:rotate(45deg)}
+.bo-tooltip[data-placement=top]:after,.bo-tooltip[data-placement=bottom]:after{left:var(--arrow-offset,calc(50% - 4px))}
+.bo-tooltip[data-placement=left]:after,.bo-tooltip[data-placement=right]:after{top:var(--arrow-offset,calc(50% - 4px))}
+.bo-tooltip[data-placement=top]:after{bottom:-4px}
+.bo-tooltip[data-placement=bottom]:after{top:-4px}
+.bo-tooltip[data-placement=left]:after{right:-4px}
+.bo-tooltip[data-placement=right]:after{left:-4px}
+.tooltip-guide{padding:16px}
+.tooltip-guide-row{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;padding:24px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.tooltip-guide-row+.tooltip-guide-row{border-top:0}
+.tooltip-guide-static{display:inline-block;position:static;opacity:1;transform:none}
+.tooltip-guide-static:after{display:none}
+.tooltip-guide dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:16px 0 0}
+.tooltip-guide dt{font-size:12px;color:#718096}
+.tooltip-guide dd{margin:6px 0 0;font-size:13px}
+@media(max-width:720px){.tooltip-guide{padding:12px}}

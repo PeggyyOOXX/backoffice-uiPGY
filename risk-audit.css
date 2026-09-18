@@ -1,34 +1,30 @@
 .risk-audit-page>h2{font-size:18px;margin:0 0 12px}
-.risk-search-card{padding:16px;margin-bottom:8px}
-.risk-search-note{margin:0 0 12px;font-size:13px}
-.risk-search-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px 12px}
-.risk-search-grid .filter-field{display:flex;flex-direction:column;min-width:0;gap:8px;font-size:13px}
-.risk-search-grid .guide-input{width:100%;min-width:0}
-.risk-date-field,.risk-amount-field{grid-column:span 2}
-.risk-amount-range{display:flex;align-items:center;gap:8px}
-.risk-amount-range input{flex:1;min-width:0}
-.risk-search-actions{margin-top:16px}
-.risk-search-hint{color:#718096;font-size:12px;line-height:1.6;margin:12px 0}
+.risk-search .source-filter-grid>.filter-field{grid-column:auto;grid-row:auto}
+.risk-search .source-filter-grid>.filter-span-2{grid-column:span 2}
+.risk-search .source-filter-actions{grid-row:1/span 4}
 .risk-refresh-row{margin-top:12px;border-top:1px solid var(--line);padding-top:12px}
 .risk-refresh-count{font-size:12px;color:#718096;margin-left:12px}
 .risk-list-card{overflow:hidden}
 .risk-table-scroll{width:100%;overflow:auto;scrollbar-width:thin;scrollbar-color:#c5dfe3 #f5f7fa}
 .risk-table-scroll:focus-visible{outline:2px solid #1596ad;outline-offset:-2px}
-.page .risk-table{width:100%;min-width:2570px;table-layout:fixed;border-collapse:separate;border-spacing:0}
-.page .risk-table th,.page .risk-table td{padding:12px;text-align:center;border-bottom:1px solid var(--line);line-height:1.6;vertical-align:middle;overflow-wrap:anywhere}
-.page .risk-table th{font-size:12px;color:#718096;background:#f5f7fa;white-space:nowrap}
-.page .risk-table thead tr:first-child th{border-right:1px solid var(--line);color:var(--text);font-size:13px}
+.page .risk-table{width:100%;min-width:2430px;table-layout:fixed;border-collapse:separate;border-spacing:0}
+.page .risk-table td{white-space:normal;overflow-wrap:anywhere}
+.page .risk-table thead tr:first-child th{border-right:1px solid var(--line);color:var(--text)}
 .page .risk-table .risk-fixed{position:sticky;right:0;background:#fff;z-index:1;box-shadow:-1px 0 var(--line)}
-.page .risk-table thead .risk-fixed{background:#f5f7fa;z-index:2}
+.page .risk-table thead .risk-fixed{background:#f7f8fb;z-index:2}
+.page .risk-table tbody tr:hover .risk-fixed{background:#f1f8fa}
 .risk-link{color:#1596ad;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .risk-link:focus-visible{outline:2px solid #1596ad;outline-offset:3px}
 .risk-secondary{font-size:12px;color:#718096}
 .risk-operator{display:block;text-align:left;margin-bottom:6px;font-size:12px;color:#718096}
+.page .risk-table .workflow-actions{justify-content:center}
+.page .risk-table .risk-operator{text-align:center}
 .risk-level{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;background:#1596ad}
 .risk-level-2{background:#436ded}.risk-level-3{background:#9763c8}
 .risk-empty{height:120px}
 .risk-sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 dialog.bo-modal.risk-wide-dialog{width:min(1000px,calc(100vw - 32px))}
+.risk-confirm-note{text-align:center;font-size:14px;margin:0 0 16px}
 .risk-detail-section{margin-bottom:24px}.risk-detail-section h3{color:#1596ad;font-size:14px;margin:0 0 12px}
 .risk-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:0}
 .risk-detail-grid>div{padding:12px 16px;border-bottom:1px solid var(--line);min-width:0}
@@ -37,11 +33,21 @@ dialog.bo-modal.risk-wide-dialog{width:min(1000px,calc(100vw - 32px))}
 .risk-actual strong{font-size:20px}
 .risk-review-notes{display:grid;grid-template-columns:1fr 1fr;gap:16px}.risk-review-notes label{font-size:13px;min-width:0}.risk-review-notes textarea{display:block;margin-top:8px;resize:vertical;min-height:88px}
 .risk-note-count{display:block;text-align:right;color:#718096;font-size:12px;margin-top:4px}
-.risk-audit-total{color:#1596ad}
-.risk-audit-detail-table{width:100%;min-width:1100px;border-collapse:collapse;table-layout:fixed}
-.risk-audit-detail-table th,.risk-audit-detail-table td{padding:12px 8px;border-bottom:1px solid var(--line);text-align:center;font-size:13px;overflow-wrap:anywhere}
-.risk-audit-detail-table th{background:#f5f7fa;color:#718096;font-size:12px}
-.risk-audit-detail-table th:nth-child(2){width:150px}
-@media(max-width:1200px){.risk-search-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
-@media(max-width:720px){.risk-search-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.risk-detail-grid,.risk-review-notes{grid-template-columns:1fr}.risk-search-card{padding:12px}.risk-actual{align-items:flex-start;flex-direction:column}.risk-refresh-count{display:block;margin:6px 0 0}}
-@media(max-width:420px){.risk-search-grid{grid-template-columns:minmax(0,1fr)}.risk-date-field,.risk-amount-field{grid-column:span 1}}
+.risk-audit-entry{border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:16px}
+.risk-audit-entry>header{display:flex;align-items:center;gap:12px;padding:12px 16px;background:#f7f8fb;border-bottom:1px solid var(--line)}
+.risk-audit-entry h3{margin:0;font-size:14px}
+.risk-audit-time{display:block;margin-top:4px;font-size:12px;color:#718096}
+.risk-audit-entry>header .badge{margin-left:auto;flex:none}
+.risk-audit-entry .risk-detail-grid{border:0;border-radius:0}
+.risk-audit-deduction{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0;padding:12px 16px;color:#1596ad}
+.risk-audit-deduction strong{font-size:16px}
+.risk-mobile-list{padding:8px}
+.risk-mobile-list .member-card-head small{display:block;margin-top:4px;font-size:12px;color:#718096}
+.risk-mobile-list .member-card-head .badge{margin-left:auto}
+.risk-mobile-list .mobile-meta strong{line-height:1.6;overflow-wrap:anywhere}
+.risk-mobile-list .mobile-meta>div:last-child{grid-column:span 2}
+.risk-mobile-list .mobile-card-bottom{flex-direction:column;align-items:flex-start;gap:8px}
+.risk-mobile-list .risk-operator{margin:0}
+.risk-mobile-list .workflow-actions{width:100%}
+.risk-empty-card{margin:0;padding:32px 0;text-align:center;color:#718096}
+@media(max-width:720px){.risk-table-scroll{display:none}.risk-detail-grid,.risk-review-notes{grid-template-columns:1fr}.risk-actual{align-items:flex-start;flex-direction:column}.risk-refresh-count{display:block;margin:6px 0 0}}
