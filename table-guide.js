@@ -1,3 +1,4 @@
+// 移植：el-table（正式後台為 CustomTable.vue）。表頭底色、字色、內距、框線改在 _element-ui.scss。詳見 ELEMENT-PLUS-MAPPING.md
 import { iconButton } from './icon-button.js'
 import './table-guide.css'
 

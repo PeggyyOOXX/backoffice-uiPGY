@@ -4,3 +4,8 @@
 .switch-layout-row:last-child{border-bottom:0}
 .switch-layout-row>label{margin:0;min-width:0;font-size:14px;font-weight:400;line-height:1.6;overflow-wrap:anywhere;cursor:pointer}
 .switch-layout-guide .switch-layout-note{margin:16px 0 0}
+
+@media(max-width:720px){
+  .switch-layout-guide{padding:12px}
+  .switch-layout-row{gap:12px;padding:12px}
+}

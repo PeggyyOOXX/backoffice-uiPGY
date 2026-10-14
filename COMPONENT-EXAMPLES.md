@@ -72,3 +72,73 @@
 - 列表與正式後台無連線，批次操作只修改示範資料。
 - 內容儲存與還原保留於本次工作階段，重新整理後還原，不上傳檔案至服務端。
 - 編輯器使用與正式後台相同的套件版本與 mediaEmbed 設定；正式 API 與服務端內容驗證未接入此互動原型。
+
+## 下拉選單 Select
+
+位置：側邊選單 → 下拉選單 Select。實作：select-advanced.js、select-advanced.css；元件本身在 select.js／select.css。
+來源：原後台 `components/SearchForm.vue` 的 select 設定（isMultiple、maxCollapseTags、isFilterable、minFilterLength、groups、isOptionWrap），全站 161 處 el-select。
+
+共用 Select 的變化全部寫在原生 `<select>` 的屬性上，頁面不自行掛載 Element Plus：
+
+- `multiple` 多選，搭配 `data-collapse="N"` 收合標籤（超出顯示 +N，hover 列出完整清單），欄位高度維持 34px。
+- `data-max="N"` 多選上限，達上限後其餘選項自動停用。
+- `data-select-all` 下拉頂端加全選；計數不含停用選項，部分選取顯示半選狀態。
+- `data-filterable` 可輸入搜尋，比對選項文字與值；`data-min-filter="N"` 輸入滿 N 個字才開始過濾，未達字數維持完整清單並顯示還差幾個字。
+- `data-clearable` 可清除、`data-loading` 讀取中、`data-wrap` 長選項換行、`<optgroup>` 分組（分類標題不可選，搜尋時空分類自動隱藏）。
+- 空與錯誤狀態有固定文案：正在取得選項／查無符合的選項／沒有可選項目，錯誤另附文字說明。
+
+頁面同時示範把這些屬性放進既有 `source-filter` 篩選格線的實際組合。示範資料與正式後台無連線，搜尋與重設只更新頁面狀態。
+
+## 頁籤 Tabs
+
+位置：側邊選單 → 頁籤 Tabs。實作：tabs-guide.js、tabs-guide.css；元件本身在 tabs.js／tabs.css。
+來源：原後台 26 個 view 的 el-tabs（預設底線、`type="card"`、多語系 lang-tabs、`before-leave` 未儲存守衛）。
+
+- 變化：`line` 頁面層級（預設）、`card` 內容區塊次層、`workspace` 可關閉的工作區頁籤。
+- 標籤內容：計數標記、停用、無檢視權限不渲染。
+- 手機：`mobile="scroll"`（≤ 4 個短標籤，自動捲到目前頁籤並以漸層提示兩側）或 `mobile="select"`（≥ 5 個或標籤字長，改用共用 Select）。能力保留在元件內，規範頁不做手機預覽展示；手機版後續以小寬度版面另行製作。
+- 離開守衛：元件發出可取消的 `tab-before-change`，頁面攔下後以共用 prepareModal 確認才切換。能力保留在元件內，規範頁不做展示區塊。
+- 鍵盤：方向鍵、Home／End 即時切換（automatic activation），roving tabindex。
+
+### 既有頁籤已改用共用元件
+
+原本有五套各自的頁籤樣式與各自的方向鍵處理，已全部改走 tabs.js，`settings-tabs` 與 `snapshot-language-tabs` 的 CSS 一併移除：
+
+- 設定相關頁面「設定分類」（5 個分頁，mobile=select）
+- 組件範例「設定表單」（4 個分頁，mobile=select）
+- 複雜設定「角色權限／多步驟新增／規則表格」（mobile=scroll）
+- 內容編輯「內容語言」（8 種語言，mobile=select）
+- 活動內容快照彈窗「活動語言」（mobile=scroll；彈窗的捲動容器會裁切下拉，所以不用 select）
+
+shell 最上方的已開啟頁面列仍是 index.html 內的 `quick-tabs`，尚未改用 `workspace` 變化，因為它同時負責路由。
+
+### 卡片型與工作區頁籤調整
+
+- 卡片型作用中狀態改為填色 pill：#E7F7FA 底、主題綠字、字重 700。先後試過上方色條、資料夾式（Element Plus `type="card"` 同款）與灰底容器的白底分段控制，三者的作用中都是整組裡最淺的一塊，視覺上往後退而不夠明顯；改以填色當主指標後作用中才會往前跳。
+- 工作區頁籤補上原後台 `useTabStore` 的兩條規則：首頁為常駐頁籤不可關閉（原碼 `v-if="index !== 0"`）、開啟上限 10 個且超過時關閉最舊的非首頁頁籤。清單與上限屬於 shell 狀態，不在 tabs.js 內處理。
+
+## 載入與空狀態
+
+位置：側邊選單 → 載入與空狀態。實作：state-guide.js、state-guide.css；元件本身在 states.js／states.css。
+來源：原後台 `CustomTable.vue` 的 `v-loading` 與 `:empty-text="t('no_data')"`，以及 `usePermission` 的檢視權限判斷。
+
+四種非資料狀態共用同一個版面（圖示、標題、說明、單一操作），文案由 `STATE_COPY` 統一提供：
+
+| 狀態 | 什麼時候用 | 文案 |
+| --- | --- | --- |
+| `empty` | 本來就沒有資料，或篩選後沒撈到 | 無資料 |
+| `error` | 請求失敗、逾時或伺服器錯誤 | 後端錯誤碼字典的「錯誤碼 敘述」原樣輸出；後端沒回訊息時為 API request failed |
+
+「尚無資料」與「查無結果」已合併為單一「無資料」，與正式後台 `CustomTable` 的 `empty-text`（i18n key `no_data`）一致。「無權限」狀態已移除：`Side.vue` 把側欄過濾成只剩有 `.read` 權限的項目，沒權限的頁面進不去，該畫面不會出現。
+
+載入失敗改以 `errorState({ code, message })` 直接輸出 toast 的字串（錯誤碼加敘述、同一行） —— 原本失敗時表格會顯示「無資料」，使用者會誤以為是查不到。只放 `code` 與 `message`，不放 `ApiErrorResponse` 的 `debug`（型別 `any`，可能帶出內部資訊，且表格錯誤會留在畫面上被截圖轉傳）。toast 繼續保留。狀態區不放任何操作按鈕 —— 重新查詢、清除條件、新增、重新載入一律在表格外的列表工具列。
+
+## 原型結構整理
+
+兩筆技術債已處理，行為與樣式皆未改變：
+
+**CSS 拆檔。** index.html 原本把 41 個 `<style>` 區塊寫在 `<head>`（5,022 行），現在只剩 1,233 行，CSS 進到 `styles/`，一個區塊一個檔。內容與順序完全相同（已逐字比對驗證）。`styles/README.md` 附「被多處覆寫的選擇器」對照表 —— `.topbar`、`.main`、`.sidebar` 各散在 8 個檔案，先前 topbar sticky 失效就是這樣來的。
+
+**事件委派收斂。** 原本 13 個模組各自呼叫 `document.addEventListener`，共 49 個全域監聽、沒有擁有權邊界。現在全部走 `delegate.js` 的 `on()`：每種事件只掛一個 document 監聽，每筆註冊登記 owner 與負責的 selector，兩個模組宣告同一個 selector 時主控台警告。handler 內容與執行順序未改動，所以行為相同。主控台輸入 `delegateRegistry()` 可查目前登記的 56 個 selector 歸屬。
+
+**Element Plus 對應。** 新增 `ELEMENT-PLUS-MAPPING.md`，逐一列出每個原型模組移植時要用哪個 EP 元件、要覆寫什麼、以及哪些 EP 沒有需保留自製。每個手刻模組的第一行也加了一句對應註記。

@@ -1,0 +1,29 @@
+.nav-item.active,
+.nav-level-3.active {
+  width: calc(100% + 16px);
+  margin-left: -8px;
+  margin-right: -8px;
+  border-radius: 0;
+  color: #fff;
+  background: linear-gradient(
+    90deg,
+    #416fd5 0%,
+    #2589b4 52%,
+    #1596ad 100%
+  );
+  box-shadow: none;
+}
+.nav-item.active .ico {
+  color: #fff;
+}
+.nav-item.active:hover {
+  background: linear-gradient(
+    90deg,
+    #4777df 0%,
+    #2b93be 52%,
+    #1aa2ba 100%
+  );
+}
+.nav-item.active::after {
+  right: 0;
+}

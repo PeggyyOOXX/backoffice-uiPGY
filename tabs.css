@@ -1,0 +1,55 @@
+/* Shared Tabs. Single source for every tablist: 樣式規範、設定頁、複雜設定、
+   彈窗內的語言頁籤與工作區頁籤都用這組，個別頁面不得再自訂頁籤配色與高度。 */
+.bo-tabs{--tab-on:#1596ad;--tab-off:#718096;--tab-line:#dce2eb;min-width:0;margin-bottom:8px}
+
+/* The rail clips the scroller and carries the edge shadows that say "more tabs". */
+.bo-tabs-rail{position:relative;min-width:0}
+.bo-tabs-rail::before,.bo-tabs-rail::after{content:'';position:absolute;top:0;bottom:0;width:24px;pointer-events:none;opacity:0;transition:opacity .15s;z-index:1}
+.bo-tabs-rail::before{left:0;background:linear-gradient(to right,#fff,rgba(255,255,255,0))}
+.bo-tabs-rail::after{right:0;background:linear-gradient(to left,#fff,rgba(255,255,255,0))}
+.bo-tabs.has-start .bo-tabs-rail::before,.bo-tabs.has-end .bo-tabs-rail::after{opacity:1}
+
+.bo-tabs-scroll{display:flex;align-items:flex-end;min-width:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.bo-tabs-scroll::-webkit-scrollbar{display:none}
+
+.bo-tab{flex:none;display:inline-flex;align-items:center;gap:6px;background:transparent;border:0;color:var(--tab-off);font-size:14px;font-weight:600;line-height:1.5;white-space:nowrap;cursor:pointer}
+.bo-tab:focus-visible{outline:2px solid var(--tab-on);outline-offset:-3px}
+.bo-tab:disabled{color:#b6c0cc;cursor:not-allowed}
+.bo-tab-count{font-style:normal;font-size:12px;font-weight:600;line-height:1;padding:3px 6px;border-radius:9px;background:#eef1f5;color:#68758b}
+.bo-tab.is-active .bo-tab-count{background:#e7f7fa;color:var(--tab-on)}
+
+/* 底線型：頁面層級分類，預設。 */
+.bo-tabs-line .bo-tabs-scroll{gap:16px;border-bottom:1px solid var(--tab-line)}
+.bo-tabs-line .bo-tab{min-height:36px;padding:0 3px;border-bottom:3px solid transparent}
+.bo-tabs-line .bo-tab.is-active{color:var(--tab-on);border-bottom-color:var(--tab-on)}
+
+/* 卡片型：內容區塊的次層切換，與底線型不可在同一層級混用。
+   保留傳統頁籤的框線：每個頁籤都有 1px 外框與上方圓角，相鄰頁籤共用一條邊，
+   整排坐在 rail 的底線上。作用中把整圈外框換成主題色、底色換成與內容相同的白，
+   並把下框線改白讓底線在它下方斷開 —— 框線本身就是指標，不另加色條或陰影。
+   未選取用比白明顯的 #F1F4F8，才不會變成「白配白」看不出作用中。 */
+.bo-tabs-card .bo-tabs-rail{border-bottom:1px solid var(--tab-line)}
+.bo-tabs-card .bo-tabs-scroll{gap:4px;align-items:stretch;margin-bottom:-1px}
+.bo-tabs-card .bo-tab{min-height:37px;padding:0 16px;border:1px solid var(--tab-line);border-radius:4px 4px 0 0;background:#f1f4f8}
+.bo-tabs-card .bo-tab:hover:not(:disabled):not(.is-active){background:#e8edf3;color:#10202b}
+.bo-tabs-card .bo-tab.is-active{background:#fff;color:var(--tab-on);font-weight:700;border-color:var(--tab-on);border-bottom-color:#fff;position:relative;z-index:1}
+.bo-tabs-card .bo-tab:disabled{background:#f7f8fb}
+
+/* 工作區頁籤：可關閉，只用於 shell 的已開啟頁面列。 */
+.bo-tabs-workspace .bo-tabs-scroll{gap:5px;align-items:center;padding:6px 0}
+.bo-tabs-workspace .bo-tab{min-height:27px;padding:0 9px;border:1px solid #cbd8ec;border-radius:4px;background:#fff;font-size:12px;font-weight:400}
+.bo-tabs-workspace .bo-tab.is-active{background:var(--tab-on);border-color:var(--tab-on);color:#fff}
+.bo-tab-close{font-style:normal;font-size:15px;line-height:1;opacity:.8;cursor:pointer}
+.bo-tab-close:hover{opacity:1}
+
+/* 手機改用下拉：標籤多或字長時，橫捲會讓使用者看不到全部選項。 */
+.bo-tabs-select{display:none;margin-bottom:8px}
+
+@media(max-width:720px){
+  .bo-tab{min-height:44px}
+  .bo-tabs-line .bo-tab{min-height:44px}
+  .bo-tabs-card .bo-tab{min-height:45px} /* 多的 1px 是壓在底線上的重疊 */
+  .bo-tabs-workspace .bo-tab{min-height:32px}
+  .bo-tabs[data-tabs-mobile=select] .bo-tabs-rail{display:none}
+  .bo-tabs[data-tabs-mobile=select] .bo-tabs-select{display:block}
+}

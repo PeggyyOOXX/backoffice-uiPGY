@@ -1,0 +1,13 @@
+/* All button shapes share one radius; change it here only. */
+.semantic-btn,
+.primary,
+.secondary,
+.action,
+.icon-btn,
+.close,
+.quick-tabs button,
+.page-btn,
+.member-data-card .page-btn,
+.row-actions button {
+  border-radius: 4px;
+}

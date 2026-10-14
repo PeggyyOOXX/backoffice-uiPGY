@@ -1,0 +1,24 @@
+/* 捲動時 topbar 與工作區頁籤列都釘在捲動容器頂端，內容從兩者下方通過。
+   必須排在 blue-framed-dashboard-theme 之後，該區塊把 topbar 改成
+   position: relative，是先前標題會跟著捲走的原因。
+   桌機 topbar 高 60px（compact-density-override），手機已是 position: fixed 的 46px；
+   頁籤列的 top 偏移只在這裡定義，調整 topbar 高度時要一起改這一處。 */
+@media (min-width: 721px) {
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+  .quick-tabs {
+    position: sticky;
+    top: 60px;
+    z-index: 19;
+  }
+}
+@media (max-width: 720px) {
+  .quick-tabs {
+    position: sticky;
+    top: 46px;
+    z-index: 19;
+  }
+}

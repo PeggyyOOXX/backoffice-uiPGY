@@ -1,0 +1,10 @@
+.quick-tabs {
+  gap: 4px;
+}
+.quick-tabs button {
+  gap: 3px;
+  padding: 0 6px;
+}
+.quick-tabs button span {
+  margin-left: 1px;
+}

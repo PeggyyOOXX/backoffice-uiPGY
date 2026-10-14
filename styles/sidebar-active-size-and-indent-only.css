@@ -1,0 +1,14 @@
+.nav-item.active {
+  font-size: 16px;
+  padding-left: 17px;
+}
+.nav-level-2.active {
+  padding-left: 42px;
+}
+.nav-level-3.active {
+  padding-left: 56px;
+}
+.nav-level-2 .hierarchy-mark,
+.nav-level-3 .hierarchy-mark {
+  display: none;
+}

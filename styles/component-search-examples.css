@@ -1,0 +1,21 @@
+.component-examples {
+  display: grid;
+  gap: 24px;
+}
+.component-example {
+  min-width: 0;
+}
+.component-example h2 {
+  font-size: 16px;
+  margin: 0 0 10px;
+  font-weight: 650;
+}
+.component-examples .source-filter {
+  display: block;
+  margin-bottom: 0;
+}
+.component-examples .source-filter-actions {
+  grid-column: 1 / -1 !important;
+  grid-row: auto !important;
+  justify-self: end;
+}

@@ -1,0 +1,22 @@
+.amount-range-control {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  min-width: 0;
+}
+.amount-range-control .amount {
+  width: 100%;
+  min-width: 0;
+}
+.amount-range-control .amount::placeholder {
+  font: inherit;
+  color: inherit;
+  opacity: 0.58;
+}
+.amount-range-control span {
+  color: var(--muted);
+  line-height: 1;
+  text-align: center;
+}

@@ -1,0 +1,37 @@
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  background: #fff;
+}
+body {
+  padding: 0;
+}
+.app {
+  width: 100%;
+  max-width: none;
+  min-height: 100vh;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.sidebar {
+  height: 100vh;
+  min-height: 100vh;
+}
+.main {
+  min-height: 100vh;
+}
+@media (max-width: 900px) {
+  body {
+    padding: 0;
+  }
+  .app,
+  .sidebar,
+  .main {
+    min-height: 100vh;
+  }
+  .app {
+    border-radius: 0;
+  }
+}

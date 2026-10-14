@@ -1,0 +1,25 @@
+@media (min-width: 721px) {
+  html,
+  body {
+    height: 100%;
+    overflow: hidden;
+  }
+  .app {
+    height: 100vh;
+    overflow: hidden;
+  }
+  .sidebar {
+    height: 100vh;
+    overflow: hidden;
+  }
+  .sidebar .nav {
+    flex: 0 1 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .main {
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}

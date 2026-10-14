@@ -1,0 +1,21 @@
+/* Tabs spec page. Structure only — every tab colour, height and border comes from
+   tabs.css; nothing here restyles the component. */
+.tabs-guide{padding:16px}
+.tabs-guide>.component-description{margin:0 0 12px}
+
+.tabs-demo{margin-bottom:24px}
+.tabs-demo:last-of-type{margin-bottom:0}
+.tabs-demo h4{margin:0 0 4px;font-size:12px;font-weight:600;color:#10202b}
+.tabs-demo>p{margin:0 0 12px;font-size:12px;line-height:1.6;color:#718096}
+
+.tabs-panel-body{padding:16px 2px;font-size:13px;line-height:1.7;color:#526477}
+.tabs-panel-body p{margin:0}
+
+.tabs-workspace-empty{margin:0;padding:6px 2px;font-size:12px;color:#718096}
+
+.tabs-guide-page code{font-size:12px;padding:1px 5px;border-radius:4px;background:#f1f4f8;color:#10707f;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.tabs-token{margin-bottom:0}
+
+@media(max-width:720px){
+  .tabs-guide{padding:12px}
+}

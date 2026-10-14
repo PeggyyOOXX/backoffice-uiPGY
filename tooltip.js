@@ -1,4 +1,10 @@
+// 移植：el-tooltip（正式後台 IconBtn.vue／TruncateTooltip.vue 已在用），自動翻面為內建行為。詳見 ELEMENT-PLUS-MAPPING.md
 import './tooltip.css'
+import { on } from './delegate.js'
+// 事件委派統一走 delegate.js：每種事件只掛一個 document 監聽，並登記擁有權。
+const OWNED = ['[data-tooltip]']
+const listen = (type, handler, capture = false) => on(type, handler, { owner: 'tooltip', claims: OWNED, capture })
+
 
 // Shared tooltip: any element carrying data-tooltip gets one, on hover and on keyboard focus.
 // Disabled buttons do not fire pointer events in every browser, so put data-tooltip on a
@@ -70,17 +76,17 @@ function open(trigger) {
   hide()
   timer = setTimeout(() => show(trigger), DELAY)
 }
-document.addEventListener('pointerover', event => {
+listen('pointerover', event => {
   const trigger = event.target.closest?.('[data-tooltip]')
   if (trigger) open(trigger); else if (current) hide()
 })
-document.addEventListener('pointerdown', hide)
-document.addEventListener('focusin', event => {
+listen('pointerdown', hide)
+listen('focusin', event => {
   const trigger = event.target.closest?.('[data-tooltip]')
   trigger ? show(trigger) : hide()
 })
-document.addEventListener('focusout', hide)
-document.addEventListener('keydown', event => { if (event.key === 'Escape') hide() })
+listen('focusout', hide)
+listen('keydown', event => { if (event.key === 'Escape') hide() })
 addEventListener('scroll', () => { if (current) hide() }, true)
 addEventListener('resize', hide)
 

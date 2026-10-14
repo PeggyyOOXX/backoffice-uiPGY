@@ -1,0 +1,30 @@
+/* 載入與空狀態規範頁。版面結構而已 —— 狀態本身的圖示、文字與動畫都在 states.css。 */
+.state-guide{padding:16px}
+.state-guide>.component-description{margin:0 0 12px}
+
+.state-switcher{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.state-demo-stage{border:1px solid var(--line);border-radius:8px;overflow:hidden;min-height:232px}
+.state-demo-stage .table-wrap{border:0}
+.state-demo-stage .bo-skeleton{padding:16px}
+
+/* 示範表格寬度交給容器，不用全站表格的 920px 最小寬。 */
+.page .state-demo-table{min-width:520px;table-layout:fixed}
+.page .state-copy-table{min-width:560px;table-layout:fixed}
+.page .state-copy-table td{text-align:left}
+.page .state-copy-table td:first-child{width:118px}
+.page .state-copy-table td:nth-child(2){width:230px}
+.state-copy-table strong{font-size:13px;color:#526477}
+.state-copy-table span{font-size:12px;color:#718096}
+
+.state-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.state-pair>div{border:1px solid var(--line);border-radius:8px;padding:14px;min-width:0}
+.state-pair h4{margin:0 0 6px;font-size:13px;font-weight:600;color:#10202b}
+.state-pair p{margin:0;font-size:12px;line-height:1.7;color:#718096}
+
+.state-guide-page code{font-size:12px;padding:1px 5px;border-radius:4px;background:#f1f4f8;color:#10707f;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.state-token{margin-bottom:0}
+
+@media(max-width:720px){
+  .state-guide{padding:12px}
+  .state-switcher .semantic-btn{flex:1 1 calc(50% - 4px)}
+}

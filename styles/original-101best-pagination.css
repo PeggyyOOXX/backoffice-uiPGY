@@ -1,0 +1,40 @@
+.member-data-card .pagination {
+  justify-content: flex-end;
+  gap: 8px;
+}
+.member-data-card .pagination-total {
+  margin-right: 0;
+  color: var(--muted);
+}
+.member-data-card .page-size-select {
+  width: 156px;
+  height: 32px;
+  border: 1px solid #1596ad;
+  border-radius: 8px;
+  padding: 0 10px;
+  background: #fff;
+  color: var(--text);
+  font-size: 14px;
+}
+.member-data-card .pages {
+  margin-left: 0;
+  gap: 5px;
+}
+.member-data-card .page-btn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #1596ad;
+  border-radius: 8px;
+  background: #fff;
+  color: #1596ad;
+  font-weight: 400;
+}
+.member-data-card .page-btn.active {
+  background: #1596ad;
+  color: #fff;
+  border-color: #1596ad;
+}
+.member-data-card .page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

@@ -1,0 +1,17 @@
+.source-filter .control {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text);
+}
+.source-filter .control::placeholder {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text);
+  opacity: 0.58;
+}
+.source-filter .filter-field > label {
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 650;
+}

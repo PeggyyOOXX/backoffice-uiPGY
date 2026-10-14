@@ -1,7 +1,13 @@
+// 移植：el-table + el-checkbox + el-dropdown（方案 B 的表頭選單）+ CustomDialog。詳見 ELEMENT-PLUS-MAPPING.md
 import { prepareModal } from './modal-system.js'
 import { iconButton } from './icon-button.js'
 import { choiceControl, choiceCard } from './choice-controls.js'
 import './bulk-switch.css'
+import { on } from './delegate.js'
+// 事件委派統一走 delegate.js：每種事件只掛一個 document 監聽，並登記擁有權。
+const OWNED = [".bulk-menu", "[data-bulk-all]", "[data-bulk-bar]", "[data-bulk-clear]", "[data-bulk-head-action]", "[data-bulk-menu]", "[data-bulk-open-dialog]", "[data-bulk-row]", "[data-bulk-toggle]", "[data-bulk-undo]"]
+const listen = (type, handler, capture = false) => on(type, handler, { owner: 'bulk-switch', claims: OWNED, capture })
+
 
 // Three ways to bulk-toggle several switch columns, based on the old game list page
 // (systemGameProviderManagement/game.vue): 批次調整狀態 and 全部狀態調整.
@@ -135,13 +141,13 @@ function openDialog() {
   node.addEventListener('close', () => { node.remove(); if (trigger?.isConnected) trigger.focus() }, { once: true })
   document.body.append(node); node.showModal(); refresh()
 }
-document.addEventListener('change', event => {
+listen('change', event => {
   const target = event.target
   const panel = panels[target.dataset?.panel]
   if (target.matches('[data-bulk-all]')) { panel.rows.forEach(row => target.checked ? panel.selected.add(row.id) : panel.selected.delete(row.id)); redraw(); return }
   if (target.matches('[data-bulk-row]')) { target.checked ? panel.selected.add(target.dataset.id) : panel.selected.delete(target.dataset.id); redraw() }
 })
-document.addEventListener('click', event => {
+listen('click', event => {
   const root = document.querySelector('[data-bulk-page]')
   if (!root) return
   const toggle = event.target.closest('[data-bulk-toggle]')

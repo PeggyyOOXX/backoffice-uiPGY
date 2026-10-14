@@ -1,5 +1,12 @@
+// 移植：el-table + 固定欄與分組表頭、el-pagination、el-drawer。自動刷新沿用 SearchForm 的 isAutoRefresh。詳見 ELEMENT-PLUS-MAPPING.md
 import { prepareModal } from './modal-system.js'
+import { emptyRow, emptyState } from './states.js'
 import './risk-audit.css'
+import { on } from './delegate.js'
+// 事件委派統一走 delegate.js：每種事件只掛一個 document 監聽，並登記擁有權。
+const OWNED = [".risk-review-notes textarea", "[data-risk-action]", "[data-risk-page]", "[data-risk-search]", "[data-risk-size]"]
+const listen = (type, handler, capture = false) => on(type, handler, { owner: 'risk-audit', claims: OWNED, capture })
+
 
 // Source: backoffice/src/views/riskControlWithdrawalAudit/index.vue.
 // Same field groups and single-order workflow; all data below is local demo data.
@@ -63,7 +70,7 @@ function controls(row) {
 }
 const cell = (label, value) => `<div><label>${label}</label><strong>${value}</strong></div>`
 function cardsMarkup(list) {
-  if (!list.length) return '<div class="member-mobile-only risk-mobile-list"><p class="risk-empty-card">沒有符合條件的轉點申請，請調整搜尋條件。</p></div>'
+  if (!list.length) return `<div class="member-mobile-only risk-mobile-list">${emptyState({kind:'empty'})}</div>`
   return `<div class="member-mobile-only risk-mobile-list">${list.map(row=>`<article class="mobile-card" data-risk-card="${row.id}">
     <div class="member-card-head"><div>${link(row.id,'details',row.id)}<small>${row.time}</small></div><span class="badge ${row.operator?'active-b':'pending-b'}">${rowState(row)}</span></div>
     <div class="mobile-meta">
@@ -91,7 +98,7 @@ function listMarkup() {
       <tbody>${current.map(row=>`<tr data-risk-row="${row.id}">
         <td>${link(row.id,'details',row.id)}</td><td>${row.time}</td><td>${link(row.uid,'member',row.id)}</td><td>${row.account}<br><span class="risk-secondary">${row.name}</span></td><td>${row.agent}</td><td><span class="risk-level risk-level-${row.level.slice(-1)}"></span>${row.level}</td><td>${row.bank}</td>
         <td><span class="badge ${row.audit==='通過'?'active-b':'risk-b'}">${row.audit}</span></td><td>${link(money(row.fee),'audit',row.id)}</td><td>${money(row.amount)}</td><td>${money(row.before)}</td><td>${money(row.after)}</td><td><span class="badge ${row.operator?'active-b':'pending-b'}">${rowState(row)}</span></td><td>${row.ip}</td><td>${row.fingerprint}</td><td>${row.browser}</td><td class="risk-fixed">${controls(row)}</td>
-      </tr>`).join('')||'<tr><td colspan="17" class="risk-empty">沒有符合條件的轉點申請，請調整搜尋條件。</td></tr>'}</tbody></table></div>${cardsMarkup(current)}
+      </tr>`).join('')||emptyRow(17,{kind:'empty'})}</tbody></table></div>${cardsMarkup(current)}
     <div class="pagination"><span class="pagination-total">共 ${list.length} 筆</span><select class="page-size-select guide-select" data-risk-size aria-label="每頁筆數">${[10,20,50,100].map(n=>`<option value="${n}" ${pageSize===n?'selected':''}>${n} 筆／頁</option>`).join('')}</select><div class="pages">${pageButton('‹',page-1,page===1,'上一頁')}${Array.from({length:pages},(_,i)=>pageButton(i+1,i+1,false,`第 ${i+1} 頁`)).join('')}${pageButton('›',page+1,page===pages,'下一頁')}</div></div>
   </div>`
 }
@@ -192,18 +199,18 @@ function startTimer() {
     const label=document.querySelector('[data-risk-countdown]');if(label)label.textContent=`${countdown} 秒後刷新`
   },1000)
 }
-document.addEventListener('submit',event=>{if(event.target.matches('[data-risk-search]')){event.preventDefault();search()}})
-document.addEventListener('input',event=>{
+listen('submit',event=>{if(event.target.matches('[data-risk-search]')){event.preventDefault();search()}})
+listen('input',event=>{
   const input=event.target
   if(input.closest('[data-risk-search]')&&input.name in draft)draft[input.name]=input.value
   if(input.matches('.risk-review-notes textarea'))input.parentElement.querySelector('[data-note-count]').textContent=`${input.value.length} / 200`
 })
-document.addEventListener('change',event=>{
+listen('change',event=>{
   const input=event.target
   if(input.closest('[data-risk-search]')&&input.name in draft)draft[input.name]=input.value
   if(input.matches('[data-risk-size]')){pageSize=Number(input.value);page=1;redrawList()}
 })
-document.addEventListener('click',event=>{
+listen('click',event=>{
   const pager=event.target.closest('[data-risk-page]');if(pager){page=Number(pager.dataset.riskPage);redrawList();return}
   const target=event.target.closest('[data-risk-action]');if(!target)return
   event.preventDefault();const name=target.dataset.riskAction,row=rows.find(row=>row.id===target.dataset.id)

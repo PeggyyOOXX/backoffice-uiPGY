@@ -13,3 +13,38 @@
 .bo-select-page-size{width:156px;flex:none}
 .bo-select-page-size .el-select__wrapper{min-height:32px;box-shadow:0 0 0 1px #1596ad inset}
 .page select[hidden],.bo-modal select[hidden]{display:none!important}
+
+/* Multi-select tags: same 34px field height, tags sit inside without pushing it taller. */
+.bo-select-host .el-select__selection{gap:4px}
+.bo-select-host .el-tag{height:22px;padding:0 6px;border-radius:4px;background:#e7f7fa;border-color:#b9e3ea;color:#10707f;font-size:12px;font-weight:400}
+.bo-select-host .el-tag .el-tag__close{color:#10707f}
+.bo-select-host .el-tag .el-tag__close:hover{background:#1596ad;color:#fff}
+.bo-select-host .el-select__input{font-size:14px}
+.bo-select-host.is-error .el-select__wrapper{box-shadow:0 0 0 1px #df5261 inset}
+.bo-select-host.is-error .el-select__wrapper.is-focused{box-shadow:0 0 0 1px #df5261 inset,0 0 0 3px rgba(223,82,97,.1)}
+
+/* Dropdown header: select-all and the minimum-length hint. */
+.bo-select-popper .el-select-dropdown__header{padding:5px 9px;border-bottom:1px solid #edf0f4}
+.bo-select-popper .el-select-dropdown__header:empty{display:none}
+.bo-select-all{width:100%;font-size:14px;line-height:34px}
+.bo-select-all input{margin:9px 0 0}
+.bo-select-hint{margin:0;padding:4px 0;font-size:12px;color:#718096}
+.bo-select-popper .el-select-dropdown__item.is-disabled{color:#98a2b3}
+.bo-select-popper .el-select-group__title{padding-left:9px;font-size:12px;color:#718096}
+.bo-select-popper .el-select-dropdown__empty{font-size:13px;color:#718096}
+
+/* Long option text wraps instead of being cut off. */
+.bo-select-wrap .el-select-dropdown__item{height:auto;min-height:34px;line-height:1.5;padding-top:7px;padding-bottom:7px;white-space:normal;overflow-wrap:anywhere}
+
+/* 手機：高度依 Input／Select Token 維持 34px，與 .control、guide-input 一致，
+   所以這裡不覆寫高度，只處理兩件桌機沒有的事：
+   1. 下拉寬度不得超出視窗。
+   2. 篩選列的欄位字級跟 .control 一樣是 16px — iOS Safari 對 16px 以下的輸入欄位
+      會在聚焦時自動放大整頁，可搜尋的 Select 也是輸入欄位。 */
+@media(max-width:720px){
+  .bo-select-popper{max-width:calc(100vw - 16px)}
+  .source-filter .bo-select-host .el-select__wrapper,
+  .source-filter .bo-select-host .el-select__input,
+  .source-filter .bo-select-host .el-select__selected-item,
+  .source-filter .bo-select-host .el-select__placeholder{font-size:16px}
+}

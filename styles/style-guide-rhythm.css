@@ -1,0 +1,29 @@
+/* 樣式規範 page: 20px between every section, 8px under every section title. */
+.page .style-guide {
+  margin-top: 10px;
+}
+.page .style-guide > * {
+  margin: 0 0 20px;
+}
+.page .style-guide > *:last-child {
+  margin-bottom: 0;
+}
+.page .style-guide > .guide-section-heading {
+  margin: 0 2px 8px;
+}
+.page .style-guide h2 {
+  margin: 0 0 8px;
+}
+.page .style-guide .guide-section-heading h2 {
+  margin: 0;
+}
+.page .style-guide h3 {
+  margin: 20px 0 8px;
+}
+.page .style-guide h3:first-child,
+.page .style-guide h3:first-of-type {
+  margin-top: 0;
+}
+.page .style-guide h4 {
+  margin: 0 0 8px;
+}

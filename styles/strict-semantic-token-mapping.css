@@ -1,0 +1,37 @@
+/* Every list action below maps to a documented semantic token. */
+.btn-add {
+  background: #6758e8 !important;
+  border-color: #6758e8 !important;
+}
+.btn-export {
+  background: #20a05a !important;
+  border-color: #20a05a !important;
+}
+.btn-edit,
+.row-actions button.btn-edit {
+  background: #3f6fe5 !important;
+  border-color: #3f6fe5 !important;
+}
+.btn-neutral {
+  background: #87919e !important;
+  border-color: #87919e !important;
+}
+.btn-danger {
+  background: #df5261 !important;
+  border-color: #df5261 !important;
+}
+.btn-add.outline {
+  --button-color: #6758e8;
+}
+.btn-export.outline {
+  --button-color: #20a05a;
+}
+.btn-edit.outline {
+  --button-color: #3f6fe5;
+}
+.btn-neutral.outline {
+  --button-color: #87919e;
+}
+.btn-danger.outline {
+  --button-color: #df5261;
+}

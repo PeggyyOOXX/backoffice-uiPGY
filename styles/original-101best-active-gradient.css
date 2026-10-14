@@ -1,0 +1,17 @@
+@media (max-width: 720px) {
+  .nav-item.active::after {
+    display: none !important;
+  }
+}
+.nav-item.active,
+.nav-level-3.active {
+  color: #10202b;
+  font-weight: 400;
+  background: linear-gradient(90deg, #73aaff 0%, #b6bff6 100%);
+}
+.nav-item.active .ico {
+  color: #10202b;
+}
+.nav-item.active:hover {
+  background: linear-gradient(90deg, #73aaff 0%, #b6bff6 100%);
+}

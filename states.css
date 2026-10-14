@@ -1,0 +1,35 @@
+/* 載入與空狀態。無資料與載入失敗共用同一個版面。狀態區只呈現狀況與原因，不放操作按鈕；
+   個別頁面不得另訂配色、圖示或文案。 */
+.bo-state{display:flex;flex-direction:column;align-items:center;gap:4px;padding:40px 16px;text-align:center}
+.bo-state-icon{width:36px;height:36px;margin-bottom:8px;color:#b6c0cc}
+.bo-state-error .bo-state-icon{color:#e59aa4}
+.bo-state-title{margin:0;font-size:14px;font-weight:600;line-height:1.7;color:#526477;max-width:40em;overflow-wrap:anywhere}
+.bo-state-text{margin:0;font-size:13px;line-height:1.7;color:#718096;max-width:40em;overflow-wrap:anywhere}
+
+/* 表格內的空狀態：撐滿整個表寬，不套用 td 的置中內距與框線。 */
+.page .bo-state-row td{padding:0;border-right:0}
+.page .bo-state-row:hover td{background:transparent}
+
+/* 骨架：只在首次載入、畫面上還沒有任何資料時用。純版面佔位，不帶語意。 */
+.bo-skeleton{display:flex;flex-direction:column;gap:9px;padding:12px 0}
+.bo-skeleton-row{display:grid;grid-template-columns:repeat(var(--skeleton-cols,5),1fr);gap:11px}
+.bo-skeleton-row>span{height:13px;border-radius:4px;background:linear-gradient(90deg,#eef1f5 25%,#f7f9fb 37%,#eef1f5 63%);background-size:400% 100%;animation:bo-skeleton-sweep 1.4s ease-in-out infinite}
+.bo-skeleton-row.is-head>span{height:11px;background:#e4e9ef;animation:none}
+@keyframes bo-skeleton-sweep{from{background-position:100% 50%}to{background-position:0 50%}}
+
+/* 重新查詢時的遮罩：舊資料留在原地變淡，版面高度不會塌掉又彈回來。 */
+.bo-loading{position:relative;min-width:0}
+.bo-loading.is-loading>:not(.bo-veil){opacity:.45;pointer-events:none}
+.bo-veil{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,.6);font-size:13px;color:#526477;z-index:2}
+.bo-spinner{width:18px;height:18px;border:2px solid #cfe6ea;border-top-color:#1596ad;border-radius:50%;animation:bo-spin .7s linear infinite}
+@keyframes bo-spin{to{transform:rotate(360deg)}}
+
+@media(prefers-reduced-motion:reduce){
+  .bo-skeleton-row>span{animation:none}
+  .bo-spinner{animation-duration:2s}
+}
+
+@media(max-width:720px){
+  .bo-state{padding:32px 12px}
+  .bo-state-text{font-size:12px}
+}

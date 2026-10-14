@@ -1,3 +1,4 @@
+// 移植：el-radio／el-checkbox 與其 group；部分選取用 indeterminate。choice-card EP 沒有，保留自製。詳見 ELEMENT-PLUS-MAPPING.md
 import './choice-controls.css'
 
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))

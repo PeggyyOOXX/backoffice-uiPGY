@@ -1,0 +1,306 @@
+/* Compact desktop density: keep readability while maximizing visible data. */
+.brand {
+  height: 64px;
+  padding: 0 16px;
+  gap: 9px;
+}
+.brand-mark {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  font-size: 12px;
+}
+.brand strong {
+  font-size: 15px;
+}
+.nav-label {
+  padding: 15px 16px 5px;
+}
+.nav {
+  padding: 0 8px;
+}
+.nav-item {
+  height: 36px;
+  padding: 0 9px;
+  gap: 8px;
+  margin: 2px 0;
+  border-radius: 7px;
+}
+.profile-mini {
+  margin: auto 9px 10px;
+  padding: 8px;
+  border-radius: 9px;
+}
+.topbar {
+  height: 60px;
+  padding: 0 20px 0 22px;
+  gap: 10px;
+}
+.topbar-title {
+  font-size: 19px;
+}
+.top-actions {
+  gap: 6px;
+}
+.icon-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+}
+.avatar {
+  width: 32px;
+  height: 32px;
+}
+.page {
+  min-height: calc(100vh - 72px);
+  padding: 12px 14px 24px;
+}
+.page-head {
+  min-height: 76px;
+  margin-bottom: 10px;
+  padding: 12px 14px;
+  border-radius: 10px;
+}
+.page-head h1 {
+  font-size: 20px;
+  margin-bottom: 3px;
+}
+.page-head p {
+  font-size: 12px;
+}
+.stats {
+  gap: 8px;
+  margin-bottom: 9px;
+}
+.stat {
+  padding: 10px 11px;
+  gap: 8px;
+  border-radius: 9px;
+}
+.stat-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+}
+.stat-label {
+  margin-bottom: 2px;
+}
+.stat-value {
+  font-size: 19px;
+}
+.card {
+  border-radius: 10px;
+}
+.filters {
+  padding: 11px;
+  margin-bottom: 9px;
+}
+.filter-row {
+  gap: 7px;
+}
+.field label {
+  margin-bottom: 4px;
+  font-size: 12px;
+}
+.control {
+  height: 34px;
+  padding: 0 9px;
+  border-radius: 7px;
+}
+.primary {
+  padding: 8px 12px;
+  border-radius: 7px;
+}
+.secondary {
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 7px;
+}
+.filter-actions {
+  gap: 5px;
+}
+.table-toolbar {
+  padding: 9px 11px;
+  gap: 7px;
+}
+.table-toolbar h2 {
+  font-size: 15px;
+}
+.page th {
+  padding: 8px 11px;
+  font-size: 12px;
+}
+.page td {
+  padding: 9px 11px;
+}
+.user {
+  gap: 7px;
+}
+.user .avatar {
+  width: 32px;
+  height: 32px;
+}
+.badge {
+  padding: 4px 7px;
+}
+.action {
+  padding: 4px;
+}
+.pagination {
+  padding: 9px 11px;
+}
+.pages {
+  gap: 3px;
+}
+.page-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+}
+.chart-grid,
+.split {
+  gap: 9px;
+  margin-bottom: 9px;
+}
+.chart-card,
+.mini-card {
+  padding: 12px;
+}
+.section-title {
+  margin-bottom: 10px;
+}
+.bars {
+  height: 190px;
+  gap: 8px;
+  padding-top: 10px;
+}
+.activity {
+  gap: 8px;
+  padding: 8px 0;
+}
+.activity-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+}
+.review-row {
+  padding: 10px 11px;
+  gap: 8px;
+}
+.campaign-grid {
+  gap: 8px;
+}
+.campaign {
+  padding: 12px;
+  min-height: 150px;
+}
+.campaign h3 {
+  margin: 7px 0 4px;
+}
+.campaign p {
+  line-height: 1.4;
+}
+.campaign .progress {
+  margin-top: auto;
+}
+.setting-layout {
+  grid-template-columns: 190px 1fr;
+  gap: 9px;
+}
+.setting-nav {
+  padding: 7px;
+}
+.setting-nav div {
+  padding: 8px 9px;
+  margin: 1px;
+  border-radius: 7px;
+}
+.setting-form {
+  padding: 14px;
+}
+.setting-section {
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+}
+.setting-section p {
+  margin-bottom: 10px;
+}
+.form-grid {
+  gap: 8px;
+}
+.setting-line {
+  padding: 8px 0;
+}
+.detail-grid {
+  gap: 12px 9px;
+  margin-top: 14px;
+}
+.drawer-body {
+  padding: 15px;
+}
+.drawer-foot {
+  padding: 10px 15px;
+}
+.risk-box {
+  padding: 10px;
+  margin-top: 14px;
+}
+@media (max-width: 720px) {
+  .topbar {
+    height: 56px;
+    padding: 0 10px;
+  }
+  .icon-btn {
+    width: 40px;
+    height: 40px;
+  }
+  .page {
+    min-height: calc(100vh - 56px);
+    padding: 8px 8px 20px;
+  }
+  .page-head {
+    padding: 12px;
+    margin-bottom: 8px;
+  }
+  .stats {
+    gap: 7px;
+  }
+  .stat {
+    padding: 10px;
+  }
+  /* Input／Select Token 定義 Mobile 高度與 Desktop 同為 34px。
+     字級維持 16px：iOS Safari 對 16px 以下的輸入欄位會在聚焦時自動放大整頁。 */
+  .control {
+    height: 34px;
+    font-size: 16px;
+  }
+  .primary,
+  .secondary {
+    min-height: 42px;
+  }
+  .mobile-filter {
+    margin-bottom: 8px;
+  }
+  .mobile-card {
+    padding: 12px;
+    margin-bottom: 7px;
+    border-radius: 10px;
+  }
+  .mobile-meta {
+    gap: 9px;
+    margin-top: 10px;
+    padding-top: 9px;
+  }
+  .mobile-card-bottom {
+    margin-top: 8px;
+  }
+  .campaign-grid,
+  .chart-grid,
+  .split,
+  .setting-layout {
+    gap: 7px;
+  }
+  .campaign {
+    min-height: 138px;
+  }
+}

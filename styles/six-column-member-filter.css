@@ -1,0 +1,11 @@
+@media (min-width: 1181px) {
+  .source-filter-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  .source-filter-actions {
+    grid-column: 6 !important;
+    grid-row: 2 !important;
+    align-self: end;
+    justify-self: end;
+  }
+}

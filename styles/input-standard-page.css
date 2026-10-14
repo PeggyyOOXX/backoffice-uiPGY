@@ -1,0 +1,140 @@
+.input-standard-intro {
+  padding: 16px;
+  margin-bottom: 10px;
+}
+.input-standard-intro h2 {
+  margin: 0 0 5px;
+  font-size: 18px;
+}
+.input-standard-intro p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+.input-standard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.input-standard-card {
+  padding: 14px;
+}
+.input-standard-card h3 {
+  margin: 0 0 4px;
+  font-size: 14px;
+}
+.input-standard-card > p {
+  min-height: 34px;
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.45;
+}
+.input-demo-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+.input-demo-row label {
+  display: block;
+  margin-bottom: 4px;
+  color: #627087;
+  font-size: 11px;
+}
+.input-demo-mobile {
+  max-width: 210px;
+}
+.standard-select {
+  appearance: none;
+  background: #fff
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23627087' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E")
+    no-repeat right 9px center;
+  padding-right: 28px;
+}
+.standard-choice-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  height: 34px;
+}
+.standard-switch {
+  width: 42px;
+  height: 24px;
+  padding: 3px;
+  border: 0;
+  border-radius: 20px;
+  background: #1596ad;
+}
+.standard-switch{cursor:pointer;flex:none}
+.standard-switch[aria-checked="false"]{background:#c5cdd7}
+.standard-switch[aria-checked="false"]:after{margin-left:0}
+.standard-switch:focus-visible{outline:3px solid #1596ad55;outline-offset:3px}
+.standard-switch:disabled{opacity:.45;cursor:not-allowed}
+.standard-switch:after {
+  content: "";
+  display: block;
+  width: 18px;
+  height: 18px;
+  margin-left: auto;
+  border-radius: 50%;
+  background: #fff;
+}
+.standard-upload {
+  display: grid;
+  place-items: center;
+  height: 68px;
+  border: 1px dashed #9fb0bb;
+  border-radius: 7px;
+  background: #fafcfd;
+  color: #627087;
+  font-size: 12px;
+}
+.standard-editor {
+  height: 76px;
+  border: 1px solid #dce2eb;
+  border-radius: 7px;
+  background: linear-gradient(#f5f7f9 28px, #fff 28px);
+  padding: 8px;
+  color: #627087;
+  font-size: 12px;
+}
+.input-standard-tokens {
+  padding: 14px;
+}
+.input-standard-tokens table {
+  min-width: 0;
+}
+.input-standard-tokens th,
+.input-standard-tokens td {
+  white-space: normal;
+}
+@media (max-width: 1100px) {
+  .input-standard-grid {
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+  }
+}
+@media (max-width: 720px) {
+  .input-standard-grid {
+    grid-template-columns: 1fr;
+  }
+  .input-standard-card {
+    padding: 12px;
+  }
+  .input-demo-row {
+    grid-template-columns: 1fr;
+  }
+  .input-demo-mobile {
+    max-width: none;
+  }
+  .input-standard-card > p {
+    min-height: 0;
+  }
+  .input-standard-tokens {
+    overflow-x: auto;
+  }
+  .input-standard-tokens table {
+    min-width: 560px;
+  }
+}

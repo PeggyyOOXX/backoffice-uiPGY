@@ -1,3 +1,4 @@
+// 移植：el-button + el-tooltip（正式後台為 IconBtn.vue）。34×34、觸控 44×44、圓角 4px 需覆寫 EP 預設。詳見 ELEMENT-PLUS-MAPPING.md
 import { tooltipAttrs } from './tooltip.js'
 import './icon-button.css'
 

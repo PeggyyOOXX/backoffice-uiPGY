@@ -1,0 +1,55 @@
+.member-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.toolbar-demo {
+  padding: 14px;
+  margin-bottom: 9px;
+}
+.toolbar-demo h2 {
+  margin: 0 0 4px;
+  font-size: 16px;
+}
+.toolbar-demo p {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.member-actions .semantic-btn {
+  min-width: auto;
+}
+.btn-add {
+  background: #4f6bed !important;
+  border-color: #4f6bed !important;
+}
+.btn-export {
+  background: #20a05a !important;
+  border-color: #20a05a !important;
+}
+.btn-edit,
+.row-actions button.btn-edit {
+  background: #3f6fe5 !important;
+  border-color: #3f6fe5 !important;
+}
+.btn-add.outline {
+  --button-color: #4f6bed;
+}
+.btn-export.outline {
+  --button-color: #20a05a;
+}
+.btn-edit.outline {
+  --button-color: #3f6fe5;
+}
+@media (max-width: 720px) {
+  .member-actions {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 3px;
+  }
+  .member-actions .semantic-btn {
+    flex: none;
+  }
+}
