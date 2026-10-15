@@ -1,9 +1,12 @@
-// 移植：el-table + el-checkbox + el-dropdown（方案 B 的表頭選單）+ CustomDialog。詳見 ELEMENT-PLUS-MAPPING.md
+// 移植：el-table + el-checkbox + CustomDialog。詳見 ELEMENT-PLUS-MAPPING.md
+// 方案 B 的表頭選單需要 el-dropdown，但正式後台沒有在用（el-dropdown 0 處），
+// 所以原型不另立下拉按鈕規範；若最後選定方案 B，移植時再評估要不要引入。
 import { prepareModal } from './modal-system.js'
 import { iconButton } from './icon-button.js'
 import { choiceControl, choiceCard } from './choice-controls.js'
 import './bulk-switch.css'
 import { on } from './delegate.js'
+import { icon } from './icons.js'
 // 事件委派統一走 delegate.js：每種事件只掛一個 document 監聽，並登記擁有權。
 const OWNED = [".bulk-menu", "[data-bulk-all]", "[data-bulk-bar]", "[data-bulk-clear]", "[data-bulk-head-action]", "[data-bulk-menu]", "[data-bulk-open-dialog]", "[data-bulk-row]", "[data-bulk-toggle]", "[data-bulk-undo]"]
 const listen = (type, handler, capture = false) => on(type, handler, { owner: 'bulk-switch', claims: OWNED, capture })
@@ -41,7 +44,7 @@ function tableMarkup(name, panel, { headMenu = false } = {}) {
   const allChecked = panel.rows.length && panel.rows.every(row => panel.selected.has(row.id))
   const some = panel.selected.size > 0 && !allChecked
   const heading = ([key, label]) => headMenu
-    ? `<th scope="col"><span class="bulk-head">${label}${iconButton({ icon: '⋮', label: `${label} 批量調整`, kind: 'btn-neutral', outline: true, attrs: `id="bulk-${name}-menu-${key}" data-bulk-menu="${key}" data-panel="${name}"` })}<div class="bulk-menu" data-bulk-menu-for="${key}" ${panel.menu === key ? '' : 'hidden'}>
+    ? `<th scope="col"><span class="bulk-head">${label}${iconButton({ icon: icon('more'), label: `${label} 批量調整`, kind: 'btn-neutral', outline: true, attrs: `id="bulk-${name}-menu-${key}" data-bulk-menu="${key}" data-panel="${name}"` })}<div class="bulk-menu" data-bulk-menu-for="${key}" ${panel.menu === key ? '' : 'hidden'}>
         <button type="button" data-bulk-head-action data-panel="${name}" data-key="${key}" data-value="1" data-scope="selected" ${panel.selected.size ? '' : 'disabled'}>已勾選 ${panel.selected.size} 筆設為開啟</button>
         <button type="button" data-bulk-head-action data-panel="${name}" data-key="${key}" data-value="0" data-scope="selected" ${panel.selected.size ? '' : 'disabled'}>已勾選 ${panel.selected.size} 筆設為關閉</button>
         <button type="button" data-bulk-head-action data-panel="${name}" data-key="${key}" data-value="1" data-scope="all">全部 ${panel.rows.length} 筆設為開啟</button>
@@ -56,7 +59,7 @@ function tableMarkup(name, panel, { headMenu = false } = {}) {
 }
 const feedbackMarkup = name => {
   const panel = panels[name]
-  return `<p class="bulk-feedback" role="status">${esc(panel.feedback)}${panel.undo ? `<button type="button" class="semantic-btn btn-neutral outline" data-bulk-undo data-panel="${name}">↺ 復原</button>` : ''}</p>`
+  return `<p class="bulk-feedback" role="status">${esc(panel.feedback)}${panel.undo ? `<button type="button" class="semantic-btn btn-neutral outline" data-bulk-undo data-panel="${name}">${icon('reset')}復原</button>` : ''}</p>`
 }
 const verdict = items => `<div class="bulk-verdict">${items.map(([tone, title, text]) => `<div class="${tone}"><strong>${title}</strong><p>${text}</p></div>`).join('')}</div>`
 
@@ -86,7 +89,7 @@ function dialogPanel() {
   return `<section class="bulk-option"><h3>方案 C · 批次調整彈窗</h3>
   <div class="card bulk-card">
     ${verdict([['is-good', '一次改完所有分類', '三個分類在同一個彈窗裡設定，只送出一次。'], ['is-good', '有確認與影響範圍', '送出前顯示「將影響 N 筆、共 M 項變更」，不會改錯還不知道。'], ['is-bad', '多一個步驟', '只想改一個開關時比前兩案慢。分類少的頁面用不上。']])}
-    <div class="bulk-toolbar"><button type="button" class="semantic-btn btn-edit" data-bulk-open-dialog>▣ 批次調整</button><span class="settings-note">已選 ${panel.selected.size} 筆</span></div>
+    <div class="bulk-toolbar"><button type="button" class="semantic-btn btn-edit" data-bulk-open-dialog>${icon('batch')}批次調整</button><span class="settings-note">已選 ${panel.selected.size} 筆</span></div>
     ${feedbackMarkup('dialog')}${tableMarkup('dialog', panel)}
   </div></section>`
 }

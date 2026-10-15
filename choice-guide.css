@@ -1,0 +1,10 @@
+/* 選擇控制規範頁。版面結構而已——Switch、Radio、Checkbox 的尺寸與配色
+   都在 switch-layout-guide.css 與 choice-controls.css，這裡不重寫。
+   卡片內距與決策表由 guide-page.css 提供。 */
+
+/* 合併之後兩段示範共用同一張卡，段落之間的節奏交給 style-guide-rhythm 的 h3。 */
+.choice-guide .switch-layout-panel{margin-bottom:0}
+.choice-guide>.component-description:first-child{margin-top:0}
+
+/* 原本在各自卡片裡的 h4 小標，合併後要和 h3 拉開層級 */
+.choice-guide h4{margin:0 0 8px;font-size:12px;font-weight:600;color:#10202b}

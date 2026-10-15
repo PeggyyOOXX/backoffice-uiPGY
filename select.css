@@ -20,8 +20,8 @@
 .bo-select-host .el-tag .el-tag__close{color:#10707f}
 .bo-select-host .el-tag .el-tag__close:hover{background:#1596ad;color:#fff}
 .bo-select-host .el-select__input{font-size:14px}
-.bo-select-host.is-error .el-select__wrapper{box-shadow:0 0 0 1px #df5261 inset}
-.bo-select-host.is-error .el-select__wrapper.is-focused{box-shadow:0 0 0 1px #df5261 inset,0 0 0 3px rgba(223,82,97,.1)}
+.bo-select-host.is-error .el-select__wrapper{box-shadow:0 0 0 1px #dd3340 inset}
+.bo-select-host.is-error .el-select__wrapper.is-focused{box-shadow:0 0 0 1px #dd3340 inset,0 0 0 3px rgba(221,51,64,.1)}
 
 /* Dropdown header: select-all and the minimum-length hint. */
 .bo-select-popper .el-select-dropdown__header{padding:5px 9px;border-bottom:1px solid #edf0f4}

@@ -17,7 +17,8 @@ const group = (legend, options, inline = false) =>
 const radios = (name, items) => items.map(([label, state]) => ({ type:'radio', name, label, checked: state === 'checked' || state === 'disabled-checked', disabled: state?.startsWith('disabled') }))
 const boxes = items => items.map(([label, state]) => ({ type:'checkbox', label, checked: state === 'checked' || state === 'disabled-checked', disabled: state?.startsWith('disabled'), attrs: state === 'mixed' ? 'data-choice-mixed' : '' }))
 
-window.choiceControlsGuide = () => `<section class="component-example" id="choice-controls-guide"><h2>選擇控制 Radio／Checkbox</h2><div class="card choice-guide">
+// card 內容單獨抽出，讓合併後的「選擇控制」規範頁沿用同一份，不複製一遍。
+export const choiceBody = () => `
   <p class="component-description">Radio 用於數個互斥選項擇一，Checkbox 用於可複選或單一開關。兩者都是控制在左、文案緊接在右，間距 8px，點文案即可切換。選項超過六個改用下拉。</p>
   <h3>狀態</h3>
   <div class="choice-guide-panel">
@@ -56,7 +57,9 @@ window.choiceControlsGuide = () => `<section class="component-example" id="choic
     <div><dt>卡片標題／說明</dt><dd>14px／600 與 12px #718096</dd></div>
   </dl>
   <p class="component-description">每組用 fieldset 加 legend 說明群組名稱，必填在 legend 後標記。Radio 一定要有預設值，不留全部未選；Checkbox 的「部分選取」只用於父階層，代表下層有部分勾選。錯誤不可只用顏色，必須附文字。選項卡片的已選狀態由 CSS <code>:has(input:checked)</code> 判斷，不依賴重新渲染；沿用的 is-selected class 仍然有效。</p>
-</div></section>`
+`
+
+window.choiceControlsGuide = () => `<section class="component-example" id="choice-controls-guide"><h2>選擇控制 Radio／Checkbox</h2><div class="card choice-guide">${choiceBody()}</div></section>`
 
 // indeterminate is a property, not an attribute, so it is applied after render.
 const applied = new WeakSet()

@@ -1,6 +1,7 @@
 // 移植：el-tabs／el-tab-pane（line=預設、card=type="card"）。tab-before-change → :before-leave。手機下拉、邊緣漸層、自動捲動 EP 沒有，需保留自製。詳見 ELEMENT-PLUS-MAPPING.md
 import { on } from './delegate.js'
 import './tabs.css'
+import { icon } from './icons.js'
 
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
 
@@ -17,7 +18,7 @@ export function tabs({ id, label, items, active, variant = 'line', mobile = 'scr
   const owns = item => (controls ? ` aria-controls="${esc(controls)}"` : panels ? ` aria-controls="${esc(id)}-panel-${esc(item.key)}"` : '')
   const tab = item => {
     const selected = item.key === current
-    return `<button type="button" role="tab" id="${esc(id)}-tab-${esc(item.key)}"${owns(item)} aria-selected="${selected}" tabindex="${selected ? 0 : -1}" data-tab-key="${esc(item.key)}" class="bo-tab${selected ? ' is-active' : ''}"${item.disabled ? ' disabled' : ''} ${item.attrs ?? ''}><span>${esc(item.label)}</span>${item.count == null ? '' : `<em class="bo-tab-count">${esc(item.count)}</em>`}${variant === 'workspace' && item.closable ? `<i class="bo-tab-close" data-tab-close="${esc(item.key)}" role="button" tabindex="-1" aria-label="關閉 ${esc(item.label)}">×</i>` : ''}</button>`
+    return `<button type="button" role="tab" id="${esc(id)}-tab-${esc(item.key)}"${owns(item)} aria-selected="${selected}" tabindex="${selected ? 0 : -1}" data-tab-key="${esc(item.key)}" class="bo-tab${selected ? ' is-active' : ''}"${item.disabled ? ' disabled' : ''} ${item.attrs ?? ''}><span>${esc(item.label)}</span>${item.count == null ? '' : `<em class="bo-tab-count">${esc(item.count)}</em>`}${variant === 'workspace' && item.closable ? `<i class="bo-tab-close" data-tab-close="${esc(item.key)}" role="button" tabindex="-1" aria-label="關閉 ${esc(item.label)}">${icon('close', 16)}</i>` : ''}</button>`
   }
   const option = item => `<option value="${esc(item.key)}"${item.key === current ? ' selected' : ''}${item.disabled ? ' disabled' : ''}>${esc(item.label)}${item.count == null ? '' : `（${esc(item.count)}）`}</option>`
   return `<div class="bo-tabs bo-tabs-${esc(variant)}" data-tabs="${esc(id)}" data-tabs-mobile="${esc(mobile)}">

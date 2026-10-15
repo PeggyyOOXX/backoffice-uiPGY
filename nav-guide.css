@@ -1,0 +1,17 @@
+/* 導覽規範頁。側欄示意的配色抄 base.css 的 nav-item 與 original-101best-active-gradient。 */
+.nav-demo-stage{max-width:300px;padding:10px;background:#10202B;border-color:#10202B}
+.nav-demo{display:flex;flex-direction:column;gap:2px}
+.nav-demo-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:6px;color:rgba(255,255,255,.78);font-size:14px}
+.nav-demo-item.is-l1 .icon:last-child{margin-left:auto;opacity:.55}
+.nav-demo-item.is-l2{padding-left:34px;font-size:13px;color:rgba(255,255,255,.62)}
+.nav-demo-item.is-active{background:linear-gradient(90deg,#4f7cff,#6b8cff);color:#fff;box-shadow:0 6px 18px rgba(42,83,190,.35)}
+
+/* 麵包屑：這是元件樣式本身，其他頁面要用就套 .crumb-demo 的結構 */
+.crumb-demo ol{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
+.crumb-demo li{display:flex;align-items:center;font-size:13px;color:#718096}
+.crumb-demo a{color:#1596AD;text-decoration:none}
+.crumb-demo a:hover{text-decoration:underline;text-underline-offset:3px}
+.crumb-demo [aria-current="page"]{color:var(--text)}
+
+.nav-guide-list{margin:0 0 12px;padding-left:18px}
+.nav-guide-list li{margin-bottom:4px;font-size:13px;line-height:1.7}

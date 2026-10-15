@@ -1,0 +1,17 @@
+/* 表格＋分頁的共用元件。表頭、內距、框線沿用 unified-table-system，
+   這裡只負責兩者合在一起的結構與分頁列的排版。 */
+.data-table{min-width:0}
+.page .data-table-grid{width:100%;border-collapse:collapse}
+.data-table-empty{text-align:center;color:#718096;padding:40px 16px}
+
+/* 分頁列：總筆數在左、每頁筆數接著、頁碼靠右 */
+.data-table-pagination{display:flex;align-items:center;flex-wrap:wrap;gap:12px 16px;margin-top:16px}
+.pagination-total{flex:none;white-space:nowrap;font-size:13px;color:#718096}
+.pagination-size{display:flex;flex:none;align-items:center;gap:8px;white-space:nowrap;font-size:13px;color:#718096}
+.pagination-size .guide-select{width:auto;min-width:72px}
+.data-table-pagination .pages{display:flex;align-items:center;gap:4px;margin-left:auto;flex-wrap:wrap}
+.page-gap{padding:0 4px;color:#A0AEC0;font-size:13px}
+
+@media(max-width:720px){
+  .data-table-pagination .pages{margin-left:0}
+}

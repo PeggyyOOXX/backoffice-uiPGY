@@ -1,6 +1,7 @@
 // 移植：el-table（正式後台為 CustomTable.vue）。表頭底色、字色、內距、框線改在 _element-ui.scss。詳見 ELEMENT-PLUS-MAPPING.md
 import { iconButton } from './icon-button.js'
 import './table-guide.css'
+import { icon } from './icons.js'
 
 const ROWS = [
   ['WD-260918-8821', 'david_lin', 'LV1', '120,000.00', '待審核', 'pending-b'],
@@ -31,7 +32,7 @@ window.tableGuide = () => `<section class="component-example" id="table-guide"><
   <p class="component-description">全站表格共用同一組外觀，以搜尋結果／會員列表為基準。彈窗內的表格套用同一組樣式。</p>
   <div class="table-guide-wrap"><table class="table-guide-sample">
     <thead><tr>${['轉點 ID','會員帳號','層級','轉點金額','狀態','操作'].map(label => `<th scope="col">${label}</th>`).join('')}</tr></thead>
-    <tbody>${ROWS.map(([id, account, level, amount, state, tone]) => `<tr><td>${id}</td><td>${account}</td><td>${level}</td><td>${amount}</td><td><span class="badge ${tone}">${state}</span></td><td><div class="icon-action-group" style="justify-content:center">${iconButton({ icon:'✎', label:`編輯 ${id}`, kind:'btn-edit' })}${iconButton({ icon:'◷', label:`檢視紀錄 ${id}`, kind:'btn-record' })}</div></td></tr>`).join('')}</tbody>
+    <tbody>${ROWS.map(([id, account, level, amount, state, tone]) => `<tr><td>${id}</td><td>${account}</td><td>${level}</td><td>${amount}</td><td><span class="badge ${tone}">${state}</span></td><td><div class="icon-action-group" style="justify-content:center">${iconButton({ icon:icon('edit'), label:`編輯 ${id}`, kind:'btn-edit' })}${iconButton({ icon:icon('loginRecord'), label:`檢視紀錄 ${id}`, kind:'btn-record' })}</div></td></tr>`).join('')}</tbody>
     <tfoot><tr><td colspan="3">合計（${ROWS.length} 筆）</td><td>248,500.00</td><td colspan="2"></td></tr></tfoot>
   </table></div>
   <dl>${TOKENS.map(([label, value]) => `<div><dt>${label}</dt><dd>${value}</dd></div>`).join('')}</dl>

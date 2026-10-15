@@ -9,7 +9,7 @@
 .choice-group{display:flex;flex-direction:column;gap:12px;border:0;padding:0;margin:0;min-width:0}
 .choice-group.is-inline{flex-direction:row;flex-wrap:wrap;gap:12px 24px}
 .choice-group>legend{padding:0;margin-bottom:8px;font-size:13px;font-weight:600}
-.choice-group[aria-invalid=true] .choice-control input{outline:2px solid #df5261;outline-offset:2px}
+.choice-group[aria-invalid=true] .choice-control input{outline:2px solid #dd3340;outline-offset:2px}
 .choice-card{display:flex;align-items:flex-start;gap:8px;min-width:0;padding:10px;border:1px solid #dce2eb;border-radius:9px;cursor:pointer}
 .choice-card:has(input:checked),.choice-card.is-selected{background:#f0fafb;border-color:#69b8c5}
 .choice-card:has(input:disabled){background:#f7f8fb;color:#98a2b3;cursor:not-allowed}

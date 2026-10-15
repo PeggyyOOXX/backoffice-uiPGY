@@ -1,20 +1,68 @@
 /* 捲動時 topbar 與工作區頁籤列都釘在捲動容器頂端，內容從兩者下方通過。
    必須排在 blue-framed-dashboard-theme 之後，該區塊把 topbar 改成
    position: relative，是先前標題會跟著捲走的原因。
-   桌機 topbar 高 60px（compact-density-override），手機已是 position: fixed 的 46px；
-   頁籤列的 top 偏移只在這裡定義，調整 topbar 高度時要一起改這一處。 */
+
+   這裡也負責「topbar 底線與側欄 logo 下方的分隔線接成同一條水平線」。
+   會對不齊是因為中間夾了一段位移：
+
+     側欄 brand 底線 = 0 + --brand-h
+     topbar 底線     = --main-gap-top + --topbar-h     ← .main 有上緣留白
+
+   所以 topbar 的高度不是等於 brand 的高度，而是要扣掉那段留白。
+   三個值綁在一起，改任何一個都會自動維持對齊，不要在別的檔案另寫
+   .brand 高度、.main 上緣留白、.topbar 高度或 .quick-tabs 的 top。 */
+
+/* --brand-h 與 .brand 的高度不放在 media query 內：側欄 logo 區在任何寬度下都是
+   同一個高度。先前把它收進桌機的區段，720px 以下就掉回主題檔的 84px，logo 區會變高。 */
+:root {
+  /* 側欄 logo 區的高度，也就是那條分隔線的位置 */
+  --brand-h: 64px;
+  /* workspace-top-gap-override 讓 .main 浮起來的上緣留白 */
+  --main-gap-top: 12px;
+  /* 扣掉留白之後，topbar 底線才會落在 --brand-h 上 */
+  --topbar-h: calc(var(--brand-h) - var(--main-gap-top));
+}
+
+/* logo 區是固定高度的容器，不受內容影響：
+   - flex: none      側欄是 flex column，沒有它會被下方的導覽清單擠扁
+   - overflow: hidden 任何超出的內容都裁掉，不把容器撐高
+   - box-sizing      padding 算在高度內
+   logo 圖片再怎麼換，最多只能撐到容器內緣。 */
+.brand {
+  height: var(--brand-h);
+  min-height: var(--brand-h);
+  max-height: var(--brand-h);
+  flex: none;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.brand-logo {
+  max-height: 100%;
+}
+
 @media (min-width: 721px) {
+  .main {
+    margin-top: var(--main-gap-top);
+    /* 先前是 height:100vh 配上 12px margin，整個盒子比視窗高 12px，
+       底部會被 .app 的 overflow:hidden 裁掉。扣掉留白才剛好。 */
+    height: calc(100vh - var(--main-gap-top));
+    min-height: calc(100vh - var(--main-gap-top));
+  }
   .topbar {
     position: sticky;
     top: 0;
+    height: var(--topbar-h);
     z-index: 20;
   }
   .quick-tabs {
     position: sticky;
-    top: 60px;
+    top: var(--topbar-h);
     z-index: 19;
   }
 }
+
+/* 手機版的 topbar 是 position: fixed 的 46px（mobile-wrapped-static-navigation-and-actions），
+   側欄是抽屜式的，不需要與 topbar 對齊。 */
 @media (max-width: 720px) {
   .quick-tabs {
     position: sticky;

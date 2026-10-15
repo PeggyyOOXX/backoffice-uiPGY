@@ -3,6 +3,7 @@ import { prepareModal } from './modal-system.js'
 import { emptyRow, emptyState } from './states.js'
 import './risk-audit.css'
 import { on } from './delegate.js'
+import { icon } from './icons.js'
 // 事件委派統一走 delegate.js：每種事件只掛一個 document 監聽，並登記擁有權。
 const OWNED = [".risk-review-notes textarea", "[data-risk-action]", "[data-risk-page]", "[data-risk-search]", "[data-risk-size]"]
 const listen = (type, handler, capture = false) => on(type, handler, { owner: 'risk-audit', claims: OWNED, capture })
@@ -48,7 +49,7 @@ function filtered() {
 const input = (key, label, placeholder='', extra='') => `<div class="filter-field"><label for="risk-filter-${key}">${label}</label><input id="risk-filter-${key}" class="control" name="${key}" value="${esc(draft[key])}" placeholder="${esc(placeholder)}" ${extra}></div>`
 const select = (key, label, options) => `<div class="filter-field"><label for="risk-filter-${key}">${label}</label><select id="risk-filter-${key}" class="control guide-select" name="${key}" aria-label="${label}">${options.map(value=>`<option ${draft[key]===value?'selected':''}>${esc(value)}</option>`).join('')}</select></div>`
 function searchMarkup() {
-  return `<button class="mobile-member-search-toggle" type="button" data-risk-action="toggle-search" aria-expanded="false" aria-controls="risk-search-panel"><span>⌕ 搜尋條件</span><span class="search-toggle-arrow" aria-hidden="true"></span></button><form id="risk-search-panel" class="source-filter card risk-search" data-risk-search><p class="settings-error">※可查詢60天內紀錄</p>
+  return `<button class="mobile-member-search-toggle" type="button" data-risk-action="toggle-search" aria-expanded="false" aria-controls="risk-search-panel"><span>${icon('search')}搜尋條件</span><span class="search-toggle-arrow" aria-hidden="true"></span></button><form id="risk-search-panel" class="source-filter card risk-search" data-risk-search><p class="settings-error">※可查詢60天內紀錄</p>
     <div class="source-filter-grid">
       ${select('branch','平台名稱',['101 BEST','DEMO03'])}
       <div class="filter-field filter-span-2"><label id="risk-date-label">申請時間</label><div class="date-range-host" data-date-range data-past-year="true" data-start="${esc(draft.start)}" data-end="${esc(draft.end)}" ${!draft.start?'data-empty="true"':''} aria-labelledby="risk-date-label"></div></div>
@@ -58,7 +59,7 @@ function searchMarkup() {
       ${input('order','轉點 ID','請輸入轉點 ID','maxlength="100"')}
       <div class="filter-field filter-span-2 amount-range-field"><label for="risk-min">轉點金額</label><div class="amount-range-control"><input id="risk-min" class="control amount" name="min" type="number" min="0" step="0.01" value="${esc(draft.min)}" placeholder="最低" aria-label="最低轉點金額"><span>～</span><input class="control amount" name="max" type="number" min="0" step="0.01" value="${esc(draft.max)}" placeholder="最高" aria-label="最高轉點金額"></div></div>
       ${input('account','轉點帳號','請輸入帳號／地址')}${input('ip','IP 地址','請輸入 IP 地址')}${input('device','設備指紋','請輸入設備指紋')}
-      <div class="source-filter-actions">${action('<span>↺</span> 重設','btn-neutral','reset')}<button type="submit" class="semantic-btn btn-search"><span>⌕</span> 搜尋</button></div>
+      <div class="source-filter-actions">${action(`${icon('reset')}重設`,'btn-neutral','reset')}<button type="submit" class="semantic-btn btn-search">${icon('search')}搜尋</button></div>
     </div>
     <p class="settings-error" data-risk-search-error role="alert"></p>
     <div class="settings-row risk-refresh-row"><button id="risk-refresh-label-control" type="button" class="standard-switch" role="switch" aria-labelledby="risk-refresh-label" aria-checked="${autoRefresh}" data-risk-action="auto"></button><div><label for="risk-refresh-label-control" id="risk-refresh-label">自動刷新</label><span class="risk-refresh-count" data-risk-countdown ${!autoRefresh?'hidden':''}>${countdown} 秒後刷新</span></div></div>
@@ -99,7 +100,7 @@ function listMarkup() {
         <td>${link(row.id,'details',row.id)}</td><td>${row.time}</td><td>${link(row.uid,'member',row.id)}</td><td>${row.account}<br><span class="risk-secondary">${row.name}</span></td><td>${row.agent}</td><td><span class="risk-level risk-level-${row.level.slice(-1)}"></span>${row.level}</td><td>${row.bank}</td>
         <td><span class="badge ${row.audit==='通過'?'active-b':'risk-b'}">${row.audit}</span></td><td>${link(money(row.fee),'audit',row.id)}</td><td>${money(row.amount)}</td><td>${money(row.before)}</td><td>${money(row.after)}</td><td><span class="badge ${row.operator?'active-b':'pending-b'}">${rowState(row)}</span></td><td>${row.ip}</td><td>${row.fingerprint}</td><td>${row.browser}</td><td class="risk-fixed">${controls(row)}</td>
       </tr>`).join('')||emptyRow(17,{kind:'empty'})}</tbody></table></div>${cardsMarkup(current)}
-    <div class="pagination"><span class="pagination-total">共 ${list.length} 筆</span><select class="page-size-select guide-select" data-risk-size aria-label="每頁筆數">${[10,20,50,100].map(n=>`<option value="${n}" ${pageSize===n?'selected':''}>${n} 筆／頁</option>`).join('')}</select><div class="pages">${pageButton('‹',page-1,page===1,'上一頁')}${Array.from({length:pages},(_,i)=>pageButton(i+1,i+1,false,`第 ${i+1} 頁`)).join('')}${pageButton('›',page+1,page===pages,'下一頁')}</div></div>
+    <div class="pagination"><span class="pagination-total">共 ${list.length} 筆</span><select class="page-size-select guide-select" data-risk-size aria-label="每頁筆數">${[10,20,50,100].map(n=>`<option value="${n}" ${pageSize===n?'selected':''}>${n} 筆／頁</option>`).join('')}</select><div class="pages">${pageButton(icon('arrowLeft'),page-1,page===1,'上一頁')}${Array.from({length:pages},(_,i)=>pageButton(i+1,i+1,false,`第 ${i+1} 頁`)).join('')}${pageButton(icon('arrowRight'),page+1,page===pages,'下一頁')}</div></div>
   </div>`
 }
 function pageButton(label,value,disabled,aria) { return `<button type="button" class="page-btn ${label===page?'active':''}" data-risk-page="${value}" ${label===page?'aria-current="page"':''} ${disabled?'disabled':''} aria-label="${aria}">${label}</button>` }

@@ -1,5 +1,5 @@
 // 移植：el-table-column 的 sortable 與 @sort-change。EP 同為雙箭頭三態，但顏色與尺寸需覆寫。詳見 ELEMENT-PLUS-MAPPING.md
-﻿import './table-sort.css'
+import './table-sort.css'
 import { on } from './delegate.js'
 // 事件委派統一走 delegate.js：每種事件只掛一個 document 監聽，並登記擁有權。
 const OWNED = ["[data-sort-demo]"]

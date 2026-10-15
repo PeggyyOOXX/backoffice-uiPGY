@@ -1,0 +1,64 @@
+/* 訊息提示規範頁。版面結構而已——Toast 本身的配色、尺寸與動畫都在 message.css。
+   卡片內距、標題節奏、code 樣式比照 tabs-guide.css 與 state-guide.css。 */
+.message-guide{padding:16px}
+.message-guide>.component-description{margin:0 0 12px}
+
+.message-guide-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-start}
+.message-guide-actions .semantic-btn{display:inline-flex;align-items:center}
+
+/* 示範表格寬度交給容器，不用全站表格的 920px 最小寬。 */
+.page .message-guide-table{min-width:560px;table-layout:fixed}
+.page .message-guide-table td{text-align:left}
+.page .message-when-table td:first-child{width:30%}
+.page .message-when-table td:nth-child(2){width:24%}
+
+/* 四種型別 */
+.message-type-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(248px,1fr));gap:16px}
+.message-type-grid>div{border:1px solid var(--line);border-radius:8px;padding:14px;min-width:0;border-left-width:3px}
+.message-type-grid>div.is-success{border-left-color:#20A05A}
+.message-type-grid>div.is-info{border-left-color:#1596AD}
+.message-type-grid>div.is-warning{border-left-color:#D97318}
+.message-type-grid>div.is-error{border-left-color:#DD3340}
+.message-type-card h4{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#10202b}
+.message-type-card.is-success h4{color:#20A05A}
+.message-type-card.is-info h4{color:#1596AD}
+.message-type-card.is-warning h4{color:#D97318}
+.message-type-card.is-error h4{color:#DD3340}
+.message-type-card h4 code{margin-left:auto;font-weight:400}
+.message-type-card dl{display:flex;flex-wrap:wrap;gap:4px 16px;margin:0 0 10px}
+.message-type-card dl div{display:flex;gap:6px;align-items:baseline}
+.message-type-card dt{font-size:11px;color:#718096}
+.message-type-card dd{margin:0;font-size:12px}
+.message-type-card p{margin:0;font-size:12px;line-height:1.7;color:#718096}
+
+/* 文案對照 */
+.message-copy-compare{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.message-copy-compare>div{border:1px solid var(--line);border-radius:8px;padding:14px;min-width:0}
+.message-copy-compare h4{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#10202b}
+.message-copy-compare>.is-bad{border-color:rgba(221,51,64,.3);background:rgba(221,51,64,.05)}
+.message-copy-compare>.is-bad h4{color:#DD3340}
+.message-copy-compare>.is-good{border-color:rgba(32,160,90,.3);background:rgba(32,160,90,.05)}
+.message-copy-compare>.is-good h4{color:#20A05A}
+.message-copy-compare ul{margin:0 0 10px;padding-left:18px}
+.message-copy-compare li{margin-bottom:4px;font-size:13px}
+.message-copy-compare p{margin:0;font-size:12px;line-height:1.7;color:#718096}
+
+.message-guide-code{margin:0;padding:12px;border:1px solid var(--line);border-radius:8px;background:#f7f8fb;overflow-x:auto}
+.message-guide-code code{font-size:12px;line-height:1.8;white-space:pre;padding:0;background:none}
+
+.message-guide-page code{font-size:12px;padding:1px 5px;border-radius:4px;background:#f1f4f8;color:#10707f;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.message-token{margin-bottom:0}
+
+@media(max-width:720px){
+  .message-guide{padding:12px}
+  .message-guide-actions .semantic-btn{flex:1 1 calc(50% - 4px)}
+}
+
+/* 行內警示：區塊層級的常駐提醒。這是元件樣式本身，其他頁面要用就套 .bo-alert。
+   顏色同樣取自「按鈕 Button」已定義的語意色，背景疊在白底上維持實色。 */
+.bo-alert{display:flex;align-items:flex-start;gap:8px;padding:10px 12px;border:1px solid;border-radius:4px;font-size:13px;line-height:1.6}
+.bo-alert+.bo-alert{margin-top:8px}
+.bo-alert-icon{display:flex;flex:none;padding-top:1px}
+.bo-alert.is-warning{color:#D97318;background:linear-gradient(rgba(217,115,24,.07),rgba(217,115,24,.07)),#fff;border-color:rgba(217,115,24,.3)}
+.bo-alert.is-info{color:#1596AD;background:linear-gradient(rgba(21,150,173,.07),rgba(21,150,173,.07)),#fff;border-color:rgba(21,150,173,.3)}
+.bo-alert.is-danger{color:#DD3340;background:linear-gradient(rgba(221,51,64,.07),rgba(221,51,64,.07)),#fff;border-color:rgba(221,51,64,.3)}

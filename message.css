@@ -1,0 +1,78 @@
+/* Toast。位置與堆疊方向比照 ElMessage（上方置中、由上往下疊），配色沿用語意色。 */
+
+.bo-message-list{
+  /* popover 的 UA 預設樣式要整組清掉，否則會變成置中的白框 */
+  position: fixed;
+  inset: auto;
+  top: 16px;
+  left: 50%;
+  translate: -50% 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  overflow: visible;
+  width: auto;
+  max-width: min(520px, calc(100vw - 32px));
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none; /* 空白處不擋住底下的操作 */
+}
+.bo-message-list:not(:popover-open):not(.is-fallback){display:none}
+/* 沒有 popover 支援時退回 z-index：蓋得過一般內容，蓋不過 <dialog>.showModal() */
+.bo-message-list.is-fallback{z-index:2000}
+
+.bo-message{
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+  padding:10px 12px;
+  border:1px solid;
+  border-radius:4px;
+  background:#fff;
+  box-shadow:0 6px 20px rgba(23,35,59,.12);
+  font-size:14px;
+  line-height:1.45;
+  pointer-events:auto;
+  opacity:0;
+  translate:0 -8px;
+  transition:opacity .2s,translate .2s;
+}
+.bo-message.is-in{opacity:1;translate:0 0}
+.bo-message.is-leaving{opacity:0;translate:0 -8px}
+
+.bo-message-icon{display:flex;flex:none;padding-top:1px}
+.bo-message-text{flex:1;min-width:0;overflow-wrap:anywhere}
+.bo-message-count{flex:none;align-self:center;font-style:normal;font-size:12px;font-weight:700;opacity:.7}
+.bo-message-close{
+  flex:none;display:flex;align-items:center;justify-content:center;
+  width:20px;height:20px;margin:-1px -4px 0 0;padding:0;
+  border:0;border-radius:4px;background:none;color:inherit;cursor:pointer;opacity:.6;
+}
+.bo-message-close:hover{opacity:1;background:rgba(23,35,59,.08)}
+.bo-message-close:focus-visible{outline:none;opacity:1;box-shadow:0 0 0 2px currentColor}
+
+/* 語意色取自「按鈕 Button」已定義的那一組，不另訂配色：
+   success #20A05A（btn-export）  info #1596AD（btn-search）
+   warning #D97318（btn-warning） error #DD3340（btn-danger）
+   底色與框線用同一個色碼疊透明度算出來，不必再維護一組淺色值。 */
+/* 背景必須是實色：Toast 浮在內容之上，半透明會透出底下的文字而讀不清楚。
+   先前只寫 rgba() 會把上面那條 background:#fff 整個蓋掉，白底就沒了。
+   這裡疊兩層——上層是語意色的淡色調，下層是不透明的白——結果是實色，
+   但色調仍然從同一個語意色算出來，改色票時不必手動重算十六進位值。 */
+.bo-message.is-success{color:#20A05A;background:linear-gradient(rgba(32,160,90,.07),rgba(32,160,90,.07)),#fff;border-color:rgba(32,160,90,.3)}
+.bo-message.is-info{color:#1596AD;background:linear-gradient(rgba(21,150,173,.07),rgba(21,150,173,.07)),#fff;border-color:rgba(21,150,173,.3)}
+.bo-message.is-warning{color:#D97318;background:linear-gradient(rgba(217,115,24,.07),rgba(217,115,24,.07)),#fff;border-color:rgba(217,115,24,.3)}
+.bo-message.is-error{color:#DD3340;background:linear-gradient(rgba(221,51,64,.07),rgba(221,51,64,.07)),#fff;border-color:rgba(221,51,64,.3)}
+
+/* 只給螢幕報讀器的播報區 */
+.bo-message-live{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+
+@media(max-width:720px){
+  .bo-message-list{top:8px;max-width:calc(100vw - 16px)}
+}
+@media(prefers-reduced-motion:reduce){
+  .bo-message{transition:none;opacity:1;translate:0 0}
+  .bo-message.is-leaving{opacity:0}
+}

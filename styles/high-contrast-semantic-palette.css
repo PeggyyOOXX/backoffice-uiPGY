@@ -13,20 +13,20 @@
 }
 .btn-record,
 .row-actions button.btn-record {
-  background: #bd7138 !important;
-  border-color: #bd7138 !important;
+  background: #683d27 !important;
+  border-color: #683d27 !important;
 }
 .btn-export {
   background: #536579 !important;
   border-color: #536579 !important;
 }
 .btn-warning {
-  background: #d99a18 !important;
-  border-color: #d99a18 !important;
+  background: #d97318 !important;
+  border-color: #d97318 !important;
 }
 .btn-danger {
-  background: #df5261 !important;
-  border-color: #df5261 !important;
+  background: #dd3340 !important;
+  border-color: #dd3340 !important;
 }
 .btn-neutral {
   background: #87919e !important;
@@ -42,7 +42,7 @@
   --button-color: #3f6fe5;
 }
 .btn-record.outline {
-  --button-color: #bd7138;
+  --button-color: #683d27;
 }
 .btn-export.outline {
   --button-color: #536579;
@@ -51,7 +51,7 @@
   --button-color: #c88a0e;
 }
 .btn-danger.outline {
-  --button-color: #df5261;
+  --button-color: #dd3340;
 }
 .btn-neutral.outline {
   --button-color: #77828f;

@@ -1,0 +1,13 @@
+/* 圖示的基礎規則。正式後台的 .svg-icon 目前沒有任何 CSS，缺的就是這一條——
+   沒有它，尺寸只能靠每個呼叫點自己寫，最後會長出七種大小。詳見 ICON-SYSTEM.md 第二節。 */
+.icon{
+  flex:none;                 /* 在 flex 容器裡不被壓扁 */
+  display:inline-block;
+  vertical-align:-.125em;    /* 與相鄰文字的基線對齊 */
+  stroke:currentColor;       /* 顏色一律由父層的 color 決定 */
+  fill:none;
+}
+
+/* 圖示與文字並排時的固定間距。按鈕、側欄、狀態列共用，不在各自的 CSS 重寫。 */
+.semantic-btn .icon,.primary .icon,.secondary .icon,.action .icon,.page-btn .icon{margin-right:6px}
+.semantic-btn.icon-action .icon,.icon-btn .icon,.page-btn.is-icon-only .icon{margin-right:0}

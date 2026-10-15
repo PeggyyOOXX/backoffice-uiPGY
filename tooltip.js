@@ -58,6 +58,8 @@ function show(trigger) {
   panel.textContent = text
   panel.hidden = false
   current = trigger
+  // 預設上方：滑鼠就停在觸發元素上，提示放下面會被游標（觸控則是手指）擋住。
+  // 有特殊需求再用 data-tooltip-placement 指定；空間不足時仍會自動翻面。
   place(trigger, trigger.dataset.tooltipPlacement || 'top')
   panel.classList.add('is-open')
   trigger.setAttribute('aria-describedby', 'bo-tooltip')
@@ -90,13 +92,14 @@ listen('keydown', event => { if (event.key === 'Escape') hide() })
 addEventListener('scroll', () => { if (current) hide() }, true)
 addEventListener('resize', hide)
 
+// 預設 top，所以預設值不輸出 data-tooltip-placement——省下全站每顆圖示按鈕一個屬性。
 export const tooltipAttrs = (text, placement = 'top') =>
   text ? `data-tooltip="${esc(text)}"${placement === 'top' ? '' : ` data-tooltip-placement="${placement}"`}` : ''
 
 window.tooltipGuide = () => `<section class="component-example" id="tooltip-guide"><h2>提示氣泡 Tooltip</h2><div class="card tooltip-guide">
-  <p class="component-description">補充說明用，不承載必要資訊。滑鼠移入或鍵盤聚焦後 150 毫秒顯示，移開、按 Esc 或捲動即關閉。</p>
+  <p class="component-description">補充說明用，不承載必要資訊。滑鼠移入或鍵盤聚焦後 150 毫秒顯示，移開、按 Esc 或捲動即關閉。<strong>預設顯示在上方</strong>（滑鼠停在元素上，放下面會被游標擋住），有特殊需求才用 <code>data-tooltip-placement</code> 指定其他方向；空間不足時自動翻面。</p>
   <div class="tooltip-guide-row">
-    ${['top','bottom','left','right'].map(placement => `<button type="button" class="semantic-btn btn-neutral outline" data-tooltip="放在${{top:'上',bottom:'下',left:'左',right:'右'}[placement]}方" data-tooltip-placement="${placement}">${{top:'上',bottom:'下',left:'左',right:'右'}[placement]}方</button>`).join('')}
+    ${['top','bottom','left','right'].map(placement => `<button type="button" class="semantic-btn btn-neutral outline" data-tooltip="放在${{top:'上',bottom:'下',left:'左',right:'右'}[placement]}方"${placement === 'top' ? '' : ` data-tooltip-placement="${placement}"`}>${{top:'上',bottom:'下',left:'左',right:'右'}[placement]}方${placement === 'top' ? '（預設）' : ''}</button>`).join('')}
     <span class="bo-tooltip is-open tooltip-guide-static" data-placement="top">示意：這是提示文字</span>
   </div>
   <div class="tooltip-guide-row">
@@ -112,5 +115,5 @@ window.tooltipGuide = () => `<section class="component-example" id="tooltip-guid
     <div><dt>與觸發元件間距</dt><dd>8px，含箭頭</dd></div>
     <div><dt>延遲</dt><dd>顯示 150ms，關閉不延遲</dd></div>
   </dl>
-  <p class="component-description">寫法：在元素加 <code>data-tooltip="說明文字"</code>，方向用 <code>data-tooltip-placement</code>（top／bottom／left／right，預設 top，空間不足時自動翻面）。提示開啟時會掛上 aria-describedby，讀屏軟體讀得到。停用的按鈕不會觸發滑鼠事件，請把 data-tooltip 放在外層容器。</p>
+  <p class="component-description">寫法：在元素加 <code>data-tooltip="說明文字"</code>，方向用 <code>data-tooltip-placement</code>（top／bottom／left／right，<strong>預設 top</strong>，空間不足時自動翻面）。提示開啟時會掛上 aria-describedby，讀屏軟體讀得到。停用的按鈕不會觸發滑鼠事件，請把 data-tooltip 放在外層容器。</p>
 </div></section>`

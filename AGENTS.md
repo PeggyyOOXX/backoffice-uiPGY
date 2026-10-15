@@ -25,8 +25,12 @@
 - 唯讀內容放不進抽屜寬度時，改用卡片或 risk-detail-grid 的兩欄定義列表呈現，不得在抽屜內塞需要橫向捲動的寬表格。稽核詳情即依此改為每筆一張卡片。
 
 - Radio 與 Checkbox 一律使用 choice-controls.js 的 choice-control：input 16 × 16px、accent-color #1596AD，控制在左、文案緊接在右間距 8px，文案 14px／400 不加粗，整組以 fieldset＋legend 包覆。直排間距 12px，橫排 12px × 24px 且僅限短選項不超過四個。不得自訂勾選外觀或改用圖片取代原生控制。
-- 提示文字一律使用 tooltip.js：在元素加 data-tooltip，方向以 data-tooltip-placement 指定（預設 top，空間不足自動翻面）。Tooltip 只放補充說明，不得承載必要資訊。停用按鈕不觸發滑鼠事件，data-tooltip 必須掛在外層容器（icon-button.js 的 iconButton 已處理）。
+- 提示文字一律使用 tooltip.js：在元素加 data-tooltip，方向以 data-tooltip-placement 指定（預設 top，空間不足自動翻面）；滑鼠停在觸發元素上，提示放下方會被游標或手指擋住，有特殊需求才改成其他方向。Tooltip 只放補充說明，不得承載必要資訊。停用按鈕不觸發滑鼠事件，data-tooltip 必須掛在外層容器（icon-button.js 的 iconButton 已處理）。
 - 純圖示操作一律使用 icon-button.js 的 iconButton：semantic-btn 語意色＋icon-action，34 × 34px（觸控 44 × 44px）、圓角 4px、圖示 16px。必須同時有 aria-label 與相同文字的 Tooltip；同一列最多三顆，停用時以提示說明原因。不得為圖示按鈕新增配色或尺寸。
+- 圖示一律使用 icons.js 的 `icon(name, size)`，來源為 Lucide（ISC）。名稱必須在 build-icons.cjs 的 `ALLOWLIST` 上——Lucide 有 1940 個圖示，本專案只開放清單上那些，要用新的先加進清單再跑 `node build-icons.cjs`。清單外的名稱 `icon()` 會在主控台警告並不畫。不得使用文字字元（✎ ◷ ⇩ ＋ ↻ × 這類）當圖示，也不得在頁面自行拼 `<svg>` 或引入圖示字型。完整清單見側欄「圖示系統」頁，決策與正式後台的落地方式見 ICON-SYSTEM.md。
+- 圖示只有三個尺寸：16px（表格操作欄、工具列按鈕內、輸入框尾綴）、20px（側欄導覽、頁首、狀態標記）、24px（空狀態插圖）。線寬由 `icon()` 依尺寸補償（2 / 2.25 / 2.5），不得自行覆寫 `stroke-width`——Lucide 的預設 2 是為 24px 畫的，直接縮到 16px 實際線寬只剩 1.33px 會糊。顏色一律 `currentColor`，由父層的 `color` 決定，SVG 內不得出現色碼。
+- index.html 的 inline script 是 classic script，不能 import `icon()`，一律改寫 `<span data-icon="edit" data-icon-size="16">` 空殼，由 icons.js 的 `hydrate()` 補上；該檔內的樣板字串用 `iconHtml(name, size)` 產生同樣的空殼。module 內部則直接呼叫 `icon()`，不要用 data-icon。
+- 圖示不單獨表達語意：純圖示按鈕必須同時有 aria-label 與同文字的 Tooltip，`icon()` 產生的 `<svg>` 一律帶 `aria-hidden="true"` 與 `focusable="false"`。改動圖示系統後跑 `node icon-check.cjs` 回歸。
 - 表格加直向分隔線：th 右側 1px var(--line)，td 右側 1px #EDF0F4，每列最後一格不加。整列 hover 底色 #F1F8FA；有自訂底色的固定欄（如審核頁的 risk-fixed）必須一併套用 hover 底色，否則整列會斷開。
 
 - 下拉選單一律使用 select.js 的共用 Select 與 select.css：頁面只寫原生 `<select>`，變化以屬性宣告（`multiple`、`data-collapse`、`data-max`、`data-select-all`、`data-filterable`、`data-min-filter`、`data-clearable`、`data-loading`、`data-wrap`、`<optgroup>`）。不得在頁面自行掛載 Element Plus 下拉，也不得覆寫下拉的尺寸、圓角、配色與選項列高。
@@ -45,8 +49,17 @@
 - 請求失敗時表格不得顯示「無資料」，必須用 errorState() 直接輸出 toast 的字串：錯誤碼加敘述、同一行、不拆成標題與說明。兩者都來自後端的固定錯誤碼翻譯字典（請求帶 Language 標頭，敘述已是當前語系），前端不另外寫文案；後端連訊息都沒回時才退回 API request failed，與 useApi 最終分支相同。只放 code 與 message，不得放 ApiErrorResponse 的 debug（型別為 any，可能帶出內部路徑或查詢內容，而表格的錯誤會留在畫面上並被截圖轉傳）。所有後端字串一律轉義後輸出。
 - 不做「無權限」狀態畫面：正式後台的 Side.vue 已把側欄過濾成只剩有 .read 權限的項目，沒權限的頁面進不去；真要防書籤或權限即時收回，應在 router guard 導回首頁，不是在表格裡放空狀態。
 - 搜尋結果列表內不放任何操作按鈕。狀態區只呈現狀況與原因；重新查詢、清除搜尋條件、新增、重新載入一律放在表格外的列表工具列，位置不隨狀態改變。emptyState() 與 errorState() 都不接受 action。
-- 上方 topbar 與工作區頁籤列固定在捲動容器頂端（sticky，topbar top:0／頁籤列 top:60px，手機 46px，偏移統一定義在 styles/sticky-topbar-and-workspace-tabs.css），內容從兩者下方通過。不得讓它們隨內容捲走。
+- 操作結果的回報一律使用 message.js 的 `message.success／info／warning／error`，不得自行做 toast 或改用 alert。四種型別的停留與可關閉由 message.js 統一決定（成功與一般 3 秒不可關、警告 4 秒可關、錯誤 5 秒可關），個別頁面不得覆寫；需要常駐的訊息代表它不該是 Toast。完整規範見側欄「訊息提示」頁與 MESSAGE-SYSTEM.md。
+- 層級不可混用：操作成功與請求失敗用 Toast；欄位級錯誤用行內錯誤文字（Toast 會消失，使用者回頭找不到是哪一格）；刪除、停用、放棄未儲存變更等需要使用者做決定的用彈窗；整個區塊沒資料或載入失敗用 states.js 的狀態區。判準是「訊息消失後使用者還需不需要它」，需要就不是 Toast。
+- Toast 文案一律「動詞＋受詞」，一行 40 字以內：寫「已停用會員 MB-009821」，不得只寫「成功」或「操作成功」。錯誤訊息為代碼加敘述、同一行，與 errorState() 的格式一致，且只放後端的 code 與 message——**不得放 ApiErrorResponse 的 debug**，型別是 any 且 Toast 會被截圖轉傳。所有後端字串一律轉義後輸出。
+- API 錯誤由共用的請求層統一發 Toast，頁面不得再自己 catch 報一次，否則同一個錯誤會出現兩則。正式後台對應 useApi.ts 的四個分支，見 MESSAGE-SYSTEM.md 第二節。
+- 相同型別加相同文案的訊息只累加計數，不疊成一排；同時最多顯示 5 則，超過移除最舊的。這兩項由 message.js 處理，移植到 Element Plus 時要補上 `grouping: true`（EP 預設是 false）。改動訊息系統後跑 `node message-check.cjs` 回歸。
+- 上方 topbar 與工作區頁籤列固定在捲動容器頂端（sticky，topbar top:0／頁籤列 top 等於 topbar 高度，手機 46px），內容從兩者下方通過。不得讓它們隨內容捲走。桌機 topbar 的高度與頁籤列的偏移共用 styles/sticky-topbar-and-workspace-tabs.css 的 --topbar-h，只在那一處定義，不得在別的檔案另寫 .topbar 高度或 .quick-tabs 的 top。側欄 logo 區（.brand）的高度固定為 --brand-h（64px），在所有寬度下都一樣，且帶 min-height／max-height／flex: none／overflow: hidden——不論下方導覽有多少項目、logo 圖片換成什麼尺寸，這一塊的高度都不得改變。--brand-h、--main-gap-top 與 .brand 的高度都不可放進 @media 內。topbar 高度不是等於 --brand-h，而是 calc(--brand-h - --main-gap-top)，因為 .main 有上緣留白會把 topbar 整個往下推；扣掉之後 topbar 底線才會與側欄 logo 下方的分隔線接成同一條水平線。改動後跑 node layout-check.cjs 驗證。
 
+- 一個元件只能有一頁規範。不得在別的規範頁自己再畫一套——兩邊樣式會不一樣，看的人不知道該照哪一個（Input 頁先前自己畫了 Radio／Checkbox／Switch／下拉／上傳／富文字，與各自的規範頁並存且寫法不同，已移除）。「使用」共用元件不算重複：分頁含每頁筆數的下拉、上傳失敗用 Toast 回報都是正確做法，但要列進 dup-check.cjs 的 ALLOWED 並寫明理由。改動後跑 node dup-check.cjs。
+- 元件規範一律一元件一頁，用 guide-page.js 的 guidePage() 產生，不得把多個元件串在同一頁。側欄是單一平鋪清單，不放分類標題；項目順序依 Element Plus 的五個分類排列——基礎、表單、資料展示、導覽、回饋，之後接組合範例與頁面示範——這樣 ELEMENT-PLUS-MAPPING.md 可以一對一查表。新增元件時先決定它屬於哪一類，再插進該類的區段內，不要接在清單最後。
+- 規範頁的骨架固定：外層 .style-guide、標題在 .guide-section-heading > h2、每個區塊是 section.card 並掛上提供內距的 class（.card 本身沒有內距）、卡片內的小節一律 h3、結尾依序是 token-table 的「共用規格」與 guide-rules 的「使用規則」。兩個收尾區塊不可省。改動後跑 node render-check.cjs 與 node nav-check.cjs 回歸。
+- Switch、Radio、Checkbox 共用同一頁「選擇控制」，因為它們是同一個決策：改了要不要再按儲存、選項互不互斥。Switch 代表立即生效，旁邊不放確定按鈕；需要按儲存才生效的開關一律用 Checkbox；複選不得用多個 Switch 排成一列。
 - CSS 不再寫在 index.html。shell 樣式全部在 `styles/`，載入順序由 `styles/index.css` 的 `@import` 決定，後面覆寫前面；調整順序等同調整層疊優先序。新增 shell 樣式前先查 `styles/README.md` 的「被多處覆寫的選擇器」，改既有檔案，不要再開新區塊疊上去。元件自己的 CSS 由各模組 import，排在 shell 樣式之後。
 - 全域事件一律透過 `delegate.js` 的 `on()` 註冊，不得直接呼叫 `document.addEventListener`。每筆註冊要寫 `owner` 與它負責的 selector（`claims`）；兩個模組宣告同一個 selector 時主控台會警告。主控台輸入 `delegateRegistry()` 可列出目前的擁有權清單。
 - 每個手刻模組的第一行要註明移植時對應的 Element Plus 元件，完整對照見 `ELEMENT-PLUS-MAPPING.md`。正式後台以 Element Plus 為主，手刻只在 EP 沒有對應時保留。

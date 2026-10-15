@@ -52,12 +52,13 @@
 | `table-sort.js` | `el-table-column` `sortable` + `@sort-change` | `CustomTable.vue` | EP 預設也是雙箭頭三態循環，**顏色與尺寸要覆寫**成規範的灰／主題綠 |
 | `unified-table-system` | `el-table` | `CustomTable.vue` | 表頭底色、字色、內距、框線全部改在 `_element-ui.scss` |
 | 開關排列 Switch | `el-switch` | `CustomSwitch.vue` | 42×24px 要覆寫 EP 預設尺寸；文案字重 400 |
-| 分頁 | `el-pagination` | `Pagination.vue` | 已有 10／20／50／100，符合規範 |
+| 表格＋分頁 | `el-table` + `el-pagination` | `CustomTable.vue` + `Pagination.vue` | **原型合成一個元件** `dataTable()`：53 個用到分頁的 view，53 個都搭配 CustomTable，分頁從未單獨出現。正式後台可考慮把 Pagination 收進 CustomTable，頁面就不必各自兜。每頁筆數 10／20／50／100 兩邊一致 |
 | 步驟導覽 | `el-steps` / `el-step` | `StepLine.vue`（自製 SVG） | 建議改用 `el-steps`，省掉自製的 line/lineActive 圖 |
-| Toast | `ElMessage` | 全站 82 處已在用 | **目前只有 2 處指定 type**，其餘都是預設；需補 success／warning／error 分級 |
+| Toast | `ElMessage` | 全站 **189 處**已在用 | 分級已齊（success 164／error 17／warning 6／物件寫法 2），問題在**文案**：164 則成功裡有 149 則是同一句 `t("success")`。另需補 `grouping: true`、依型別的 `duration` 與 `showClose`、常駐 live region。見 `MESSAGE-SYSTEM.md` |
 | 圖片上傳 | `el-upload` | 16 個 view 已在用 | 搭配 `useImageUploadRule` 的每功能像素規則 |
-| 批量開關方案 B | `el-dropdown` | 無 | 表頭的批量選單 |
+| 批量開關方案 B | `el-dropdown` | 無（全站 0 處） | 表頭的批量選單。正式後台沒有任何 el-dropdown，el-popover 的 15 處全在 Header.vue 做資訊提示，不是動作選單。原型因此**不另立下拉按鈕規範**；若最後選定方案 B，移植時再評估要不要引入 |
 | 權限矩陣 | `el-table` + `el-checkbox` | 無 | 群組列用 `indeterminate` |
+| 圖示 | **不是 EP 元件**，沿用既有 `SvgIcon.vue` + `vite-plugin-svg-icons` | `SvgIcon.vue`、120 個 SVG | 架構不動，來源改用 Lucide；EP 內建的 22 個圖示另以 alias shim 攔截，見下方「圖示來源的例外」與 `ICON-SYSTEM.md` |
 
 ### Tabs
 
@@ -94,6 +95,38 @@
 2. **變數不夠才寫選擇器**，統一寫在 `_element-ui.scss`，不要散到 view。
 3. **避免 `!important`**。該檔目前有 26 處，多數是局部覆寫打架造成的；新增覆寫前先確認是不是變數沒設好。
 4. **尺寸類覆寫集中管理**：按鈕 34px／圓角 4px、輸入 34px／圓角 7px、開關 42×24、圖示按鈕 34×34（觸控 44×44）、頁籤 36px。這些在原型的各「共用規格」表都有完整數值。
+
+### 圖示來源的例外
+
+本文件第三節的原則是「**EP 有的就用 EP**」。圖示是**明文例外**：來源用 Lucide，不用 `@element-plus/icons-vue`。
+
+理由：
+
+1. **貼切度**。EP 的 293 個要湊滿後台的業務概念得靠隱喻硬套——幸運轉盤只能用 `MagicStick`、捕魚機只能用 `Food`、存款限額與邀請進度共用 `Odometer`。Lucide 有 `dices`、`fish`、`gauge`。（**不是因為數量**：70 個業務概念兩套都是 100% 覆蓋，實測見 `ICON-SYSTEM.md` 第九節。）
+2. **風格統一**。全站線條一致，包含下拉箭頭與表頭排序雙箭頭。
+
+代價是 EP 元件內部會自己畫的 22 個圖示必須一起換，否則線條與實心並存，比不換還不統一。這些元件多半沒有可覆寫的 prop：
+
+| 元件 | 可覆寫的 prop |
+| --- | --- |
+| `el-select` | `suffixIcon` `clearIcon` |
+| `el-input` | `prefixIcon` `suffixIcon` `clearIcon` |
+| `el-date-picker` | `prefixIcon` `clearIcon` |
+| `el-pagination` | `prevIcon` `nextIcon` |
+| `el-dialog` | `closeIcon` |
+| `el-switch` | `activeIcon` `inactiveIcon` |
+| `el-table` `el-upload` `el-tag` `el-alert` `el-collapse` `ElMessage` | **無** |
+
+所以不逐個傳 prop，改成在 `vite.config.ts` 把整個套件 alias 掉：
+
+```js
+resolve: { alias: { '@element-plus/icons-vue': path.resolve(__dirname, 'src/icons/ep-shim.ts') } }
+```
+
+shim 範本已寫好在原型的 `porting/ep-shim.ts`，22 個名稱一個不缺，含線寬補償與維護說明。原型的 `icon-check.cjs` 會驗證它的匯出清單與 EP 內部 import 一致。
+
+**不要把這條例外改回去**——改回 EP 圖示等於放棄線條統一，而 shim 一刪，22 處會悄悄變回實心。
+
 
 ---
 

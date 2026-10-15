@@ -1,46 +1,47 @@
 // 移植：el-button + el-tooltip（正式後台為 IconBtn.vue）。34×34、觸控 44×44、圓角 4px 需覆寫 EP 預設。詳見 ELEMENT-PLUS-MAPPING.md
 import { tooltipAttrs } from './tooltip.js'
 import './icon-button.css'
+import { icon } from './icons.js'
 
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))
 
 // Replaces the old IconBtn: same icon + tooltip + disabled behaviour, but built on the
 // semantic button classes so the colours stay inside the existing system.
 // A disabled button fires no pointer events, so the tooltip moves to a wrapper.
-export function iconButton({ icon, label, kind = 'btn-neutral', outline = false, disabled = false, placement = 'top', attrs = '' }) {
-  const button = `<button type="button" class="semantic-btn ${kind}${outline ? ' outline' : ''} icon-action" aria-label="${esc(label)}" ${disabled ? 'disabled' : tooltipAttrs(label, placement)} ${attrs}><span aria-hidden="true">${icon}</span></button>`
+export function iconButton({ icon: glyph, label, kind = 'btn-neutral', outline = false, disabled = false, placement = 'top', attrs = '' }) {
+  const button = `<button type="button" class="semantic-btn ${kind}${outline ? ' outline' : ''} icon-action" aria-label="${esc(label)}" ${disabled ? 'disabled' : tooltipAttrs(label, placement)} ${attrs}><span aria-hidden="true">${glyph}</span></button>`
   return disabled ? `<span class="icon-action-wrap" ${tooltipAttrs(label, placement)}>${button}</span>` : button
 }
 
 const ICONS = [
-  ['✎', '編輯', 'btn-edit', '進入編輯頁或開啟編輯彈窗。'],
-  ['◷', '登入紀錄', 'btn-record', '查看詳情、歷程與預覽。'],
-  ['⇩', '匯出', 'btn-export', '下載或產生報表檔案。'],
-  ['＋', '新增', 'btn-add', '建立新資料。'],
-  ['↻', '刷新', 'btn-neutral', '刷新、重設與關閉等不改變資料的操作。'],
-  ['×', '刪除', 'btn-danger', '刪除、拒絕等高風險操作。'],
+  ['edit', '編輯', 'btn-edit', '進入編輯頁或開啟編輯彈窗。'],
+  ['loginRecord', '登入紀錄', 'btn-record', '查看詳情、歷程與預覽。'],
+  ['download', '匯出', 'btn-export', '下載或產生報表檔案。'],
+  ['add', '新增', 'btn-add', '建立新資料。'],
+  ['refresh', '刷新', 'btn-neutral', '刷新、重設與關閉等不改變資料的操作。'],
+  ['delete', '刪除', 'btn-danger', '刪除、拒絕等高風險操作。'],
 ]
 
 window.iconButtonGuide = () => `<section class="component-example" id="icon-button-guide"><h2>圖示按鈕 Icon Button</h2><div class="card icon-button-guide">
   <p class="component-description">只放得下一個圖示的操作，用在表格操作欄與密集工具列。語意色沿用上方按鈕規範，不另訂配色；圖示本身不表達語意，語意由顏色與提示文字決定。</p>
   <h3>語意色</h3>
   <div class="icon-action-group">
-    ${ICONS.map(([icon, label, kind]) => `<div class="icon-button-sample">${iconButton({ icon, label, kind })}<small>${label}</small></div>`).join('')}
+    ${ICONS.map(([name, label, kind]) => `<div class="icon-button-sample">${iconButton({ icon: icon(name), label, kind })}<small>${label}</small></div>`).join('')}
   </div>
   <h3>變化</h3>
   <div class="icon-action-group">
-    <div class="icon-button-sample">${iconButton({ icon:'✎', label:'編輯', kind:'btn-edit' })}<small>預設</small></div>
-    <div class="icon-button-sample">${iconButton({ icon:'✎', label:'編輯', kind:'btn-edit', outline:true })}<small>次要</small></div>
-    <div class="icon-button-sample">${iconButton({ icon:'✎', label:'無編輯權限', kind:'btn-edit', disabled:true })}<small>停用</small></div>
+    <div class="icon-button-sample">${iconButton({ icon:icon('edit'), label:'編輯', kind:'btn-edit' })}<small>預設</small></div>
+    <div class="icon-button-sample">${iconButton({ icon:icon('edit'), label:'編輯', kind:'btn-edit', outline:true })}<small>次要</small></div>
+    <div class="icon-button-sample">${iconButton({ icon:icon('edit'), label:'無編輯權限', kind:'btn-edit', disabled:true })}<small>停用</small></div>
   </div>
   <h3>表格操作欄</h3>
   <div class="icon-action-group">
-    ${iconButton({ icon:'✎', label:'編輯', kind:'btn-edit' })}${iconButton({ icon:'◷', label:'登入紀錄', kind:'btn-record' })}${iconButton({ icon:'×', label:'刪除', kind:'btn-danger' })}
+    ${iconButton({ icon:icon('edit'), label:'編輯', kind:'btn-edit' })}${iconButton({ icon:icon('loginRecord'), label:'登入紀錄', kind:'btn-record' })}${iconButton({ icon:icon('delete'), label:'刪除', kind:'btn-danger' })}
   </div>
   <dl>
     <div><dt>尺寸</dt><dd>34 × 34px，觸控裝置 44 × 44px</dd></div>
     <div><dt>圓角</dt><dd>4px，與一般按鈕相同</dd></div>
-    <div><dt>圖示大小</dt><dd>16px，字重 400</dd></div>
+    <div><dt>圖示大小</dt><dd>16px，stroke-width 2.5</dd></div>
     <div><dt>按鈕間距</dt><dd>8px</dd></div>
     <div><dt>配色</dt><dd>沿用 semantic-btn 語意色與 hover／focus／disabled</dd></div>
     <div><dt>排列</dt><dd>表格操作欄置中，工具列靠左</dd></div>

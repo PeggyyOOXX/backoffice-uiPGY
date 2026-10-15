@@ -1,0 +1,19 @@
+/* Header 的資訊氣泡。唯讀內容，不放操作——要放操作就該是選單或彈窗。 */
+.header-popover{position:relative;display:inline-flex}
+.header-popover-panel{
+  position:absolute;top:calc(100% + 6px);right:0;z-index:40;
+  min-width:200px;padding:12px;
+  border:1px solid var(--line);border-radius:8px;background:#fff;
+  box-shadow:0 8px 24px rgba(23,35,59,.14);
+  text-align:left;
+}
+.header-popover-panel[hidden]{display:none}
+.header-popover-panel>strong{display:block;margin-bottom:8px;font-size:13px;font-weight:600;color:#10202b}
+.header-popover-panel dl{display:flex;flex-direction:column;gap:6px;margin:0}
+.header-popover-panel dl>div{display:flex;justify-content:space-between;gap:16px}
+.header-popover-panel dt{font-size:12px;color:#718096}
+.header-popover-panel dd{margin:0;font-size:12px;color:var(--text);font-variant-numeric:tabular-nums}
+
+@media(max-width:720px){
+  .header-popover-panel{right:-8px;min-width:176px}
+}

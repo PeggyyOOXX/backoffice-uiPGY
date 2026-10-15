@@ -1,7 +1,7 @@
 /* Every list action below maps to a documented semantic token. */
 .btn-add {
-  background: #6758e8 !important;
-  border-color: #6758e8 !important;
+  background: #b522d3 !important;
+  border-color: #b522d3 !important;
 }
 .btn-export {
   background: #20a05a !important;
@@ -17,11 +17,11 @@
   border-color: #87919e !important;
 }
 .btn-danger {
-  background: #df5261 !important;
-  border-color: #df5261 !important;
+  background: #dd3340 !important;
+  border-color: #dd3340 !important;
 }
 .btn-add.outline {
-  --button-color: #6758e8;
+  --button-color: #b522d3;
 }
 .btn-export.outline {
   --button-color: #20a05a;
@@ -33,5 +33,5 @@
   --button-color: #87919e;
 }
 .btn-danger.outline {
-  --button-color: #df5261;
+  --button-color: #dd3340;
 }

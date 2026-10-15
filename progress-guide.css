@@ -1,0 +1,26 @@
+/* 進度條。這是元件樣式本身，其他頁面要用就套 .bo-progress。 */
+.bo-progress{display:flex;align-items:center;gap:8px;min-width:0}
+.bo-progress-track{flex:1;min-width:0;height:8px;border-radius:4px;background:#EDF1F5;overflow:hidden}
+.bo-progress-fill{height:100%;border-radius:4px;background:#1596AD;transition:width .3s}
+.bo-progress-text{flex:none;width:40px;text-align:right;font-size:12px;color:#718096;font-variant-numeric:tabular-nums}
+
+/* 自動變色只用在「用量／額度」這種越高越危險的量，理由寫在使用規則 */
+.bo-progress.is-success .bo-progress-fill{background:#20A05A}
+.bo-progress.is-warning .bo-progress-fill{background:#D97318}
+.bo-progress.is-danger .bo-progress-fill{background:#DD3340}
+.bo-progress.is-info .bo-progress-fill{background:#1596AD}
+
+/* --- 規範頁排版 --- */
+.progress-demo{display:flex;flex-direction:column;gap:14px}
+.progress-row{display:flex;align-items:center;gap:16px}
+.progress-row>span{flex:none;width:92px;font-size:13px;color:#718096}
+.page .progress-usage-table{min-width:560px;table-layout:fixed}
+.page .progress-usage-table td{text-align:left}
+
+@media(prefers-reduced-motion:reduce){
+  .bo-progress-fill{transition:none}
+}
+@media(max-width:720px){
+  .progress-row{gap:12px}
+  .progress-row>span{width:76px;font-size:12px}
+}

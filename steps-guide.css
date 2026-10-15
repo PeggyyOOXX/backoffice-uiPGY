@@ -1,0 +1,32 @@
+/* 步驟導覽。這是元件樣式本身，其他頁面要用就套 .bo-steps。 */
+.bo-steps{display:flex;list-style:none;margin:0 0 16px;padding:0;gap:16px}
+.bo-step{flex:1;display:flex;align-items:center;gap:10px;min-width:0;padding:12px 0;border-bottom:2px solid #E3E9EE;color:#718096}
+.bo-step-mark{
+  display:grid;place-items:center;flex:none;
+  width:26px;height:26px;border-radius:50%;
+  background:#EDF1F5;color:#718096;font-size:13px;font-weight:600;
+}
+.bo-step-text{display:flex;flex-direction:column;gap:2px;min-width:0}
+.bo-step-text strong{font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bo-step-text small{font-size:12px;color:#718096;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* 已完成與目前都用主題綠；差別在標記是勾號還是數字，理由寫在使用規則 */
+.bo-step.is-done,.bo-step.is-current{border-bottom-color:#1596AD;color:#10202b}
+.bo-step.is-done .bo-step-mark,.bo-step.is-current .bo-step-mark{background:#1596AD;color:#fff}
+.bo-step.is-current .bo-step-mark{font-weight:700}
+
+.steps-demo-actions{display:flex;gap:8px;justify-content:flex-start}
+.steps-demo-actions .semantic-btn{display:inline-flex;align-items:center}
+.page .steps-state-table{min-width:0;table-layout:auto;margin-top:12px}
+.page .steps-state-table td{text-align:left}
+
+@media(max-width:720px){
+  .bo-steps{flex-direction:column;gap:0}
+  .bo-step{flex:none;padding:10px 0}
+  .bo-step-text strong,.bo-step-text small{white-space:normal}
+}
+
+/* 開站流程的表單面板。輸入與開關沿用共用樣式，這裡只排版。 */
+.steps-panel{margin-bottom:16px;padding-top:16px;border-top:1px solid var(--line)}
+.steps-panel h4{margin:0 0 12px;font-size:13px;font-weight:600;color:#10202b}
+
