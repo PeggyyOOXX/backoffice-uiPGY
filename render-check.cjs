@@ -82,9 +82,11 @@ run(
 run("button-guide.js", PAGE);
 run("input-guide.js", PAGE);
 run("date-picker-guide.js", PAGE);
+run("states.js", "", ";window.emptyRow=emptyRow;window.emptyState=emptyState");
+const STATES = "const emptyRow=window.emptyRow,emptyState=window.emptyState;";
 run(
   "data-table.js",
-  ICON,
+  ICON + STATES,
   ";window.dataTable=dataTable;window.applyPaging=applyPaging;window.PAGE_SIZES=PAGE_SIZES",
 );
 run(
@@ -109,6 +111,16 @@ run("token-guide.js", PAGE + ICON);
 run("nav-guide.js", PAGE + ICON);
 run("progress-guide.js", PAGE + ON + ICON);
 run("message-guide.js", PAGE + ON + ICON + MSG + MODAL);
+run(
+  "bulk-actions.js",
+  ICON + BTN,
+  ";window.bulkParts={selectAllControl,selectRowControl,bulkHeader,bulkFeedback,selectionOf,applyBulk,PICK_COLUMN}",
+);
+run(
+  "bulk-guide.js",
+  PAGE + ON +
+    "const {selectAllControl,selectRowControl,bulkHeader,bulkFeedback,selectionOf,applyBulk,PICK_COLUMN}=window.bulkParts;const dataTable=window.dataTable;",
+);
 
 const ok = (label) => console.log("  ✓ " + label);
 
@@ -129,6 +141,7 @@ const PAGES = [
   ["renderProgressPage", "progress-guide", "進度條"],
   ["renderIconGuide", "icon-guide", "圖示"],
   ["renderMessageGuide", "message-guide", "訊息提示"],
+  ["renderBulkGuide", "bulk-guide", "批量操作"],
 ];
 
 const missingTokens = [],
@@ -189,6 +202,26 @@ assert.equal(
 assert.ok(d.querySelector(".data-table-grid"), "表格頁缺少表格");
 assert.ok(d.querySelector(".table-sort-control"), "表格頁缺少表頭排序");
 ok("表格頁：表格＋分頁＋表頭排序同頁，換頁與改每頁筆數會跳回第 1 頁");
+
+// 沒有資料時走的是「載入與空狀態」的區塊，不是表格自己畫的一行純文字。
+// 這條分支在規範頁上永遠不會執行（示範資料是寫死的），只能單獨叫一次。
+{
+  const empty = d.createElement("div");
+  empty.innerHTML = w.dataTable({
+    columns: [{ key: "a", label: "A" }, { key: "b", label: "B" }],
+    rows: [],
+    pagination: false,
+  });
+  const cell = empty.querySelector(".bo-state-row td");
+  assert.ok(cell, "空表格應套用共用空狀態（.bo-state-row）");
+  assert.equal(cell.getAttribute("colspan"), "2", "空狀態應撐滿整個表寬");
+  assert.ok(
+    empty.querySelector(".bo-state-icon") &&
+      empty.querySelector(".bo-state-title"),
+    "空狀態應有圖示與標題，不是一行純文字",
+  );
+  ok("空表格沿用共用空狀態，撐滿表寬");
+}
 
 d.querySelector(".page").innerHTML = w.renderStepsPage();
 // 範例照正式後台 branchList/add.vue 的開站流程：基本設定 → 遊戲設定 → 註冊登入設定

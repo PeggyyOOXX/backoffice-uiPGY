@@ -1,0 +1,23 @@
+/* 批量操作規範頁。元件本身的樣式在 bulk-actions.css，這裡只有示範區的版面。 */
+.bulk-guide-demo {
+  margin-bottom: 12px;
+}
+
+/* 開關欄不需要撐寬，名稱欄吃掉剩下的空間 */
+.bulk-guide-demo .data-table-grid th:nth-child(2),
+.bulk-guide-demo .data-table-grid td:nth-child(2) {
+  width: 40%;
+}
+
+.bulk-guide-list {
+  margin: 0 0 12px;
+  padding-left: 20px;
+  display: grid;
+  gap: 6px;
+}
+
+.bulk-guide-list li {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #4a5568;
+}

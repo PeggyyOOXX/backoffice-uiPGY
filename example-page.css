@@ -1,0 +1,63 @@
+/* 組合範例頁的共用版面。三頁（列表／設定／批量）都套這一份，
+   個別頁面的 css 只放自己多出來的東西，不要各自再定義一次 .example-page。 */
+.example-page {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.example-page > .guide-section-heading {
+  margin: 0;
+}
+
+.example-filter {
+  margin: 0;
+}
+
+/* 列表工具列固定在表格外，位置不隨表格狀態改變（載入與空狀態的規範） */
+.example-toolbar {
+  margin: 0;
+}
+
+/* 基礎 .card 本身沒有內距，16px 是規範頁 section.card 的值。
+   這裡不能寫 padding:0——表格與分頁列的左右留白一向由外層卡片負責，
+   分頁列自己只帶 margin-top，歸零就會整個貼到卡片邊緣。 */
+.example-card {
+  padding: 16px;
+}
+
+.example-note {
+  padding: 16px;
+}
+
+.example-note h3 {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.example-note ul {
+  margin: 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 8px;
+}
+
+.example-note li {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #4a5568;
+}
+
+.example-note strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+@media (max-width: 720px) {
+  .example-page {
+    padding: 12px;
+    gap: 12px;
+  }
+}

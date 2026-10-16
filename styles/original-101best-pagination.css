@@ -9,7 +9,8 @@
 .member-data-card .page-size-select {
   width: 156px;
   height: 32px;
-  border: 1px solid #1596ad;
+  /* 灰階，與一般下拉一致。主色留給聚焦狀態，常駐著色會被讀成「已選取」。 */
+  border: 1px solid #dce2eb;
   border-radius: 8px;
   padding: 0 10px;
   background: #fff;

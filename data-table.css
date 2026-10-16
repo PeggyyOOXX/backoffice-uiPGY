@@ -8,7 +8,12 @@
 .data-table-pagination{display:flex;align-items:center;flex-wrap:wrap;gap:12px 16px;margin-top:16px}
 .pagination-total{flex:none;white-space:nowrap;font-size:13px;color:#718096}
 .pagination-size{display:flex;flex:none;align-items:center;gap:8px;white-space:nowrap;font-size:13px;color:#718096}
+/* select.js 會把原生 select 換成 Element Plus 的下拉，原生的那個變成 hidden。
+   所以真正要給寬度的是 .bo-select-host，不是 .guide-select——先前只設了後者，
+   畫面上看到的是 width:100% 在 flex 容器裡塌掉的空框。
+   這裡的「每頁」「筆」已經寫在左右兩側，框裡只有數字，不需要 156px 那麼寬。 */
 .pagination-size .guide-select{width:auto;min-width:72px}
+.pagination-size .bo-select-page-size{width:84px;flex:none}
 .data-table-pagination .pages{display:flex;align-items:center;gap:4px;margin-left:auto;flex-wrap:wrap}
 .page-gap{padding:0 4px;color:#A0AEC0;font-size:13px}
 

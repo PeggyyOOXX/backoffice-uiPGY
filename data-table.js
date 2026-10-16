@@ -7,6 +7,7 @@
 //
 // 不分頁的表格（設定頁、權限矩陣，正式後台有 14 個）傳 pagination: false。
 import { icon } from './icons.js'
+import { emptyRow } from './states.js'
 import './data-table.css'
 
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
@@ -40,8 +41,8 @@ function paginationBar({ name, page, pageSize, total }) {
   return `<div class="data-table-pagination">
     <span class="pagination-total">共 ${total} 筆</span>
     <label class="pagination-size">每頁
-      <select class="guide-select" data-table-size data-table="${esc(name)}" aria-label="每頁筆數">
-        ${PAGE_SIZES.map(n => `<option ${n === pageSize ? 'selected' : ''}>${n}</option>`).join('')}
+      <select class="page-size-select guide-select" data-table-size data-table="${esc(name)}" aria-label="每頁筆數">
+        ${PAGE_SIZES.map(n => `<option value="${n}" ${n === pageSize ? 'selected' : ''}>${n}</option>`).join('')}
       </select>
       筆
     </label>
@@ -56,20 +57,31 @@ function paginationBar({ name, page, pageSize, total }) {
 /**
  * 表格＋分頁。
  * @param name       識別字串，事件靠它找回對應的表格
- * @param columns    [{ key, label, align, width }]
+ * @param columns    [{ key, label, align, width, className, header }]
+ *                   header 是表頭的原始 HTML（批量選單、排序鈕），省略時用逸出後的 label
  * @param rows       資料列，每筆是物件；值可以是 HTML 字串
  * @param page       目前頁（1 起算）
  * @param pageSize   每頁筆數
  * @param total      總筆數；省略時用 rows.length
  * @param pagination false 代表不分頁（設定頁、權限矩陣）
- * @param empty      沒有資料時顯示的內容
+ * @param empty      沒有資料時的標題，版面沿用「載入與空狀態」
  */
 export function dataTable({ name = 'table', columns, rows, page = 1, pageSize = PAGE_SIZES[1], total, pagination = true, empty = '無資料' }) {
   const count = total ?? rows.length
-  const head = columns.map(c => `<th${c.align ? ` style="text-align:${c.align}"` : ''}${c.width ? ` style="width:${c.width}"` : ''}>${esc(c.label)}</th>`).join('')
+  // align 與 width 要合併成同一個 style；先前是兩個 style 屬性，後面那個會被瀏覽器直接丟掉，
+  // 所以同時指定 align 與 width 時 width 從來沒生效過。
+  const style = c => {
+    const parts = [c.align && `text-align:${c.align}`, c.width && `width:${c.width}`].filter(Boolean)
+    return parts.length ? ` style="${parts.join(';')}"` : ''
+  }
+  const cls = c => (c.className ? ` class="${esc(c.className)}"` : '')
+  // header 讓欄位表頭放得下控制項（批量選單、排序鈕）；沒給就是逸出後的 label。
+  const head = columns.map(c => `<th scope="col"${cls(c)}${style(c)}>${c.header ?? esc(c.label)}</th>`).join('')
   const body = rows.length
-    ? rows.map(row => `<tr>${columns.map(c => `<td data-label="${esc(c.label)}"${c.align ? ` style="text-align:${c.align}"` : ''}>${row[c.key] ?? ''}</td>`).join('')}</tr>`).join('')
-    : `<tr><td colspan="${columns.length}" class="data-table-empty">${esc(empty)}</td></tr>`
+    ? rows.map(row => `<tr>${columns.map(c => `<td data-label="${esc(c.label)}"${cls(c)}${c.align ? ` style="text-align:${c.align}"` : ''}>${row[c.key] ?? ''}</td>`).join('')}</tr>`).join('')
+    // 空狀態不自己畫，沿用「載入與空狀態」的區塊——先前這裡是一行純文字，
+    // 跟規範頁示範的圖示＋文字長得不一樣，同一個空狀態站上有兩種版面。
+    : emptyRow(columns.length, { title: empty })
 
   return `<div class="data-table" data-table-root="${esc(name)}">
     <div class="table-wrap">

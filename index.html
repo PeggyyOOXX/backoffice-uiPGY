@@ -97,9 +97,25 @@
             <span class="ico" data-icon="stateGuide" data-icon-size="20"></span
             >載入與空狀態 States
           </div>
-          <div class="nav-item" data-route-key="組件範例">
-            <span class="ico" data-icon="components" data-icon-size="20"></span
-            >組件範例
+          <div class="nav-item" data-route-key="批量操作">
+            <span class="ico" data-icon="bulkSwitch" data-icon-size="20"></span
+            >批量操作 Bulk
+          </div>
+          <div class="nav-item" data-route-key="組合範例列表">
+            <span class="ico" data-icon="table" data-icon-size="20"></span
+            >組合範例－列表
+          </div>
+          <div class="nav-item" data-route-key="組合範例設定">
+            <span
+              class="ico"
+              data-icon="complexSettings"
+              data-icon-size="20"
+            ></span
+            >組合範例－設定
+          </div>
+          <div class="nav-item" data-route-key="組合範例批量">
+            <span class="ico" data-icon="batch" data-icon-size="20"></span
+            >組合範例－批量
           </div>
           <div class="nav-item" data-route-key="搜尋結果頁面">
             <span class="ico" data-icon="members" data-icon-size="20"></span
@@ -124,10 +140,6 @@
               data-icon-size="20"
             ></span
             >複雜設定
-          </div>
-          <div class="nav-item" data-route-key="批量開關">
-            <span class="ico" data-icon="bulkSwitch" data-icon-size="20"></span
-            >批量開關
           </div>
           <div class="nav-tree is-open">
             <div
@@ -180,7 +192,7 @@
           <button data-page="選擇控制">選擇控制 <span data-icon="close" data-icon-size="14"></span></button>
           <button data-page="表格">表格 Table <span data-icon="close" data-icon-size="14"></span></button>
           <button data-page="訊息提示">訊息提示 Message <span data-icon="close" data-icon-size="14"></span></button>
-          <button data-page="組件範例">組件範例 <span data-icon="close" data-icon-size="14"></span></button>
+          <button data-page="組合範例批量">組合範例－批量 <span data-icon="close" data-icon-size="14"></span></button>
           <button data-page="搜尋結果頁面">搜尋結果頁面 <span data-icon="close" data-icon-size="14"></span></button>
         </div>
         <div class="page">
@@ -836,7 +848,7 @@
         memberPage = 1;
         renderMemberResults();
       }
-      function memberSearchBlock(example = false) {
+      function memberSearchBlock() {
         return `<button class="mobile-member-search-toggle" type="button" onclick="toggleMobileMemberSearch(this)"><span><span data-icon="search"></span>搜尋條件</span><span class="search-toggle-arrow" aria-hidden="true"></span></button><div class="source-filter card"><div class="source-filter-grid">
       <div class="filter-field"><label>平台名稱</label><select class="control"><option>101 BEST</option><option>Demo Platform With Longer Name</option></select></div>
       <div class="filter-field"><label>會員搜尋</label><select class="control"><option>會員帳號</option><option>UID</option><option>手機號碼</option></select></div>
@@ -849,71 +861,8 @@
       <div class="filter-field"><label>會員標籤</label><select class="control"><option>全部會員標籤</option><option>一般會員</option><option>關注會員</option></select></div>
       <div class="filter-field"><label>金額範圍</label><select class="control"><option>總餘額</option><option>總存款</option><option>總提款</option></select></div>
       <div class="filter-field amount-range-field"><label class="continuation-label">最低／最高金額</label><div class="amount-range-control"><input class="control amount" placeholder="最低" aria-label="最低金額"><span>～</span><input class="control amount" placeholder="最高" aria-label="最高金額"></div></div>
-      <div class="source-filter-actions"><button class="semantic-btn btn-neutral" onclick="${example ? "resetComponentSearch(this)" : "resetMemberSource()"}"><span data-icon="reset"></span>重設</button><button class="semantic-btn btn-search" onclick="${example ? "toast('搜尋條件已套用（組件範例）')" : "filterMemberSource()"}"><span data-icon="search"></span>搜尋</button></div>
+      <div class="source-filter-actions"><button class="semantic-btn btn-neutral" onclick="resetMemberSource()"><span data-icon="reset"></span>重設</button><button class="semantic-btn btn-search" onclick="filterMemberSource()"><span data-icon="search"></span>搜尋</button></div>
       </div></div>`;
-      }
-      function componentExamples() {
-        const examples = [
-          ["搜尋區塊／單一欄位", [0]],
-          ["搜尋區塊／六個欄位", [0, 1, 2, 7, 9, 10]],
-          ["搜尋區塊／完整條件", null],
-        ];
-        const searches = examples
-          .map(([title, indices]) => {
-            const template = document.createElement("template");
-            template.innerHTML = memberSearchBlock(true);
-            const panel = template.content.querySelector(".source-filter");
-            if (indices)
-              panel
-                .querySelectorAll(".filter-field")
-                .forEach((field, index) => {
-                  if (!indices.includes(index)) field.remove();
-                });
-            panel
-              .querySelectorAll("[id]")
-              .forEach((control) => control.removeAttribute("id"));
-            return (
-              '<section class="component-example"><h2>' +
-              title +
-              "</h2>" +
-              panel.outerHTML +
-              "</section>"
-            );
-          })
-          .join("");
-        const template = document.createElement("template");
-        template.innerHTML = actualMemberPage();
-        const memberList =
-          template.content.querySelector(".member-data-card").outerHTML;
-        return (
-          '<div class="component-examples"><nav class="component-directory" aria-label="組件分類"><a href="#components-search">搜尋篩選</a><a href="#components-settings">設定表單</a><a href="#components-lists">資料列表</a><a href="#components-advanced">進階列表</a><a href="#components-overlays">彈窗與抽屜</a></nav><div id="components-search" class="component-group">' +
-          searches +
-          '</div><div id="components-settings" class="component-group">' +
-          (window.settingsFormExamples?.() || "") +
-          '</div><div id="components-lists" class="component-group"><section class="component-example"><h2>搜尋結果／會員列表</h2><p class="component-description">列表工具列、會員摘要入口、標籤、狀態選擇、單筆操作、分頁及手機卡片。</p>' +
-          memberList +
-          "</section>" +
-          '</div><div class="component-group">' +
-          (window.renderAdvancedList?.() || "") +
-          (window.workflowExamples?.() || "") +
-          '</div><div id="components-overlays" class="component-group">' +
-          (window.modalExamples?.() || "") +
-          drawerExamples() +
-          "</div></div>"
-        );
-      }
-      function resetComponentSearch(button) {
-        const panel = button.closest(".source-filter");
-        panel.querySelectorAll("input").forEach((input) => {
-          if (!input.closest("[data-date-range]"))
-            input.value = input.defaultValue;
-        });
-        window.resetDateRanges?.(panel);
-        panel
-          .querySelectorAll("select")
-          .forEach((select) => (select.selectedIndex = 0));
-        window.syncSelects?.();
-        toast("已重設搜尋條件");
       }
       function actualMemberPage() {
         return `${memberSearchBlock()}
@@ -1248,7 +1197,26 @@
           "設計系統 / 元件規範",
           () => window.renderStateGuide(),
         ],
-        組件範例: ["組件範例", "組合範例", componentExamples],
+        批量操作: [
+          "批量操作 Bulk",
+          "設計系統 / 元件規範",
+          () => window.renderBulkGuide(),
+        ],
+        組合範例批量: [
+          "遊戲列表",
+          "組合範例 / 批量型",
+          () => window.renderExampleBulk(),
+        ],
+        組合範例列表: [
+          "禮物卡管理",
+          "組合範例 / 列表型",
+          () => window.renderExampleList(),
+        ],
+        組合範例設定: [
+          "分站設定",
+          "組合範例 / 設定型",
+          () => window.renderExampleSettings(),
+        ],
         搜尋結果頁面: ["搜尋結果頁面", "頁面示範", () => originalMemberPage],
         設定相關頁面: [
           "設定相關頁面",
@@ -1261,7 +1229,6 @@
           "頁面示範",
           () => window.renderComplexSettings(),
         ],
-        批量開關: ["批量開關", "頁面示範", () => window.renderBulkSwitch()],
         第三層: ["第三層", "第一層 / 第二層 / 第三層", finance],
       };
       document.querySelectorAll(".nav-item").forEach((item) => {

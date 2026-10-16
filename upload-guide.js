@@ -15,14 +15,21 @@ const SLOTS = [
   ['活動內頁 · H5', '750 × 320', 500],
 ]
 
-const slot = ([label, size, maxKB], index) => `<div class="upload-slot">
+/**
+ * 上傳欄位：尺寸與容量規則直接寫在標題列，上傳前就擋得住錯誤。
+ * 其他頁面要放上傳欄位就用這個，不要自己拼一份拖放區。
+ * @param attrs 給拖放區的額外屬性，頁面用它接自己的事件
+ */
+export const uploadSlot = ({ label, size, maxKB, attrs = '' }) => `<div class="upload-slot">
   <div class="upload-slot-head"><strong>${label}</strong><small>${size}px · 最大 ${maxKB}KB</small></div>
-  <div class="upload-dropzone" data-upload-demo="${index}" role="button" tabindex="0" aria-label="上傳 ${label}">
+  <div class="upload-dropzone" role="button" tabindex="0" aria-label="上傳 ${label}" ${attrs}>
     ${icon('upload', 24)}
     <p>點擊或拖曳圖片到這裡</p>
     <small>JPG／PNG／WebP</small>
   </div>
 </div>`
+
+const slot = ([label, size, maxKB], index) => uploadSlot({ label, size, maxKB, attrs: `data-upload-demo="${index}"` })
 
 const DECISION = [
   ['單張圖片，尺寸固定', '<strong>拖放區</strong>', '直接顯示尺寸與容量規則，上傳前就擋住錯誤'],

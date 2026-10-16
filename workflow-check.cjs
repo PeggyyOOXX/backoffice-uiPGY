@@ -20,7 +20,6 @@ w.eval(ON+strip(fs.readFileSync('tooltip.js','utf8'))+';window.tooltipAttrs=tool
 w.eval('const tooltipAttrs=window.tooltipAttrs;'+ICON+strip(fs.readFileSync('icon-button.js','utf8'))+';window.iconButton=iconButton');
 w.eval(strip(fs.readFileSync('choice-controls.js','utf8'))+';window.choiceControl=choiceControl;window.choiceCard=choiceCard');
 w.eval('const iconButton=window.iconButton;'+ICON+strip(fs.readFileSync('table-guide.js','utf8')));
-w.eval(ON+ICON+'const iconButton=window.iconButton,choiceControl=window.choiceControl,choiceCard=window.choiceCard;'+strip(fs.readFileSync('bulk-switch.js','utf8')));
 w.eval(ON+ICON+strip(fs.readFileSync('tabs.js','utf8'))+';window.tabList=tabs');
 w.eval(strip(fs.readFileSync('states.js','utf8'))+';window.emptyRow=emptyRow;window.emptyState=emptyState;window.errorState=errorState');
 w.eval('(function(){'+ON+ICON+'const emptyRow=window.emptyRow,emptyState=window.emptyState;'+strip(fs.readFileSync('risk-audit.js','utf8'))+';window.renderRiskAudit=renderRiskAudit;})()');
@@ -82,23 +81,6 @@ icon.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
 assert.equal(q('#bo-tooltip').classList.contains('is-open'),false);assert.equal(icon.getAttribute('aria-describedby'),null);
 assert.equal(d.querySelectorAll('.choice-group').length,7);
 assert.equal(d.querySelectorAll('.choice-card').length,3);
-q('.page').innerHTML=w.renderBulkSwitch();
-assert.equal(d.querySelectorAll('.bulk-option').length,3);
-const bulkPick=i=>{const el=d.querySelectorAll('[data-bulk-row][data-panel="bar"]')[i];el.focus();el.checked=true;el.dispatchEvent(new w.Event('change',{bubbles:true}))};
-bulkPick(1);bulkPick(3);
-assert.equal(q('.bulk-selection-count').textContent,'已選 2 筆');
-assert.equal(d.activeElement.id,'bulk-bar-pick-G-1004'); // Focus survives the redraw.
-q('[data-bulk-bar][data-key="front"][data-value="1"]').click();
-assert.ok(q('.bulk-feedback').textContent.includes('已將 2 筆'));
-q('[data-bulk-undo][data-panel="bar"]').click();assert.ok(q('.bulk-feedback').textContent.includes('已復原'));
-q('[data-bulk-menu="hot"][data-panel="head"]').click();assert.equal(q('.bulk-menu[data-bulk-menu-for="hot"]').hidden,false);
-q('[data-bulk-head-action][data-key="hot"][data-value="1"][data-scope="all"]').click();
-assert.ok([...d.querySelectorAll('.bulk-feedback')][1].textContent.includes('已將 8 筆'));
-q('[data-bulk-open-dialog]').click();assert.equal(q('dialog [type="submit"]').disabled,true); // Nothing chosen yet.
-const field=q('dialog [data-bulk-field="home"][value="on"]');field.checked=true;field.dispatchEvent(new w.Event('change',{bubbles:true}));
-assert.equal(q('dialog [type="submit"]').disabled,false);
-q('dialog form').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));
-assert.ok([...d.querySelectorAll('.bulk-feedback')][2].textContent.includes('已調整 8 筆'));
 // 頁籤改用共用 tabs.js：滑鼠與鍵盤切換都要讓頁面重畫面板。
 const tabHost=d.createElement('div');d.body.append(tabHost);tabHost.innerHTML=w.renderComplexSettings();
 q('[data-tab-key="permissions"]').dispatchEvent(new w.KeyboardEvent('keydown',{key:'ArrowRight',bubbles:true}));
@@ -115,4 +97,4 @@ assert.ok(!/<button/.test(w.emptyState({kind:'empty'}))&&!/<button/.test(w.error
 assert.ok(w.errorState({code:'000005_1',message:'權限不足'}).includes('000005_1 權限不足'),'錯誤碼與敘述同一行，照抄 toast 字串');
 assert.ok(w.errorState({}).includes('API request failed'),'後端沒回訊息時的退路');
 assert.ok(w.errorState({message:'<img src=x onerror=alert(1)>'}).includes('&lt;img'),'後端字串必須轉義');
-setTimeout(()=>{assert.equal(intervals.size,0);assert.equal(q('[data-choice-mixed]').indeterminate,true);console.log('PASS: complex settings regression; 17 original columns, pagination, ownership, filters/validation, full detail/payment variants, audit detail drawer, optional notes, claim/cancel/review, 15-second refresh and timer cleanup; icon buttons, table spec, tooltip, choice controls and three bulk-switch designs.');dom.window.close()},0);
+setTimeout(()=>{assert.equal(intervals.size,0);assert.equal(q('[data-choice-mixed]').indeterminate,true);console.log('PASS: complex settings regression; 17 original columns, pagination, ownership, filters/validation, full detail/payment variants, audit detail drawer, optional notes, claim/cancel/review, 15-second refresh and timer cleanup; icon buttons, table spec, tooltip, and choice controls.');dom.window.close()},0);

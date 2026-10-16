@@ -1,0 +1,109 @@
+/* 批量操作。這是元件樣式本身，其他頁面要用就套這些 class，不要自己再畫一套。 */
+
+/* 勾選欄固定寬度，不隨內容撐開 */
+.page .bulk-pick-col {
+  width: 44px;
+  text-align: center;
+}
+
+.page .bulk-pick-col input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #1596ad;
+  cursor: pointer;
+}
+
+/* 可批量調整的表頭：標題與入口並排，選單掛在這一欄下方 */
+.bulk-head {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  position: relative;
+}
+
+.bulk-head .icon-btn {
+  flex: none;
+}
+
+.bulk-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 20;
+  min-width: 192px;
+  padding: 4px;
+  border: 1px solid #dce2eb;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(21, 35, 63, 0.14);
+  text-align: left;
+}
+
+.bulk-menu[hidden] {
+  display: none;
+}
+
+.bulk-menu hr {
+  margin: 4px 6px;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+
+.bulk-menu button {
+  display: block;
+  width: 100%;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 400;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.bulk-menu button:hover:not(:disabled) {
+  background: #f0fafb;
+  color: #1596ad;
+}
+
+.bulk-menu button:disabled {
+  color: #98a2b3;
+  cursor: not-allowed;
+}
+
+.bulk-menu button:focus-visible {
+  outline: 2px solid #1596ad;
+  outline-offset: -2px;
+}
+
+/* 結果回報。沒有訊息時整行收起，版面不會留一條空白。 */
+.bulk-feedback {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: #1596ad;
+}
+
+.bulk-feedback:empty {
+  display: none;
+}
+
+.bulk-feedback .semantic-btn {
+  min-height: 28px;
+  padding: 0 10px;
+  font-size: 12px;
+}
+
+@media (max-width: 720px) {
+  .bulk-menu {
+    right: auto;
+    left: 0;
+  }
+}

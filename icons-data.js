@@ -1,6 +1,6 @@
 // 由 build-icons.cjs 產生，請勿手改。來源：Lucide 1.6.0 (ISC)
 //
-// 這份清單就是本專案的圖示許可清單。Lucide 有 1940 個圖示，這裡只收 84 個；
+// 這份清單就是本專案的圖示許可清單。Lucide 有 1940 個圖示，這裡只收 86 個；
 // 要用新的先加進 build-icons.cjs 的 ALLOWLIST 再重跑，不要在頁面上自己拼 svg。
 //
 // 名稱沿用正式後台 SvgIcon 的 camelCase：icon('edit') ↔ <SvgIcon name="edit" />
@@ -294,6 +294,20 @@ export const ICONS = [
     "file": "clock-alert",
     "label": "待處理",
     "body": "<path d=\"M12 6v6l4 2\"/><path d=\"M20 12v5\"/><path d=\"M20 21h.01\"/><path d=\"M21.25 8.2A10 10 0 1 0 16 21.16\"/>"
+  },
+  {
+    "group": "status",
+    "name": "pause",
+    "file": "pause",
+    "label": "暫停",
+    "body": "<rect x=\"14\" y=\"3\" width=\"5\" height=\"18\" rx=\"1\"/><rect x=\"5\" y=\"3\" width=\"5\" height=\"18\" rx=\"1\"/>"
+  },
+  {
+    "group": "status",
+    "name": "play",
+    "file": "play",
+    "label": "啟用",
+    "body": "<path d=\"M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z\"/>"
   },
   {
     "group": "status",

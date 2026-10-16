@@ -64,6 +64,12 @@ const ALLOWLIST = [
   ['status', 'info', 'info', '說明'],
   ['status', 'loading', 'loader-circle', '載入中'],
   ['status', 'pending', 'clock-alert', '待處理'],
+  // pending（時鐘）表示「在排隊等人處理」，pause 表示「被人為停住」——兩件事不同。
+  // 用時鐘當暫停，使用者會讀成「處理中」。
+  // pause／play 刻意用不帶圓框的版本：這兩顆在表格裡是並排的同一顆按鈕的兩個狀態，
+  // 外框一樣時 16px 下只剩中間那一點點差異，圈掉外框後是「兩豎線 vs 三角」，一眼分得出。
+  ['status', 'pause', 'pause', '暫停'],
+  ['status', 'play', 'play', '啟用'],
   ['status', 'star', 'star', '收藏'],
   ['status', 'bell', 'bell', '通知'],
   ['status', 'imageEmpty', 'image-off', '無圖片'],

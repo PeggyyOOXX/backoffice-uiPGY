@@ -1,0 +1,33 @@
+/* 組合範例（列表型）。共用版面在 example-page.css，這裡只放這一頁多出來的東西。 */
+
+/* 兌換進度：數字在上、進度條在下，整欄不換行撐寬表格 */
+.example-progress-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 132px;
+}
+
+.example-progress-cell > span {
+  font-size: 12px;
+  color: #718096;
+  white-space: nowrap;
+}
+
+.example-progress-cell .bo-progress {
+  margin: 0;
+}
+
+.example-nowrap {
+  white-space: nowrap;
+}
+
+.example-row-actions {
+  justify-content: center;
+}
+
+@media (max-width: 720px) {
+  .example-progress-cell {
+    min-width: 0;
+  }
+}

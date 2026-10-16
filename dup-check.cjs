@@ -29,6 +29,7 @@ const OWNS = {
   'state-guide.js': ['states'],
   'icon-guide.js': ['icon'],
   'message-guide.js': ['message', 'alert'],
+  'bulk-guide.js': ['bulk'],
 }
 
 // 在原始碼裡認得出該元件的標記
@@ -51,6 +52,7 @@ const MARKERS = {
   steps: /bo-steps|bo-step\b/,
   tabs: /bo-tab\b|tabs\(\{/,
   states: /emptyState|skeletonTable|loadingVeil/,
+  bulk: /bulk-head|data-bulk-action/,
   message: /bo-message\b|message\.(success|error|warning|info)/,
 }
 
@@ -63,6 +65,7 @@ const ALLOWED = {
   'steps-guide.js|switch': '開站流程的第 2、3 步就是一排開關，照正式後台的實際欄位做',
   'date-picker-guide.js|select': '純時間選擇（el-time-select）本來就是固定間隔選項的下拉，不是另一套 Select',
   'table-guide-page.js|iconButton': '表格的操作欄本來就放圖示按鈕，是真實列的樣子，不是另一套按鈕規範',
+  'bulk-guide.js|switch': '示範批量調整開關欄位，開關本身沿用共用規範',
   'message-guide.js|dialog': '從 <dialog>.showModal() 裡發 Toast，是驗證 top layer 處理的關鍵示範',
 }
 

@@ -128,6 +128,46 @@ async function run() {
   assert.deepEqual(translucent, [], '以下型別的 Toast 背景不是實色，會透出底下的內容：' + translucent.join('、'))
   ok('四種型別的 Toast 背景都是實色')
 
+  // --- 示範按鈕的顏色要與它發出的 Toast 相同 ---
+  // 規範頁的按鈕本身就是示範。按下綠色按鈕卻跳出藍色提示，等於在教人
+  // 「顏色不代表什麼」。這個對應散在三個檔案，用眼睛比對不出來。
+  const guideSource = fs.readFileSync('message-guide.js', 'utf8')
+  const kindMatch = guideSource.match(/const KIND = \{([^}]*)\}/)
+  assert.ok(kindMatch, 'message-guide.js 找不到 KIND 對應表')
+  const kind = Object.fromEntries(
+    [...kindMatch[1].matchAll(/(\w+):\s*'(btn-[\w-]+)'/g)].map(x => [x[1], x[2]])
+  )
+
+  // 語意色的最終值要依 styles/index.css 的層疊順序算，不能只看單一檔案
+  const cssOrder = [...fs.readFileSync('styles/index.css', 'utf8').matchAll(/@import '\.\/([^']+)'/g)].map(x => x[1])
+  const buttonColour = {}
+  for (const file of cssOrder) {
+    const text = fs.readFileSync('styles/' + file, 'utf8')
+    for (const rule of text.matchAll(/([^{}]*\.btn-[a-z]+[^{}]*)\{([^}]*)\}/g)) {
+      if (rule[1].includes('.outline')) continue
+      const bg = rule[2].match(/background:\s*(#[0-9a-fA-F]{6})/)
+      if (!bg) continue
+      for (const cls of rule[1].match(/\.btn-[a-z]+/g) || []) buttonColour[cls.slice(1)] = bg[1].toUpperCase()
+    }
+  }
+
+  const toastColour = Object.fromEntries(
+    [...messageCss.matchAll(/\.bo-message\.is-(\w+)\s*\{\s*color:\s*(#[0-9a-fA-F]{6})/g)]
+      .map(x => [x[1], x[2].toUpperCase()])
+  )
+
+  const mismatched = []
+  for (const [type, cls] of Object.entries(kind)) {
+    const btn = buttonColour[cls]
+    const toast = toastColour[type]
+    assert.ok(btn, `找不到 ${cls} 的最終顏色`)
+    assert.ok(toast, `message.css 找不到 is-${type} 的顏色`)
+    if (btn !== toast) mismatched.push(`${type}：按鈕 ${cls} 是 ${btn}，但 Toast 是 ${toast}`)
+  }
+  assert.deepEqual(mismatched, [], '示範按鈕與它發出的 Toast 不同色：\n  ' + mismatched.join('\n  '))
+  ok('四個示範按鈕都與它發出的 Toast 同色')
+
+
 
   // --- 規範頁 ---
   w.eval([

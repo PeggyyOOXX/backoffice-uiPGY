@@ -11,7 +11,10 @@ import './message-guide.css'
 
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
 
-const KIND = { success: 'btn-add', info: 'btn-record', warning: 'btn-edit', error: 'btn-danger' }
+// 示範按鈕的語意色必須與它發出的 Toast 同色，否則按鈕自己就在示範錯誤用法：
+// 按下綠色按鈕卻跳出藍色提示，使用者學到的是「顏色不代表什麼」。
+// 對應關係由 message.css 的 .bo-message.is-* 決定，不是隨便挑好看的。
+const KIND = { success: 'btn-export', info: 'btn-search', warning: 'btn-warning', error: 'btn-danger' }
 
 // 用一般字串寫，裡面的反引號與 ${} 才不會被外層的樣板字串吃掉。
 const API_BRANCHES = [

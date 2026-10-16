@@ -19,16 +19,21 @@ const SIDE_ITEMS = [
   { label: '報表中心', icon: 'reports', level: 1, collapsed: true },
 ]
 
-const sideDemo = () => `<nav class="nav-demo" aria-label="側欄導覽示意">
-  ${SIDE_ITEMS.map(item => `
-    <div class="nav-demo-item is-l1${item.children ? ' is-open' : ''}">
-      ${icon(item.icon, 20)}<span>${item.label}</span>
-      ${icon(item.children ? 'arrowUp' : 'arrowDown', 16)}
-    </div>
-    ${(item.children ?? []).map(child =>
-      `<div class="nav-demo-item is-l2${child.active ? ' is-active' : ''}">${child.label}</div>`).join('')}
-  `).join('')}
-</nav>`
+// 示範直接套用真正的側欄 class（.sidebar / .nav / .nav-item / .nav-level-2），
+// 不自己複製一份配色。先前用 .nav-demo-* 抄了一組數值，側欄改版後就對不上了——
+// 規範頁示範的東西長得跟實物不一樣，比沒有示範更糟。
+const sideDemo = () => `<div class="nav-demo-shell sidebar">
+  <nav class="nav" aria-label="側欄導覽示意">
+    ${SIDE_ITEMS.map(item => `
+      <div class="nav-item">
+        ${icon(item.icon, 20)}<span class="nav-demo-label">${item.label}</span>
+        ${icon(item.children ? 'arrowUp' : 'arrowDown', 16)}
+      </div>
+      ${(item.children ?? []).map(child =>
+        `<div class="nav-item nav-level-2${child.active ? ' active' : ''}">${child.label}</div>`).join('')}
+    `).join('')}
+  </nav>
+</div>`
 
 const crumbDemo = () => `<nav class="crumb-demo" aria-label="麵包屑示意">
   <ol>
@@ -55,8 +60,9 @@ window.renderNavPage = () => guidePage({
   sections: [
     {
       heading: '側欄選單',
-      body: `<div class="guide-stage nav-demo-stage">${sideDemo()}</div>
-        <p class="component-description">最多三層。第一層有圖示（20px）與展開箭頭，第二層起只有文字、靠縮排表達層級。作用中的項目是整組裡顏色最重的一塊。</p>
+      body: `${sideDemo()}
+        <p class="component-description">最多三層。第一層有圖示（20px）與展開箭頭，第二層起只有文字、靠縮排表達層級。作用中的項目<strong>反轉明暗</strong>——淺色漸層底配深色文字，在深色側欄上是對比最強的一塊，而且滿版延伸到兩側邊緣。</p>
+        <p class="component-description">這一段示範直接套用側欄本身的 <code>.sidebar</code> / <code>.nav-item</code> 樣式，不是另外抄一份；側欄改版時這裡會跟著變，不會再出現「規範頁長得跟實物不一樣」。</p>
         <p class="component-description"><strong>沒有檢視權限的項目不渲染，不是變灰。</strong>正式後台的 <code>Side.vue</code> 已經把側欄過濾成只剩有 <code>.read</code> 權限的項目——看得到卻點不了只會讓人一直問「為什麼不能點」。</p>`,
     },
     {
@@ -77,13 +83,16 @@ window.renderNavPage = () => guidePage({
     },
   ],
   tokens: [
-    ['側欄寬度', '248px'],
-    ['第一層高度', '40px'],
+    ['側欄寬度', 'min(276px, 100vw − 56px)'],
+    ['項目高度', '36px'],
+    ['項目圓角', '7px'],
     ['第一層圖示', '20px'],
-    ['第二層縮排', '34px'],
-    ['第三層縮排', '48px'],
-    ['第二／三層字級', '13px / 12px'],
-    ['作用中', '品牌漸層底、白字'],
+    ['字級', '14px（作用中 16px）'],
+    ['第二層縮排', '34px / #98ADBA'],
+    ['第三層縮排', '48px / #8EA5B2'],
+    ['作用中底色', 'linear-gradient(90deg, #73AAFF, #B6BFF6)'],
+    ['作用中文字', '#111B2B（深色，不是白字）'],
+    ['作用中寬度', '滿版，左右各外推 8px'],
     ['最多層數', '3'],
     ['麵包屑字級', '13px'],
     ['麵包屑分隔', '14px 圖示'],
