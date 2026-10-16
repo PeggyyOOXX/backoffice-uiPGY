@@ -1,37 +1,37 @@
 /* Every list action below maps to a documented semantic token. */
 .btn-add {
-  background: #b522d3 !important;
-  border-color: #b522d3 !important;
+  background: #8354bc !important;
+  border-color: #8354bc !important;
 }
 .btn-export {
-  background: #20a05a !important;
-  border-color: #20a05a !important;
+  background: #12b157 !important;
+  border-color: #12b157 !important;
 }
 .btn-edit,
 .row-actions button.btn-edit {
-  background: #3f6fe5 !important;
-  border-color: #3f6fe5 !important;
+  background: #4169c9 !important;
+  border-color: #4169c9 !important;
 }
 .btn-neutral {
-  background: #87919e !important;
-  border-color: #87919e !important;
+  background: #a3a3a3 !important;
+  border-color: #a3a3a3 !important;
 }
 .btn-danger {
-  background: #dd3340 !important;
-  border-color: #dd3340 !important;
+  background: #dc2626 !important;
+  border-color: #dc2626 !important;
 }
 .btn-add.outline {
-  --button-color: #b522d3;
+  --button-color: #8354bc;
 }
 .btn-export.outline {
-  --button-color: #20a05a;
+  --button-color: #12b157;
 }
 .btn-edit.outline {
-  --button-color: #3f6fe5;
+  --button-color: #4169c9;
 }
 .btn-neutral.outline {
-  --button-color: #87919e;
+  --button-color: #a3a3a3;
 }
 .btn-danger.outline {
-  --button-color: #dd3340;
+  --button-color: #dc2626;
 }

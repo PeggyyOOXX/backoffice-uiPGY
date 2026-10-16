@@ -1,42 +1,113 @@
 /* 標籤 Tag。這是元件樣式本身，不只是規範頁的排版——其他頁面要用標籤就套 .bo-tag。
  *
  * 顏色一律取自「按鈕 Button」已定義的語意色，不另訂一套：
- *   success #20A05A（btn-export）  warning #D97318（btn-warning）
- *   danger  #DD3340（btn-danger）  info    #87919E（btn-neutral）
+ *   success #12b157（btn-export）  warning #F59E0B（btn-warning）
+ *   danger  #DC2626（btn-danger）  info    #a3a3a3（btn-neutral）
  *   primary #1596AD（btn-search）
  * 型別名稱與 Element Plus 的 el-tag type 一對一，移植時 type="success" 直接對應。
  * 底色與框線用同一個色碼疊透明度算出來，不必再維護一組淺色值。
  */
-.bo-tag{
-  display:inline-flex;align-items:center;gap:4px;
-  height:22px;padding:0 8px;
-  border:1px solid;border-radius:4px;
-  font-size:12px;line-height:1;white-space:nowrap;
-  max-width:160px;
+.bo-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 22px;
+  padding: 0 8px;
+  border: 1px solid;
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+  max-width: 160px;
 }
-.bo-tag>span{overflow:hidden;text-overflow:ellipsis}
+.bo-tag > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-.bo-tag.is-success{color:#20A05A;background:rgba(32,160,90,.08);border-color:rgba(32,160,90,.24)}
-.bo-tag.is-warning{color:#D97318;background:rgba(217,115,24,.08);border-color:rgba(217,115,24,.24)}
-.bo-tag.is-danger{color:#DD3340;background:rgba(221,51,64,.08);border-color:rgba(221,51,64,.24)}
-.bo-tag.is-info{color:#87919E;background:rgba(135,145,158,.08);border-color:rgba(135,145,158,.24)}
-.bo-tag.is-primary{color:#1596AD;background:rgba(21,150,173,.08);border-color:rgba(21,150,173,.24)}
+.bo-tag.is-success {
+  color: #12b157;
+  background: rgba(34, 197, 94, 0.08);
+  border-color: rgba(34, 197, 94, 0.24);
+}
+.bo-tag.is-warning {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.24);
+}
+.bo-tag.is-danger {
+  color: #dc2626;
+  background: rgba(220, 38, 38, 0.08);
+  border-color: rgba(220, 38, 38, 0.24);
+}
+.bo-tag.is-info {
+  color: #a3a3a3;
+  background: rgba(148, 163, 152, 0.08);
+  border-color: rgba(148, 163, 152, 0.24);
+}
+.bo-tag.is-primary {
+  color: #1596ad;
+  background: rgba(21, 150, 173, 0.08);
+  border-color: rgba(21, 150, 173, 0.24);
+}
 
 /* 可移除標籤是輸入的一部分，用品牌主色，與下拉欄位的已選標籤同一個外觀 */
-.bo-tag.is-removable{padding-right:4px;color:#1596AD;background:rgba(21,150,173,.08);border-color:rgba(21,150,173,.24)}
-.bo-tag-remove{
-  display:flex;align-items:center;justify-content:center;
-  width:18px;height:18px;padding:0;margin:0;
-  border:0;border-radius:3px;background:none;color:inherit;cursor:pointer;opacity:.7;
+.bo-tag.is-removable {
+  padding-right: 4px;
+  color: #1596ad;
+  background: rgba(21, 150, 173, 0.08);
+  border-color: rgba(21, 150, 173, 0.24);
 }
-.bo-tag-remove:hover{opacity:1;background:rgba(21,150,173,.14)}
-.bo-tag-remove:focus-visible{outline:none;opacity:1;box-shadow:0 0 0 2px currentColor}
+.bo-tag-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 3px;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.7;
+}
+.bo-tag-remove:hover {
+  opacity: 1;
+  background: rgba(21, 150, 173, 0.14);
+}
+.bo-tag-remove:focus-visible {
+  outline: none;
+  opacity: 1;
+  box-shadow: 0 0 0 2px currentColor;
+}
 
 /* --- 規範頁排版 --- */
-.tag-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.page .tag-tone-table{min-width:0;table-layout:auto;margin-top:12px}
-.page .tag-tone-table td{text-align:left}
-.page .tag-tone-table td:first-child{width:92px}
-.page .tag-tone-table td:nth-child(2){width:120px}
-.page .tag-usage-table{min-width:560px;table-layout:fixed}
-.page .tag-usage-table td{text-align:left}
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.page .tag-tone-table {
+  min-width: 0;
+  table-layout: auto;
+  margin-top: 12px;
+}
+.page .tag-tone-table td {
+  text-align: left;
+}
+.page .tag-tone-table td:first-child {
+  width: 92px;
+}
+.page .tag-tone-table td:nth-child(2) {
+  width: 120px;
+}
+.page .tag-usage-table {
+  min-width: 560px;
+  table-layout: fixed;
+}
+.page .tag-usage-table td {
+  text-align: left;
+}

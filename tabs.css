@@ -31,7 +31,7 @@
 .bo-tabs-card .bo-tabs-rail{border-bottom:1px solid var(--tab-line)}
 .bo-tabs-card .bo-tabs-scroll{gap:4px;align-items:stretch;margin-bottom:-1px}
 .bo-tabs-card .bo-tab{min-height:37px;padding:0 16px;border:1px solid var(--tab-line);border-radius:4px 4px 0 0;background:#f1f4f8}
-.bo-tabs-card .bo-tab:hover:not(:disabled):not(.is-active){background:#e8edf3;color:#10202b}
+.bo-tabs-card .bo-tab:hover:not(:disabled):not(.is-active){background:#e8edf3;color:#111b2b}
 .bo-tabs-card .bo-tab.is-active{background:#fff;color:var(--tab-on);font-weight:700;border-color:var(--tab-on);border-bottom-color:#fff;position:relative;z-index:1}
 .bo-tabs-card .bo-tab:disabled{background:#f7f8fb}
 

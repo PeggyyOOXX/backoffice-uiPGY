@@ -2,53 +2,163 @@
 
 /* .card 沒有內距，內距一律由頁面的 xxx-guide class 提供。
    這裡用屬性選擇器一次涵蓋所有規範頁，新增頁面不必再寫一次 padding。 */
-.style-guide section.card[class*="-guide"]{padding:16px}
+.style-guide section.card[class*="-guide"] {
+  padding: 16px;
+}
 
 /* 決策表：規範頁最常出現的區塊，欄寬與對齊統一 */
-.page .guide-decision-table{width:100%;min-width:560px;table-layout:fixed;border-collapse:collapse}
-.page .guide-decision-table td{text-align:left}
-.page .guide-decision-table td:first-child{width:30%}
-.page .guide-decision-table td:nth-child(2){width:24%}
+.page .guide-decision-table {
+  width: 100%;
+  min-width: 560px;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+.page .guide-decision-table td {
+  text-align: left;
+}
+.page .guide-decision-table td:first-child {
+  width: 30%;
+}
+.page .guide-decision-table td:nth-child(2) {
+  width: 24%;
+}
 
 /* 規範頁裡的程式碼片段 */
-.style-guide code{font-size:12px;padding:1px 5px;border-radius:4px;background:#f1f4f8;color:#10707f;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
-.style-guide pre{margin:0;padding:12px;border:1px solid var(--line);border-radius:8px;background:#f7f8fb;overflow-x:auto}
-.style-guide pre code{padding:0;background:none;line-height:1.8;white-space:pre}
+.style-guide code {
+  font-size: 12px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: #f1f4f8;
+  color: #10707f;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.style-guide pre {
+  margin: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f7f8fb;
+  overflow-x: auto;
+}
+.style-guide pre code {
+  padding: 0;
+  background: none;
+  line-height: 1.8;
+  white-space: pre;
+}
 
 /* 並排對照（要／不要、A／B）。各頁只要用 .guide-pair 包兩個 div。 */
-.guide-pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
-.guide-pair>div{border:1px solid var(--line);border-radius:8px;padding:14px;min-width:0}
-.guide-pair h4{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#10202b}
-.guide-pair p{margin:0;font-size:12px;line-height:1.7;color:#718096}
-.guide-pair>.is-bad{border-color:rgba(221,51,64,.3);background:rgba(221,51,64,.05)}
-.guide-pair>.is-bad h4{color:#DD3340}
-.guide-pair>.is-good{border-color:rgba(32,160,90,.3);background:rgba(32,160,90,.05)}
-.guide-pair>.is-good h4{color:#20A05A}
+.guide-pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+.guide-pair > div {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px;
+  min-width: 0;
+}
+.guide-pair h4 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #111b2b;
+}
+.guide-pair p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.7;
+  color: #718096;
+}
+.guide-pair > .is-bad {
+  border-color: rgba(220, 38, 38, 0.3);
+  background: rgba(220, 38, 38, 0.05);
+}
+.guide-pair > .is-bad h4 {
+  color: #dc2626;
+}
+.guide-pair > .is-good {
+  border-color: rgba(34, 197, 94, 0.3);
+  background: rgba(34, 197, 94, 0.05);
+}
+.guide-pair > .is-good h4 {
+  color: #12b157;
+}
 
 /* 示範區：把元件放在有邊界的舞台上，與說明文字分開 */
-.guide-stage{border:1px solid var(--line);border-radius:8px;padding:16px;min-width:0}
-.guide-stage+.guide-stage{margin-top:12px}
+.guide-stage {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  min-width: 0;
+}
+.guide-stage + .guide-stage {
+  margin-top: 12px;
+}
 
 /* 規範頁的 token 表永遠是最後一塊，不留下方外距 */
-.style-guide section.card.token-table{margin-bottom:0}
-.style-guide section.card.guide-rules+*{margin-top:0}
+.style-guide section.card.token-table {
+  margin-bottom: 0;
+}
+.style-guide section.card.guide-rules + * {
+  margin-top: 0;
+}
 
-@media(max-width:720px){
-  .style-guide section.card[class*="-guide"]{padding:12px}
+@media (max-width: 720px) {
+  .style-guide section.card[class*="-guide"] {
+    padding: 12px;
+  }
   .page .guide-decision-table td:first-child,
-  .page .guide-decision-table td:nth-child(2){width:auto}
+  .page .guide-decision-table td:nth-child(2) {
+    width: auto;
+  }
 }
 
 /* 表單欄位的共用排版。數值與「輸入框 Input」規範頁的 .input-spec label 一致：
    label 獨立一行、12px / 650、下方 3px，控制項在下且撐滿欄寬。
    各規範頁要放表單就用 .guide-field，不要自己排一套。 */
-.guide-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px 16px}
-.guide-field{display:flex;flex-direction:column;min-width:0}
-.guide-field>label{display:block;min-height:18px;margin-bottom:3px;font-size:12px;font-weight:650;color:var(--text)}
-.guide-field .guide-input,.guide-field .guide-select{width:100%}
-.guide-field>small{margin-top:4px;font-size:12px;color:#718096}
+.guide-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px 16px;
+}
+.guide-field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.guide-field > label {
+  display: block;
+  min-height: 18px;
+  margin-bottom: 3px;
+  font-size: 12px;
+  font-weight: 650;
+  color: var(--text);
+}
+.guide-field .guide-input,
+.guide-field .guide-select {
+  width: 100%;
+}
+.guide-field > small {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #718096;
+}
 
 /* 開關依「開關排列 Switch」規範：開關在左、文案緊接在右、間距 16px、每項獨立一列。
    所以它不套 .guide-field，而是獨立成列，且不與輸入欄並排。 */
-.guide-switch-rows{display:flex;flex-direction:column;gap:12px}
-.guide-switch-row{display:flex;align-items:center;gap:16px;font-size:14px;font-weight:400}
+.guide-switch-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.guide-switch-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 14px;
+  font-weight: 400;
+}

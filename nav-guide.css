@@ -1,5 +1,5 @@
 /* 導覽規範頁。側欄示意的配色抄 base.css 的 nav-item 與 original-101best-active-gradient。 */
-.nav-demo-stage{max-width:300px;padding:10px;background:#10202B;border-color:#10202B}
+.nav-demo-stage{max-width:300px;padding:10px;background:#111B2B;border-color:#111B2B}
 .nav-demo{display:flex;flex-direction:column;gap:2px}
 .nav-demo-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:6px;color:rgba(255,255,255,.78);font-size:14px}
 .nav-demo-item.is-l1 .icon:last-child{margin-left:auto;opacity:.55}

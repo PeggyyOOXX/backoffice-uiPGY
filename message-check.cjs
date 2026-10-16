@@ -111,7 +111,7 @@ async function run() {
   const host = d.querySelector('.bo-message-list')
   assert.ok(host.classList.contains('is-fallback'), '無 popover 時應加上 is-fallback')
   const css = fs.readFileSync('message.css', 'utf8')
-  assert.ok(/\.bo-message-list\.is-fallback\{z-index:\d+\}/.test(css), 'fallback 沒有 z-index')
+  assert.ok(/\.bo-message-list\.is-fallback\s*\{[^}]*z-index:\s*\d+/.test(css), 'fallback 沒有 z-index')
   assert.ok(css.includes(':popover-open'), '缺少 popover 顯示規則')
   ok('無 popover 支援時退回 z-index，不會整個看不見')
 
@@ -119,7 +119,8 @@ async function run() {
   // Toast 浮在內容之上，半透明會透出底下的文字。曾經因為語意色那幾條只寫 rgba()，
   // 把基礎規則的 background:#fff 整個蓋掉，白底就消失了。
   const messageCss = fs.readFileSync('message.css', 'utf8')
-  const typeRules = [...messageCss.matchAll(/\.bo-message\.is-(\w+)\{[^}]*background:([^;]+);/g)]
+  // \s* 與 [\s\S] 讓它容忍 prettier 把宣告排成多行，斷言驗的是語意不是排版
+  const typeRules = [...messageCss.matchAll(/\.bo-message\.is-(\w+)\s*\{[^}]*?background:([\s\S]*?);/g)]
   assert.equal(typeRules.length, 4, 'message.css 的四條語意色規則找不齊，選擇器可能改了')
   const translucent = typeRules
     .filter(([, , bg]) => !/#fff|#ffffff|\bwhite\b/i.test(bg))

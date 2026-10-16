@@ -3,7 +3,7 @@
 .token-swatch{display:grid;grid-template-columns:28px 1fr;grid-template-rows:auto auto auto;gap:2px 10px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:6px}
 .token-chip{grid-row:1/4;width:28px;height:28px;border-radius:4px;border:1px solid rgba(0,0,0,.08)}
 .token-swatch code{font-size:11px;color:#718096}
-.token-swatch strong{font-size:13px;font-weight:600;color:#10202b}
+.token-swatch strong{font-size:13px;font-weight:600;color:#111b2b}
 .token-swatch small{font-size:11px;color:#718096;line-height:1.5}
 
 .page .token-table-grid{min-width:0;table-layout:auto}

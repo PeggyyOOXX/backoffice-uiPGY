@@ -8,14 +8,14 @@
 .select-field{display:flex;flex-direction:column;gap:4px;min-width:0}
 .select-field>label{font-size:12px;color:#68758b}
 .select-field>small{font-size:12px;line-height:1.6;color:#718096;overflow-wrap:anywhere}
-.select-field>small.error-text{color:#dd3340}
+.select-field>small.error-text{color:#dc2626}
 
 .select-panel{border:1px solid var(--line);border-radius:8px;padding:14px;min-width:0}
-.select-panel h4{margin:0 0 4px;font-size:12px;font-weight:600;color:#10202b;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.select-panel h4{margin:0 0 4px;font-size:12px;font-weight:600;color:#111b2b;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
 .select-panel>p{margin:0 0 12px;font-size:12px;line-height:1.6;color:#718096}
 
 .select-readout{margin:10px 0 0;font-size:12px;color:#718096;overflow-wrap:anywhere}
-.select-readout output{color:#10202b}
+.select-readout output{color:#111b2b}
 
 .select-filter-demo{margin:0}
 .select-feedback{margin:10px 0 0;font-size:12px;color:#718096;min-height:19px}

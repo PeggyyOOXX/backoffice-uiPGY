@@ -219,7 +219,7 @@ window.renderSelectAdvanced = () => `<div class="style-guide select-advanced">
       <span>選中／hover 底色</span><strong>#E7F7FA</strong>
       <span>選中文字色</span><strong>#1596AD</strong>
       <span>Focus ring</span><strong>3px rgba(21,150,173,.1)</strong>
-      <span>錯誤邊框</span><strong>#DD3340</strong>
+      <span>錯誤邊框</span><strong>#DC2626</strong>
     </div>
   </section>
 

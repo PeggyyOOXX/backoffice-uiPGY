@@ -3,7 +3,7 @@
   --input-text: #17282e;
   --input-border: #d7e0e4;
   --input-focus: #1596ad;
-  --input-error: #dd3340;
+  --input-error: #dc2626;
   --input-disabled-bg: #f2f4f6;
 }
 input::placeholder,

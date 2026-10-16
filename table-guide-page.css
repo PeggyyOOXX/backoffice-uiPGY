@@ -1,15 +1,48 @@
 /* 表格規範頁。表格與分頁的樣式在 data-table.css 與 unified-table-system，這裡只排版。 */
-.table-guide .guide-stage{overflow:hidden}
-.data-table-actions{justify-content:center}
-.page .data-table-grid{min-width:720px}
+.table-guide .guide-stage {
+  overflow: hidden;
+}
+.data-table-actions {
+  justify-content: center;
+}
+.page .data-table-grid {
+  min-width: 720px;
+}
 
 /* 狀態欄位：可切換時是 button（有底線、可點），唯讀時是 span。
    顏色相同、可否點擊不同——使用者才看得出自己有沒有權限改。 */
-.page .table-status-demo{width:100%;min-width:420px;border-collapse:collapse}
-.page .table-status-demo td{text-align:left}
-.status-field{padding:0;border:0;background:none;font:inherit;font-size:13px}
-.status-field.is-on{color:#20A05A}
-.status-field.is-off{color:#DD3340}
-button.status-field{cursor:pointer;text-decoration:underline;text-underline-offset:3px}
-button.status-field:focus-visible{outline:none;box-shadow:0 0 0 2px currentColor;border-radius:2px}
-.status-field.is-readonly{cursor:default;text-decoration:none}
+.page .table-status-demo {
+  width: 100%;
+  min-width: 420px;
+  border-collapse: collapse;
+}
+.page .table-status-demo td {
+  text-align: left;
+}
+.status-field {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 13px;
+}
+.status-field.is-on {
+  color: #12b157;
+}
+.status-field.is-off {
+  color: #dc2626;
+}
+button.status-field {
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+button.status-field:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px currentColor;
+  border-radius: 2px;
+}
+.status-field.is-readonly {
+  cursor: default;
+  text-decoration: none;
+}

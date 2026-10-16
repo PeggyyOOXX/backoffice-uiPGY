@@ -2,7 +2,7 @@
 .upload-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
 .upload-slot{min-width:0}
 .upload-slot-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:8px}
-.upload-slot-head strong{font-size:13px;font-weight:600;color:#10202b}
+.upload-slot-head strong{font-size:13px;font-weight:600;color:#111b2b}
 .upload-slot-head small{font-size:11px;color:#718096;white-space:nowrap}
 
 .upload-dropzone{
@@ -26,5 +26,5 @@
 
 /* 尺寸提示：規則要在上傳之前就看得到，所以它是區塊的一部分，不是 Tooltip。 */
 .upload-tips{font-size:13px}
-.upload-tips strong{display:block;margin-bottom:6px;font-size:13px;font-weight:600;color:#10202b}
+.upload-tips strong{display:block;margin-bottom:6px;font-size:13px;font-weight:600;color:#111b2b}
 .upload-tips ul{margin:0;padding-left:18px;color:#718096;line-height:1.8}

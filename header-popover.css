@@ -8,7 +8,7 @@
   text-align:left;
 }
 .header-popover-panel[hidden]{display:none}
-.header-popover-panel>strong{display:block;margin-bottom:8px;font-size:13px;font-weight:600;color:#10202b}
+.header-popover-panel>strong{display:block;margin-bottom:8px;font-size:13px;font-weight:600;color:#111b2b}
 .header-popover-panel dl{display:flex;flex-direction:column;gap:6px;margin:0}
 .header-popover-panel dl>div{display:flex;justify-content:space-between;gap:16px}
 .header-popover-panel dt{font-size:12px;color:#718096}

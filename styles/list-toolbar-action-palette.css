@@ -26,22 +26,22 @@
   border-color: #4f6bed !important;
 }
 .btn-export {
-  background: #20a05a !important;
-  border-color: #20a05a !important;
+  background: #12b157 !important;
+  border-color: #12b157 !important;
 }
 .btn-edit,
 .row-actions button.btn-edit {
-  background: #3f6fe5 !important;
-  border-color: #3f6fe5 !important;
+  background: #4169c9 !important;
+  border-color: #4169c9 !important;
 }
 .btn-add.outline {
   --button-color: #4f6bed;
 }
 .btn-export.outline {
-  --button-color: #20a05a;
+  --button-color: #12b157;
 }
 .btn-edit.outline {
-  --button-color: #3f6fe5;
+  --button-color: #4169c9;
 }
 @media (max-width: 720px) {
   .member-actions {
