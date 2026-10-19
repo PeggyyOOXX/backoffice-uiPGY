@@ -329,10 +329,8 @@ assert.equal(qa(".bulk-head").length, 3, "三個開關欄位的表頭都要有�
 assert.ok(q('[data-bulk-all][data-bulk="game"]'), "缺少全選框");
 ok("批量頁：共用表格＋分頁，三個欄位表頭都有批量入口");
 
-// 沒勾選時，作用於勾選資料的按鈕都要停用
-assert.equal(q("[data-game-batch]").disabled, true, "沒勾選時批量處理應停用");
+// 沒勾選時，作用於勾選資料的按鈕要停用
 assert.equal(q("[data-game-review]").disabled, true, "沒勾選時批量審核應停用");
-assert.equal(q("[data-game-clear]").disabled, true, "沒勾選時清除勾選應停用");
 // 表頭選單裡「已勾選」那幾條同樣要停用
 click(q('[data-bulk-menu="front"][data-bulk="game"]'));
 const menu = q('[data-bulk-menu-for="front"]');
@@ -358,13 +356,13 @@ ok("批量頁：一次只展開一個表頭選單");
 click(q('[data-bulk-all][data-bulk="game"]'));
 assert.equal(qa('[data-bulk-row][data-bulk="game"]:checked').length, 10,
   "全選只選本頁的 10 筆");
-assert.ok(q("[data-game-batch]").textContent.includes("10"),
+assert.ok(q("[data-game-review]").textContent.includes("10"),
   "工具列按鈕要寫出已勾選筆數");
 // 換到第 2 頁，前一頁的勾選要留著，但全選框只反映目前這一頁
 click([...qa("[data-table-page]")].find(b => b.textContent.trim() === "2"));
 assert.equal(q('[data-bulk-all][data-bulk="game"]').checked, false,
   "第 2 頁沒有全選，全選框不該是勾的");
-assert.ok(q("[data-game-batch]").textContent.includes("10"),
+assert.ok(q("[data-game-review]").textContent.includes("10"),
   "換頁後第 1 頁的勾選要保留");
 click([...qa("[data-table-page]")].find(b => b.textContent.trim() === "1"));
 assert.equal(q('[data-bulk-all][data-bulk="game"]').checked, true,
@@ -417,11 +415,12 @@ assert.equal(
   "本頁勾選的資料審核後不該還有待審核");
 ok("批量頁：批量審核先確認、說明不可逆，完成後不給復原");
 
-// 清除勾選
-click(q("[data-game-clear]"));
-assert.equal(qa('[data-bulk-row][data-bulk="game"]:checked').length, 0, "清除勾選應全部取消");
-assert.equal(q("[data-game-batch]").disabled, true, "清除後批量處理應回到停用");
-ok("批量頁：清除勾選後按鈕回到停用");
+// 取消全選：工具列沒有「清除勾選」，靠全選框再點一次取消本頁
+// 目前是全選狀態，再點一次就是取消（jsdom 的 click 會自己切換 checked，不要手動預設）
+click(q('[data-bulk-all][data-bulk="game"]'));
+assert.equal(qa('[data-bulk-row][data-bulk="game"]:checked').length, 0, "取消全選應清掉本頁勾選");
+assert.equal(q("[data-game-review]").disabled, true, "沒有勾選後批量審核應回到停用");
+ok("批量頁：取消全選後按鈕回到停用");
 
 console.log(
   "\nPASS: 組合範例（列表型篩選／分頁／作廢確認；設定型頁籤守衛／必填連動；批量型表頭選單／本頁全選／復原／不可逆確認）",

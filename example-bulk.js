@@ -5,10 +5,10 @@
 // 選定的方案 B（批量控制收進欄位表頭），順便驗證批量操作與表格、分頁、確認彈窗
 // 兜在一起之後還成不成立。
 //
-// 三種批量情境都走過一遍：
-//   批量開關 → 表頭選單，點下去就生效，可復原
-//   批量處理 → 工具列按鈕，作用於已勾選的資料
-//   批量審核 → 不可逆，先開確認彈窗
+// 兩種批量情境都走過一遍：
+//   批量開關 → 表頭選單，點下去就生效，可復原。正式後台這一頁本來就有。
+//   批量審核 → 不可逆，先開確認彈窗。行為取自 inviteFriendsReview，
+//              搬過來是因為規範裡「不可逆的批量動作要先確認」需要有地方示範。
 import { dataTable, applyPaging, PAGE_SIZES } from './data-table.js'
 import { selectAllControl, selectRowControl, bulkHeader, bulkFeedback, selectionOf, applyBulk, PICK_COLUMN } from './bulk-actions.js'
 import { tag } from './tag-guide.js'
@@ -151,14 +151,12 @@ const filters = () => `<form class="source-filter card example-filter" data-game
   </div>
 </form>`
 
-// 批量處理與批量審核作用於「已勾選」的資料，所以沒勾選時停用，
+// 批量審核作用於「已勾選」的資料，所以沒勾選時停用，
 // 而不是讓人點了才發現沒作用。按鈕上直接寫出筆數。
 const toolbar = () => {
   const n = STATE.selected.size
   return `<div class="example-toolbar member-actions">
-    <button type="button" class="semantic-btn btn-edit" data-game-batch ${n ? '' : 'disabled'}>${icon('batch')}批量處理${n ? `（${n}）` : ''}</button>
     <button type="button" class="semantic-btn btn-record" data-game-review ${n ? '' : 'disabled'}>${icon('batchReview')}批量審核${n ? `（${n}）` : ''}</button>
-    <button type="button" class="semantic-btn btn-neutral" data-game-clear ${n ? '' : 'disabled'}>${icon('close')}清除勾選</button>
     <button type="button" class="semantic-btn btn-export" data-game-export>${icon('download')}匯出</button>
   </div>`
 }
@@ -166,7 +164,7 @@ const toolbar = () => {
 window.renderExampleBulk = () => `<section class="example-page example-bulk-page" data-game-root>
   <div class="guide-section-heading">
     <h2>遊戲列表</h2>
-    <p class="component-description">組合範例（批量型），照正式後台 <code>gameProviderList/game.vue</code> 做。三種批量情境各走一遍：表頭選單的<strong>批量開關</strong>、工具列的<strong>批量處理</strong>、要先確認的<strong>批量審核</strong>。</p>
+    <p class="component-description">組合範例（批量型），照正式後台 <code>gameProviderList/game.vue</code> 做。表頭選單的<strong>批量開關</strong>是這一頁本來就有的功能；<strong>批量審核</strong>取自 <code>inviteFriendsReview</code>，搬過來示範「不可逆的批量動作」這條路線。</p>
   </div>
   ${filters()}
   ${toolbar()}
@@ -181,7 +179,7 @@ window.renderExampleBulk = () => `<section class="example-page example-bulk-page
       <li><strong>全選只選本頁</strong>：換頁後勾選會保留，但全選框只反映目前這一頁</li>
       <li><strong>結果回報</strong>：同時給影響筆數與實際變更筆數，並留一個復原</li>
       <li><strong>不可逆的動作先確認</strong>：批量審核會開確認彈窗並列出影響範圍；批量開關不會</li>
-      <li><strong>沒勾選就停用</strong>：批量處理、批量審核、清除勾選在沒勾選時都是停用的</li>
+      <li><strong>沒勾選就停用</strong>：批量審核在沒勾選時是停用的，表頭選單裡「已勾選 N 筆」那兩條也是</li>
       <li><strong>表格</strong>：表格外殼與分頁都來自 <code>dataTable()</code>，批量元件只提供勾選欄與表頭控制項</li>
       <li><strong>標籤</strong>：狀態與審核狀態依語意對應型別，不是依狀態碼</li>
       <li><strong>訊息提示</strong>：一次性的結果用 Toast，批量結果用常駐的回報列（因為它帶著復原鈕）</li>
@@ -289,24 +287,8 @@ onMatch('click', '[data-game-toggle]', (event, button) => {
   refreshList()
 }, { owner: 'example-bulk' })
 
-onMatch('click', '[data-game-clear]', () => {
-  STATE.selected.clear()
-  refreshList()
-}, { owner: 'example-bulk' })
-
 onMatch('click', '[data-game-export]', () =>
   message.success(`已開始匯出 ${visible().length} 款遊戲`), { owner: 'example-bulk' })
-
-// 批量處理：可逆，直接做，結果走回報列
-onMatch('click', '[data-game-batch]', () => {
-  if (!STATE.selected.size) return
-  STATE.undo = snapshot()
-  STATE.text = applyBulk({
-    rows: STATE.rows, ids: [...STATE.selected],
-    key: 'status', value: 'fix', label: '狀態', optionText: '維護中',
-  }).text
-  refreshList()
-}, { owner: 'example-bulk' })
 
 // 批量審核：送出後不能收回，所以先開確認彈窗並列出影響範圍
 onMatch('click', '[data-game-review]', (event, trigger) => {

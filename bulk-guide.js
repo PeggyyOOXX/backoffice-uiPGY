@@ -62,6 +62,17 @@ const DECISION = [
   ['只有兩三筆資料', '不放批量入口', '一筆一筆改還比較快，多一個入口只是雜訊'],
 ]
 
+// 正式後台實際用到批量操作的地方。全站只有 6 個 view 有勾選欄（type="selection"），
+// 掃過一遍的結果，不是憑印象列的。
+const USAGE = [
+  ['遊戲列表', 'gameProviderList/game.vue', '批次／全部調整：前台顯示、首頁顯示、熱門標記', '三個開關欄位'],
+  ['遊戲廳列表', 'gameProviderList/index.vue', '同上，作用在遊戲廳層級', '三個開關欄位'],
+  ['系統遊戲列表', 'systemGameProviderManagement/game.vue', '批次／全部調整狀態（僅啟用／停用）', '一個狀態欄位'],
+  ['系統遊戲廳列表', 'systemGameProviderManagement/index.vue', '同上', '一個狀態欄位'],
+  ['邀請好友審核', 'inviteFriendsReview/index.vue', '批次審核，送出前開 CustomDialog 確認', '不可逆'],
+  ['會員稽核調整', 'memberAuditAdjustment/index.vue', '批次清除／全部清除，送出前開確認彈窗', '不可逆'],
+]
+
 const REJECTED = [
   ['勾選後浮出操作列', '表格上方浮出一列按鈕', '入口離它作用的欄位很遠，而且會把表格往下推、整頁跳動'],
   ['表格上方固定兩排下拉', '正式後台目前的做法', '要先理解「批次調整」與「全部調整」兩個抽象詞，欄位一多就擠成一整排'],
@@ -88,6 +99,12 @@ window.renderBulkGuide = () => guidePage({
         </ul>
         <p class="component-description">把 20 筆都設為開啟、其中 17 筆本來就開著，只說「已更新 20 筆」會讓人以為真的動了 20 筆。沒有任何變更時也要講：「原本就是開啟，沒有變更。」</p>
         <p class="component-description">每個批量動作都要能<strong>復原</strong>。復原鈕跟在回報文字後面，不另外找地方放。</p>`,
+    },
+    {
+      heading: '正式後台用在哪裡',
+      body: `<p class="component-description">全站只有 <strong>6 個頁面</strong>有勾選欄，掃過一遍的結果如下。四個遊戲列表做的是<strong>可逆的批量調整</strong>（點了就生效），兩個審核類做的是<strong>不可逆</strong>（送出前一定開確認彈窗）——這條界線就是上面那兩套規則的來源。</p>
+        ${decisionTable(USAGE, ['頁面', '檔案', '做什麼', '性質'])}
+        <p class="component-description">四個遊戲列表目前的入口是<strong>表格上方兩排下拉</strong>（批次調整／全部調整），也就是下面「沒有採用的做法」裡的第二項。改成表頭選單之後，這四頁可以共用同一組元件。</p>`,
     },
     { heading: '哪種情境用哪個入口', body: decisionTable(DECISION) },
     {
