@@ -347,28 +347,10 @@ button {
 .table-wrap {
   overflow: auto;
 }
-.page table {
-  border-collapse: collapse;
-  width: 100%;
-  min-width: 920px;
-}
-.page th {
-  background: #f7f8fb;
-  color: #68758b;
-  font-size: 11px;
-  text-align: left;
-  padding: 12px 16px;
-  white-space: nowrap;
-  border-bottom: 1px solid var(--line);
-}
-.page td {
-  padding: 15px 16px;
-  border-bottom: 1px solid #edf0f4;
-  white-space: nowrap;
-}
-.page tbody tr:hover {
-  background: #f9fbff;
-}
+/* 表格的外觀全部在 styles/unified-table-system.css，這裡不要再定義一份。
+   先前這裡也有一組 .page th / .page td，與那個檔案同權重、只是 import 比較早，
+   結果畫面上看到的是兩個檔案逐屬性混出來的樣子（內距來自後者、td 的 nowrap
+   來自前者），兩邊都不是完整的規範。 */
 .user {
   display: flex;
   align-items: center;

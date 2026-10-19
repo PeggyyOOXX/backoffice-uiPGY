@@ -17,7 +17,7 @@
 
 .steps-demo-actions{display:flex;gap:8px;justify-content:flex-start}
 .steps-demo-actions .semantic-btn{display:inline-flex;align-items:center}
-.page .steps-state-table{min-width:0;table-layout:auto;margin-top:12px}
+.page .steps-state-table{table-layout:auto;margin-top:12px}
 .page .steps-state-table td{text-align:left}
 
 @media(max-width:720px){

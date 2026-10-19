@@ -88,4 +88,38 @@ for (const file of order.slice(selfIndex + 1)) {
 assert.deepEqual(offenders, [], '以下檔案排在變數之後，會把對齊蓋掉：\n  ' + offenders.join('\n  '))
 ok(`後續 ${order.length - selfIndex - 1} 個樣式檔都沒有覆寫這三個值`)
 
-console.log('\nPASS: Shell 版面對齊（topbar 底線 ＝ 側欄分隔線）')
+// --- 表格外觀只能有一個來源 ---
+//
+// 站上有 23 張表。它們的長相本來該全部來自 unified-table-system.css，但 base.css
+// 也有一組同權重的 .page th / .page td，只是 import 比較早——畫面上看到的其實是
+// 兩個檔案逐屬性混出來的結果，兩邊都不是完整的規範。
+// 另外那裡還有 .page table{min-width:920px}（會員列表的尺寸）套到每一張表，
+// 逼得 16 個地方各自寫 min-width 去抵抗，其中 5 個只是寫 min-width:0。
+const SOURCE = 'styles/unified-table-system.css'
+const styleFiles = fs.readdirSync('styles').filter(f => f.endsWith('.css') && f !== 'index.css')
+const BASE_PROPS = ['padding', 'background', 'font-size', 'border-bottom', 'text-align']
+const dupes = []
+for (const file of styleFiles) {
+  if (file === SOURCE.replace('styles/', '')) continue
+  const text = fs.readFileSync(`styles/${file}`, 'utf8')
+  // 只看沒有再加類別的裸選擇器：.page th / .page td / .page table
+  for (const sel of ['th', 'td', 'table']) {
+    const rule = text.match(new RegExp(`(^|\\})\\s*\\.page\\s+${sel}\\s*\\{([^}]*)\\}`, 'm'))
+    if (!rule) continue
+    const body = rule[2]
+    const hit = BASE_PROPS.filter(p => new RegExp(`(^|;)\\s*${p}\\s*:`).test(body))
+    if (hit.length) dupes.push(`styles/${file} 的 .page ${sel} 又定義了 ${hit.join('、')}`)
+  }
+}
+assert.deepEqual(dupes, [], `表格外觀只能寫在 ${SOURCE}：\n  ` + dupes.join('\n  '))
+
+const tableCss = fs.readFileSync(SOURCE, 'utf8')
+const bare = tableCss.match(/\.page\s+table\s*,[^{]*\{([^}]*)\}/)
+assert.ok(bare, `${SOURCE} 缺少 .page table 的基底規則`)
+assert.ok(
+  !/min-width\s*:/.test(bare[1]),
+  '.page table 不要設全域 min-width——那是會員列表的尺寸，套到每張表會逼其他表各自抵抗',
+)
+ok(`表格外觀只有 ${SOURCE} 一個來源，且沒有全域 min-width`)
+
+console.log('\nPASS: Shell 版面對齊（topbar 底線 ＝ 側欄分隔線）＋ 表格外觀單一來源')

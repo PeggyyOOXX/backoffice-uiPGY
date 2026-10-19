@@ -3,8 +3,10 @@
 .state-guide>.component-description{margin:0 0 12px}
 
 .state-switcher{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
-.state-demo-stage{border:1px solid var(--line);border-radius:8px;overflow:hidden;min-height:232px}
-.state-demo-stage .table-wrap{border:0}
+/* 舞台只負責「切換狀態時高度不跳動」，不自己加外框——
+   先前這裡有 border + radius，讓這一頁的表格變成全站唯一被框起來的那張。
+   表格長什麼樣一律由 unified-table-system 決定，頁面不另外包一層。 */
+.state-demo-stage{min-height:232px}
 .state-demo-stage .bo-skeleton{padding:16px}
 
 /* 示範表格寬度交給容器，不用全站表格的 920px 最小寬。 */

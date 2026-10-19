@@ -3,6 +3,19 @@
 .page table,
 .bo-modal table {
   width: 100%;
+  border-collapse: collapse;
+}
+
+/* 寬度不設全域預設。先前 .page table 掛著 min-width:920px，那是會員列表的尺寸，
+   卻套到站上每一張表——規範頁的小表格因此一律橫向捲動，於是 16 個地方各自寫
+   min-width 去抵抗它，其中 5 個只是寫 min-width:0。
+   現在改成：表格預設依內容決定寬度，真正寬的資料表自己宣告。 */
+.page .data-table-grid {
+  min-width: 720px;
+}
+.page .member-data-card table,
+.page .member-source-table {
+  min-width: 920px;
 }
 .page th,
 .bo-modal th {

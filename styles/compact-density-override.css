@@ -128,13 +128,9 @@
 .table-toolbar h2 {
   font-size: 15px;
 }
-.page th {
-  padding: 8px 11px;
-  font-size: 12px;
-}
-.page td {
-  padding: 9px 11px;
-}
+/* 表格的密度跟其他外觀一起放在 unified-table-system.css。
+   這裡原本有一組一模一樣的 padding／font-size，值相同、import 更早，
+   純粹是重複——留著只會讓人以為表格樣式可以在這裡調。 */
 .user {
   gap: 7px;
 }

@@ -19,7 +19,7 @@
 .icon-cell small{font-size:11px;color:#718096}
 .icon-cell em{font-style:normal;font-size:10px;color:#A0AEC0;word-break:break-all}
 
-.page .icon-guide-table{min-width:0;table-layout:auto}
+.page .icon-guide-table{table-layout:auto}
 .page .icon-guide-table td{text-align:left}
 .icon-size-rows{display:flex;flex-direction:column;gap:10px}
 .icon-size-row{display:flex;align-items:flex-end;gap:16px}

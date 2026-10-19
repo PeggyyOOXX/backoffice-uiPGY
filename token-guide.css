@@ -6,7 +6,7 @@
 .token-swatch strong{font-size:13px;font-weight:600;color:#111b2b}
 .token-swatch small{font-size:11px;color:#718096;line-height:1.5}
 
-.page .token-table-grid{min-width:0;table-layout:auto}
+.page .token-table-grid{table-layout:auto}
 .page .token-table-grid td{text-align:left}
 .page .token-breakpoint-table{min-width:560px;table-layout:fixed}
 .page .token-breakpoint-table td{text-align:left}
