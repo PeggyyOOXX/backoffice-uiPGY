@@ -5,8 +5,10 @@ const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;',
 
 // Shared single-choice / multi-choice control. The label is part of the control, so
 // clicking the text toggles it; no per-page markup or colours.
-export const choiceControl = ({ type, name, label, hint = '', checked = false, disabled = false, attrs = '' }) =>
-  `<label class="choice-control"><input type="${type}" ${name ? `name="${esc(name)}"` : ''} ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''} ${attrs}><span>${esc(label)}${hint ? `<small>${esc(hint)}</small>` : ''}</span></label>`
+// hideLabel 用於權限矩陣這種「每一格就是一個勾選框」的表格：文案仍然寫在 label 裡
+// （報讀器要念得出這格是哪個功能的哪個權限），只是視覺上隱藏，不是拿掉它。
+export const choiceControl = ({ type, name, label, hint = '', checked = false, disabled = false, hideLabel = false, attrs = '' }) =>
+  `<label class="choice-control${hideLabel ? ' is-control-only' : ''}"><input type="${type}" ${name ? `name="${esc(name)}"` : ''} ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''} ${attrs}><span>${esc(label)}${hint ? `<small>${esc(hint)}</small>` : ''}</span></label>`
 
 export const choiceCard = ({ type = 'radio', name, title, text, checked = false, disabled = false, attrs = '' }) =>
   `<label class="choice-card"><input type="${type}" ${name ? `name="${esc(name)}"` : ''} ${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''} ${attrs}><span><strong>${esc(title)}</strong><small>${esc(text)}</small></span></label>`
@@ -44,7 +46,7 @@ export const choiceBody = () => `
   </div>
   <h3>錯誤</h3>
   <fieldset class="choice-group is-inline" aria-invalid="true" aria-describedby="choice-guide-error"><legend>代理層級<span class="required-mark" aria-hidden="true"> *</span></legend>${radios('guide-radio-error', [['一般代理','none'],['總代理','none']]).map(choiceControl).join('')}</fieldset>
-  <small class="settings-error" id="choice-guide-error">請選擇代理層級</small>
+  <small class="error-text" id="choice-guide-error">請選擇代理層級</small>
   <dl>
     <div><dt>控制尺寸</dt><dd>16 × 16px</dd></div>
     <div><dt>選取色</dt><dd>#1596AD（accent-color）</dd></div>

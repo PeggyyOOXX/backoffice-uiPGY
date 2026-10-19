@@ -1,0 +1,41 @@
+/* 組合範例（搜尋結果型）。表格、分頁、抽屜、篩選列、手機卡片與標籤色點
+   都已經有共用樣式（data-table.css 與 styles/member-source-layout.css），
+   這裡只放這一頁多出來的兩件事：帳號的抽屜入口，與手機要把表格換成卡片。 */
+
+/* 帳號是打開唯讀抽屜的入口，不是連到另一頁的連結 */
+.example-member-link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #1596ad;
+  font: inherit;
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+
+.example-member-link:hover {
+  color: #10778a;
+}
+
+.example-member-link:focus-visible {
+  outline: 2px solid #1596ad;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* 金額欄位等寬對齊，整欄不換行 */
+.example-member-page .example-amount {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  /* 手機換成卡片：表格收起來，分頁留著（卡片一樣要換頁）。
+     卡片的顯示由共用的 .member-mobile-only 控制，這裡不重複定義。 */
+  .example-member-page .data-table-scroll {
+    display: none;
+  }
+}

@@ -88,6 +88,48 @@ for (const file of order.slice(selfIndex + 1)) {
 assert.deepEqual(offenders, [], '以下檔案排在變數之後，會把對齊蓋掉：\n  ' + offenders.join('\n  '))
 ok(`後續 ${order.length - selfIndex - 1} 個樣式檔都沒有覆寫這三個值`)
 
+// --- 手機版固定內容那一疊不能有縫 ---
+//
+// topbar、工作區頁籤列、搜尋條件開關都是 position: fixed，疊在捲動內容上面。
+// 只要其中一個的位置是另外寫死的數字，中間就會留一條縫，捲動時內容從縫裡穿過去。
+// （實際踩過：topbar 46px、頁籤列卻寫 top: 50px，中間 4px 沒人蓋。）
+// 所以這些值一律從 sticky-topbar-and-workspace-tabs.css 的變數算出來。
+{
+  const owner = fs.readFileSync('styles/sticky-topbar-and-workspace-tabs.css', 'utf8')
+  for (const name of ['--topbar-h-mobile', '--quick-tabs-h-mobile', '--mobile-search-toggle-h', '--mobile-stack-bottom']) {
+    assert.ok(owner.includes(name + ':'), `sticky-topbar-and-workspace-tabs.css 缺少 ${name}`)
+  }
+
+  const mobile = fs.readFileSync('styles/mobile-wrapped-static-navigation-and-actions.css', 'utf8')
+  // 同一個 selector 在檔案裡會出現兩次（桌機先 display:none，手機才排版），
+  // 所以要挑出真正寫著那個屬性的那一塊。
+  const ruleOf = (selector, property) => {
+    const blocks = []
+    for (let at = mobile.indexOf(selector); at >= 0; at = mobile.indexOf(selector, at + 1)) {
+      blocks.push(mobile.slice(at, mobile.indexOf('}', at)))
+    }
+    assert.ok(blocks.length, `手機版樣式找不到 ${selector}`)
+    return blocks.find(block => block.includes(property + ':')) ?? blocks[0]
+  }
+  const fromVariable = (selector, property, variable) => {
+    const rule = ruleOf(selector, property)
+    const line = rule.split('\n').find(text => text.trim().startsWith(property + ':'))
+    assert.ok(line, `${selector} 缺少 ${property}`)
+    assert.ok(
+      line.includes(variable),
+      `${selector} 的 ${property} 要從 ${variable} 算出來，不要另外寫死數字：${line.trim()}`,
+    )
+  }
+  // topbar 的高度與頁籤列的 top 必須是同一個值，中間才不會有縫
+  fromVariable('.topbar {', 'height', '--topbar-h-mobile')
+  fromVariable('.quick-tabs {', 'top', '--topbar-h-mobile')
+  fromVariable('.quick-tabs {', 'height', '--quick-tabs-h-mobile')
+  // 搜尋條件開關與展開的篩選列接在整疊下面
+  fromVariable('.mobile-member-search-toggle {', 'top', '--mobile-search-toggle-top')
+  fromVariable('.source-filter.mobile-open {', 'top', '--mobile-stack-bottom')
+  ok('手機版：topbar、頁籤列與搜尋開關的位置都從同一組變數算出來，中間不留縫')
+}
+
 // --- 表格外觀只能有一個來源 ---
 //
 // 站上有 23 張表。它們的長相本來該全部來自 unified-table-system.css，但 base.css

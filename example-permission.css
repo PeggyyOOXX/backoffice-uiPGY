@@ -1,0 +1,55 @@
+/* 組合範例（權限矩陣型）。表格外觀仍由 unified-table-system 決定，
+   這裡只負責矩陣的結構：首欄靠左、分類列的底色、子項縮排。
+   規範允許表格靠左的兩處之一就是權限矩陣首欄。 */
+.permission-dialog {
+  width: min(680px, calc(100vw - 32px));
+}
+
+.permission-name {
+  margin-bottom: 12px;
+}
+
+.permission-dialog .component-description {
+  margin: 0 0 12px;
+}
+
+.page .permission-feature {
+  text-align: left;
+  width: 56%;
+}
+
+/* 分類列：底色與表頭同一支灰，代表它是一個群組的標頭而不是資料列 */
+.permission-group-cell {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+}
+
+.page .data-table-grid tr:has(.permission-group-cell) td {
+  background: #f7f8fb;
+}
+
+.permission-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.permission-toggle:focus-visible {
+  outline: 2px solid #1596ad;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.permission-child {
+  display: inline-block;
+  padding-left: 28px;
+}
+

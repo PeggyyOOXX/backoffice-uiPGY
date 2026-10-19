@@ -12,6 +12,7 @@ import { iconButton } from './icon-button.js'
 import { message } from './message.js'
 import { prepareModal } from './modal-system.js'
 import { icon } from './icons.js'
+import { filterToggle } from './filter-toggle.js'
 import { onMatch } from './delegate.js'
 import './example-page.css'
 import './example-list.css'
@@ -29,7 +30,8 @@ const COLUMNS = [
   { key: 'progress', label: '兌換進度' },
   { key: 'range', label: '兌換日期區間' },
   { key: 'created', label: '建立時間' },
-  { key: 'actions', label: '操作' },
+  // 三顆圖示按鈕：34×3 ＋ 8×2 ＋ 左右內距 = 162px
+  { key: 'actions', label: '操作', width: '162px' },
 ]
 
 // status 依語意對應標籤型別，不是依狀態碼——正式後台的 formatStatusColor 在不同頁面
@@ -107,7 +109,8 @@ const rows = () => visible().map(([id, name, code, face, count, status, claimed,
 
 // 篩選列套站上共用的 .source-filter / .source-filter-grid / .filter-field，
 // 不另外排一套版——規格統一的前提是大家用同一組 class。
-const filters = () => `<form class="source-filter card example-filter" data-gift-filter>
+const filters = () => `${filterToggle('gift-search-panel')}
+  <form id="gift-search-panel" class="source-filter card example-filter" data-gift-filter>
   <div class="source-filter-grid">
     <div class="filter-field">
       <label for="gift-keyword">活動名稱／兌換代碼</label>
@@ -212,13 +215,13 @@ onMatch('click', '[data-gift-reset]', () => {
   message.info('已清除搜尋條件')
 }, { owner: 'example-list' })
 
-onMatch('click', '[data-table-page]', (event, button) => {
+onMatch('click', '[data-table-page][data-table="gift"]', (event, button) => {
   if (button.dataset.table !== 'gift') return
   STATE.page = applyPaging(STATE, { page: button.dataset.tablePage }).page
   redraw()
 }, { owner: 'example-list' })
 
-onMatch('change', '[data-table-size]', (event, select) => {
+onMatch('change', '[data-table-size][data-table="gift"]', (event, select) => {
   if (select.dataset.table !== 'gift') return
   Object.assign(STATE, applyPaging(STATE, { size: select.value }))
   redraw()

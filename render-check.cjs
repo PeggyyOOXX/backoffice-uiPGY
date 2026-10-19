@@ -87,17 +87,17 @@ const STATES = "const emptyRow=window.emptyRow,emptyState=window.emptyState;";
 run(
   "data-table.js",
   ICON + STATES,
-  ";window.dataTable=dataTable;window.applyPaging=applyPaging;window.PAGE_SIZES=PAGE_SIZES",
+  ";window.dataTable=dataTable;window.dataCards=dataCards;window.applyPaging=applyPaging;window.PAGE_SIZES=PAGE_SIZES",
 );
+run("tag-guide.js", PAGE + ICON, ";window.tag=tag");
 run(
   "table-guide-page.js",
   PAGE +
     ON +
     ICON +
     BTN +
-    "const dataTable=window.dataTable,applyPaging=window.applyPaging,PAGE_SIZES=window.PAGE_SIZES;",
+    "const dataTable=window.dataTable,dataCards=window.dataCards,applyPaging=window.applyPaging,PAGE_SIZES=window.PAGE_SIZES,tag=window.tag;",
 );
-run("tag-guide.js", PAGE + ICON, ";window.tag=tag");
 run("upload-guide.js", PAGE + ON + ICON + MSG);
 run("steps-guide.js", PAGE + ON + ICON + MSG);
 run(
@@ -315,6 +315,218 @@ assert.ok(
 );
 assert.ok(d.querySelector(".choice-card"), "選擇控制頁缺少選項卡片");
 ok("選擇控制：決策表 ＋ Switch／Radio／Checkbox／選項卡片同頁");
+
+// 開關的四種狀態要同時在頁上：可操作的開與關、停用的開與關。
+// 「關閉」與「停用」先前只差一層 opacity，兩個灰看起來一樣，分不出按不按得動，
+// 所以這四格與它們的配色差異是規範的一部分，不是示範多畫的。
+const switchStates = [...d.querySelectorAll(".switch-state .standard-switch")];
+assert.equal(
+  switchStates.length,
+  6,
+  "開關狀態一覽應有四種狀態加 Hover／Focus 兩格",
+);
+const switchKey = (el) => `${el.getAttribute("aria-checked")}/${el.disabled}`;
+for (const want of ["true/false", "false/false", "true/true", "false/true"])
+  assert.ok(
+    switchStates.some((el) => switchKey(el) === want),
+    `開關狀態一覽缺少 aria-checked/disabled = ${want}`,
+  );
+assert.ok(
+  d.querySelector(".switch-state-control[data-tooltip] .standard-switch:disabled"),
+  "停用的開關要由外層容器帶 Tooltip 說明原因（停用的按鈕不觸發滑鼠事件）",
+);
+const switchCss = fs.readFileSync("styles/input-standard-page.css", "utf8");
+// 關閉是實心中性灰、停用是淡底加內描邊，三條都要在——先前停用只加 opacity:.45，
+// 算出來和可操作的關閉是同一個灰，使用者分不出這顆按不按得動。
+assert.ok(
+  switchCss.includes(".standard-switch[aria-checked=\"false\"]{background:#718087}"),
+  "關閉的開關要用實心中性灰 #718087",
+);
+assert.ok(
+  switchCss.includes(".standard-switch:disabled{cursor:not-allowed;background:#e4f4f7") &&
+    switchCss.includes(".standard-switch[aria-checked=\"false\"]:disabled{background:#f1f3f6"),
+  "停用的開關要用淡底加內描邊，開與關各自一組",
+);
+assert.ok(
+  !switchCss.includes(".standard-switch:disabled{opacity"),
+  "停用的開關不可只調透明度——調淡後與可操作的關閉是同一個灰",
+);
+ok("選擇控制：開關四種狀態都在頁上，關閉與停用不是同一種灰");
+
+// --- 進度條要真的有一條 ---
+//
+// .bo-progress-track 是 flex:1、basis 0：外層沒給它寬度時整條會塌成 0，
+// 畫面上只剩右邊那個百分比，看起來像「這個元件只會顯示數字」。
+// 規範頁的互動範例就這樣壞了一陣子，而且 jsdom 不排版，光看 DOM 看不出來，
+// 所以這裡連 CSS 一起檢查。
+d.querySelector(".page").innerHTML = w.renderProgressPage();
+assert.equal(
+  d.querySelectorAll(".progress-demo .bo-progress-track").length,
+  4,
+  "互動範例應該有四條進度條",
+);
+assert.ok(
+  [...d.querySelectorAll(".progress-demo .bo-progress-fill")].every(
+    (fill) => /width:\s*\d/.test(fill.getAttribute("style") || ""),
+  ),
+  "每一條都要有寬度百分比",
+);
+{
+  const css = fs.readFileSync("progress-guide.css", "utf8");
+  const rule = name => {
+    const at = css.indexOf(name);
+    assert.ok(at >= 0, `progress-guide.css 缺少 ${name}`);
+    return css.slice(at, css.indexOf("}", at));
+  };
+  assert.ok(
+    /flex:\s*1/.test(rule(".progress-row > .bo-progress")),
+    "橫向排列時進度條要 flex:1，否則軌道會塌成 0、只剩百分比數字",
+  );
+  const minWidth = rule(".bo-progress-track").match(/min-width:\s*(\d+)px/);
+  assert.ok(
+    minWidth && Number(minWidth[1]) > 0,
+    "軌道要有最小寬度，外層忘了給寬度時才不會整條消失",
+  );
+}
+ok("進度條：互動範例四條都畫得出來，軌道不會塌成只剩數字");
+
+// --- 日期快捷區間：七個，而且算得對 ---
+//
+// date-picker.js 會 import Vue 與 element-plus，這幾支檢查跑不動整支模組，
+// 所以只把純日期運算那一段抽出來算一次。規範頁早就寫著「正式後台有 7 個」，
+// 實作卻只有 3 個（本日／本週／本月），兩邊對不上了一陣子。
+{
+  const src = fs.readFileSync("date-picker.js", "utf8");
+  const block = src.slice(src.indexOf("const startOf"), src.indexOf("function mountPickers"));
+  assert.ok(block.includes("const shortcuts"), "date-picker.js 找不到快捷區間");
+  const shortcuts = new Function(block + "; return shortcuts")();
+  assert.deepEqual(
+    shortcuts.map((s) => s.text),
+    ["今天", "昨天", "前天", "本週", "上週", "本月", "上月"],
+    "快捷區間要與正式後台的七個一致，順序也一樣",
+  );
+  const day = 86400000;
+  const [todayFrom, todayTo] = shortcuts[0].value();
+  assert.equal(todayFrom.getHours(), 0, "區間的起點是當天 00:00:00");
+  assert.equal(todayTo.getHours(), 23, "區間的終點是當天 23:59:59");
+  const [yesterdayFrom] = shortcuts[1].value();
+  assert.equal(
+    Math.round((todayFrom - yesterdayFrom) / day), 1,
+    "昨天就是今天往前一天",
+  );
+  const [weekFrom] = shortcuts[3].value();
+  assert.equal(weekFrom.getDay(), 1, "一週從週一開始");
+  const [lastWeekFrom, lastWeekTo] = shortcuts[4].value();
+  assert.equal(Math.round((weekFrom - lastWeekFrom) / day), 7, "上週是本週往前七天");
+  assert.ok(lastWeekTo < weekFrom, "上週不能和本週重疊");
+  const [monthFrom, monthTo] = shortcuts[5].value();
+  assert.equal(monthFrom.getDate(), 1, "本月從 1 號開始");
+  assert.equal(monthTo.getMonth(), monthFrom.getMonth(), "本月的終點不能跨到下個月");
+  const [lastMonthFrom, lastMonthTo] = shortcuts[6].value();
+  assert.equal(lastMonthFrom.getDate(), 1, "上月從 1 號開始");
+  assert.ok(lastMonthTo < monthFrom, "上月不能和本月重疊");
+}
+
+// 手機把兩個月上下排：EP 預設 float:left 各佔一半，而且 body 有 min-width，
+// 手機寬度塞不下就會把左邊那個月切掉一半。
+{
+  const css = fs.readFileSync("date-picker.css", "utf8");
+  const mobile = css.slice(css.indexOf("@media (max-width: 720px)"));
+  assert.ok(
+    mobile.includes("float: none"),
+    "手機版要把兩個月份面板改成上下排列",
+  );
+  assert.ok(
+    mobile.includes("min-width: 0"),
+    "手機版要解開面板的 min-width，否則月曆會被切掉",
+  );
+}
+ok("日期：七個快捷區間與正式後台一致，手機版兩個月上下排");
+
+// --- 圖示按鈕與文字按鈕共用同一組變數，不寫死高寬 ---
+//
+// 兩者的高度都是「內容高度 + 上下內距×2 + 框線×2」：文字用 --btn-content 當行高，
+// 圖示用它當邊長。所以換一個內容高度，兩種按鈕會一起變，而且永遠同高。
+// 也不依裝置改尺寸或間距——先前 @media(pointer:coarse) 連帶把群組間距從 8 改成 12，
+// 在觸控筆電與 DevTools 裝置模式之間切換時整排按鈕會左右跑動。
+{
+  const css = fs.readFileSync("icon-button.css", "utf8");
+  assert.ok(
+    !css.includes("pointer:coarse") && !css.includes("pointer: coarse"),
+    "圖示按鈕不得依裝置改尺寸或間距——間距一變畫面就會跑動",
+  );
+  const rule = css.slice(css.indexOf(".semantic-btn.icon-action{"));
+  const body = rule.slice(0, rule.indexOf("}"));
+  assert.ok(
+    !/(?:^|[;{])(?:min-)?(?:width|height)s*:/.test(body.replace(/\s/g, "")),
+    "圖示按鈕不得寫死高寬，要用內距撐開：" + body,
+  );
+  assert.ok(
+    body.includes("padding:var(--btn-pad-y)"),
+    "圖示按鈕的四邊內距相同，才會自己長成正方形",
+  );
+  assert.ok(
+    body.includes("line-height:var(--btn-content)") && body.includes("font-size:var(--btn-content)"),
+    "圖示按鈕的內容高度要用 --btn-content，和文字按鈕同一個值",
+  );
+  assert.ok(
+    css.includes("width:var(--btn-content);height:var(--btn-content)"),
+    "SVG 自己帶 width/height 屬性，要用 CSS 蓋過去才會跟著內容高度變",
+  );
+}
+ok("圖示按鈕：與文字按鈕共用 --btn-content，換尺寸會一起變且同高");
+
+// --- 按鈕高度只有一個來源 ---
+//
+// 規範頁自己把示範按鈕改小過（桌機 30px、手機 38px），而規範寫的是 34／42。
+// 來看規範的人量到的是 30，照著做就全站不一致。
+// 文字按鈕的高度只能由 semantic-button-system.css 決定；
+// 圖示按鈕是另一個元件（icon-button.css 的 .icon-action），不在此限。
+{
+  const files = fs.readdirSync('.').filter(f => f.endsWith('.css'))
+    .concat(fs.readdirSync('styles').filter(f => f.endsWith('.css')).map(f => 'styles/' + f))
+  const offenders = []
+  for (const file of files) {
+    if (file === 'styles/semantic-button-system.css' || file === 'icon-button.css') continue
+    const css = fs.readFileSync(file, 'utf8')
+    for (const match of css.matchAll(/([^{}]*\.semantic-btn[^{}]*)\{([^}]*)\}/g)) {
+      const selector = match[1].trim()
+      if (selector.includes('icon-action')) continue
+      if (/(?:^|[;\s])(?:min-)?height\s*:/.test(match[2])) {
+        offenders.push(`${file} → ${selector}`)
+      }
+    }
+  }
+  assert.deepEqual(offenders, [],
+    '只有 semantic-button-system.css 可以決定文字按鈕的高度：\n  ' + offenders.join('\n  '))
+
+  // 尺寸用推算的，不寫死：高 = 行高 + 上下內距×2 + 框線×2，寬 = 文字寬 + 左右內距×2。
+  // 手機與桌機的差別只有上下內距一個值。
+  const own = fs.readFileSync('styles/semantic-button-system.css', 'utf8')
+  const value = name => {
+    const match = own.match(new RegExp(name + ':\s*([^;]+);'))
+    assert.ok(match, `semantic-button-system.css 缺少 ${name}`)
+    return match[1].trim()
+  }
+  const px = name => Number(value(name).replace('px', ''))
+  const rule = own.slice(own.indexOf('.semantic-btn {'), own.indexOf('}', own.indexOf('.semantic-btn {')))
+  assert.ok(
+    !/(?:^|[;\s])(?:min-)?height\s*:/.test(rule),
+    '文字按鈕連 min-height 都不需要：line-height 是明確的像素值，高度就是確定值' + rule,
+  )
+  assert.ok(/line-height:\s*var\(--btn-content\)/.test(rule), '文字按鈕的行高要用 --btn-content，與圖示按鈕同一個值')
+  assert.ok(/padding:\s*var\(--btn-pad-y\) var\(--btn-pad-x\)/.test(rule), '按鈕的內距要用變數，上下左右分開')
+  assert.ok(!/(?:^|[;\s])(?:height|width|min-width)\s*:/.test(rule), '按鈕不得寫死高或寬：' + rule)
+  // 算出來的值要正好落在與輸入框對齊的 34px，而且不分斷點
+  const derived = pad => px('--btn-content') + pad * 2 + px('--btn-border') * 2
+  assert.equal(derived(px('--btn-pad-y')), 34, '桌機算出來要是 34px（與 34px 的輸入框對齊）')
+  const mobile = own.slice(own.indexOf('@media (max-width: 720px)'))
+  assert.ok(
+    !mobile.includes('--btn-pad-y') && !/\.semantic-btn\s*\{[^}]*min-height/.test(mobile),
+    '手機不得另外改按鈕尺寸：全站只有一個高度',
+  )
+ok(`按鈕尺寸用推算的：全站 ${derived(px('--btn-pad-y'))}px，不分斷點，寬度隨文字`)
+}
 
 // --- 語意色只能用「按鈕 Button」已定義的那一組 ---
 // 標籤與 Toast 曾經各自發明一套（#1F7A5C、#B23340 之類），跟按鈕頁對不起來；

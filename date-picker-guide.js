@@ -1,4 +1,4 @@
-// 移植：el-date-picker（正式後台 SearchForm.vue 已在用）。快捷選項以正式後台的 7 個為準。
+// 移植：el-date-picker（正式後台 SearchForm.vue 已在用）。快捷區間與正式後台同樣是 7 個。
 // 詳見 ELEMENT-PLUS-MAPPING.md。內容由 index.html 原本的「樣式規範」拆出，一字未改。
 import { guidePage } from "./guide-page.js";
 import "./guide-page.css";
@@ -22,14 +22,14 @@ window.renderDatePickerPage = () =>
         <p class="component-description">與日期區間的差別：時間選擇是<strong>設定一個週期性的時點</strong>（每天幾點結算），日期區間是<strong>框出一段已經發生的範圍</strong>（查哪幾天的資料）。前者用固定間隔的下拉，後者用日曆——不要用日曆元件來選「每天幾點」。</p>`,
       },
     ],
-    raw: `<section class="card date-picker-guide"><h3>互動範例</h3><p>點擊欄位開啟日曆，可選起訖日期與時間，或使用本日、本週、本月快捷選項。本週為週一至週日。</p><div class="date-range-host" data-date-range></div><div class="date-picker-rules"><span>清空：中性灰 #a3a3a3，移除已選條件</span><span>確認：主要色 #1596AD，套用選取區間</span><span>按鈕：桌面 34px／手機 42px，圓角 7px</span><span>欄位顯示日期；完整時間保留至秒</span></div></section>`,
+    raw: `<section class="card date-picker-guide"><h3>互動範例</h3><p>點擊欄位開啟日曆，可選起訖日期與時間，或使用左側的快捷區間。七個快捷區間與正式後台一致：今天、昨天、前天、本週、上週、本月、上月；週一為一週的開始。</p><div class="date-range-host" data-date-range></div><div class="date-picker-rules"><span>清空：中性灰 #a3a3a3，移除已選條件</span><span>確認：主要色 #1596AD，套用選取區間</span><span>按鈕：34px，圓角 7px</span><span>欄位顯示日期；完整時間保留至秒</span></div></section>`,
     tokens: [
       ["欄位高度", "34px"],
       ["欄位圓角", "7px"],
       ["面板圓角", "8px"],
-      ["快捷選項", "以正式後台的 7 個為準"],
+      ["快捷選項", "今天／昨天／前天／本週／上週／本月／上月"],
       ["選取區間", "主題綠 #1596AD"],
-      ["按鈕高度", "桌機 34px / 手機 42px"],
+      ["按鈕高度", "34px（與全站按鈕相同）"],
       ["欄位顯示", "日期；完整時間保留至秒"],
       ["關閉", "Esc、點外面、確認"],
       ["最小寬度", "單一欄位，不拆成兩個"],
@@ -45,8 +45,12 @@ window.renderDatePickerPage = () =>
         "不要拆成「開始日期」「結束日期」兩個欄位，使用者要比對兩次。",
       ],
       [
-        "快捷選項以正式後台為準",
-        "原型只有 3 個，正式後台有 7 個；移植時以正式後台為準。",
+        "快捷區間就是正式後台那七個",
+        "今天、昨天、前天、本週、上週、本月、上月，順序也一樣。不要自己增減——使用者在兩邊按的是同一排。",
+      ],
+      [
+        "手機把兩個月上下排",
+        "兩個月並排塞不進手機寬度，EP 預設會把左邊那個月切掉一半。手機改成上下排列，快捷區間則收成可橫向捲動的一排。",
       ],
       ["欄位顯示日期即可", "完整時間保留至秒，但欄位上不必全部顯示。"],
       ["要能鍵盤操作", "方向鍵移動日期、Enter 選取、Esc 關閉。"],

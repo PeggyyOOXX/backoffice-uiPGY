@@ -1,0 +1,23 @@
+/* 組合範例（報表型）。共用版面在 example-page.css，這裡只放報表多出來的東西。 */
+
+/* 金額欄：等寬數字才對得齊位數，整欄不換行。負數用語意色裡的危險色 #DC2626，
+   不另外調一支紅——報表的紅字和刪除鈕、錯誤訊息是同一個意思（這筆是負的／有問題）。 */
+.example-amount {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.example-amount.is-negative {
+  color: #dc2626;
+}
+
+/* 四個維度的頁籤與下方工具列之間不要再多一段空白：
+   .example-page 已經給了 16px，頁籤自己不帶 margin。 */
+.example-report-page .bo-tabs {
+  margin: 0;
+}
+
+/* 面板裡只有一張表格卡，間距交給 .example-page 的 gap，面板本身不加。 */
+.example-report-page [data-tab-panel]:not([hidden]) {
+  display: block;
+}

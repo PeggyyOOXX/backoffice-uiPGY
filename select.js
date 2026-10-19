@@ -16,7 +16,7 @@ import './select.css'
 //   data-loading             讀取中
 //   data-wrap                選項過長換行
 //   <optgroup>               分組選項（分組標籤不可選）
-const SELECTOR = '.page .source-filter select, .page select.guide-select, .page .member-data-card select, .bo-modal select.guide-select'
+const SELECTOR = '.page .source-filter select, .page select.guide-select, .bo-modal select.guide-select'
 
 const instances = new Map()
 const toOption = option => ({ value: option.value, label: option.text, disabled: option.disabled })

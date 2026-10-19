@@ -1,6 +1,13 @@
 /* Icon-only action button. Geometry only; colour, hover, focus and disabled come from
    semantic-button-system, so it never introduces a palette of its own. */
-.page .semantic-btn.icon-action,.bo-modal .semantic-btn.icon-action,.semantic-btn.icon-action{width:34px;min-width:34px;height:34px;min-height:34px;padding:0;gap:0;font-size:16px;font-weight:400;line-height:1}
+/* 圖示按鈕與文字按鈕用同一組變數撐開，不寫死高寬：
+   四邊內距都是 --btn-pad-y，圖示尺寸等於 --btn-content（16px），
+   所以 高 = 寬 = 16 + 8×2 + 1×2 = 34px——它自己長成正方形，
+   而且永遠和文字按鈕一樣高。改 --btn-pad-y 兩種按鈕會一起變。 */
+.page .semantic-btn.icon-action,.bo-modal .semantic-btn.icon-action,.semantic-btn.icon-action{padding:var(--btn-pad-y);gap:0;font-size:var(--btn-content);font-weight:400;line-height:var(--btn-content)}
+/* SVG 自己帶 width/height 屬性，要讓圖示跟著 --btn-content 走就得在這裡蓋過去，
+   不然改內容高度時只有內距變、圖示還停在原本的大小。 */
+.semantic-btn.icon-action svg{width:var(--btn-content);height:var(--btn-content)}
 .icon-action-wrap{display:inline-flex}
 .icon-action-wrap .semantic-btn{pointer-events:none}
 .icon-action-group{display:flex;align-items:center;gap:8px}
@@ -13,5 +20,4 @@
 .icon-button-guide dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:16px 0 0;padding-top:16px;border-top:1px solid var(--line)}
 .icon-button-guide dt{font-size:12px;color:#718096}
 .icon-button-guide dd{margin:6px 0 0;font-size:13px}
-@media(pointer:coarse){.page .semantic-btn.icon-action,.bo-modal .semantic-btn.icon-action,.semantic-btn.icon-action{width:44px;min-width:44px;height:44px;min-height:44px}}
 @media(max-width:720px){.icon-button-guide{padding:12px}}

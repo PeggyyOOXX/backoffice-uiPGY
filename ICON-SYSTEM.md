@@ -208,7 +208,7 @@ icon('loginRecord', 20)  →  <SvgIcon name="loginRecord" class="size-5" />
 
 名稱沿用正式後台的 camelCase，`ELEMENT-PLUS-MAPPING.md` 不需要再多一張對照表。
 
-受影響的模組：`icon-button.js`、`table-guide.js`、`settings-demo.js`、`workflow-examples.js`、`bulk-switch.js`、`risk-audit.js`、`select-advanced.js`、`tabs.js`、`modal-system.js`、`date-picker.js`，以及 `index.html` 側欄的 `.ico`。
+受影響的模組：`icon-button.js`、`table-guide.js`、`settings-demo.js`、`bulk-actions.js`、`example-audit.js`、`select-advanced.js`、`tabs.js`、`modal-system.js`、`date-picker.js`，以及 `index.html` 側欄的 `.ico`。
 
 ---
 

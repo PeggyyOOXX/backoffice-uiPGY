@@ -1,6 +1,6 @@
 // 由 build-icons.cjs 產生，請勿手改。來源：Lucide 1.6.0 (ISC)
 //
-// 這份清單就是本專案的圖示許可清單。Lucide 有 1940 個圖示，這裡只收 86 個；
+// 這份清單就是本專案的圖示許可清單。Lucide 有 1940 個圖示，這裡只收 88 個；
 // 要用新的先加進 build-icons.cjs 的 ALLOWLIST 再重跑，不要在頁面上自己拼 svg。
 //
 // 名稱沿用正式後台 SvgIcon 的 camelCase：icon('edit') ↔ <SvgIcon name="edit" />
@@ -110,7 +110,7 @@ export const ICONS = [
     "group": "action",
     "name": "batch",
     "file": "layers",
-    "label": "批次處理",
+    "label": "批量操作",
     "body": "<path d=\"M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z\"/><path d=\"M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12\"/><path d=\"M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17\"/>"
   },
   {
@@ -577,10 +577,24 @@ export const ICONS = [
   },
   {
     "group": "sidebar",
-    "name": "bulkSwitch",
+    "name": "selection",
     "file": "toggle-right",
-    "label": "批量開關",
+    "label": "選擇控制",
     "body": "<circle cx=\"15\" cy=\"12\" r=\"3\"/><rect width=\"20\" height=\"14\" x=\"2\" y=\"5\" rx=\"7\"/>"
+  },
+  {
+    "group": "sidebar",
+    "name": "bulkActions",
+    "file": "list-checks",
+    "label": "批量操作",
+    "body": "<path d=\"M13 5h8\"/><path d=\"M13 12h8\"/><path d=\"M13 19h8\"/><path d=\"m3 17 2 2 4-4\"/><path d=\"m3 7 2 2 4-4\"/>"
+  },
+  {
+    "group": "sidebar",
+    "name": "formPage",
+    "file": "square-pen",
+    "label": "表單頁",
+    "body": "<path d=\"M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7\"/><path d=\"M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z\"/>"
   },
   {
     "group": "sidebar",

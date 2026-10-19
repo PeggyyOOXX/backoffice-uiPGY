@@ -29,3 +29,8 @@ index.html 原本把 41 個 `<style>` 區塊全寫在 `<head>` 裡（共 5,022 �
 | `.count` | 5 | base → warm-card-theme → teal-full-shell-theme → blue-framed-dashboard-theme → blue-teal-palette-override |
 
 > 這張表是 `.topbar` 的 sticky 失效 bug 的來源：第一個檔案寫了 `position: sticky`，後面的主題檔把它改成 `position: relative`。現在由 `sticky-topbar-and-workspace-tabs.css` 統一管。
+
+## 已刪除的檔案
+
+- `original-101best-pagination.css`：整支都是 `.member-data-card` 底下的分頁覆寫。會員列表改寫成組合範例（`example-member.js`）之後改用 `dataTable()` 的分頁，這支沒有任何選擇器還命中得到。
+- `settings-demo.css`（在根目錄）：舊「設定相關頁面」的樣式。那一頁改寫成 `example-mixed.js` 後，只剩存檔列與 `.component-description` 還活著，分別移到 `example-page.css` 與 `style-guide-rhythm.css`。

@@ -22,10 +22,6 @@
   white-space: nowrap;
 }
 
-.example-row-actions {
-  justify-content: center;
-}
-
 @media (max-width: 720px) {
   .example-progress-cell {
     min-width: 0;

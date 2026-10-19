@@ -45,43 +45,100 @@
   }
   .bo-date-range-popper .el-date-range-picker {
     width: calc(100vw - 24px);
-    max-height: 70vh;
+    max-height: 76vh;
     overflow-y: auto;
   }
+  /* 快捷區間改成橫向一排，七個放不下就左右捲——不要壓成七個窄欄。 */
   .bo-date-range-popper .el-picker-panel__sidebar {
     position: static;
     width: 100%;
     display: flex;
+    flex-wrap: nowrap;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
     border-right: 0;
     border-bottom: 1px solid var(--el-border-color-light);
     padding: 8px;
     box-sizing: border-box;
   }
+  .bo-date-range-popper .el-picker-panel__sidebar::-webkit-scrollbar {
+    height: 0;
+  }
   .bo-date-range-popper .el-picker-panel__shortcut {
     width: auto;
-    flex: 1;
+    flex: none;
+    padding: 0 10px;
     text-align: center;
+    white-space: nowrap;
   }
   .bo-date-range-popper .el-picker-panel__sidebar + .el-picker-panel__body {
     margin-left: 0;
   }
+  /* 兩個月份改成上下排列。EP 預設是 float:left 各佔一半，而且 body 有
+     min-width:513px——手機寬度塞不下，結果是左邊那個月被切掉一半。
+     把 min-width 解開，兩個月才真的能一上一下。 */
+  .bo-date-range-popper .el-picker-panel__body,
+  .bo-date-range-popper .el-picker-panel__body-wrapper {
+    min-width: 0;
+    width: 100%;
+  }
   .bo-date-range-popper .el-date-range-picker__content {
+    /* EP 這一塊是 display:table-cell，只改 float／width 擋不住它並排 */
+    display: block;
     width: 100%;
     float: none;
     padding: 12px;
     box-sizing: border-box;
   }
+  .bo-date-range-popper .el-date-range-picker__content.is-left {
+    border-right: 0;
+    border-bottom: 1px solid var(--el-border-color-light);
+  }
+  /* 月份標頭的左右箭頭在窄版會壓到年月文字 */
+  .bo-date-range-popper .el-date-range-picker__header div {
+    margin-left: 32px;
+    margin-right: 32px;
+  }
+  .bo-date-range-popper .el-date-table {
+    width: 100%;
+  }
+  /* 日期格子放大到摸得到 */
+  .bo-date-range-popper .el-date-table td .el-date-table-cell {
+    height: 36px;
+  }
+  .bo-date-range-popper .el-date-table td .el-date-table-cell__text {
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+  }
+  /* 起訖時間那一列也是 display:table，拆成上下兩行：起始一行、結束一行。 */
   .bo-date-range-popper .el-date-range-picker__time-header {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px;
+  }
+  .bo-date-range-popper .el-date-range-picker__editors-wrap {
+    display: flex;
+    width: 100%;
     gap: 6px;
   }
-  .bo-date-range-popper .el-date-range-picker__time-header > .el-icon {
-    display: none;
+  .bo-date-range-popper .el-date-range-picker__editors-wrap.is-right {
+    text-align: left;
   }
   .bo-date-range-popper .el-date-range-picker__time-picker-wrap {
+    display: block;
     width: 100%;
-    float: none;
+    padding: 0;
+  }
+  .bo-date-range-popper .el-date-range-picker__time-picker-wrap .el-input__wrapper {
+    width: 100%;
+  }
+  /* 兩行之間那個朝右的箭頭在直排時沒有意義 */
+  .bo-date-range-popper .el-date-range-picker__time-header > .el-icon,
+  .bo-date-range-popper .el-date-range-picker__time-header > .el-icon-arrow-right {
+    display: none;
   }
 }
 /* Date picker actions follow the shared semantic button specification. */
@@ -91,11 +148,12 @@
   gap: 6px;
   padding: 10px 12px;
 }
+/* 日期面板的「清空／確認」是 EP 的按鈕，外觀照抄 semantic-btn，
+   尺寸也用同一組推算（行高＋上下內距＋框線），不再另外寫死 34／42。 */
 .bo-date-range-popper .el-picker-panel__footer .el-button {
-  height: 34px;
-  min-height: 34px;
   margin: 0;
-  padding: 0 12px;
+  padding: var(--btn-pad-y) var(--btn-pad-x);
+  line-height: var(--btn-content);
   border: 1px solid transparent;
   border-radius: 4px;
   display: inline-flex;
@@ -160,9 +218,4 @@
   color: var(--muted);
   font-size: 12px;
 }
-@media (max-width: 720px) {
-  .bo-date-range-popper .el-picker-panel__footer .el-button {
-    height: 42px;
-    min-height: 42px;
-  }
-}
+

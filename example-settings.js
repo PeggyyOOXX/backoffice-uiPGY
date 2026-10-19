@@ -89,27 +89,30 @@ const payload = state => JSON.stringify({ ...state, active: null })
 const dirty = () => payload(draft) !== payload(JSON.parse(saved))
 
 // --- 基本設定 ---
-const multiSelect = (name, label, options, selected) => `<div class="filter-field">
+// 表單欄位一律用「輸入框 Input」規範頁的 guide-fields／guide-field／guide-input／guide-select，
+// 不借用列表頁篩選列那一組 class——它是為四欄篩選列排的，放進設定卡片會把欄位壓成四分之一寬，
+// 和其他頁的表單長得不一樣。
+const multiSelect = (name, label, options, selected) => `<div class="guide-field">
   <label for="branch-${name}">${label}</label>
-  <select id="branch-${name}" class="control guide-select" multiple size="4" data-branch-multi="${name}" aria-label="${label}">
+  <select id="branch-${name}" class="guide-select" multiple data-collapse="2" data-branch-multi="${name}" aria-label="${label}">
     ${options.map(([value, text]) =>
       `<option value="${value}"${selected.includes(value) ? ' selected' : ''}>${esc(text)}</option>`).join('')}
   </select>
 </div>`
 
-const textField = (key, label, value, maxlength) => `<div class="filter-field">
+const textField = (key, label, value, maxlength) => `<div class="guide-field">
   <label for="branch-${key}">${label}</label>
-  <input id="branch-${key}" class="control" value="${esc(value)}" maxlength="${maxlength}" data-branch-text="${key}">
+  <input id="branch-${key}" class="guide-input" value="${esc(value)}" maxlength="${maxlength}" data-branch-text="${key}">
 </div>`
 
 const basePanel = () => `
   <section class="card example-settings-card">
     <h3 class="example-settings-heading">基本資料</h3>
-    <div class="source-filter-grid example-settings-grid">
+    <p class="example-settings-hint">兩欄都是多選，點選項目加選、再點一次取消；標籤超過兩個收合成 +N，欄位高度維持 34px。</p>
+    <div class="guide-fields">
       ${multiSelect('languages', '其他語系', LANGUAGES, draft.languages)}
       ${multiSelect('countryCodes', '國碼', COUNTRY_CODES, draft.countryCodes)}
     </div>
-    <p class="example-settings-hint">兩欄都是多選，按住 Ctrl／⌘ 可複選。</p>
   </section>
 
   <section class="card example-settings-card">
@@ -136,14 +139,14 @@ const basePanel = () => `
   <div class="example-settings-pair">
     <section class="card example-settings-card">
       <h3 class="example-settings-heading">前台 HEAD</h3>
-      <div class="source-filter-grid example-settings-grid">
+      <div class="guide-fields">
         ${textField('frontTitle', 'title', draft.frontTitle, 60)}
         ${textField('frontDescription', 'description', draft.frontDescription, 160)}
       </div>
     </section>
     <section class="card example-settings-card">
       <h3 class="example-settings-heading">後台 HEAD</h3>
-      <div class="source-filter-grid example-settings-grid">
+      <div class="guide-fields">
         ${textField('backTitle', 'title', draft.backTitle, 60)}
         ${textField('backDescription', 'description', draft.backDescription, 160)}
       </div>
@@ -173,7 +176,7 @@ const fieldRow = (mode, field) => {
     })}
     ${field.noRequired ? '' : `<div class="example-field-right">
       ${tag(state.required ? '必填' : '選填', state.required ? 'warning' : 'info')}
-      <button type="button" class="standard-switch is-sm" role="switch"
+      <button type="button" class="standard-switch" role="switch"
         aria-checked="${state.required}" aria-label="${esc(field.label)}設為必填"
         data-branch-required="${mode.key}:${field.key}"
         ${field.locked || !state.enabled ? 'disabled' : ''}></button>
@@ -211,9 +214,9 @@ window.renderExampleSettings = () => `<section class="example-page example-setti
   </div>
   ${tabs({ id: TAB_ID, label: '分站設定分類', items: TABS, active: draft.active, variant: 'card', mobile: 'select', panels: true })}
   ${tabPanels(TAB_ID, TABS.map(t => [t.key, t.key === draft.active ? panel() : '']), draft.active)}
-  <footer class="settings-savebar">
-    <div class="settings-save-status" role="status">${dirty() ? '有尚未儲存的變更' : '儲存後才會套用'}</div>
-    <div class="settings-save-actions">
+  <footer class="example-savebar">
+    <div class="example-save-status" role="status">${dirty() ? '有尚未儲存的變更' : '儲存後才會套用'}</div>
+    <div class="example-save-actions">
       <button type="button" class="semantic-btn btn-neutral" data-branch-cancel ${dirty() ? '' : 'disabled'}>取消變更</button>
       <button type="button" class="semantic-btn btn-search" data-branch-save ${dirty() ? '' : 'disabled'}>儲存設定</button>
     </div>
@@ -256,7 +259,7 @@ onMatch('change', '[data-branch-multi]', (event, select) => {
 onMatch('input', '[data-branch-text]', (event, input) => {
   // 只更新資料不重繪，重繪會讓游標跳到字尾
   draft[input.dataset.branchText] = input.value
-  const bar = document.querySelector('[data-branch-root] .settings-save-status')
+  const bar = document.querySelector('[data-branch-root] .example-save-status')
   if (bar) bar.textContent = dirty() ? '有尚未儲存的變更' : '儲存後才會套用'
   document.querySelectorAll('[data-branch-cancel],[data-branch-save]').forEach(b => { b.disabled = !dirty() })
 }, { owner: 'example-settings' })

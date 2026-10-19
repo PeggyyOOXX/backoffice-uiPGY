@@ -7,7 +7,9 @@
 }
 .bo-progress-track {
   flex: 1;
-  min-width: 0;
+  /* 不是 0：這條是 flex:1，basis 歸零之後外層只要沒給它寬度就會整條消失，
+     畫面上只剩右邊的百分比。64px 保證它至少看得見。 */
+  min-width: 64px;
   height: 8px;
   border-radius: 4px;
   background: #edf1f5;
@@ -52,6 +54,13 @@
   display: flex;
   align-items: center;
   gap: 16px;
+}
+/* 文案固定寬，進度條吃掉剩下的整列寬度。
+   .bo-progress 自己是 flex 容器，但放進橫向 flex 容器時不會自動撐開，
+   外層一定要給它 flex:1，否則就只剩那個百分比數字。 */
+.progress-row > .bo-progress {
+  flex: 1;
+  min-width: 0;
 }
 .progress-row > span {
   flex: none;

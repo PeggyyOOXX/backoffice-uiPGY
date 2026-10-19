@@ -1,0 +1,35 @@
+/* 下載中心：頁首的任務清單。版面沿用資訊氣泡那一套（白底、1px 框、8px 圓角、同一組陰影），
+   只是裡面放的是清單與進度條，寬度照正式後台的 340px。
+   進度條、標籤、圖示按鈕、空狀態都是共用元件，這裡不重畫也不調色。 */
+.download-center{position:relative;display:inline-flex}
+.download-center .icon-btn{position:relative}
+.download-badge{
+  position:absolute;top:-2px;right:-2px;
+  min-width:18px;height:18px;padding:0 5px;
+  display:grid;place-items:center;
+  border-radius:9px;background:#f59e0b;color:#fff;
+  font-size:11px;font-weight:700;line-height:1;
+}
+.download-panel{
+  position:absolute;top:calc(100% + 6px);right:0;z-index:40;
+  width:340px;max-width:calc(100vw - 24px);padding:12px;
+  border:1px solid var(--line);border-radius:8px;background:#fff;
+  box-shadow:0 8px 24px rgba(23,35,59,.14);
+  text-align:left;
+}
+.download-panel[hidden]{display:none}
+.download-panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.download-panel-head>strong{font-size:13px;font-weight:600;color:#111b2b}
+.download-list{
+  display:flex;flex-direction:column;gap:12px;
+  max-height:400px;overflow-y:auto;
+  margin:0;padding:0;list-style:none;
+}
+.download-task-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+/* 檔名佔滿剩餘寬度並以單行省略；完整檔名由 Tooltip 補（TruncateTooltip 的做法） */
+.download-task-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:var(--text)}
+.download-task .bo-progress{margin:0}
+
+@media(max-width:720px){
+  .download-panel{right:-8px;width:min(340px,calc(100vw - 24px))}
+}

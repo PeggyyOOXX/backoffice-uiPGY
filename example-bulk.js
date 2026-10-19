@@ -15,6 +15,7 @@ import { tag } from './tag-guide.js'
 import { message } from './message.js'
 import { prepareModal } from './modal-system.js'
 import { icon } from './icons.js'
+import { filterToggle } from './filter-toggle.js'
 import { onMatch } from './delegate.js'
 import './example-page.css'
 import './example-bulk.css'
@@ -123,7 +124,8 @@ const table = () => {
   })
 }
 
-const filters = () => `<form class="source-filter card example-filter" data-game-filter>
+const filters = () => `${filterToggle('game-search-panel')}
+  <form id="game-search-panel" class="source-filter card example-filter" data-game-filter>
   <div class="source-filter-grid">
     <div class="filter-field">
       <label for="game-keyword">遊戲名稱</label>
@@ -222,14 +224,14 @@ onMatch('click', '[data-game-reset]', () => {
   message.info('已清除搜尋條件')
 }, { owner: 'example-bulk' })
 
-onMatch('click', '[data-table-page]', (event, button) => {
+onMatch('click', '[data-table-page][data-table="game"]', (event, button) => {
   if (button.dataset.table !== NAME) return
   STATE.total = visible().length
   STATE.page = applyPaging(STATE, { page: button.dataset.tablePage }).page
   refreshList()
 }, { owner: 'example-bulk' })
 
-onMatch('change', '[data-table-size]', (event, select) => {
+onMatch('change', '[data-table-size][data-table="game"]', (event, select) => {
   if (select.dataset.table !== NAME) return
   STATE.total = visible().length
   Object.assign(STATE, applyPaging(STATE, { size: select.value }))

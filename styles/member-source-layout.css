@@ -8,69 +8,16 @@
   gap: 7px;
   align-items: center;
 }
-.source-filter-grid > .compound {
-  grid-column: span 2;
-}
-.compound {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  min-width: 0;
-}
-.compound .control {
-  min-width: 0;
-}
-.compound select {
-  flex: 0 1 42%;
-}
-.compound input {
-  flex: 1;
-}
-.compound .amount {
-  width: 86px;
-  flex: 1;
-}
-.compound span {
-  flex: none;
-  color: var(--muted);
-}
 .source-filter-actions {
   display: flex;
   gap: 5px;
   justify-content: flex-end;
 }
-.source-filter-actions button {
-  min-width: 36px;
-}
-.member-data-card {
-  overflow: hidden;
-}
+/* 篩選列的重設／搜尋不另外給寬度：寬度就是文字寬加左右內距。
+   這條 min-width:36px 是舊的純圖示版留下來的，現在兩顆都有文字。 */
 .member-actions {
   padding: 8px 10px;
   border-bottom: 1px solid var(--line);
-}
-.icon-add {
-  width: 36px;
-  height: 34px;
-  padding: 0;
-  font-size: 18px;
-}
-.member-source-table {
-  min-width: 1590px;
-}
-.member-source-table th,
-.member-source-table td {
-  text-align: center;
-}
-.member-source-table th {
-  white-space: normal;
-  line-height: 1.25;
-  min-width: 90px;
-}
-.member-source-table th:nth-child(6),
-.member-source-table th:nth-child(7),
-.member-source-table th:nth-child(11) {
-  min-width: 142px;
 }
 .tag-dots {
   display: flex;
@@ -94,19 +41,8 @@
   padding: 0 5px;
   color: var(--text);
 }
-.row-actions {
-  display: flex;
-  justify-content: center;
-  gap: 4px;
-}
-.row-actions button {
-  width: 29px;
-  height: 29px;
-  border: 0;
-  border-radius: 6px;
-  background: var(--blue);
-  color: #fff;
-}
+
+
 .member-mobile-only {
   display: none;
 }
@@ -143,9 +79,6 @@
 .source-filter-grid select {
   text-overflow: ellipsis;
 }
-.member-source-table th {
-  overflow-wrap: anywhere;
-}
 @media (max-width: 1180px) {
   .source-filter-grid {
     grid-template-columns: repeat(3, minmax(150px, 1fr));
@@ -160,25 +93,11 @@
   .source-filter {
     display: none;
   }
-  .member-data-card {
-    background: transparent;
-    border: 0;
-  }
   .member-actions {
     padding: 0 0 8px;
     border: 0;
     display: flex;
     justify-content: flex-end;
-  }
-  .member-data-card #memberResults {
-    display: flex;
-    flex-direction: column;
-  }
-  .member-data-card .table-wrap {
-    display: none;
-  }
-  .member-data-card .pagination {
-    order: 2;
   }
   .member-mobile-only {
     display: block;
@@ -193,9 +112,7 @@
   .member-mobile-only .mobile-card {
     background: #fff;
   }
-  .member-mobile-only .row-actions {
-    margin-left: auto;
-  }
+  .member-mobile-only 
   .member-mobile-only .tag-dots {
     justify-content: flex-start;
   }

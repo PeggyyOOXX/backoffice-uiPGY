@@ -147,6 +147,15 @@
   font-size: 12px;
   color: #718096;
 }
+/* 欄位級錯誤留在欄位下方，不用 Toast——Toast 會消失，使用者回頭找不到是哪一格。
+   顏色用 Input 規範的錯誤色，必填星號同一支紅，整站只有這一處定義。 */
+.guide-field > small.error-text,
+.required-mark {
+  color: var(--input-error);
+}
+.guide-field > small.error-text:empty {
+  display: none;
+}
 
 /* 開關依「開關排列 Switch」規範：開關在左、文案緊接在右、間距 16px、每項獨立一列。
    所以它不套 .guide-field，而是獨立成列，且不與輸入欄並排。 */

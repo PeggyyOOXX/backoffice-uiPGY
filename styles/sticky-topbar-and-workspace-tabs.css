@@ -21,6 +21,21 @@
   --main-gap-top: 12px;
   /* 扣掉留白之後，topbar 底線才會落在 --brand-h 上 */
   --topbar-h: calc(var(--brand-h) - var(--main-gap-top));
+
+  /* 手機版的 topbar 是 position: fixed，側欄是抽屜，不需要和 logo 區對齊，
+     所以另有一個高度。頁籤列的 top 必須等於它——先前 topbar 是 46px、
+     頁籤列寫死 top: 50px，中間那 4px 沒有人蓋，捲動時內容會從縫裡穿過去。
+     兩個值綁在同一個變數，就不會再各自飄走。 */
+  --topbar-h-mobile: 46px;
+  --quick-tabs-h-mobile: 38px;
+  /* 手機版「搜尋條件」那顆開關的高度，以及整疊固定內容的底部位置。
+     篩選列面板、內容的上緣留白、背景遮板全部從這裡算，不各寫一個數字。 */
+  --mobile-search-toggle-h: 40px;
+  --mobile-header-h: calc(var(--topbar-h-mobile) + var(--quick-tabs-h-mobile));
+  --mobile-search-toggle-top: calc(var(--mobile-header-h) + 4px);
+  --mobile-stack-bottom: calc(
+    var(--mobile-search-toggle-top) + var(--mobile-search-toggle-h)
+  );
 }
 
 /* logo 區是固定高度的容器，不受內容影響：
@@ -66,7 +81,7 @@
 @media (max-width: 720px) {
   .quick-tabs {
     position: sticky;
-    top: 46px;
+    top: var(--topbar-h-mobile);
     z-index: 19;
   }
 }

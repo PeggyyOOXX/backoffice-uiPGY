@@ -150,10 +150,17 @@
 .pages {
   gap: 3px;
 }
+/* 分頁按鈕與其他方形控制（圖示按鈕、排序鈕）同高，都是 34px；
+   圓角由 button-corner-radius 統一成 4px。先前這裡壓成 28px，
+   規範頁寫的卻是 34 × 34，兩邊對不上。 */
+/* 高度和兩種按鈕一樣用內距撐開；只保留 min-width，
+   因為數字寬度不一樣（1 和 10），不給最小寬度那一排會參差不齊。 */
 .page-btn {
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
+  padding: var(--btn-pad-y);
+  min-width: calc(
+    var(--btn-content) + var(--btn-pad-y) * 2 + var(--btn-border) * 2
+  );
+  line-height: var(--btn-content);
 }
 .chart-grid,
 .split {

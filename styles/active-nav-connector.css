@@ -2,11 +2,15 @@
   position: relative;
   overflow: visible;
 }
+/* 作用中項目與內容區的連接尖角。
+   right 等於 .nav 的右內距（12px），尖角右緣才會正好落在側欄右緣，
+   看起來像內容區的白底咬進側欄。先前是 -8px，中間留了一條 4px 的縫，
+   再加上系統捲軸，連接整個被切斷。 */
 .nav-item.active::after {
   content: "";
   position: absolute;
   top: 50%;
-  right: -8px;
+  right: -12px;
   width: 0;
   height: 0;
   transform: translateY(-50%);

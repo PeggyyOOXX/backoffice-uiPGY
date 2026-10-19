@@ -13,10 +13,6 @@
 .page .data-table-grid {
   min-width: 720px;
 }
-.page .member-data-card table,
-.page .member-source-table {
-  min-width: 920px;
-}
 .page th,
 .bo-modal th {
   padding: 8px 11px;

@@ -1,14 +1,44 @@
+/* 按鈕的尺寸用推算的，不寫死高寬：
+     高 = 文字行高 + 上下內距 ×2 + 框線 ×2
+     寬 = 文字自動寬度 + 左右內距 ×2
+   內距是定值，所以不管文字多長、哪個語系、字級被放大，按鈕都是合身的。
+   桌機與手機同一個尺寸：內距不隨斷點改變，所以算出來都是 34px——
+   和圖示按鈕、分頁按鈕、輸入框全部同高。
+
+   高度不另外寫，連 min-height 也沒有：line-height 是明確的 16px，
+   內容盒高度就與字型無關，算出來永遠是 16＋8×2＋1×2 ＝ 34px。
+   （只有在 line-height 是 normal 或無單位時，才會因為字型度量而需要一個地板。）
+
+   圖示按鈕用的是同一組變數，只是四邊內距相同、圖示尺寸等於 --btn-content，
+   所以它自己長成正方形，而且高度與文字按鈕完全相同——不是各自寫 34px 湊出來的。 */
+:root {
+  /* 按鈕裡那塊內容的高度。文字用它當行高，圖示用它當邊長——
+     兩者共用同一個值，所以不管這個數字是多少，兩種按鈕都一樣高。
+     要做大一號的按鈕就改這一個值（跟著圖示系統的 16／20／24 三個尺寸走）。 */
+  --btn-content: 16px;
+  --btn-pad-y: 8px;
+  --btn-pad-x: 12px;
+  --btn-border: 1px;
+  /* 算出來的高度。按鈕本身不用它（高度是內距撐開的），
+     只有需要「同寬」的方形控制拿它當最小寬度。 */
+  --btn-h: calc(
+    var(--btn-content) + var(--btn-pad-y) * 2 + var(--btn-border) * 2
+  );
+}
 .semantic-btn {
-  min-height: 34px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 0 12px;
-  border: 1px solid transparent;
+  padding: var(--btn-pad-y) var(--btn-pad-x);
+  border: var(--btn-border) solid transparent;
   border-radius: 7px;
   color: #fff;
+  /* 字級與內容高度是兩回事：14px 的字放在 16px 的行高裡。
+     真正決定按鈕高度的是行高，不是字級。 */
+  font-size: 14px;
   font-weight: 700;
+  line-height: var(--btn-content);
   white-space: nowrap;
   transition:
     filter 0.16s,
@@ -91,9 +121,8 @@
 .btn-neutral.outline {
   --button-color: #667085;
 }
-.member-actions .btn-add {
-  min-width: 74px;
-}
+/* 「新增」不另外給寬度：寬度就是文字寬度加左右內距。
+   先前釘在 74px，換成「新增會員」四個字就被擠，英文版更明顯。 */
 .row-actions button.btn-edit {
   background: #5069c8 !important;
 }
@@ -140,11 +169,9 @@
   padding-top: 11px;
   border-top: 1px solid var(--line);
 }
-.button-states .semantic-btn {
-  min-height: 30px;
-  padding: 0 9px;
-  font-size: 12px;
-}
+/* 這三顆是「預設／次要／停用」的示範，尺寸必須與規範一致（桌機 34px、手機 42px）。
+   先前為了塞進窄卡片把它縮成 30／38px，結果量規範頁量到的是另一組數字。
+   卡片放不下就換行（上面已經有 flex-wrap），不縮按鈕。 */
 .guide-rules {
   padding: 14px;
 }
@@ -176,9 +203,6 @@
   }
 }
 @media (max-width: 720px) {
-  .semantic-btn {
-    min-height: 42px;
-  }
   .button-guide-grid,
   .rule-grid {
     grid-template-columns: 1fr;
@@ -186,7 +210,111 @@
   .button-spec p {
     min-height: auto;
   }
-  .button-states .semantic-btn {
-    min-height: 38px;
+
+}
+
+/* --- 「尺寸是算出來的」那一節的排版（按鈕規範頁） --- */
+.button-sizing {
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.button-sizing h2 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+.button-sizing h3 {
+  margin: 20px 0 8px;
+  font-size: 14px;
+}
+.button-sizing > p {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+/* 公式的每一項：變數名、值、為什麼是這個值 */
+.button-formula {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 8px;
+}
+.button-formula > div {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.button-formula code {
+  display: block;
+  font-size: 12px;
+  color: #1596ad;
+}
+.button-formula span {
+  display: block;
+  margin-top: 4px;
+  font-size: 15px;
+  font-weight: 700;
+}
+.button-formula em {
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+}
+.button-formula small {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+/* 算出來的那一格是結論，底色標出來 */
+.button-formula .is-result {
+  background: #f1fafb;
+  border-color: #b9e3ea;
+}
+/* 四顆只差文字長度的按鈕，刻意換行以免在窄螢幕被擠 */
+.button-width-demo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+@media (max-width: 720px) {
+  .button-sizing {
+    padding: 12px;
   }
+}
+
+/* 「換一個內容高度」的示範：兩組只差 --btn-content 一個值。
+   第二組在容器上改變數，底下的文字按鈕與圖示按鈕會一起跟著變。 */
+.button-size-demo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-bottom: 4px;
+}
+.button-size-demo > div {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.button-size-demo h5 {
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1596ad;
+}
+.button-size-demo h5 em {
+  font-style: normal;
+  font-weight: 400;
+  color: var(--muted);
+}
+.button-size-demo .is-alt {
+  --btn-content: 20px;
+}
+/* 兩顆底部對齊，才看得出它們一樣高 */
+.button-size-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }

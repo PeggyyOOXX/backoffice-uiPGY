@@ -1,0 +1,51 @@
+/* 組合範例（表單頁型）。共用版面在 example-page.css，卡片內距與欄位排版沿用
+   example-settings.css 的 .example-settings-card 與 guide-page.css 的 .guide-field，
+   這裡只放「獨立表單頁」多出來的那兩塊：頂部的返回列／麵包屑，與表單本身的卡片間距。 */
+.example-form-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.example-form-crumb {
+  font-size: 13px;
+  color: #718096;
+}
+
+.example-form-crumb strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* 表單是多張卡片，間距與整頁的卡片間距相同 */
+.example-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 存檔列在表單最後，跟著內容走而不是固定在視窗底部——
+   獨立頁可以捲到底再送出，不需要像設定頁那樣常駐。 */
+.example-form-savebar {
+  position: static;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  box-shadow: none;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.example-form .guide-textarea {
+  height: auto;
+  min-height: 88px;
+  padding: 8px 10px;
+  resize: vertical;
+}
+
+@media (max-width: 720px) {
+  .example-form {
+    gap: 12px;
+  }
+}

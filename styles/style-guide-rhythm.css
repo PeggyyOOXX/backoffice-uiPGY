@@ -27,3 +27,12 @@
 .page .style-guide h4 {
   margin: 0 0 8px;
 }
+
+/* 說明文字：規範頁、組合範例與元件示範共用的那一行小字。
+   本來定義在 settings-demo.css（舊設定頁的樣式檔）裡，那支檔案已隨頁面改寫刪除。 */
+.component-description {
+  margin: 0 0 12px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #718096;
+}

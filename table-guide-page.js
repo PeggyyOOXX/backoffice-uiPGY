@@ -3,7 +3,8 @@
 // 表格、表頭排序與分頁放同一頁，因為它們是同一個元件的三個面向：
 // 正式後台 53 個用到分頁的 view，53 個都搭配 CustomTable，分頁從來沒有單獨出現過。
 import { guidePage, decisionTable } from './guide-page.js'
-import { dataTable, applyPaging, PAGE_SIZES } from './data-table.js'
+import { dataTable, dataCards, applyPaging, PAGE_SIZES } from './data-table.js'
+import { tag } from './tag-guide.js'
 import { iconButton } from './icon-button.js'
 import { icon } from './icons.js'
 import { onMatch } from './delegate.js'
@@ -32,6 +33,29 @@ const actions = id => `<div class="icon-action-group data-table-actions">
   ${iconButton({ icon: icon('loginRecord', 16), label: `登入紀錄 ${id}`, kind: 'btn-record' })}
   ${iconButton({ icon: icon('delete', 16), label: `刪除 ${id}`, kind: 'btn-danger' })}
 </div>`
+
+// 手機上同一份資料的兩種排法。判準不是欄位多少，是使用者對這一列做什麼：
+// 要讀完一整筆才能決定 → 卡片；要跨列比同一個欄位 → 表格。
+const MOBILE_DECISION = [
+  ['要讀完一整筆才能決定（審核、會員詳情）', '<strong>卡片</strong>', '欄位之間有從屬關係，卡片能兩行一組；表格只能硬並排'],
+  ['列上的操作要先看完資料才按得下去', '<strong>卡片</strong>', '通過／不通過、作廢這類操作，按之前要先讀'],
+  ['要跨列比同一個欄位（報表、金額、佔比）', '<strong>表格</strong>', '拆成卡片就比不了，而且<strong>合計列在卡片裡沒有地方放</strong>'],
+  ['要勾選多筆做批量', '<strong>表格</strong>', '卡片化之後「全選本頁」與連續勾選都變難，而勾選正是那一頁的重點'],
+  ['欄位少（4 欄以內）又短', '<strong>表格</strong>', '本來就塞得下，換成卡片反而更長'],
+  ['欄位多但只有 3–4 欄是關鍵', '精簡表格 ＋ 詳情抽屜', '手機只留關鍵欄，其餘點開抽屜看——會員列表就是這一型'],
+]
+
+// 同一份資料，上面那張表格與下面這組卡片是同一批列。
+const mobileCards = () => dataCards({
+  name: 'members-mobile',
+  rows: MEMBERS.map(([id, name, level, balance, status]) => ({
+    title: name,
+    subtitle: id,
+    status: tag(status, status === '正常' ? 'success' : status === '停用' ? 'danger' : 'warning'),
+    meta: [['等級', level], ['餘額', balance]],
+    actions: actions(id),
+  })),
+})
 
 // 示範用的狀態。總筆數刻意設大，才看得出折疊規則。
 let state = { page: 3, pageSize: PAGE_SIZES[1], total: 238 }
@@ -81,6 +105,10 @@ window.renderTablePage = () => guidePage({
         <p class="component-description">分頁列由元件自己產生，頁面不再各自拼一組按鈕。換頁與改每頁筆數的狀態用 <code>applyPaging()</code> 計算，「改筆數跳回第 1 頁」的規則就不會有人漏掉。</p>`,
     },
     { heading: '什麼時候要分頁', body: decisionTable(DECISION) },
+    {
+      heading: '手機版：卡片還是表格',
+      body: `<p class="component-description">判準是<strong>「這一列要用來讀，還是用來比」</strong>——不是看欄位多少。要讀完一整筆才能做決定的改成卡片；要跨列比同一個欄位的維持表格。</p>${decisionTable(MOBILE_DECISION, ['情境', '手機上怎麼呈現', '為什麼'])}<h4>同一份資料的兩種排法</h4><p class="component-description">下面是同一批列。桌機兩種並排著看得出差別；實際頁面上同一時間只會出現一種，由上面的判準決定。</p><div class="table-mobile-compare"><div><h5>表格</h5>${dataTable({ name: 'members-compare', columns: COLUMNS, rows: rows(), pagination: false })}</div><div><h5>卡片</h5>${mobileCards()}</div></div><div class="guide-pair"><div class="is-bad"><h4>${icon('cancelCircle')}不要一律改卡片</h4><p>報表拆成卡片就沒辦法上下對齊比數字，合計列也沒有地方放；有勾選的批量頁改成卡片之後，「全選本頁」與連續勾選都會變難。</p></div><div class="is-good"><h4>${icon('checkCircle')}兩種都要，而且有規則</h4><p>卡片與表格都用共用元件（<code>dataCards()</code> 與 <code>dataTable()</code>），吃同一份資料。要切換的是呈現方式，不是重寫一頁。</p></div></div>`,
+    },
     {
       heading: '折疊規則',
       body: `<p class="component-description">頁數超過 7 頁時中間折疊成 <code>…</code>，但<strong>目前頁的前後各留一個</strong>，相鄰頁才點得到。第一頁與最後一頁永遠顯示。</p>

@@ -8,12 +8,16 @@ const fs = require("fs");
 const assert = require("node:assert/strict");
 
 const dom = new JSDOM(
-  '<!doctype html><body><main class="page"></main></body>',
+  '<!doctype html><body><main class="page"></main>' +
+    '<div id="detailOverlay"><h2 id="detailDrawerTitle"></h2><div id="detailBody"></div><div class="drawer-foot"></div></div>' +
+    '</body>',
   { runScripts: "outside-only", pretendToBeVisual: true },
 );
 const w = dom.window,
   d = w.document;
 w.requestAnimationFrame = (fn) => setTimeout(fn, 0);
+w.openDetailDrawer = () => d.querySelector("#detailOverlay").classList.add("open");
+w.closeDetailDrawer = () => d.querySelector("#detailOverlay").classList.remove("open");
 w.HTMLDialogElement.prototype.showModal = function () {
   this.open = true;
 };
@@ -50,14 +54,14 @@ run("message.js", ON + ICON, ";window.message=message");
 const MSG = "const message=window.message;";
 run("modal-system.js", ON, ";window.prepareModal=prepareModal");
 const MODAL = "const prepareModal=window.prepareModal;";
-run("states.js", "", ";window.emptyRow=emptyRow");
+run("states.js", "", ";window.emptyRow=emptyRow;window.emptyState=emptyState");
 run(
   "data-table.js",
   ICON + "const emptyRow=window.emptyRow;",
-  ";window.dataTable=dataTable;window.applyPaging=applyPaging;window.PAGE_SIZES=PAGE_SIZES",
+  ";window.dataTable=dataTable;window.dataCards=dataCards;window.applyPaging=applyPaging;window.PAGE_SIZES=PAGE_SIZES",
 );
 const TABLE =
-  "const dataTable=window.dataTable,applyPaging=window.applyPaging,PAGE_SIZES=window.PAGE_SIZES;";
+  "const dataTable=window.dataTable,dataCards=window.dataCards,applyPaging=window.applyPaging,PAGE_SIZES=window.PAGE_SIZES;";
 run(
   "guide-page.js",
   "",
@@ -75,10 +79,13 @@ run("upload-guide.js", PAGE + ON + ICON + MSG, ";window.uploadSlot=uploadSlot");
 run("bulk-actions.js", ICON + BTN, ";window.bulkParts={selectAllControl,selectRowControl,bulkHeader,bulkFeedback,selectionOf,applyBulk,PICK_COLUMN}");
 const BULK = "const {selectAllControl,selectRowControl,bulkHeader,bulkFeedback,selectionOf,applyBulk,PICK_COLUMN}=window.bulkParts;";
 
+run("filter-toggle.js", ON + ICON, ";window.filterToggle=filterToggle");
+const FILTER = "const filterToggle=window.filterToggle;";
+
 // --- 受測頁 ---
 run(
   "example-list.js",
-  TABLE + TAG + MODAL + MSG + ON + ICON + BTN +
+  FILTER + TABLE + TAG + MODAL + MSG + ON + ICON + BTN +
     "const progressBar=window.progressBar;",
 );
 run(
@@ -89,7 +96,34 @@ run(
 
 run(
   "example-bulk.js",
-  TABLE + TAG + MODAL + MSG + ON + ICON + BULK,
+  FILTER + TABLE + TAG + MODAL + MSG + ON + ICON + BULK,
+);
+
+run("download-center.js", ON + ICON + TAG + BTN + MSG +
+  "const progressBar=window.progressBar,emptyState=window.emptyState;",
+  ";window.requestExport=requestExport;window.downloadCenter=downloadCenter");
+const DL = "const requestExport=window.requestExport;";
+
+run(
+  "example-report.js",
+  FILTER + TABLE + MSG + ON + ICON + DL +
+    "const tabs=window.tabs,tabPanels=window.tabPanels;",
+);
+
+run(
+  "example-form.js",
+  TABLE + TAG + MODAL + MSG + ON + ICON + BTN,
+);
+
+run("choice-controls.js", "", ";window.choiceCard=choiceCard");
+run(
+  "example-member.js",
+  FILTER + TABLE + MSG + ON + ICON + BTN + DL,
+);
+run(
+  "example-mixed.js",
+  TABLE + TAG + MODAL + MSG + ON + ICON + BTN +
+    "const tabs=window.tabs,tabPanels=window.tabPanels,choiceCard=window.choiceCard;",
 );
 
 const ok = (label) => console.log("  ✓ " + label);
@@ -237,7 +271,7 @@ assert.ok(q(".upload-slot .upload-dropzone"), "缺少共用的上傳欄位");
 assert.ok(q(".upload-slot-head small").textContent.includes("最大"),
   "上傳欄位應在標題列寫出尺寸與容量");
 assert.ok(q(".choice-group.is-inline .choice-control"), "版型設定應使用共用的選擇控制");
-assert.ok(q(".settings-savebar [data-branch-save]"), "缺少儲存列");
+assert.ok(q(".example-savebar [data-branch-save]"), "缺少儲存列");
 assert.equal(q("[data-branch-save]").disabled, true, "沒有變更時儲存鈕應停用");
 ok("設定頁：上傳、選擇控制、儲存列都套共用元件");
 
@@ -422,6 +456,314 @@ assert.equal(qa('[data-bulk-row][data-bulk="game"]:checked').length, 0, "取消�
 assert.equal(q("[data-game-review]").disabled, true, "沒有勾選後批量審核應回到停用");
 ok("批量頁：取消全選後按鈕回到停用");
 
+// ===== 報表型：遊戲營收報表 =====
+host().innerHTML = w.renderExampleReport();
+assert.ok(q(".example-report-page"), "報表範例畫不出來");
+
+// 合計列是報表型與一般列表最大的差別，而且它算的是整個查詢區間，不是本頁小計
+const foot = q(".example-report-page tfoot tr");
+assert.ok(foot, "報表缺少合計列");
+assert.ok(/合計（12 筆）/.test(foot.textContent), "合計列要寫出總筆數");
+assert.ok(q(".example-report-page .data-table-foot-label"), "合計列的標籤欄要是唯一靠左的那一格");
+const footBefore = foot.textContent;
+
+// 查詢區間的天數上限要由共用日期元件在日曆上擋住，不是按下搜尋才報錯
+const range = q(".example-report-page [data-date-range]");
+assert.ok(range, "報表缺少共用日期區間");
+assert.equal(range.dataset.maxDays, "90", "查詢區間要宣告天數上限");
+assert.ok(range.hasAttribute("data-past-year"), "查詢區間要同時擋掉未來與一年前");
+ok("報表頁：合計列、查詢區間上限都由共用元件提供");
+
+// 負數要用語意色的危險色標出來，不是只靠一個減號
+assert.ok(q(".example-report-page .example-amount.is-negative"),
+  "報表要示範負數金額的紅字");
+ok("報表頁：金額千分位、負數標紅");
+
+// 換頁不該改變合計——它是整個區間的總和
+const secondPage = qa('.example-report-page [data-table-page][data-table="report"]')
+  .find((b) => b.textContent.trim() === "2");
+assert.ok(secondPage, "報表應該分得了頁");
+click(secondPage);
+assert.equal(q(".example-report-page tfoot tr").textContent, footBefore,
+  "合計是整個區間的總和，換頁不該跟著變");
+ok("報表頁：合計不隨分頁改變");
+
+// 匯出是建立下載任務，不是當場說「已匯出」
+host().insertAdjacentHTML("beforeend", w.downloadCenter());
+click(q("[data-report-export]"));
+assert.equal(qa(".download-task").length, 1, "匯出應該在下載中心建立一筆任務");
+assert.ok(q(".download-task-name").textContent.trim().endsWith(".xlsx"), "任務要帶檔名");
+assert.ok(q("[data-download-root] .download-badge"), "有任務處理中時頁首要有計數");
+const toasts = qa(".bo-message");
+assert.ok(toasts.some((t) => /已建立匯出任務/.test(t.textContent)),
+  "按下匯出當時檔案還不存在，只能說已建立任務");
+assert.ok(!toasts.some((t) => /已匯出|匯出成功/.test(t.textContent)),
+  "不得在建立任務時就宣稱已匯出");
+ok("報表頁：匯出走下載中心，建立任務而不是當場下檔");
+
+// 頁籤切換（滑鼠與鍵盤）都要讓頁面重算，這是共用 tabs.js 的行為
+host().innerHTML = w.renderExampleReport();
+q('[data-tab-key="total"]').dispatchEvent(new w.KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }));
+assert.equal(q('[data-tab-key="type"]').getAttribute("aria-selected"), "true",
+  "方向鍵要能切換頁籤");
+assert.ok(/遊戲類型/.test(q(".example-report-page thead").textContent),
+  "鍵盤切換頁籤後表格要跟著換維度");
+q('[data-tab-key="provider"]').click();
+assert.ok(/遊戲商/.test(q(".example-report-page thead").textContent),
+  "點擊切換頁籤後表格要跟著換維度");
+ok("報表頁：滑鼠與鍵盤切換頁籤都會重算表格");
+
+// ===== 表單頁型：新增會員 =====
+host().innerHTML = w.renderExampleForm();
+assert.ok(q(".example-form-page"), "表單頁範例畫不出來");
+assert.ok(!q("[data-form-root]"), "一進來應該是列表，不是表單");
+click(q("[data-form-new]"));
+assert.ok(q("[data-form-root]"), "按新增應該進到獨立的表單頁");
+assert.ok(q("[data-form-back]"), "表單頁要有返回列表");
+assert.ok(!q("dialog[open]"), "新增走獨立頁，不該開彈窗");
+ok("表單頁：新增走獨立頁而不是彈窗，且有返回列表");
+
+// 欄位級錯誤要留在欄位下方，不能用 Toast
+const toastsBefore = qa(".bo-message").length;
+q("[data-form-root]").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true }));
+assert.ok(q(".example-form-page .guide-input.is-error"), "必填沒填應該標出錯誤欄位");
+assert.ok(/請輸入帳號/.test(q("#member-account-error").textContent), "錯誤文字要留在欄位下方");
+assert.equal(q("#member-account").getAttribute("aria-describedby"), "member-account-error",
+  "錯誤文字要用 aria-describedby 連回欄位");
+assert.equal(qa(".bo-message").length, toastsBefore,
+  "欄位級錯誤不得用 Toast——Toast 會消失，使用者回頭找不到是哪一格");
+ok("表單頁：欄位級錯誤是行內文字並連回欄位，不是 Toast");
+
+// 改到一半要離開先確認
+const account = q("#member-account");
+account.value = "new_member01";
+account.dispatchEvent(new w.Event("input", { bubbles: true }));
+click(q("[data-form-back]"));
+const guard = q("dialog[open]");
+assert.ok(guard, "有未儲存變更就離開要先確認");
+assert.ok(/未保存/.test(guard.textContent), "確認彈窗要說明變更不會保留");
+guard.querySelector("[data-example-close]").click();
+assert.ok(q("[data-form-root]"), "選擇留在此頁就不該離開表單");
+ok("表單頁：改到一半要離開會先確認");
+
+// 送出成功：導回列表、新資料出現在列表上、Toast 帶受詞
+const fill = (id, value) => {
+  const input = q(id);
+  input.value = value;
+  input.dispatchEvent(new w.Event("input", { bubbles: true }));
+};
+fill("#member-account", "new_member01");
+fill("#member-name", "新會員");
+fill("#member-password", "abcd1234");
+q("[data-form-root]").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true }));
+assert.ok(!q("[data-form-root]"), "送出成功要導回列表");
+assert.ok(/new_member01/.test(q(".example-form-page tbody").textContent), "新資料要出現在列表上");
+assert.ok(qa(".bo-message").some((t) => /已建立會員 new_member01/.test(t.textContent)),
+  "成功的 Toast 要帶受詞");
+ok("表單頁：送出成功後導回列表、新資料出現、Toast 帶受詞");
+
+// ===== 混合型：設定頁裡還有表格 =====
+host().innerHTML = w.renderExampleMixed();
+assert.ok(q(".example-mixed-page"), "混合型範例畫不出來");
+assert.equal(qa(".example-mixed-page .bo-tab").length, 6, "六個設定頁籤");
+
+// 開關切換會改草稿，存檔列跟著變成「有尚未儲存的變更」
+assert.equal(q(".example-mixed-page .example-save-status").textContent, "儲存後才會套用");
+click(q('[data-mixed-switch="transferEnabled"]'));
+assert.equal(q(".example-mixed-page .example-save-status").textContent, "有尚未儲存的變更");
+assert.equal(q("[data-mixed-save]").disabled, false, "有變更後才可儲存");
+ok("混合型：開關改的是草稿，要按儲存才套用");
+
+// 存款設定的數值驗證：錯誤要跳到出錯的頁籤並留在欄位下方，不用 Toast
+q('[data-tab-key="deposit"]').click();
+const min = q("#mixed-minDeposit");
+min.value = "900000";
+min.dispatchEvent(new w.Event("input", { bubbles: true }));
+q('[data-tab-key="basic"]').click();
+const beforeToasts = qa(".bo-message").length;
+click(q("[data-mixed-save]"));
+assert.equal(q('[data-tab-key="deposit"]').getAttribute("aria-selected"), "true",
+  "驗證失敗要跳回出錯的那個頁籤");
+assert.ok(/不可低於最低金額/.test(q("#mixed-maxDeposit-error").textContent),
+  "錯誤要留在欄位下方");
+assert.equal(qa(".bo-message").length, beforeToasts, "欄位級錯誤不得用 Toast");
+ok("混合型：驗證失敗跳回出錯頁籤，錯誤是行內文字");
+
+// 取消變更會把草稿還原
+click(q("[data-mixed-cancel]"));
+assert.equal(q(".example-mixed-page .example-save-status").textContent, "儲存後才會套用");
+ok("混合型：取消變更還原草稿");
+
+// 返水規則：整張表就是表單，批量套用改的也是草稿
+q('[data-tab-key="rebate"]').click();
+assert.equal(qa('.example-mixed-page [data-mixed-rule]').length, 12, "四個分類各三個欄位");
+const bulk = q("[data-mixed-rule-bulk]");
+bulk.value = "1.5";
+click(q("[data-mixed-rule-apply]"));
+assert.ok(qa('[data-mixed-rule][data-mixed-rule-key="rate"]').every(input => input.value === "1.5"),
+  "批量套用要改到每一列");
+ok("混合型：表格裡放輸入欄位，批量套用改全部分類");
+
+// 優惠活動：排序模式才出現拖曳把手，鍵盤也要能調順序
+q('[data-tab-key="promotions"]').click();
+assert.equal(d.querySelector("[data-promotion-drag]"), null, "沒按排序就不該有把手");
+click(q('[data-mixed-promo="sort"]'));
+assert.equal(qa("[data-promotion-drag]").length, 3, "排序模式每列一個把手");
+const firstTitle = () => q(".example-mixed-page tbody tr .example-mixed-link").textContent;
+const before = firstTitle();
+const handle = q("[data-promotion-drag]");
+handle.dispatchEvent(new w.KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true }));
+assert.notEqual(firstTitle(), before, "方向鍵要能調整順序");
+ok("混合型：排序模式持續顯示把手，鍵盤也能排序");
+
+// 活動名稱開唯讀快照，外殼沿用共用彈窗
+click(q(".example-mixed-link"));
+const snapshot = q("dialog[open]");
+assert.ok(snapshot.classList.contains("bo-modal"), "快照要沿用共用彈窗外殼，不自製 chrome");
+assert.ok(snapshot.querySelector(".bo-modal-close"), "共用彈窗的右上角關閉鈕");
+assert.ok(snapshot.querySelector(".bo-tabs"), "快照裡的語言頁籤用共用元件");
+snapshot.querySelector("[data-promo-close]").click();
+assert.equal(d.querySelector("dialog"), null);
+ok("混合型：唯讀快照沿用共用彈窗外殼");
+
+// ===== 搜尋結果型：會員列表 =====
+host().innerHTML = w.renderExampleMember();
+assert.ok(q(".example-member-page"), "會員列表範例畫不出來");
+assert.equal(qa(".example-member-page thead th").length, 13, "13 欄");
+assert.ok(q(".example-member-page .data-table-scroll"), "欄位多要用共用表格的橫向捲動");
+assert.ok(q(".example-member-page thead th:last-child").classList.contains("is-sticky-right"),
+  "操作欄要釘在右側");
+assert.ok(q('[data-table-page][data-table="member"]'), "分頁由共用表格提供，頁面不自己兜");
+assert.ok(!/onclick=/.test(q(".example-member-page").innerHTML),
+  "操作一律走事件委派，不得用 inline onclick");
+ok("搜尋頁：13 欄共用表格、固定操作欄、分頁與事件委派");
+
+// 唯讀詳情走共用抽屜，底部只有關閉（加上一顆帶進下一層的登入紀錄）
+click(q("[data-member-summary]"));
+assert.ok(q("#detailOverlay").classList.contains("open"), "帳號要開右側抽屜");
+assert.equal(q("#detailDrawerTitle").textContent, "會員詳情摘要");
+assert.ok(/總餘額/.test(q("#detailBody").textContent), "摘要要帶欄位");
+assert.ok(q(".drawer-foot [data-member-drawer-close]"), "抽屜底部要有關閉");
+assert.equal(d.querySelector("dialog"), null, "唯讀內容不得改用彈窗");
+click(q('.drawer-foot [data-member-records]'));
+assert.equal(q("#detailDrawerTitle").textContent, "登入紀錄");
+click(q("[data-member-drawer-close]"));
+assert.ok(!q("#detailOverlay").classList.contains("open"));
+ok("搜尋頁：唯讀詳情與登入紀錄都走共用抽屜");
+
+// 列上的狀態下拉改了就生效，並用 Toast 回報
+const statusSelect = q("[data-member-status]");
+statusSelect.value = "停用";
+change(statusSelect);
+assert.ok(qa(".bo-message").some((t) => /已將 .+ 設為停用/.test(t.textContent)),
+  "狀態改了要回報，且文案帶受詞");
+ok("搜尋頁：狀態下拉改了就生效");
+
+// 篩不到資料時只有表格內變成空狀態，篩選列與工具列都不動
+const keyword = q("#member-keyword");
+keyword.value = "不存在的帳號";
+q("[data-member-filter]").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true }));
+assert.ok(q(".example-member-page .bo-state-row"), "篩不到要顯示共用空狀態");
+assert.ok(q("[data-member-filter]") && q(".example-member-page .example-toolbar"),
+  "空狀態時篩選列與工具列都要留在原位");
+assert.ok(!q(".example-member-page .bo-state-row button"), "狀態區裡不得有按鈕");
+ok("搜尋頁：空狀態只影響表格，工具列不動");
+
+// 匯出一樣走下載中心
+host().insertAdjacentHTML("beforeend", w.downloadCenter());
+const tasksBefore = qa(".download-task").length;
+click(q("[data-member-export]"));
+assert.equal(qa(".download-task").length, tasksBefore + 1, "匯出要建立下載任務");
+ok("搜尋頁：匯出走下載中心");
+
+// ===== 表格內的操作欄一律置中，而且由共用表格決定 =====
+//
+// 先前是每一頁自己寫一次 justify-content:center，漏一頁就左靠；
+// 而且操作欄沒給寬度時，auto table layout 會把剩餘寬度全塞給它，
+// 欄位比內容寬很多，置中之後看起來仍然像貼在左邊。
+{
+  const tableCss = fs.readFileSync("data-table.css", "utf8");
+  const centred = tableCss.slice(tableCss.indexOf(".page .data-table-grid td .icon-action-group"));
+  assert.ok(
+    tableCss.includes(".page .data-table-grid td .icon-action-group") &&
+      centred.slice(0, centred.indexOf("}")).includes("justify-content: center"),
+    "表格內的操作欄要由共用表格統一置中",
+  );
+  for (const file of ["example-list.js", "example-form.js", "example-permission.js", "example-mixed.js", "example-member.js"]) {
+    const src = fs.readFileSync(file, "utf8");
+    const column = src.match(/{ key: 'actions',[^}]*}/);
+    assert.ok(column, file + " 找不到操作欄定義");
+    assert.ok(/width:/.test(column[0]),
+      file + " 的操作欄要給寬度，否則 auto table layout 會把剩餘寬度塞給它");
+  }
+  // 頁面不得再各自寫一次置中，否則規則又散回去
+  for (const file of ["example-list.css", "example-form.css", "example-permission.css", "example-mixed.css", "example-member.css"]) {
+    const src = fs.readFileSync(file, "utf8");
+    assert.ok(!/-actionss*{[^}]*justify-content/.test(src),
+      file + " 不該再自己寫操作欄置中，共用表格已經統一處理");
+  }
+  ok("表格內的操作欄置中與欄寬由共用表格統一決定");
+}
+
+// ===== 手機：有篩選列的頁面都要有打得開的入口 =====
+//
+// 720px 以下 .source-filter 是 display:none，要靠 .mobile-open 才打得開。
+// 先前只有會員列表與風控審核寫了開關，禮物卡／報表／遊戲列表三頁沒有——
+// 那三頁在手機上篩選列整個消失，而且沒有任何入口。
+for (const [name, html] of [
+  ["列表", w.renderExampleList()],
+  ["報表", w.renderExampleReport()],
+  ["批量", w.renderExampleBulk()],
+  ["搜尋", w.renderExampleMember()],
+]) {
+  host().innerHTML = html;
+  const filter = q(".example-page .source-filter");
+  const toggle = d.querySelector("[data-filter-toggle]");
+  assert.ok(toggle, name + "：有篩選列就要有手機版的開關");
+  assert.equal(toggle.dataset.filterToggle, filter.id,
+    name + "：開關要指到這一頁的篩選列");
+  assert.equal(toggle.getAttribute("aria-controls"), filter.id,
+    name + "：開關要用 aria-controls 連到篩選列");
+  click(toggle);
+  assert.ok(filter.classList.contains("mobile-open"), name + "：點開關要打得開篩選列");
+  assert.equal(toggle.getAttribute("aria-expanded"), "true", name + "：展開狀態要回報給報讀器");
+  click(toggle);
+  assert.ok(!filter.classList.contains("mobile-open"), name + "：再點一次要收起來");
+}
+ok("手機：四個有篩選列的頁面都用同一個共用開關，開得起來也收得回去");
+
+// ===== 手機卡片只有一個實作 =====
+//
+// 「卡片還是表格」的判準寫在表格規範頁，卡片本身則由 dataCards() 產生。
+// 先前會員列表與風控審核各自手寫一份 .mobile-card，兩邊的間距與欄位排法都不一樣。
+{
+  host().innerHTML = w.renderExampleMember();
+  // 前面的測試把關鍵字留在「不存在的帳號」，先清掉才看得到資料
+  click(q("[data-member-reset]"));
+  const memberCards = qa(".example-member-page .data-card");
+  assert.ok(memberCards.length, "會員列表的手機卡片要用共用的 dataCards()");
+  assert.ok(q(".example-member-page .data-card-meta"), "卡片的欄位要用共用的兩欄排法");
+  // 卡片與表格是同一批資料
+  const firstAccount = q(".example-member-page tbody .example-member-link").textContent;
+  assert.ok(
+    memberCards[0].textContent.includes(firstAccount),
+    "卡片與表格要吃同一份資料，不是各自一套",
+  );
+  // 這一頁是「精簡 ＋ 詳情抽屜」那一型：卡片上只放關鍵欄位，不是把 13 欄全搬上去
+  assert.ok(
+    qa(".example-member-page .data-card")[0].querySelectorAll(".data-card-meta div").length <= 6,
+    "卡片上只放關鍵欄位，其餘到抽屜看",
+  );
+  for (const file of ["example-member.js", "example-audit.js"]) {
+    const src = fs.readFileSync(file, "utf8");
+    assert.ok(
+      !/class="mobile-card"/.test(src),
+      file + " 不該再自己手寫卡片，改用共用的 dataCards()",
+    );
+  }
+  ok("手機卡片：兩頁都用共用的 dataCards()，與表格吃同一份資料");
+}
+
 console.log(
-  "\nPASS: 組合範例（列表型篩選／分頁／作廢確認；設定型頁籤守衛／必填連動；批量型表頭選單／本頁全選／復原／不可逆確認）",
+  "\nPASS: 組合範例（搜尋／列表／設定／批量／報表／表單頁／混合：共用表格與分頁、固定欄、操作欄置中、手機卡片、抽屜、守衛、合計、匯出任務、行內錯誤、表格即表單、拖曳排序、手機篩選列開關）",
 );

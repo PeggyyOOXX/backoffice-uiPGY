@@ -46,3 +46,13 @@ button.status-field:focus-visible {
   cursor: default;
   text-decoration: none;
 }
+
+/* 手機版呈現的對照：桌機兩欄並排看得出差別，窄螢幕疊起來。 */
+.table-mobile-compare{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:16px}
+.table-mobile-compare > div{min-width:0}
+.table-mobile-compare h5{margin:0 0 8px;font-size:12px;font-weight:600;color:#718096}
+/* 這一節的表格刻意不給 min-width，兩欄並排時才看得出「欄位被擠扁」的樣子 */
+.table-mobile-compare .data-table-grid{min-width:0}
+@media(max-width:900px){
+  .table-mobile-compare{grid-template-columns:1fr}
+}

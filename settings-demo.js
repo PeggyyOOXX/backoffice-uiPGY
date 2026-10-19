@@ -1,12 +1,16 @@
-// 移植：el-form + el-form-item、el-switch、el-tabs、el-table。詳見 ELEMENT-PLUS-MAPPING.md
-import './workflow-examples.js'
+// 原型的進入點：載入所有頁面模組，補上 topbar 裡要由模組產生的那兩塊，然後開啟著陸頁。
+//
+// 這支檔案本來同時是「設定相關頁面」的實作（設定狀態、五個頁籤、優惠活動表格、
+// 快照彈窗、拖曳排序都寫在這裡），那一頁已改寫成組合範例（example-mixed.js），
+// 所以這裡只剩開站要做的事。檔名維持不變：index.html 的 <script> 與 nav-check 都認它。
+import './filter-toggle.js'
+import './example-audit.js'
 import './switch-layout-guide.js'
 import './icon-button.js'
 import './table-guide.js'
 import './bulk-guide.js'
 import './editor-guide.js'
 import './choice-controls.js'
-import { tabs as tabList } from './tabs.js'
 import './select-advanced.js'
 import './tabs-guide.js'
 import './state-guide.js'
@@ -24,140 +28,27 @@ import './token-guide.js'
 import './nav-guide.js'
 import './progress-guide.js'
 import { headerPopovers } from './header-popover.js'
+import { downloadCenter } from './download-center.js'
 import './tag-guide.js'
 import './upload-guide.js'
 import './steps-guide.js'
 import './example-list.js'
 import './example-settings.js'
 import './example-bulk.js'
-import { prepareModal } from './modal-system.js'
-import './settings-demo.css'
-import { on } from './delegate.js'
-import { icon } from './icons.js'
-// 事件委派統一走 delegate.js：每種事件只掛一個 document 監聽，並登記擁有權。
-const OWNED = ["#quickTabs button span", ".nav-item[data-route-key], #quickTabs button", ".standard-switch[data-setting],.standard-switch[data-example-setting]", "[data-example-setting]", "[data-promo-action]", "[data-promotion-drag]", "[data-promotion-filter]", "[data-promotion-row]", "[data-promotion-snapshot]", "[data-promotion-switch]", "[data-setting]", "[data-settings-cancel]", "[data-settings-save]", "[data-snapshot-close]"]
-const listen = (type, handler, capture = false) => on(type, handler, { owner: 'settings-demo', claims: OWNED, capture })
+import './example-report.js'
+import './example-form.js'
+import './example-permission.js'
+import './example-mixed.js'
+import './example-member.js'
+import './modal-system.js'
 
-const defaults = { promotionEnabled:true, promotionCategory:'全部活動', transferEnabled: true, transferRule: 'passed', depositEnabled: true, limitEnabled: true, pendingLimit: 3, minDeposit: 100, maxDeposit: 50000, notifyEnabled: true, notifyChannel: 'inbox', notifyThreshold: 10000 }
-Object.assign(defaults, { siteTitle:'101 BEST', supportEmail:'', serviceHours:'09:00–18:00', contactName:'', settingNotes:'' })
-const promotions = [
- {id:1,title:'新會員首存優惠',type:'新會員優惠',start:'2026-09-01',end:'2026-09-30',state:'進行中'},
- {id:2,title:'週末存款加碼',type:'存款優惠',start:'2026-09-19',end:'2026-09-20',state:'已預約'},
- {id:3,title:'八月會員回饋',type:'會員回饋',start:'2026-08-01',end:'2026-08-31',state:'已過期'}
-]
-const promotionSnapshotExample={...promotions[2]}
-for(const row of promotions){defaults['promoState'+row.id]=row.state}
-let promotionFilter='全部', promotionSorting=false
-const escapeHtml=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))
-const storageKey = 'bo-settings-demo-v1'
-let saved = { ...defaults }
-try { const cached = JSON.parse(localStorage.getItem(storageKey)); if(cached && typeof cached === 'object') for(const key of Object.keys(defaults)) if(typeof cached[key] === typeof defaults[key]) saved[key] = cached[key] } catch {}
-for(const row of promotions){const key='promoState'+row.id;saved[key]=({'上架中':'進行中','排程中':'已預約','已下架':'已過期'})[saved[key]]||saved[key]}
-try {const cached=JSON.parse(localStorage.getItem(storageKey));const list=cached?.promotionRows;if(Array.isArray(list)&&list.every(row=>Number.isFinite(row.id)&&['title','type','start','end','state'].every(key=>typeof row[key]==='string'))){promotions.splice(0,promotions.length,...list);for(const row of promotions)saved['promoState'+row.id]=cached['promoState'+row.id]||row.state}}catch{}
-let savedPromotions=promotions.map(row=>({...row}))
-function restoreSettings(){promotionSorting=false;draft={...saved};promotions.splice(0,promotions.length,...savedPromotions.map(row=>({...row})))}
-function saveSettings(){const list=promotions;localStorage.setItem(storageKey,JSON.stringify({...draft,promotionRows:list}));promotions.splice(0,promotions.length,...list);saved={...draft};savedPromotions=promotions.map(row=>({...row}));promotionSorting=false}
-let draft = { ...saved }, active = 'promotions', message = ''
-const tabs = [['transfer','轉點設定'],['deposit','存款設定'],['notify','通知設定'],['inputs','基本資料設定'],['promotions','優惠活動設定']]
-const dirty = () => JSON.stringify(draft) !== JSON.stringify(saved) || JSON.stringify(promotions)!==JSON.stringify(savedPromotions)
-const toggle = (key, label, description, disabled=false) => `<div class="settings-row"><button type="button" class="standard-switch" id="setting-${key}" data-setting="${key}" role="switch" aria-checked="${draft[key]}" aria-labelledby="setting-label-${key}" ${disabled?'disabled':''}></button><label id="setting-label-${key}" for="setting-${key}">${label}</label></div>`
-listen('click',event=>{const control=event.target.closest('.standard-switch[data-setting],.standard-switch[data-example-setting]');if(!control||control.disabled)return;control.setAttribute('aria-checked',String(control.getAttribute('aria-checked')!=='true'));control.dispatchEvent(new Event('change',{bubbles:true}))})
-const radio = (key, val, title, text, disabled=false) => `<label class="choice-card ${draft[key]===val?'is-selected':''}"><input type="radio" name="${key}" data-setting="${key}" value="${val}" ${draft[key]===val?'checked':''} ${disabled?'disabled':''}><span><strong>${title}</strong><small>${text}</small></span></label>`
-const number = (key, title, unit, help, disabled=false) => `<div class="settings-field"><label for="setting-${key}">${title}</label><div class="settings-unit"><input id="setting-${key}" data-setting="${key}" type="number" min="${key==='pendingLimit'?1:0}" ${key==='pendingLimit'?'max="100"':''} step="1" value="${draft[key]}" ${disabled?'disabled':''} aria-describedby="help-${key} error-${key}"><span>${unit}</span></div><small id="help-${key}">${help}</small><span class="settings-error" id="error-${key}" data-error="${key}"></span></div>`
-const textField=(key,label,type='text')=>`<div class="settings-field"><label for="setting-${key}">${label}</label><input class="control" id="setting-${key}" data-setting="${key}" type="${type}" value="${escapeHtml(draft[key])}"><span class="settings-error" data-error="${key}" id="error-${key}"></span></div>`
-function renderPromotionList(){return `<section class="settings-card"><div class="settings-card-heading"><h2>優惠活動</h2></div><div class="promotion-settings-grid"><div class="settings-row promotion-switch-row"><button id="promotion-enabled-label-control" type="button" class="standard-switch" role="switch" aria-checked="${draft.promotionEnabled}" aria-labelledby="promotion-enabled-label" data-promotion-switch></button><div><label for="promotion-enabled-label-control" id="promotion-enabled-label">顯示優惠活動</label></div></div><div class="settings-field"><label for="promotion-category">預設活動分類</label><select id="promotion-category" class="control guide-select" data-setting="promotionCategory">${['全部活動','新會員優惠','存款優惠','會員回饋'].map(value=>`<option ${draft.promotionCategory===value?'selected':''}>${value}</option>`).join('')}</select></div></div><div class="settings-promotion-filters" aria-label="活動狀態">${['全部','進行中','已過期','已預約'].map(state=>`<button type="button" data-promotion-filter="${state}" aria-pressed="${promotionFilter===state}" class="${promotionFilter===state?'is-active':''}">${state}</button>`).join('')}</div><div class="promotion-toolbar"><button type="button" class="semantic-btn btn-add" data-promo-action="add">${icon('add')}新增</button><button type="button" class="semantic-btn btn-edit" data-promo-action="toggle-sort" aria-pressed="${promotionSorting}" ${promotionSorting?'disabled':''}>${promotionSorting?'排序中':icon('sort')+'排序'}</button><span class="settings-note">${promotionSorting?'可繼續修改開關、分類或切換狀態；最後按「儲存設定」一次套用':''}</span></div><div class="settings-promotion-wrap"><table class="settings-promotion-table ${promotionSorting?'is-sorting':''}"><thead><tr>${promotionSorting?'<th class="promotion-sort-column">排序</th>':''}<th>活動名稱</th><th>活動類型</th><th>開始日期</th><th>結束日期</th><th>最後更新人員</th><th>狀態</th><th class="promotion-actions-column">操作</th></tr></thead><tbody>${promotions.filter(row=>promotionFilter==='全部'||draft['promoState'+row.id]===promotionFilter).map(row=>`<tr data-promotion-row="${row.id}">${promotionSorting?`<td data-label="排序"><button type="button" class="semantic-btn btn-neutral outline promotion-drag-handle" data-promotion-drag="${row.id}" aria-label="拖曳排序：${escapeHtml(row.title)}；也可按上下方向鍵調整" title="拖曳排序，或使用上下方向鍵">${icon('drag')}</button></td>`:``}<td data-label="活動名稱"><button type="button" class="settings-promotion-link" data-promotion-snapshot="${row.id}" aria-haspopup="dialog">${escapeHtml(row.title)}</button></td><td data-label="活動類型">${escapeHtml(row.type)}</td><td data-label="開始日期">${row.start}</td><td data-label="結束日期">${row.end}</td><td data-label="最後更新人員">Peggy</td><td data-label="狀態"><select class="control guide-select" aria-label="活動狀態 ${row.id}" data-setting="promoState${row.id}">${['進行中','已過期','已預約'].map(state=>`<option ${draft['promoState'+row.id]===state?'selected':''}>${state}</option>`).join('')}</select></td><td data-label="操作"><div class="promotion-row-actions"><button type="button" class="semantic-btn btn-edit" data-promo-action="edit" data-promo-id="${row.id}">${icon('edit')}編輯</button><button type="button" class="semantic-btn btn-danger" data-promo-action="delete" data-promo-id="${row.id}">${icon('delete')}刪除</button></div></td></tr>`).join('')||'<tr><td colspan="8">沒有符合條件的活動</td></tr>'}</tbody></table></div></section>`}
-
-
-function panel(key=active) {
-
- if(key==='inputs')return `<section class="settings-card"><div class="settings-card-heading"><h2>基本資料</h2></div><div class="settings-fields settings-input-section">${textField('siteTitle','網站名稱')}${textField('contactName','聯絡人')}${textField('supportEmail','客服信箱','email')}${textField('serviceHours','客服時間')}</div><div class="settings-divider" role="separator"></div><div class="settings-field"><label for="setting-settingNotes">備註</label><textarea class="control" id="setting-settingNotes" data-setting="settingNotes" rows="3" maxlength="500">${escapeHtml(draft.settingNotes)}</textarea></div></section>`
- if(key==='promotions')return renderPromotionList()
-
- if(key==='transfer') return `<section class="settings-card"><div class="settings-card-heading"><div><h2>轉點規則</h2></div></div>${toggle('transferEnabled','開放會員轉點','關閉後暫停會員轉點，原有設定仍會保留。')}<div class="settings-divider" role="separator"></div><fieldset class="settings-group" ${draft.transferEnabled?'':'disabled'}><legend>允許轉點的條件</legend><div class="settings-choices">${radio('transferRule','passed','通過稽核後可轉點','會員需完成稽核條件，才可進行轉點。')}${radio('transferRule','all','不限制稽核狀態','會員尚未通過稽核時，也允許進行轉點。')}</div></fieldset>${!draft.transferEnabled?'<p class="settings-note">轉點已關閉；重新開啟後可調整下方條件。</p>':''}</section>`
- if(key==='deposit') return `<section class="settings-card"><div class="settings-card-heading"><div><h2>存款限制</h2></div></div>${toggle('depositEnabled','開放會員存款','關閉時保留限制設定，重新開啟即可繼續使用。')}<div class="settings-divider" role="separator"></div>${toggle('limitEnabled','限制待處理存款筆數','避免同一會員同時建立過多待處理申請。',!draft.depositEnabled)}<div class="settings-fields">${number('pendingLimit','待處理筆數上限','筆','可設定 1–100 筆。',!draft.depositEnabled||!draft.limitEnabled)}</div><div class="settings-divider"></div><h3>單筆存款金額</h3><div class="settings-fields">${number('minDeposit','最低金額','TWD','每筆存款可接受的最低金額。',!draft.depositEnabled)}${number('maxDeposit','最高金額','TWD','不得低於最低金額。',!draft.depositEnabled)}</div></section>`
- return `<section class="settings-card"><div class="settings-card-heading"><div><h2>作業通知</h2></div></div>${toggle('notifyEnabled','接收大額存款通知','存款達到設定金額時，通知後台管理人員。')}<div class="settings-divider" role="separator"></div><fieldset class="settings-group" ${draft.notifyEnabled?'':'disabled'}><legend>接收方式</legend><div class="settings-choices">${radio('notifyChannel','inbox','站內通知','在後台通知中心查看作業提醒。')}${radio('notifyChannel','both','站內通知與電子郵件','同時寄送至管理員已設定的電子郵件。')}</div></fieldset><div class="settings-divider" role="separator"></div><div class="settings-fields">${number('notifyThreshold','通知金額門檻','TWD','單筆金額達到門檻時發送通知。',!draft.notifyEnabled)}</div></section>`
-}
-
-let exampleDraft={...defaults},exampleTab='transfer'
-window.settingsFormExamples=()=>{
- const original=draft;let content;
- try{draft=exampleDraft;content=panel(exampleTab)}finally{draft=original}
- content=content.replaceAll('data-setting=', 'data-example-setting=').replaceAll('setting-', 'example-setting-').replaceAll('name="','name="example-');
- return `<section class="component-example" data-settings-form-example><h2>設定表單</h2><p class="component-description">平台選擇、分類分頁、開關、單選卡片、數值單位與基本資料欄位。</p><div class="settings-demo component-settings-form"><div class="source-filter card"><div class="source-filter-grid"><div class="filter-field"><label>平台名稱</label><select class="control guide-select" aria-label="平台名稱"><option>101 BEST</option></select></div></div></div>${tabList({id:'example-settings',label:'設定表單範例',items:tabs.filter(([key])=>key!=='promotions').map(([key,label])=>({key,label})),active:exampleTab,mobile:'select',controls:'example-settings-panel'})}<div id="example-settings-panel" role="tabpanel" aria-labelledby="example-settings-tab-${exampleTab}">${content}</div></div></section>`
-}
-function redrawSettingsExample(){const root=document.querySelector('[data-settings-form-example]');if(root)root.outerHTML=window.settingsFormExamples()}
-listen('tab-change',event=>{if(event.target.dataset?.tabs!=='example-settings')return;exampleTab=event.detail.key;redrawSettingsExample();document.getElementById('example-settings-tab-'+exampleTab)?.focus()})
-function updateSettingsExample(event){const input=event.target.closest('[data-example-setting]');if(!input)return;const key=input.dataset.exampleSetting;exampleDraft[key]=input.getAttribute('role')==='switch'?input.getAttribute('aria-checked')==='true':input.type==='checkbox'?input.checked:input.type==='number'?Number(input.value):input.value;if(event.type==='change'&&(input.getAttribute('role')==='switch'||['checkbox','radio','select-one'].includes(input.type))){const id=input.id;redrawSettingsExample();document.getElementById(id)?.focus()}}
-listen('input',updateSettingsExample)
-listen('change',updateSettingsExample)
-
-window.renderSettingsPage = () => `<div class="settings-demo"><div class="source-filter card settings-platform-filter"><div class="source-filter-grid"><div class="filter-field"><label>平台名稱</label><select class="control"><option>101 BEST</option></select></div></div></div>${tabList({id:'settings-category',label:'設定分類',items:tabs.map(([key,label])=>({key,label})),active,mobile:'select',controls:'settings-panel'})}<div id="settings-panel" role="tabpanel" aria-labelledby="settings-category-tab-${active}">${panel()}</div><footer class="settings-savebar"><div class="settings-save-status" role="status">${message || (dirty()?'有尚未儲存的變更':'儲存後才會套用')}</div><div class="settings-save-actions"><button type="button" class="semantic-btn btn-neutral" data-settings-cancel ${dirty()?'':'disabled'}>取消變更</button><button type="button" class="semantic-btn btn-search" data-settings-save ${dirty()?'':'disabled'}>儲存設定</button></div></footer></div>`
-
-function promotionAction(action,id,trigger){
- if(action==='toggle-sort'){promotionSorting=true;redraw();return}
- const row=promotions.find(item=>item.id===Number(id))
- const deleting=action==='delete',adding=action==='add'
- const dialog=document.createElement('dialog');dialog.className='activity-type-dialog';dialog.setAttribute('aria-labelledby','promotion-editor-title')
- dialog.innerHTML=`<form><header><h2 id="promotion-editor-title">${deleting?'刪除活動':adding?'新增活動':'編輯活動'}</h2></header><div class="activity-type-dialog-body">${deleting?`<p>確定刪除「${escapeHtml(row.title)}」？</p>`: `<div class="activity-type-fields">${adding?'<label>活動名稱<input class="control" name="title" required maxlength="80"></label>':`<div>活動名稱<p>${escapeHtml(row.title)}</p></div>`}<label>活動類型<input class="control" name="type" value="${escapeHtml(row?.type||'')}" required maxlength="80"></label><div class="promotion-date-field"><label>活動期間</label><div class="date-range-host" data-date-range data-empty="true" data-start="${row?.start ? row.start+' 00:00:00' : ''}" data-end="${row?.end ? row.end+' 23:59:59' : ''}"></div></div></div>`}<p class="settings-error" role="alert"></p></div><footer><button type="button" class="semantic-btn btn-neutral" data-promo-close>取消</button><button class="semantic-btn ${deleting?'btn-danger':'btn-search'}" type="submit">${deleting?'確認刪除':'儲存'}</button></footer></form>`
- dialog.querySelector('[data-promo-close]').onclick=()=>dialog.close()
- dialog.addEventListener('close',()=>{dialog.remove();if(trigger.isConnected)trigger.focus();else document.querySelector('[data-promo-action="add"]')?.focus()},{once:true})
- dialog.querySelector('form').onsubmit=event=>{event.preventDefault();if(deleting){promotions.splice(promotions.indexOf(row),1);delete draft['promoState'+row.id]}else{const form=new FormData(event.target);const values={type:String(form.get('type')).trim(),start:dialog.querySelector('[data-date-range]').dataset.start?.slice(0,10)||'',end:dialog.querySelector('[data-date-range]').dataset.end?.slice(0,10)||''};if(!values.type||!values.start||!values.end||values.end<values.start||(adding&&!String(form.get('title')).trim())){dialog.querySelector('.settings-error').textContent='請填寫活動資料，結束日期不得早於開始日期。';return}if(adding){const id=Date.now();promotions.push({id,title:String(form.get('title')).trim(),...values,state:'已預約'});draft['promoState'+id]='已預約';promotionFilter='全部'}else Object.assign(row,values)}message='有尚未儲存的變更';redraw();dialog.close()}
- prepareModal(dialog);document.body.append(dialog);dialog.showModal()
-}
-
-function openPromotionSnapshot(id, trigger) {
- const row=id==='example' ? (promotions.find(item=>item.id===3)||promotionSnapshotExample) : promotions.find(item=>item.id===Number(id));if(!row)return
- document.querySelector('.settings-snapshot')?.remove()
- const dialog=document.createElement('dialog')
- dialog.className='settings-snapshot'
- dialog.setAttribute('aria-labelledby','settings-snapshot-title')
- const languages=['English','简体中文','한국어','日本語','Tiếng Việt','বাংলা','Filipino']
- const media=(title)=>`<section class="snapshot-media-section"><h4>${title}</h4><div class="snapshot-media-grid">${['Web','H5'].map(device=>`<figure class="snapshot-media"><figcaption>${device}<span>圖片預覽</span></figcaption><div class="snapshot-image-empty">${icon('imageEmpty', 24)}<p>尚未提供原始圖片</p></div></figure>`).join('')}</div></section>`
- const languageContent=index=>index===0?`<div class="snapshot-article-heading"><span>標題</span><h3>${escapeHtml(row.title)}</h3></div>${media('封面圖')}${media('活動內頁圖片')}<section class="snapshot-copy"><h4>內文</h4><div>TEST_TEST_TEST_TEST_TEST</div></section>`:`<div class="snapshot-language-empty">尚未提供此語言的活動內容快照。</div>`
- dialog.innerHTML=`<header class="settings-snapshot-header"><h2 id="settings-snapshot-title">活動內容快照</h2><button type="button" data-snapshot-close aria-label="關閉活動內容快照">${icon('close')}</button></header><div class="settings-snapshot-body"><section class="snapshot-basics"><div class="snapshot-section-heading"><h3>基本資訊</h3><span>唯讀快照</span></div><dl><div><dt>站台</dt><dd>DEMO03</dd></div><div><dt>公告類型</dt><dd><span class="snapshot-type">TypeOne</span></dd></div><div><dt>開始時間</dt><dd>2026-07-03 08:00:00</dd></div><div><dt>結束時間</dt><dd>永久</dd></div><div><dt>文章置頂</dt><dd>否</dd></div></dl></section><section class="snapshot-activity"><div class="snapshot-section-heading"><h3>活動資訊</h3></div>${tabList({id:'snapshot-language',label:'活動語言',items:languages.map((language,index)=>({key:String(index),label:language})),active:'0',controls:'snapshot-language-panel'})}<div id="snapshot-language-panel" role="tabpanel" aria-labelledby="snapshot-language-tab-0">${languageContent(0)}</div></section></div><footer class="settings-snapshot-footer"><button type="button" class="semantic-btn btn-neutral" data-snapshot-close autofocus>關閉</button></footer>`
- const selectLanguage=index=>{const panel=dialog.querySelector('#snapshot-language-panel');panel.setAttribute('aria-labelledby',`snapshot-language-tab-${index}`);panel.innerHTML=languageContent(index)}
- dialog.addEventListener('click',event=>{if(event.target.closest('[data-snapshot-close]'))dialog.close()})
- dialog.addEventListener('tab-change',event=>{if(event.target.dataset?.tabs==='snapshot-language')selectLanguage(Number(event.detail.key))})
- dialog.addEventListener('close',()=>{dialog.remove();if(trigger.isConnected)trigger.focus()},{once:true})
- prepareModal(dialog);document.body.append(dialog)
- dialog.showModal()
-}
-function redraw() { const page=document.querySelector('.page'); if(page?.querySelector('.settings-demo')) page.innerHTML=window.renderSettingsPage() }
-function status() { message=''; const root=document.querySelector('.settings-demo'); if(!root)return; if(!root.querySelector('.settings-save-status'))return;root.querySelector('.settings-save-status').textContent=dirty()?'有尚未儲存的變更':'儲存後才會套用';root.querySelector('[data-settings-save]').disabled=!dirty();root.querySelector('[data-settings-cancel]').disabled=!dirty() }
-function validate() {
- const errors={}
- if(draft.depositEnabled){if(draft.limitEnabled&&(!Number.isInteger(draft.pendingLimit)||draft.pendingLimit<1||draft.pendingLimit>100))errors.pendingLimit='請輸入 1–100 的整數。';for(const key of ['minDeposit','maxDeposit'])if(!Number.isFinite(draft[key])||draft[key]<0)errors[key]='請輸入不小於 0 的金額。';if(draft.maxDeposit<draft.minDeposit)errors.maxDeposit='最高金額不可低於最低金額。'}
- if(draft.notifyEnabled&&(!Number.isFinite(draft.notifyThreshold)||draft.notifyThreshold<=0))errors.notifyThreshold='請輸入大於 0 的金額。'
- return errors
-}
-listen('input',e=>{const input=e.target.closest('[data-setting]');if(!input||input.type==='checkbox'||input.type==='radio'||input.tagName==='SELECT')return;draft[input.dataset.setting]=input.type==='number'?(input.value===''?NaN:Number(input.value)):input.value;status();input.removeAttribute('aria-invalid');const err=document.querySelector(`[data-error="${input.dataset.setting}"]`);if(err)err.textContent=''})
-listen('change',e=>{const input=e.target.closest('[data-setting]');if(!input||(input.getAttribute('role')!=='switch'&&!['checkbox','radio','select-one'].includes(input.type)))return;draft[input.dataset.setting]=input.getAttribute('role')==='switch'?input.getAttribute('aria-checked')==='true':input.type==='checkbox'?input.checked:input.value;message='';const id=input.id;redraw();if(id)document.getElementById(id)?.focus()})
-listen('click',e=>{
- const snapshot=e.target.closest('[data-promotion-snapshot]');if(snapshot){openPromotionSnapshot(snapshot.dataset.promotionSnapshot,snapshot);return}
- const action=e.target.closest('[data-promo-action]');if(action){promotionAction(action.dataset.promoAction,action.dataset.promoId,action);return}
- const sw=e.target.closest('[data-promotion-switch]');if(sw){draft.promotionEnabled=!draft.promotionEnabled;message='';redraw();document.querySelector('[data-promotion-switch]')?.focus();return}
- const filter=e.target.closest('[data-promotion-filter]');if(filter){promotionFilter=filter.dataset.promotionFilter;redraw();return}
- 
- if(e.target.closest('[data-settings-cancel]')){restoreSettings();message='已取消變更';redraw()}
- if(e.target.closest('[data-settings-save]')){const errors=validate();const first=Object.keys(errors)[0];if(first){active=first==='notifyThreshold'?'notify':'deposit';redraw();for(const [key,text] of Object.entries(errors)){const error=document.querySelector(`[data-error="${key}"]`);if(error){error.textContent=text;document.getElementById(`setting-${key}`).setAttribute('aria-invalid','true')}}document.getElementById(`setting-${first}`)?.focus();return}try{saveSettings();message=icon('checkCircle')+'設定已儲存';redraw()}catch{message='無法儲存，請稍後重試。';redraw()}}
-})
-listen('tab-change',e=>{if(e.target.dataset?.tabs!=='settings-category')return;active=e.detail.key;message='';redraw();document.getElementById(`settings-category-tab-${active}`)?.focus()})
-listen('click',e=>{if(!document.querySelector('.settings-demo')||!dirty())return;const navigation=e.target.closest('.nav-item[data-route-key], #quickTabs button');if(!navigation)return;const key=navigation.dataset.routeKey||navigation.dataset.page;if(key==='設定相關頁面'&&!e.target.closest('#quickTabs button span'))return;if(!confirm('有尚未儲存的設定。確定放棄變更並離開？')){e.preventDefault();e.stopImmediatePropagation()}else{restoreSettings();message=''}},true)
-window.addEventListener('beforeunload',e=>{if(dirty()){e.preventDefault();e.returnValue=''}})
-
-// Open the default page after its renderer and navigation handlers are ready.
-// topbar 是靜態 HTML，資訊氣泡在模組載入後補上
+// topbar 是靜態 HTML，資訊氣泡與下載中心在模組載入後補上。
 document.querySelector('[data-header-popovers]')?.replaceWith(
   Object.assign(document.createElement('span'), { className: 'header-popover-group', innerHTML: headerPopovers() })
 )
-document.querySelector('.nav-item[data-route-key="設計Token"]')?.click()
+document.querySelector('[data-download-center]')?.replaceWith(
+  Object.assign(document.createElement('span'), { className: 'header-popover-group', innerHTML: downloadCenter() })
+)
 
-let promotionDrag=null
-function visiblePromotions(){return promotions.filter(row=>promotionFilter==='全部'||draft['promoState'+row.id]===promotionFilter)}
-function movePromotion(id,targetId){const visible=visiblePromotions(),from=visible.findIndex(row=>row.id===id),to=visible.findIndex(row=>row.id===targetId);if(from<0||to<0||from===to)return false;const ids=new Set(visible.map(row=>row.id));visible.splice(to,0,visible.splice(from,1)[0]);let index=0;for(let i=0;i<promotions.length;i++)if(ids.has(promotions[i].id))promotions[i]=visible[index++];message='';return true}
-listen('pointerdown',event=>{const handle=event.target.closest('[data-promotion-drag]');if(!promotionSorting||!handle||handle.disabled||event.button!==0)return;event.preventDefault();const row=handle.closest('tr');promotionDrag={id:Number(handle.dataset.promotionDrag),handle,row,body:row.parentElement,startIds:promotions.map(row=>row.id),pointer:event.pointerId};handle.setPointerCapture(event.pointerId);row.classList.add('promotion-dragging')})
-listen('pointermove',event=>{if(!promotionDrag||promotionDrag.pointer!==event.pointerId)return;event.preventDefault();const hit=document.elementFromPoint(event.clientX,event.clientY)?.closest('[data-promotion-row]');if(!hit||hit.parentElement!==promotionDrag.body)return;const targetId=Number(hit.dataset.promotionRow);if(movePromotion(promotionDrag.id,targetId)){for(const item of promotions){const row=promotionDrag.body.querySelector('[data-promotion-row="'+item.id+'"]');if(row)promotionDrag.body.append(row)}status()}},{passive:false})
-function finishPromotionDrag(cancel=false){if(!promotionDrag)return;const drag=promotionDrag;promotionDrag=null;if(cancel){const byId=new Map(promotions.map(row=>[row.id,row]));promotions.splice(0,promotions.length,...drag.startIds.map(id=>byId.get(id)))}drag.row.classList.remove('promotion-dragging');if(drag.handle.hasPointerCapture(drag.pointer))drag.handle.releasePointerCapture(drag.pointer);redraw();document.querySelector('[data-promotion-drag="'+drag.id+'"]')?.focus()}
-listen('pointerup',()=>finishPromotionDrag())
-listen('pointercancel',()=>finishPromotionDrag(true))
-listen('keydown',event=>{if(promotionDrag&&event.key==='Escape'){event.preventDefault();finishPromotionDrag(true);return}const handle=event.target.closest('[data-promotion-drag]');if(!promotionSorting||!handle||handle.disabled||!['ArrowUp','ArrowDown'].includes(event.key))return;event.preventDefault();const id=Number(handle.dataset.promotionDrag),visible=visiblePromotions(),index=visible.findIndex(row=>row.id===id),next=index+(event.key==='ArrowUp'?-1:1);if(visible[next]&&movePromotion(id,visible[next].id)){redraw();document.querySelector('[data-promotion-drag="'+id+'"]')?.focus()}})
+// 所有 render 函式與導覽 handler 都準備好之後，才開啟著陸頁。
+document.querySelector('.nav-item[data-route-key="設計Token"]')?.click()

@@ -95,11 +95,8 @@
   display: none;
 }
 
-.bulk-feedback .semantic-btn {
-  min-height: 28px;
-  padding: 0 10px;
-  font-size: 12px;
-}
+/* 高度、內距、字級都不在這裡決定——這顆「復原」和其他按鈕是同一種按鈕。
+   先前縮成 28px／12px，站上因此多出第三種按鈕尺寸。 */
 
 @media (max-width: 720px) {
   .bulk-menu {

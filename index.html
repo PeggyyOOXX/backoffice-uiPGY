@@ -44,7 +44,7 @@
             >日期 DatePicker
           </div>
           <div class="nav-item" data-route-key="選擇控制">
-            <span class="ico" data-icon="bulkSwitch" data-icon-size="20"></span
+            <span class="ico" data-icon="selection" data-icon-size="20"></span
             >選擇控制 Selection
           </div>
           <div class="nav-item" data-route-key="圖片上傳">
@@ -98,48 +98,44 @@
             >載入與空狀態 States
           </div>
           <div class="nav-item" data-route-key="批量操作">
-            <span class="ico" data-icon="bulkSwitch" data-icon-size="20"></span
+            <span class="ico" data-icon="bulkActions" data-icon-size="20"></span
             >批量操作 Bulk
+          </div>
+          <div class="nav-item" data-route-key="組合範例搜尋">
+            <span class="ico" data-icon="members" data-icon-size="20"></span
+            >組合範例－搜尋
           </div>
           <div class="nav-item" data-route-key="組合範例列表">
             <span class="ico" data-icon="table" data-icon-size="20"></span
             >組合範例－列表
           </div>
-          <div class="nav-item" data-route-key="組合範例設定">
-            <span
-              class="ico"
-              data-icon="complexSettings"
-              data-icon-size="20"
-            ></span
-            >組合範例－設定
+          <div class="nav-item" data-route-key="組合範例報表">
+            <span class="ico" data-icon="trend" data-icon-size="20"></span
+            >組合範例－報表
           </div>
           <div class="nav-item" data-route-key="組合範例批量">
             <span class="ico" data-icon="batch" data-icon-size="20"></span
             >組合範例－批量
           </div>
-          <div class="nav-item" data-route-key="搜尋結果頁面">
-            <span class="ico" data-icon="members" data-icon-size="20"></span
-            >搜尋結果頁面
+          <div class="nav-item" data-route-key="組合範例設定">
+            <span class="ico" data-icon="complexSettings" data-icon-size="20"></span
+            >組合範例－設定
           </div>
-          <div class="nav-item" data-route-key="設定相關頁面">
-            <span
-              class="ico"
-              data-icon="settingsPage"
-              data-icon-size="20"
-            ></span
-            >設定相關頁面
+          <div class="nav-item" data-route-key="組合範例混合">
+            <span class="ico" data-icon="settingsPage" data-icon-size="20"></span
+            >組合範例－混合
           </div>
-          <div class="nav-item" data-route-key="審核操作">
-            <span class="ico" data-icon="auditPage" data-icon-size="20"></span
-            >審核操作
+          <div class="nav-item" data-route-key="組合範例表單頁">
+            <span class="ico" data-icon="formPage" data-icon-size="20"></span
+            >組合範例－表單頁
           </div>
-          <div class="nav-item" data-route-key="複雜設定">
-            <span
-              class="ico"
-              data-icon="complexSettings"
-              data-icon-size="20"
-            ></span
-            >複雜設定
+          <div class="nav-item" data-route-key="組合範例權限">
+            <span class="ico" data-icon="rolePermission" data-icon-size="20"></span
+            >組合範例－權限
+          </div>
+          <div class="nav-item" data-route-key="組合範例審核">
+            <span class="ico" data-icon="riskControl" data-icon-size="20"></span
+            >組合範例－審核
           </div>
           <div class="nav-tree is-open">
             <div
@@ -173,6 +169,7 @@
           <div><div class="topbar-title">樣式規範</div></div>
           <div class="top-actions">
             <span data-header-popovers></span
+            ><span data-download-center></span
             ><span class="clock" style="color: var(--muted)">GMT+8 · 14:32</span
             ><select class="language">
               <option>繁體中文</option>
@@ -193,7 +190,7 @@
           <button data-page="表格">表格 Table <span data-icon="close" data-icon-size="14"></span></button>
           <button data-page="訊息提示">訊息提示 Message <span data-icon="close" data-icon-size="14"></span></button>
           <button data-page="組合範例批量">組合範例－批量 <span data-icon="close" data-icon-size="14"></span></button>
-          <button data-page="搜尋結果頁面">搜尋結果頁面 <span data-icon="close" data-icon-size="14"></span></button>
+          <button data-page="組合範例搜尋">組合範例－搜尋 <span data-icon="close" data-icon-size="14"></span></button>
         </div>
         <div class="page">
           <div class="page-head">
@@ -612,310 +609,6 @@
       addBtn.onclick = () => toast("新增會員流程將在下一版設計");
       reviewBtn.onclick = () => toast("已進入完整會員資料");
       // Member page mirrors the current /member structure in the 101 BEST project.
-      const memberRows = [
-        {
-          uid: "1009821",
-          account: "ava_chen",
-          agent: "agent_10188",
-          name: "Ava Chen",
-          tags: ["#3d6df2", "#22a06b"],
-          register: "2026-09-15 09:18:22",
-          regIp: "118.163.21.45",
-          loginIp: "118.163.21.45",
-          balance: "128,420.00",
-          deposit: "386,000.00",
-          withdraw: "214,500.00",
-          last: "2026-09-15 14:28:06",
-          status: "啟用",
-        },
-        {
-          uid: "1009774",
-          account: "david_lin",
-          agent: "agent_20861",
-          name: "David Lin",
-          tags: ["#d6a13a"],
-          register: "2026-09-14 18:42:10",
-          regIp: "61.220.72.18",
-          loginIp: "220.130.16.92",
-          balance: "86,132.50",
-          deposit: "245,000.00",
-          withdraw: "198,200.00",
-          last: "2026-09-15 13:52:41",
-          status: "啟用",
-        },
-        {
-          uid: "1009652",
-          account: "mina_wu",
-          agent: "agent_10188",
-          name: "Mina Wu",
-          tags: ["#8d63cc", "#22a06b"],
-          register: "2026-09-13 11:06:55",
-          regIp: "36.225.14.71",
-          loginIp: "36.225.14.71",
-          balance: "42,876.00",
-          deposit: "132,600.00",
-          withdraw: "96,300.00",
-          last: "2026-09-15 12:17:30",
-          status: "啟用",
-        },
-        {
-          uid: "1009541",
-          account: "lucas_h",
-          agent: "-",
-          name: "Lucas Huang",
-          tags: [],
-          register: "2026-09-12 16:30:04",
-          regIp: "114.32.91.62",
-          loginIp: "114.32.91.62",
-          balance: "18,220.40",
-          deposit: "50,000.00",
-          withdraw: "24,800.00",
-          last: "2026-09-14 23:42:18",
-          status: "停用",
-        },
-        {
-          uid: "1009328",
-          account: "emma_tsai",
-          agent: "agent_36220",
-          name: "Emma Tsai",
-          tags: ["#3d6df2"],
-          register: "2026-09-10 08:22:49",
-          regIp: "211.72.31.16",
-          loginIp: "211.72.31.16",
-          balance: "226,840.00",
-          deposit: "682,000.00",
-          withdraw: "405,600.00",
-          last: "2026-09-14 19:18:52",
-          status: "啟用",
-        },
-        {
-          uid: "1009214",
-          account: "noah_wang",
-          agent: "agent_20861",
-          name: "Noah Wang",
-          tags: ["#d6a13a"],
-          register: "2026-09-09 15:41:28",
-          regIp: "203.69.82.17",
-          loginIp: "203.69.82.21",
-          balance: "64,991.20",
-          deposit: "188,400.00",
-          withdraw: "126,900.00",
-          last: "2026-09-14 17:06:35",
-          status: "啟用",
-        },
-        {
-          uid: "1009176",
-          account: "sophia_lee",
-          agent: "agent_10188",
-          name: "Sophia Lee",
-          tags: ["#22a06b"],
-          register: "2026-09-08 10:12:44",
-          regIp: "60.251.33.74",
-          loginIp: "60.251.33.74",
-          balance: "93,570.00",
-          deposit: "294,000.00",
-          withdraw: "175,200.00",
-          last: "2026-09-14 15:32:19",
-          status: "啟用",
-        },
-        {
-          uid: "1009088",
-          account: "ethan_kuo",
-          agent: "agent_45102",
-          name: "Ethan Kuo",
-          tags: ["#8d63cc"],
-          register: "2026-09-07 21:05:13",
-          regIp: "101.12.27.91",
-          loginIp: "101.12.27.91",
-          balance: "31,205.80",
-          deposit: "96,000.00",
-          withdraw: "72,500.00",
-          last: "2026-09-13 22:48:07",
-          status: "停用",
-        },
-        {
-          uid: "1008963",
-          account: "olivia_hsu",
-          agent: "agent_36220",
-          name: "Olivia Hsu",
-          tags: ["#3d6df2", "#d6a13a"],
-          register: "2026-09-06 13:47:36",
-          regIp: "61.216.45.103",
-          loginIp: "61.216.45.108",
-          balance: "175,430.00",
-          deposit: "520,000.00",
-          withdraw: "318,700.00",
-          last: "2026-09-13 18:21:42",
-          status: "啟用",
-        },
-        {
-          uid: "1008841",
-          account: "liam_chang",
-          agent: "-",
-          name: "Liam Chang",
-          tags: [],
-          register: "2026-09-05 09:33:51",
-          regIp: "111.250.16.44",
-          loginIp: "111.250.16.44",
-          balance: "9,860.50",
-          deposit: "32,000.00",
-          withdraw: "21,600.00",
-          last: "2026-09-12 20:15:30",
-          status: "啟用",
-        },
-        {
-          uid: "1008725",
-          account: "isla_chen",
-          agent: "agent_45102",
-          name: "Isla Chen",
-          tags: ["#22a06b", "#8d63cc"],
-          register: "2026-09-04 17:26:08",
-          regIp: "210.61.148.29",
-          loginIp: "210.61.148.29",
-          balance: "58,790.00",
-          deposit: "164,800.00",
-          withdraw: "102,400.00",
-          last: "2026-09-12 16:44:11",
-          status: "啟用",
-        },
-        {
-          uid: "1008619",
-          account: "mason_lai",
-          agent: "agent_20861",
-          name: "Mason Lai",
-          tags: ["#d6a13a"],
-          register: "2026-09-03 12:18:47",
-          regIp: "114.136.92.57",
-          loginIp: "114.136.92.60",
-          balance: "27,340.75",
-          deposit: "88,500.00",
-          withdraw: "55,900.00",
-          last: "2026-09-11 23:09:54",
-          status: "停用",
-        },
-        {
-          uid: "1008502",
-          account: "mia_lin",
-          agent: "agent_10188",
-          name: "Mia Lin",
-          tags: ["#3d6df2"],
-          register: "2026-09-02 08:54:20",
-          regIp: "122.116.73.12",
-          loginIp: "122.116.73.12",
-          balance: "142,680.00",
-          deposit: "436,000.00",
-          withdraw: "278,300.00",
-          last: "2026-09-11 19:37:26",
-          status: "啟用",
-        },
-      ];
-      let memberPage = 1,
-        memberPageSize = 10,
-        memberCurrentRows = memberRows;
-      function memberTable(rows = memberCurrentRows) {
-        const pages = Math.max(1, Math.ceil(rows.length / memberPageSize));
-        memberPage = Math.min(memberPage, pages);
-        const start = (memberPage - 1) * memberPageSize;
-        const visibleRows = rows.slice(start, start + memberPageSize);
-        return `<div class="table-wrap"><table class="member-source-table"><thead><tr><th>UID</th><th>帳號</th><th>上層代理</th><th>姓名</th><th>會員標籤</th><th>註冊時間</th><th>註冊／最後登入 IP</th><th>總餘額</th><th>總存款</th><th>總提款</th><th>最後登入</th><th>狀態</th><th>操作</th></tr></thead><tbody>${visibleRows.map((u, i) => `<tr><td>${u.uid}</td><td><a class="settings-promotion-link" href="#member-${u.uid}" aria-label="查看 ${u.account} 的會員摘要" onclick="event.preventDefault();openMemberSummary('${u.uid}')">${u.account}</a></td><td>${u.agent}</td><td>${u.name}</td><td><div class="tag-dots">${u.tags.length ? u.tags.map((c) => `<i style="background:${c}"></i>`).join("") : "-"}</div></td><td>${u.register}</td><td><span>${u.regIp}</span><br><span>${u.loginIp}</span></td><td>${u.balance}</td><td>${u.deposit}</td><td>${u.withdraw}</td><td>${u.last}</td><td><select class="status-control"><option>${u.status}</option><option>${u.status === "啟用" ? "停用" : "啟用"}</option></select></td><td><div class="row-actions"><button class="btn-edit" title="編輯" aria-label="編輯" onclick="toast('開啟會員編輯頁')">${iconHtml("edit")}</button><button class="btn-record" title="登入紀錄" onclick="openLoginRecords(${memberRows.indexOf(u)})">${iconHtml("loginRecord")}</button></div></td></tr>`).join("")}</tbody></table></div><div class="pagination"><span class="pagination-total">共 ${rows.length} 筆</span><select class="page-size-select" onchange="changeMemberPageSize(this.value)"><option value="10" ${memberPageSize === 10 ? "selected" : ""}>10 筆／頁</option><option value="20" ${memberPageSize === 20 ? "selected" : ""}>20 筆／頁</option><option value="50" ${memberPageSize === 50 ? "selected" : ""}>50 筆／頁</option><option value="100" ${memberPageSize === 100 ? "selected" : ""}>100 筆／頁</option></select><div class="pages"><button class="page-btn" onclick="changeMemberPage(${memberPage - 1})" ${memberPage === 1 ? "disabled" : ""} aria-label="上一頁">${iconHtml("arrowLeft")}</button>${Array.from({ length: pages }, (_, i) => `<button class="page-btn ${memberPage === i + 1 ? "active" : ""}" onclick="changeMemberPage(${i + 1})">${i + 1}</button>`).join("")}<button class="page-btn" onclick="changeMemberPage(${memberPage + 1})" ${memberPage === pages ? "disabled" : ""} aria-label="下一頁">${iconHtml("arrowRight")}</button></div></div>`;
-      }
-      function memberCards(rows = memberCurrentRows) {
-        const start = (memberPage - 1) * memberPageSize;
-        return `<div class="member-mobile-only">${rows
-          .slice(start, start + memberPageSize)
-          .map(
-            (u, i) =>
-              `<article class="mobile-card"><div class="member-card-head"><div><a class="settings-promotion-link" href="#member-${u.uid}" onclick="event.preventDefault();openMemberSummary('${u.uid}')">${u.account}</a><small>UID ${u.uid}</small></div><select class="status-control"><option>${u.status}</option><option>${u.status === "啟用" ? "停用" : "啟用"}</option></select></div><div class="mobile-meta"><div><label>上層代理</label><strong>${u.agent}</strong></div><div><label>姓名</label><strong>${u.name}</strong></div><div><label>總餘額</label><strong>${u.balance}</strong></div><div><label>最後登入</label><strong>${u.last}</strong></div></div><div class="mobile-card-bottom"><div class="tag-dots">${u.tags.length ? u.tags.map((c) => `<i style="background:${c}"></i>`).join("") : "-"}</div><div class="row-actions"><button class="btn-edit" aria-label="編輯" onclick="toast('開啟會員編輯頁')">${iconHtml("edit")}</button><button class="btn-record" onclick="openLoginRecords(${memberRows.indexOf(u)})">${iconHtml("loginRecord")}</button></div></div></article>`,
-          )
-          .join("")}</div>`;
-      }
-      function renderMemberResults() {
-        const el = document.querySelector("#memberResults");
-        if (el)
-          el.innerHTML =
-            memberTable(memberCurrentRows) + memberCards(memberCurrentRows);
-      }
-      function changeMemberPage(page) {
-        const pages = Math.max(
-          1,
-          Math.ceil(memberCurrentRows.length / memberPageSize),
-        );
-        memberPage = Math.max(1, Math.min(page, pages));
-        renderMemberResults();
-      }
-      function changeMemberPageSize(size) {
-        memberPageSize = Number(size);
-        memberPage = 1;
-        renderMemberResults();
-      }
-      function memberSearchBlock() {
-        return `<button class="mobile-member-search-toggle" type="button" onclick="toggleMobileMemberSearch(this)"><span><span data-icon="search"></span>搜尋條件</span><span class="search-toggle-arrow" aria-hidden="true"></span></button><div class="source-filter card"><div class="source-filter-grid">
-      <div class="filter-field"><label>平台名稱</label><select class="control"><option>101 BEST</option><option>Demo Platform With Longer Name</option></select></div>
-      <div class="filter-field"><label>會員搜尋</label><select class="control"><option>會員帳號</option><option>UID</option><option>手機號碼</option></select></div>
-      <div class="filter-field"><label class="continuation-label">會員搜尋關鍵字</label><input id="memberKeyword" class="control" placeholder="請輸入關鍵字"></div>
-      <div class="filter-field"><label>代理帳號</label><input class="control" placeholder="請輸入代理帳號"></div>
-      <div class="filter-field"><label>會員狀態</label><select id="memberStatus" class="control"><option value="all">全部狀態</option><option>啟用</option><option>停用</option></select></div>
-      <div class="filter-field"><label>會員等級</label><select class="control"><option>全部等級</option><option>VIP 1</option><option>VIP 2</option></select></div>
-      <div class="filter-field"><label>時間範圍</label><select class="control"><option>註冊時間</option><option>最後登入</option></select></div>
-      <div class="filter-field"><label class="continuation-label">日期區間</label><div class="date-range-host" data-date-range></div></div>
-      <div class="filter-field"><label>會員標籤</label><select class="control"><option>全部會員標籤</option><option>一般會員</option><option>關注會員</option></select></div>
-      <div class="filter-field"><label>金額範圍</label><select class="control"><option>總餘額</option><option>總存款</option><option>總提款</option></select></div>
-      <div class="filter-field amount-range-field"><label class="continuation-label">最低／最高金額</label><div class="amount-range-control"><input class="control amount" placeholder="最低" aria-label="最低金額"><span>～</span><input class="control amount" placeholder="最高" aria-label="最高金額"></div></div>
-      <div class="source-filter-actions"><button class="semantic-btn btn-neutral" onclick="resetMemberSource()"><span data-icon="reset"></span>重設</button><button class="semantic-btn btn-search" onclick="filterMemberSource()"><span data-icon="search"></span>搜尋</button></div>
-      </div></div>`;
-      }
-      function actualMemberPage() {
-        return `${memberSearchBlock()}
-      <div class="card member-data-card"><div class="member-actions">
-        <button class="semantic-btn btn-add" onclick="toast('開啟新增會員頁')"><span data-icon="add"></span>新增</button>
-        <button class="semantic-btn btn-export" onclick="toast('開始匯出 Excel')"><span data-icon="download"></span>匯出</button>
-        <button class="semantic-btn btn-edit mobile-secondary-action" onclick="toast('進入排序模式')"><span data-icon="sort"></span>排序</button>
-        <button class="semantic-btn btn-edit mobile-secondary-action" onclick="toast('開啟批次處理')"><span data-icon="batch"></span>批次處理</button>
-        <button class="semantic-btn btn-edit mobile-secondary-action" onclick="toast('開啟批次審核')"><span data-icon="batchReview"></span>批次審核</button>
-        <button class="semantic-btn btn-neutral mobile-secondary-action" onclick="toast('列表已刷新')"><span data-icon="refresh"></span>刷新</button>
-        <button class="semantic-btn btn-danger mobile-secondary-action" onclick="toast('請先選擇需要清除的資料')"><span data-icon="delete"></span>批次清除</button>
-        <button class="semantic-btn mobile-more-actions-toggle" onclick="toggleMobileMoreActions(this)">更多</button>
-      </div><div id="memberResults">${memberTable()}${memberCards()}</div></div>`;
-      }
-      function filterMemberSource() {
-        const q = (
-          document.querySelector("#memberKeyword")?.value || ""
-        ).toLowerCase();
-        const st = document.querySelector("#memberStatus")?.value || "all";
-        memberCurrentRows = memberRows.filter(
-          (u) =>
-            (u.account.toLowerCase().includes(q) ||
-              u.uid.includes(q) ||
-              u.name.toLowerCase().includes(q)) &&
-            (st === "all" || u.status === st),
-        );
-        memberPage = 1;
-        renderMemberResults();
-        toast("搜尋完成");
-      }
-      function resetMemberSource() {
-        window.resetDateRanges?.(document.querySelector(".page"));
-        document.querySelector("#memberKeyword").value = "";
-        document.querySelector("#memberStatus").value = "all";
-        window.syncSelects?.();
-        memberCurrentRows = memberRows;
-        memberPage = 1;
-        renderMemberResults();
-        toast("已重設搜尋條件");
-      }
-      function toggleMobileMemberSearch(button) {
-        const panel = document.querySelector(".source-filter");
-        if (!panel) return;
-        const open = panel.classList.toggle("mobile-open");
-        button.classList.toggle("is-open", open);
-      }
-      function toggleMobileMoreActions(button) {
-        const toolbar = button.closest(".member-actions");
-        if (!toolbar) return;
-        const open = toolbar.classList.toggle("show-mobile-more");
-        button.textContent = open ? "收合" : "更多";
-      }
-
       const drawerEscape = (value) =>
         String(value).replace(
           /[&<>"']/g,
@@ -945,32 +638,6 @@
           extra +
           '<button type="button" class="semantic-btn btn-neutral" onclick="closeDetailDrawer()">關閉</button>';
       }
-      function openMemberSummary(uid) {
-        const u = memberRows.find((item) => String(item.uid) === String(uid));
-        if (!u) return;
-        document.querySelector("#detailDrawerTitle").textContent =
-          "會員詳情摘要";
-        document.querySelector("#detailBody").innerHTML =
-          `<div class="person-hero"><div><h3>${drawerEscape(u.account)}</h3><span>UID ${drawerEscape(u.uid)} · ${drawerEscape(u.status)}</span></div></div>` +
-          drawerFields([
-            ["姓名", u.name],
-            ["上層代理", u.agent],
-            ["總餘額", u.balance],
-            ["總存款", u.deposit],
-            ["總提款", u.withdraw],
-            ["註冊時間", u.register],
-            ["最後登入", u.last],
-            ["註冊 IP", u.regIp],
-            ["最後登入 IP", u.loginIp],
-          ]);
-        setDetailFooter(
-          `<button type="button" class="semantic-btn btn-record" onclick="openLoginRecords(${memberRows.indexOf(u)})">登入紀錄</button>`,
-        );
-        if (
-          !document.querySelector("#detailOverlay").classList.contains("open")
-        )
-          openDetailDrawer();
-      }
       const reviewDrawerRows = [
         ["David Lin", "WD-260915-8821", "$120,000", "高風險", 92],
         ["Noah Wang", "WD-260915-8814", "$82,500", "高風險", 84],
@@ -998,31 +665,11 @@
       // 掛到 window 供 component-pages.js 的「彈窗與抽屜」規範頁取用
       window.drawerExamples = drawerExamples;
       function drawerExamples() {
-        return '<section class="component-example"><h2>右側抽屜</h2><div class="card modal-example-card"><p>保留列表位置，查看單筆資料與相關紀錄。</p><div class="modal-example-actions"><button type="button" class="semantic-btn btn-record" onclick="openMemberSummary(memberRows[0].uid)">會員詳情摘要</button><button type="button" class="semantic-btn btn-record" onclick="openLoginRecords(0)">登入紀錄</button><button type="button" class="semantic-btn btn-record" onclick="openReviewDetails(0)">單筆審核詳情</button></div></div></section>';
+        return '<section class="component-example"><h2>右側抽屜</h2><div class="card modal-example-card"><p>保留列表位置，查看單筆資料與相關紀錄。</p><div class="modal-example-actions"><button type="button" class="semantic-btn btn-record" onclick="openMemberSummary(&#39;1009821&#39;)">會員詳情摘要</button><button type="button" class="semantic-btn btn-record" onclick="openLoginRecords(&#39;1009821&#39;)">登入紀錄</button><button type="button" class="semantic-btn btn-record" onclick="openReviewDetails(0)">單筆審核詳情</button></div></div></section>';
       }
 
-      function openLoginRecords(i) {
-        const u = memberRows[i];
-        if (!u) return;
-        setDetailFooter();
-        document.querySelector("#detailBody").innerHTML =
-          `<div class="person-hero"><div class="avatar">${u.name
-            .split(" ")
-            .map((x) => x[0])
-            .join(
-              "",
-            )}</div><div><h3 style="margin:0 0 4px">${u.account}</h3><span style="color:var(--muted)">UID ${u.uid}</span></div></div><div class="login-record-list"><div><strong>${u.last}</strong><span>${u.loginIp}</span></div><div><strong>2026-09-14 10:21:36</strong><span>${u.regIp}</span></div><div><strong>2026-09-12 22:04:18</strong><span>${u.regIp}</span></div></div>`;
-        document.querySelector("#detailOverlay .drawer-head h2").textContent =
-          "登入紀錄";
-        if (
-          !document.querySelector("#detailOverlay").classList.contains("open")
-        )
-          openDetailDrawer();
-      }
-      pageElInitial = document.querySelector(".page");
-      pageElInitial.innerHTML = actualMemberPage();
-      // Prototype multi-page navigation
-      const originalMemberPage = document.querySelector(".page").innerHTML;
+      // 會員列表已改寫成組合範例（example-member.js）：開站不再需要先畫一次它
+      // 來擷取 HTML，路由直接呼叫 window.renderExampleMember()。
       const shellTitle = document.querySelector(".topbar-title");
       const pageEl = document.querySelector(".page");
       const money = (n) => new Intl.NumberFormat("zh-TW").format(n);
@@ -1217,17 +864,35 @@
           "組合範例 / 設定型",
           () => window.renderExampleSettings(),
         ],
-        搜尋結果頁面: ["搜尋結果頁面", "頁面示範", () => originalMemberPage],
-        設定相關頁面: [
-          "設定相關頁面",
-          "頁面示範",
-          () => window.renderSettingsPage(),
+        組合範例報表: [
+          "遊戲營收報表",
+          "組合範例 / 報表型",
+          () => window.renderExampleReport(),
         ],
-        審核操作: ["審核操作", "頁面示範", () => window.renderAuditPage()],
-        複雜設定: [
-          "複雜設定",
-          "頁面示範",
-          () => window.renderComplexSettings(),
+        組合範例表單頁: [
+          "新增會員",
+          "組合範例 / 表單頁型",
+          () => window.renderExampleForm(),
+        ],
+        組合範例權限: [
+          "角色權限",
+          "組合範例 / 權限矩陣型",
+          () => window.renderExamplePermission(),
+        ],
+        組合範例審核: [
+          "轉點審核－風控",
+          "組合範例 / 審核型",
+          () => window.renderExampleAudit(),
+        ],
+        組合範例混合: [
+          "財務與活動設定",
+          "組合範例 / 混合型",
+          () => window.renderExampleMixed(),
+        ],
+        組合範例搜尋: [
+          "會員列表",
+          "組合範例 / 搜尋結果型",
+          () => window.renderExampleMember(),
         ],
         第三層: ["第三層", "第一層 / 第二層 / 第三層", finance],
       };
