@@ -11,7 +11,7 @@
   --green: #188c68;
   --red: #d45866;
   --amber: #bf852c;
-  --shadow: 0 14px 36px rgba(22, 55, 50, 0.08);
+  --shadow: 0 0.875rem 2.25rem rgba(22, 55, 50, 0.08);
 }
 html,
 body,
@@ -21,27 +21,27 @@ body,
 }
 .sidebar {
   inset: 0 auto 0 0;
-  width: 248px;
+  width: 15.5rem;
   height: 100vh;
   border-radius: 0;
   background: linear-gradient(180deg, #0f1920 0%, #13242c 100%);
-  box-shadow: 8px 0 28px rgba(15, 28, 35, 0.12);
+  box-shadow: 0.5rem 0 1.75rem rgba(15, 28, 35, 0.12);
   overflow: hidden;
 }
 .brand {
-  height: 70px;
-  padding: 0 21px;
+  height: 4.375rem;
+  padding: 0 1.25rem;
 }
 .brand-mark {
   background: linear-gradient(145deg, #2eaca2, #14766f);
-  box-shadow: 0 7px 18px rgba(22, 139, 131, 0.27);
+  box-shadow: 0 0.4375rem 1.125rem rgba(22, 139, 131, 0.27);
 }
 .nav-item.active {
   background: linear-gradient(90deg, #147d76, #1b9990);
-  box-shadow: 0 7px 18px rgba(15, 105, 99, 0.28);
+  box-shadow: 0 0.4375rem 1.125rem rgba(15, 105, 99, 0.28);
 }
 .main {
-  margin: 0 0 0 248px;
+  margin: 0 0 0 15.5rem;
   min-height: 100vh;
   background: #e9efed;
   border: 0;
@@ -53,22 +53,22 @@ body,
   position: sticky;
   top: 0;
   width: 100%;
-  height: 70px;
-  padding: 0 28px;
+  height: 4.375rem;
+  padding: 0 1.75rem;
   background: rgba(255, 255, 255, 0.98);
   border: 0;
   border-bottom: 1px solid var(--line);
   border-radius: 0;
-  box-shadow: 0 4px 16px rgba(26, 59, 54, 0.045);
+  box-shadow: 0 0.25rem 1rem rgba(26, 59, 54, 0.045);
 }
 .page {
   max-width: none;
-  min-height: calc(100vh - 94px);
-  margin: 20px;
-  padding: 26px 28px 42px;
+  min-height: calc(100vh - 5.875rem);
+  margin: 1.25rem;
+  padding: 1.5rem 1.75rem 2.5rem;
   background: #fff;
   border: 1px solid rgba(255, 255, 255, 0.9);
-  border-radius: 18px;
+  border-radius: 1rem;
   box-shadow: var(--shadow);
 }
 .card,
@@ -85,7 +85,7 @@ body,
 }
 .primary {
   background: linear-gradient(135deg, #219b92, #147d76);
-  box-shadow: 0 7px 18px rgba(22, 139, 131, 0.2);
+  box-shadow: 0 0.4375rem 1.125rem rgba(22, 139, 131, 0.2);
 }
 .count {
   color: #117b74;
@@ -97,7 +97,7 @@ body,
 }
 .control:focus {
   border-color: #168b83;
-  box-shadow: 0 0 0 3px rgba(22, 139, 131, 0.11);
+  box-shadow: 0 0 0 0.1875rem rgba(22, 139, 131, 0.11);
 }
 .page-btn.active {
   background: #168b83;
@@ -135,7 +135,7 @@ body,
   }
   .sidebar {
     inset: 0 auto 0 0;
-    width: 276px;
+    width: 17.25rem;
     height: 100vh;
     border-radius: 0;
   }
@@ -145,13 +145,13 @@ body,
     background: #f3f7f5;
   }
   .topbar {
-    height: 60px;
-    padding: 0 14px;
+    height: 3.75rem;
+    padding: 0 0.75rem;
   }
   .page {
-    min-height: calc(100vh - 72px);
-    margin: 10px;
-    padding: 18px 14px 32px;
-    border-radius: 15px;
+    min-height: calc(100vh - 4.5rem);
+    margin: 0.5rem;
+    padding: 1rem 0.75rem 2rem;
+    border-radius: 1rem;
   }
 }

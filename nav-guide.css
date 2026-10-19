@@ -2,10 +2,10 @@
    這裡只負責把它縮進規範頁的卡片裡——配色與尺寸一律由側欄本身的樣式決定，
    不在這裡複製一份，否則側欄改版後示範就對不上了。 */
 .nav-demo-shell{
-  width:276px;max-width:100%;
+  width:17.25rem;max-width:100%;
   /* .sidebar 本體是 position:absolute 的整頁側欄，示範裡要還原成普通區塊 */
   position:static;height:auto;min-height:0;inset:auto;
-  padding:8px 0;border-radius:8px;overflow:hidden;
+  padding:0.5rem 0;border-radius:0.5rem;overflow:hidden;
 }
 /* .nav-item.active 是整條滿版（width:calc(100% + 16px) 配負 margin），
    在示範容器裡同樣成立，因為 .nav 的左右內距也是 8px。 */
@@ -13,11 +13,11 @@
 .nav-demo-label{flex:1;min-width:0}
 
 /* 麵包屑：這是元件樣式本身，其他頁面要用就套 .crumb-demo 的結構 */
-.crumb-demo ol{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
-.crumb-demo li{display:flex;align-items:center;font-size:13px;color:#718096}
+.crumb-demo ol{display:flex;align-items:center;flex-wrap:wrap;gap:0.25rem;margin:0;padding:0;list-style:none}
+.crumb-demo li{display:flex;align-items:center;font-size:0.75rem;color:#718096}
 .crumb-demo a{color:#1596AD;text-decoration:none}
-.crumb-demo a:hover{text-decoration:underline;text-underline-offset:3px}
+.crumb-demo a:hover{text-decoration:underline;text-underline-offset:0.1875rem}
 .crumb-demo [aria-current="page"]{color:var(--text)}
 
-.nav-guide-list{margin:0 0 12px;padding-left:18px}
-.nav-guide-list li{margin-bottom:4px;font-size:13px;line-height:1.7}
+.nav-guide-list{margin:0 0 0.75rem;padding-left:1rem}
+.nav-guide-list li{margin-bottom:0.25rem;font-size:0.75rem;line-height:1.7}

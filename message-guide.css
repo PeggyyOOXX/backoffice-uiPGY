@@ -1,16 +1,16 @@
 /* 訊息提示規範頁。版面結構而已——Toast 本身的配色、尺寸與動畫都在 message.css。
    卡片內距、標題節奏、code 樣式比照 tabs-guide.css 與 state-guide.css。 */
 .message-guide {
-  padding: 16px;
+  padding: 1rem;
 }
 .message-guide > .component-description {
-  margin: 0 0 12px;
+  margin: 0 0 0.75rem;
 }
 
 .message-guide-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 0.5rem;
   justify-content: flex-start;
 }
 .message-guide-actions .semantic-btn {
@@ -20,7 +20,7 @@
 
 /* 示範表格寬度交給容器，不用全站表格的 920px 最小寬。 */
 .page .message-guide-table {
-  min-width: 560px;
+  min-width: 35rem;
   table-layout: fixed;
 }
 .page .message-guide-table td {
@@ -36,13 +36,13 @@
 /* 四種型別 */
 .message-type-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(248px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(15.5rem, 1fr));
+  gap: 1rem;
 }
 .message-type-grid > div {
   border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 14px;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
   min-width: 0;
   border-left-width: 3px;
 }
@@ -61,8 +61,8 @@
 .message-type-card h4 {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 13px;
+  gap: 0.5rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: #111b2b;
 }
@@ -85,25 +85,25 @@
 .message-type-card dl {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 16px;
-  margin: 0 0 10px;
+  gap: 0.25rem 1rem;
+  margin: 0 0 0.5rem;
 }
 .message-type-card dl div {
   display: flex;
-  gap: 6px;
+  gap: 0.25rem;
   align-items: baseline;
 }
 .message-type-card dt {
-  font-size: 11px;
+  font-size: 0.75rem;
   color: #718096;
 }
 .message-type-card dd {
   margin: 0;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .message-type-card p {
   margin: 0;
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.7;
   color: #718096;
 }
@@ -111,20 +111,20 @@
 /* 文案對照 */
 .message-copy-compare {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(16.25rem, 1fr));
+  gap: 1rem;
 }
 .message-copy-compare > div {
   border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 14px;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
   min-width: 0;
 }
 .message-copy-compare h4 {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 13px;
+  gap: 0.25rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: #111b2b;
 }
@@ -143,30 +143,30 @@
   color: #12b157;
 }
 .message-copy-compare ul {
-  margin: 0 0 10px;
-  padding-left: 18px;
+  margin: 0 0 0.5rem;
+  padding-left: 1rem;
 }
 .message-copy-compare li {
-  margin-bottom: 4px;
-  font-size: 13px;
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
 }
 .message-copy-compare p {
   margin: 0;
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.7;
   color: #718096;
 }
 
 .message-guide-code {
   margin: 0;
-  padding: 12px;
+  padding: 0.75rem;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 0.5rem;
   background: #f7f8fb;
   overflow-x: auto;
 }
 .message-guide-code code {
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.8;
   white-space: pre;
   padding: 0;
@@ -174,9 +174,9 @@
 }
 
 .message-guide-page code {
-  font-size: 12px;
-  padding: 1px 5px;
-  border-radius: 4px;
+  font-size: 0.75rem;
+  padding: 1px 0.25rem;
+  border-radius: 0.25rem;
   background: #f1f4f8;
   color: #10707f;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -187,10 +187,10 @@
 
 @media (max-width: 720px) {
   .message-guide {
-    padding: 12px;
+    padding: 0.75rem;
   }
   .message-guide-actions .semantic-btn {
-    flex: 1 1 calc(50% - 4px);
+    flex: 1 1 calc(50% - 0.25rem);
   }
 }
 
@@ -199,15 +199,15 @@
 .bo-alert {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
-  padding: 10px 12px;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
   border: 1px solid;
-  border-radius: 4px;
-  font-size: 13px;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
   line-height: 1.6;
 }
 .bo-alert + .bo-alert {
-  margin-top: 8px;
+  margin-top: 0.5rem;
 }
 .bo-alert-icon {
   display: flex;

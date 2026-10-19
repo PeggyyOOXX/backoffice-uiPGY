@@ -109,10 +109,10 @@ window.tooltipGuide = () => `<section class="component-example" id="tooltip-guid
   </div>
   <dl>
     <div><dt>底色／文字</dt><dd>#17233B／#FFFFFF</dd></div>
-    <div><dt>字級／行高</dt><dd>12px／1.5，字重 400</dd></div>
-    <div><dt>內距／圓角</dt><dd>6px 10px／6px</dd></div>
-    <div><dt>最大寬度</dt><dd>300px，超出自動折行</dd></div>
-    <div><dt>與觸發元件間距</dt><dd>8px，含箭頭</dd></div>
+    <div><dt>字級／行高</dt><dd>0.75rem(12px)／1.5，字重 400</dd></div>
+    <div><dt>內距／圓角</dt><dd>0.25rem(4px) 0.5rem(8px)／0.25rem(4px)</dd></div>
+    <div><dt>最大寬度</dt><dd>18.75rem(300px)，超出自動折行</dd></div>
+    <div><dt>與觸發元件間距</dt><dd>0.5rem(8px)，含箭頭</dd></div>
     <div><dt>延遲</dt><dd>顯示 150ms，關閉不延遲</dd></div>
   </dl>
   <p class="component-description">寫法：在元素加 <code>data-tooltip="說明文字"</code>，方向用 <code>data-tooltip-placement</code>（top／bottom／left／right，<strong>預設 top</strong>，空間不足時自動翻面）。提示開啟時會掛上 aria-describedby，讀屏軟體讀得到。停用的按鈕不會觸發滑鼠事件，請把 data-tooltip 放在外層容器。</p>

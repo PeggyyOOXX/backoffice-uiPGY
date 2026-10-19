@@ -5,28 +5,28 @@
 .example-settings-page [data-tab-panel]:not([hidden]) {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 1rem;
 }
 
 .example-settings-card {
-  padding: 16px;
+  padding: 1rem;
 }
 
 .example-settings-heading {
-  margin: 0 0 12px;
-  font-size: 14px;
+  margin: 0 0 0.75rem;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--text);
 }
 
 /* 卡片內的順序固定是標題 → 說明 → 內容，說明不夾在內容後面。 */
 .example-settings-heading:has(+ .example-settings-hint) {
-  margin-bottom: 4px;
+  margin-bottom: 0.25rem;
 }
 
 .example-settings-hint {
-  margin: 0 0 12px;
-  font-size: 12px;
+  margin: 0 0 0.75rem;
+  font-size: 0.75rem;
   line-height: 1.6;
   color: #718096;
 }
@@ -35,7 +35,7 @@
 .example-settings-pair {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  gap: 1rem;
 }
 
 .example-settings-alert {
@@ -51,15 +51,15 @@
 .example-mode-head {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
   border-bottom: 1px solid var(--line);
   background: #f7f8fb;
 }
 
 .example-mode-head h3 {
   margin: 0;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
 }
 
@@ -68,7 +68,7 @@
 }
 
 .example-mode-body {
-  padding: 8px 16px 12px;
+  padding: 0.5rem 1rem 0.75rem;
 }
 
 /* 關閉的模式整段變淡並停用（inert），而不是整段隱藏——
@@ -80,9 +80,9 @@
 .example-field-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  min-height: 40px;
-  padding: 4px 0;
+  gap: 0.75rem;
+  min-height: 2.5rem;
+  padding: 0.25rem 0;
   border-bottom: 1px solid #eef1f6;
 }
 
@@ -91,7 +91,7 @@
 }
 
 .example-field-row.is-indent {
-  padding-left: 32px;
+  padding-left: 2rem;
 }
 
 .example-field-row .choice-control {
@@ -103,7 +103,7 @@
 .example-field-right {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0.5rem;
   flex: none;
 }
 
@@ -113,10 +113,10 @@
   }
   .example-field-row {
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 0.5rem;
   }
   .example-field-row.is-indent {
-    padding-left: 20px;
+    padding-left: 1.25rem;
   }
   .example-field-right {
     width: 100%;

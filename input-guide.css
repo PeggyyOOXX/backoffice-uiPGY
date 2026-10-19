@@ -1,5 +1,5 @@
 /* 輸入框規範頁。欄位排版用 guide-page.css 的共用樣式，這裡只補金額相關。 */
 .amount-input{text-align:right;font-variant-numeric:tabular-nums}
-.page .input-amount-table{table-layout:auto;margin-top:12px}
+.page .input-amount-table{table-layout:auto;margin-top:0.75rem}
 .page .input-amount-table td{text-align:left}
-.page .input-amount-table td:first-child{width:120px}
+.page .input-amount-table td:first-child{width:7.5rem}

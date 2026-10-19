@@ -22,10 +22,10 @@ window.renderDatePickerPage = () =>
         <p class="component-description">與日期區間的差別：時間選擇是<strong>設定一個週期性的時點</strong>（每天幾點結算），日期區間是<strong>框出一段已經發生的範圍</strong>（查哪幾天的資料）。前者用固定間隔的下拉，後者用日曆——不要用日曆元件來選「每天幾點」。</p>`,
       },
     ],
-    raw: `<section class="card date-picker-guide"><h3>互動範例</h3><p>點擊欄位開啟日曆，可選起訖日期與時間，或使用左側的快捷區間。七個快捷區間與正式後台一致：今天、昨天、前天、本週、上週、本月、上月；週一為一週的開始。</p><div class="date-range-host" data-date-range></div><div class="date-picker-rules"><span>清空：中性灰 #a3a3a3，移除已選條件</span><span>確認：主要色 #1596AD，套用選取區間</span><span>按鈕：34px，圓角 7px</span><span>欄位顯示日期；完整時間保留至秒</span></div></section>`,
+    raw: `<section class="card date-picker-guide"><h3>互動範例</h3><p>點擊欄位開啟日曆，可選起訖日期與時間，或使用左側的快捷區間。七個快捷區間與正式後台一致：今天、昨天、前天、本週、上週、本月、上月；週一為一週的開始。</p><div class="date-range-host" data-date-range></div><div class="date-picker-rules"><span>清空：中性灰 #a3a3a3，移除已選條件</span><span>確認：主要色 #1596AD，套用選取區間</span><span>按鈕：2.125rem(34px)，圓角 0.25rem(4px)</span><span>欄位顯示日期；完整時間保留至秒</span></div></section>`,
     tokens: [
       ["欄位高度", "34px"],
-      ["欄位圓角", "7px"],
+      ["欄位圓角", "8px"],
       ["面板圓角", "8px"],
       ["快捷選項", "今天／昨天／前天／本週／上週／本月／上月"],
       ["選取區間", "主題綠 #1596AD"],
@@ -54,6 +54,6 @@ window.renderDatePickerPage = () =>
       ],
       ["欄位顯示日期即可", "完整時間保留至秒，但欄位上不必全部顯示。"],
       ["要能鍵盤操作", "方向鍵移動日期、Enter 選取、Esc 關閉。"],
-      ["不得另設配色與尺寸", "欄位沿用 Input 規範的 34px 與 7px 圓角。"],
+      ["不得另設配色與尺寸", "欄位沿用 Input 規範的 34px 與 8px 圓角。"],
     ],
   });

@@ -2,6 +2,7 @@
 import { iconButton } from './icon-button.js'
 import './table-guide.css'
 import { icon } from './icons.js'
+import { remPx } from './guide-page.js'
 
 const ROWS = [
   ['WD-260918-8821', 'david_lin', 'LV1', '120,000.00', '待審核', 'pending-b'],
@@ -11,8 +12,8 @@ const ROWS = [
 const TOKENS = [
   ['表頭底色', '#F7F8FB'],
   ['表頭文字', '#68758B／12px／line-height 1.25'],
-  ['表頭內距', '8px 11px'],
-  ['內容內距', '9px 11px'],
+  ['表頭內距', '8px 12px'],
+  ['內容內距', '8px 12px'],
   ['對齊', '表頭與內容一律置中'],
   ['列底線', '1px #EDF0F4'],
   ['直分隔線', '表頭 1px var(--line)，內容 1px #EDF0F4'],
@@ -35,7 +36,7 @@ window.tableGuide = () => `<section class="component-example" id="table-guide"><
     <tbody>${ROWS.map(([id, account, level, amount, state, tone]) => `<tr><td>${id}</td><td>${account}</td><td>${level}</td><td>${amount}</td><td><span class="badge ${tone}">${state}</span></td><td><div class="icon-action-group" style="justify-content:center">${iconButton({ icon:icon('edit'), label:`編輯 ${id}`, kind:'btn-edit' })}${iconButton({ icon:icon('loginRecord'), label:`檢視紀錄 ${id}`, kind:'btn-record' })}</div></td></tr>`).join('')}</tbody>
     <tfoot><tr><td colspan="3">合計（${ROWS.length} 筆）</td><td>248,500.00</td><td colspan="2"></td></tr></tfoot>
   </table></div>
-  <dl>${TOKENS.map(([label, value]) => `<div><dt>${label}</dt><dd>${value}</dd></div>`).join('')}</dl>
+  <dl>${TOKENS.map(([label, value]) => `<div><dt>${label}</dt><dd>${remPx(value)}</dd></div>`).join('')}</dl>
   <h3>使用規則</h3>
   <div class="table-guide-rules">${RULES.map(([title, text]) => `<div><strong>${title}</strong><p>${text}</p></div>`).join('')}</div>
 </div></section>`

@@ -43,10 +43,10 @@ const ICON = "const icon=window.icon;";
 run(
   "guide-page.js",
   "",
-  ";window.guidePage=guidePage;window.decisionTable=decisionTable",
+  ";window.guidePage=guidePage;window.decisionTable=decisionTable;window.remPx=remPx",
 );
 const PAGE =
-  "const guidePage=window.guidePage,decisionTable=window.decisionTable;";
+  "const guidePage=window.guidePage,decisionTable=window.decisionTable,remPx=window.remPx;";
 run("tooltip.js", ON, ";window.tooltipAttrs=tooltipAttrs");
 run(
   "icon-button.js",
@@ -66,7 +66,7 @@ const MODAL = "const prepareModal=window.prepareModal;";
 
 // 片段來源（規範頁從它們取內容）
 run("table-sort.js", ON);
-run("table-guide.js", BTN + ICON);
+run("table-guide.js", BTN + ICON + "const remPx=window.remPx;");
 run("choice-controls.js", "", ";window.choiceBody=choiceBody");
 run("switch-layout-guide.js", ON, ";window.switchBody=switchBody");
 w.eval(
@@ -382,7 +382,7 @@ assert.ok(
     /flex:\s*1/.test(rule(".progress-row > .bo-progress")),
     "橫向排列時進度條要 flex:1，否則軌道會塌成 0、只剩百分比數字",
   );
-  const minWidth = rule(".bo-progress-track").match(/min-width:\s*(\d+)px/);
+  const minWidth = rule(".bo-progress-track").match(/min-width:\s*(\d*\.?\d+)(?:px|rem)/);
   assert.ok(
     minWidth && Number(minWidth[1]) > 0,
     "軌道要有最小寬度，外層忘了給寬度時才不會整條消失",
@@ -508,7 +508,11 @@ ok("圖示按鈕：與文字按鈕共用 --btn-content，換尺寸會一起變�
     assert.ok(match, `semantic-button-system.css 缺少 ${name}`)
     return match[1].trim()
   }
-  const px = name => Number(value(name).replace('px', ''))
+  // 尺寸寫 rem（根字級 16px）；框線維持 px
+  const px = name => {
+    const text = value(name)
+    return text.endsWith('rem') ? Number(text.slice(0, -3)) * 16 : Number(text.replace('px', ''))
+  }
   const rule = own.slice(own.indexOf('.semantic-btn {'), own.indexOf('}', own.indexOf('.semantic-btn {')))
   assert.ok(
     !/(?:^|[;\s])(?:min-)?height\s*:/.test(rule),

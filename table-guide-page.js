@@ -140,8 +140,8 @@ window.renderTablePage = () => guidePage({
   tokens: [
     ['表頭底色', '#F7F8FB'],
     ['表頭文字', '#68758B / 12px'],
-    ['表頭內距', '8px 11px'],
-    ['內容內距', '9px 11px'],
+    ['表頭內距', '8px 12px'],
+    ['內容內距', '8px 12px'],
     ['內容對齊', '置中'],
     ['列底線', '#EDF0F4'],
     ['hover 底色', '#F9FBFF'],

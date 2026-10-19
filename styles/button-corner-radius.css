@@ -9,5 +9,5 @@
 .page-btn,
 .member-data-card .page-btn,
 .row-actions button {
-  border-radius: 4px;
+  border-radius: 0.25rem;
 }

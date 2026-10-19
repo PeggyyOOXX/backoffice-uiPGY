@@ -48,15 +48,15 @@ export const choiceBody = () => `
   <fieldset class="choice-group is-inline" aria-invalid="true" aria-describedby="choice-guide-error"><legend>代理層級<span class="required-mark" aria-hidden="true"> *</span></legend>${radios('guide-radio-error', [['一般代理','none'],['總代理','none']]).map(choiceControl).join('')}</fieldset>
   <small class="error-text" id="choice-guide-error">請選擇代理層級</small>
   <dl>
-    <div><dt>控制尺寸</dt><dd>16 × 16px</dd></div>
+    <div><dt>控制尺寸</dt><dd>1rem(16px) × 1rem(16px)</dd></div>
     <div><dt>選取色</dt><dd>#1596AD（accent-color）</dd></div>
-    <div><dt>文案</dt><dd>14px／400，不加粗</dd></div>
-    <div><dt>控制與文案間距</dt><dd>8px</dd></div>
-    <div><dt>選項間距</dt><dd>直排 12px，橫排 12px × 24px</dd></div>
+    <div><dt>文案</dt><dd>0.875rem(14px)／400，不加粗</dd></div>
+    <div><dt>控制與文案間距</dt><dd>0.5rem(8px)</dd></div>
+    <div><dt>選項間距</dt><dd>直排 0.75rem(12px)，橫排 0.75rem(12px) × 1.5rem(24px)</dd></div>
     <div><dt>Focus</dt><dd>2px #1596AD 外框，offset 2px</dd></div>
-    <div><dt>卡片外框／圓角</dt><dd>1px #DCE2EB／9px，內距 10px</dd></div>
+    <div><dt>卡片外框／圓角</dt><dd>1px #DCE2EB／0.5rem(8px)，內距 0.5rem(8px)</dd></div>
     <div><dt>卡片已選取</dt><dd>底 #F0FAFB，框 #69B8C5</dd></div>
-    <div><dt>卡片標題／說明</dt><dd>14px／600 與 12px #718096</dd></div>
+    <div><dt>卡片標題／說明</dt><dd>0.875rem(14px)／600 與 0.75rem(12px) #718096</dd></div>
   </dl>
   <p class="component-description">每組用 fieldset 加 legend 說明群組名稱，必填在 legend 後標記。Radio 一定要有預設值，不留全部未選；Checkbox 的「部分選取」只用於父階層，代表下層有部分勾選。錯誤不可只用顏色，必須附文字。選項卡片的已選狀態由 CSS <code>:has(input:checked)</code> 判斷，不依賴重新渲染；沿用的 is-selected class 仍然有效。</p>
 `

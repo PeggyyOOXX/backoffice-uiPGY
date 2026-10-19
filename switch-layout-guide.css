@@ -1,21 +1,21 @@
-﻿.switch-layout-guide{padding:16px}
-.switch-layout-panel{border:1px solid var(--line);border-radius:8px;overflow:hidden}
-.switch-layout-row{display:grid;grid-template-columns:42px minmax(0,1fr);align-items:center;gap:16px;min-height:56px;padding:12px 16px;border-bottom:1px solid var(--line)}
+﻿.switch-layout-guide{padding:0.5rem}
+.switch-layout-panel{border:1px solid var(--line);border-radius:0.5rem;overflow:hidden}
+.switch-layout-row{display:grid;grid-template-columns:2.625rem minmax(0,1fr);align-items:center;gap:1rem;min-height:3.5rem;padding:0.75rem 1rem;border-bottom:1px solid var(--line)}
 .switch-layout-row:last-child{border-bottom:0}
-.switch-layout-row>label{margin:0;min-width:0;font-size:14px;font-weight:400;line-height:1.6;overflow-wrap:anywhere;cursor:pointer}
-.switch-layout-guide .switch-layout-note{margin:16px 0 0}
+.switch-layout-row>label{margin:0;min-width:0;font-size:0.875rem;font-weight:400;line-height:1.6;overflow-wrap:anywhere;cursor:pointer}
+.switch-layout-guide .switch-layout-note{margin:1rem 0 0}
 
 /* 狀態一覽：一格一個狀態，開關在左、名稱與說明在右。只排版，配色仍由 standard-switch 決定。 */
-.switch-state-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
-.switch-state{display:grid;grid-template-columns:42px minmax(0,1fr);align-items:start;gap:16px;padding:14px;border:1px solid var(--line);border-radius:8px}
-.switch-state-control{display:flex;align-items:center;min-height:24px}
-.switch-state strong{display:block;font-size:13px;font-weight:600;line-height:1.5}
-.switch-state small{display:block;margin-top:4px;font-size:12px;line-height:1.6;color:#718096;overflow-wrap:anywhere}
-.switch-state-grid+.switch-state-sub{margin:16px 0 8px;font-size:12px;font-weight:600;color:#718096}
+.switch-state-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(16.25rem,1fr));gap:0.75rem}
+.switch-state{display:grid;grid-template-columns:2.625rem minmax(0,1fr);align-items:start;gap:1rem;padding:0.75rem;border:1px solid var(--line);border-radius:0.5rem}
+.switch-state-control{display:flex;align-items:center;min-height:1.5rem}
+.switch-state strong{display:block;font-size:0.75rem;font-weight:600;line-height:1.5}
+.switch-state small{display:block;margin-top:0.25rem;font-size:0.75rem;line-height:1.6;color:#718096;overflow-wrap:anywhere}
+.switch-state-grid+.switch-state-sub{margin:1rem 0 0.5rem;font-size:0.75rem;font-weight:600;color:#718096}
 /* 單獨當一張卡用時（window.switchLayoutGuide），小節標題要和其他規範頁同一個字級。 */
-.switch-layout-guide h3{margin:24px 0 12px;font-size:14px}
+.switch-layout-guide h3{margin:1.5rem 0 0.75rem;font-size:0.875rem}
 
 @media(max-width:720px){
-  .switch-layout-guide{padding:12px}
-  .switch-layout-row{gap:12px;padding:12px}
+  .switch-layout-guide{padding:0.5rem}
+  .switch-layout-row{gap:0.75rem;padding:0.75rem}
 }

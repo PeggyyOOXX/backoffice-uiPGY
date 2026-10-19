@@ -5,31 +5,31 @@
 .download-center .icon-btn{position:relative}
 .download-badge{
   position:absolute;top:-2px;right:-2px;
-  min-width:18px;height:18px;padding:0 5px;
+  min-width:1.125rem;height:1.125rem;padding:0 0.25rem;
   display:grid;place-items:center;
-  border-radius:9px;background:#f59e0b;color:#fff;
-  font-size:11px;font-weight:700;line-height:1;
+  border-radius:0.5rem;background:#f59e0b;color:#fff;
+  font-size:0.75rem;font-weight:700;line-height:1;
 }
 .download-panel{
-  position:absolute;top:calc(100% + 6px);right:0;z-index:40;
-  width:340px;max-width:calc(100vw - 24px);padding:12px;
-  border:1px solid var(--line);border-radius:8px;background:#fff;
-  box-shadow:0 8px 24px rgba(23,35,59,.14);
+  position:absolute;top:calc(100% + 0.25rem);right:0;z-index:40;
+  width:21.25rem;max-width:calc(100vw - 1.5rem);padding:0.75rem;
+  border:1px solid var(--line);border-radius:0.5rem;background:#fff;
+  box-shadow:0 0.5rem 1.5rem rgba(23,35,59,.14);
   text-align:left;
 }
 .download-panel[hidden]{display:none}
-.download-panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
-.download-panel-head>strong{font-size:13px;font-weight:600;color:#111b2b}
+.download-panel-head{display:flex;align-items:center;justify-content:space-between;gap:0.75rem;margin-bottom:0.75rem}
+.download-panel-head>strong{font-size:0.75rem;font-weight:600;color:#111b2b}
 .download-list{
-  display:flex;flex-direction:column;gap:12px;
-  max-height:400px;overflow-y:auto;
+  display:flex;flex-direction:column;gap:0.75rem;
+  max-height:25rem;overflow-y:auto;
   margin:0;padding:0;list-style:none;
 }
-.download-task-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.download-task-head{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.25rem}
 /* 檔名佔滿剩餘寬度並以單行省略；完整檔名由 Tooltip 補（TruncateTooltip 的做法） */
-.download-task-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:var(--text)}
+.download-task-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.75rem;color:var(--text)}
 .download-task .bo-progress{margin:0}
 
 @media(max-width:720px){
-  .download-panel{right:-8px;width:min(340px,calc(100vw - 24px))}
+  .download-panel{right:-0.5rem;width:min(21.25rem,calc(100vw - 1.5rem))}
 }

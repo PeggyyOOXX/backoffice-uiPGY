@@ -72,7 +72,7 @@ window.renderTabsGuide = () => `<div class="style-guide tabs-guide-page">
       <span>卡片型高度</span><strong>36px / 圓角 4px 4px 0 0</strong>
       <span>卡片型作用中</span><strong>白底 / 整圈 #1596AD 外框 / 字重 700</strong>
       <span>卡片型未選取</span><strong>#F1F4F8 底 / #DCE2EB 外框</strong>
-      <span>計數標記</span><strong>12px / 圓角 9px</strong>
+      <span>計數標記</span><strong>12px / 圓角 8px</strong>
       <span>作用中計數</span><strong>#E7F7FA / #1596AD</strong>
       <span>停用文字</span><strong>#B6C0CC</strong>
       <span>Focus ring</span><strong>2px #1596AD（內縮 3px）</strong>

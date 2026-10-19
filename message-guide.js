@@ -176,7 +176,7 @@ window.renderMessageGuide = () => `<div class="style-guide message-guide-page">
       <span>同時上限</span><strong>${MAX_VISIBLE} 則</strong>
       <span>最大寬度</span><strong>520px</strong>
       <span>圓角／邊框</span><strong>4px / 1px</strong>
-      <span>內距</span><strong>10px 12px</strong>
+      <span>內距</span><strong>8px 12px</strong>
       <span>字級／字重</span><strong>14px / 400</strong>
       <span>圖示</span><strong>20px</strong>
       <span>關閉鈕</span><strong>16px / 20 × 20px</strong>

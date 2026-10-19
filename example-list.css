@@ -4,12 +4,12 @@
 .example-progress-cell {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  min-width: 132px;
+  gap: 0.25rem;
+  min-width: 8.25rem;
 }
 
 .example-progress-cell > span {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: #718096;
   white-space: nowrap;
 }

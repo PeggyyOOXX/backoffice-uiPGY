@@ -23,8 +23,8 @@
     -ms-overflow-style: none;
     /* 捲軸沒了就少了「下面還有」的線索，改用上下緣淡出代替：不佔寬度、不搶視線，
        捲到頂或底時那一端自然就不淡了。 */
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
-    mask-image: linear-gradient(to bottom, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 0.875rem, #000 calc(100% - 0.875rem), transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 0.875rem, #000 calc(100% - 0.875rem), transparent 100%);
   }
   .sidebar .nav::-webkit-scrollbar {
     width: 0;

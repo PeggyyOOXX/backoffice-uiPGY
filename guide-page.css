@@ -3,13 +3,13 @@
 /* .card 沒有內距，內距一律由頁面的 xxx-guide class 提供。
    這裡用屬性選擇器一次涵蓋所有規範頁，新增頁面不必再寫一次 padding。 */
 .style-guide section.card[class*="-guide"] {
-  padding: 16px;
+  padding: 0.5rem;
 }
 
 /* 決策表：規範頁最常出現的區塊，欄寬與對齊統一 */
 .page .guide-decision-table {
   width: 100%;
-  min-width: 560px;
+  min-width: 35rem;
   table-layout: fixed;
   border-collapse: collapse;
 }
@@ -25,18 +25,18 @@
 
 /* 規範頁裡的程式碼片段 */
 .style-guide code {
-  font-size: 12px;
-  padding: 1px 5px;
-  border-radius: 4px;
+  font-size: 0.75rem;
+  padding: 1px 0.25rem;
+  border-radius: 0.25rem;
   background: #f1f4f8;
   color: #10707f;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 .style-guide pre {
   margin: 0;
-  padding: 12px;
+  padding: 0.75rem;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 0.5rem;
   background: #f7f8fb;
   overflow-x: auto;
 }
@@ -50,26 +50,26 @@
 /* 並排對照（要／不要、A／B）。各頁只要用 .guide-pair 包兩個 div。 */
 .guide-pair {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(16.25rem, 1fr));
+  gap: 1rem;
 }
 .guide-pair > div {
   border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 14px;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
   min-width: 0;
 }
 .guide-pair h4 {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 13px;
+  gap: 0.25rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: #111b2b;
 }
 .guide-pair p {
   margin: 0;
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.7;
   color: #718096;
 }
@@ -91,12 +91,12 @@
 /* 示範區：把元件放在有邊界的舞台上，與說明文字分開 */
 .guide-stage {
   border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 16px;
+  border-radius: 0.5rem;
+  padding: 1rem;
   min-width: 0;
 }
 .guide-stage + .guide-stage {
-  margin-top: 12px;
+  margin-top: 0.75rem;
 }
 
 /* 規範頁的 token 表永遠是最後一塊，不留下方外距 */
@@ -108,9 +108,6 @@
 }
 
 @media (max-width: 720px) {
-  .style-guide section.card[class*="-guide"] {
-    padding: 12px;
-  }
   .page .guide-decision-table td:first-child,
   .page .guide-decision-table td:nth-child(2) {
     width: auto;
@@ -122,8 +119,8 @@
    各規範頁要放表單就用 .guide-field，不要自己排一套。 */
 .guide-fields {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 12px 16px;
+  grid-template-columns: repeat(auto-fit, minmax(13.75rem, 1fr));
+  gap: 0.75rem 1rem;
 }
 .guide-field {
   display: flex;
@@ -132,9 +129,9 @@
 }
 .guide-field > label {
   display: block;
-  min-height: 18px;
-  margin-bottom: 3px;
-  font-size: 12px;
+  min-height: 1.125rem;
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
   font-weight: 650;
   color: var(--text);
 }
@@ -143,8 +140,8 @@
   width: 100%;
 }
 .guide-field > small {
-  margin-top: 4px;
-  font-size: 12px;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
   color: #718096;
 }
 /* 欄位級錯誤留在欄位下方，不用 Toast——Toast 會消失，使用者回頭找不到是哪一格。
@@ -162,12 +159,12 @@
 .guide-switch-rows {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0.75rem;
 }
 .guide-switch-row {
   display: flex;
   align-items: center;
-  gap: 16px;
-  font-size: 14px;
+  gap: 1rem;
+  font-size: 0.875rem;
   font-weight: 400;
 }

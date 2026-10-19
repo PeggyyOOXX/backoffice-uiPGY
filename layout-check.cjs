@@ -21,8 +21,10 @@ function readVar(name) {
   return match[1].trim()
 }
 
+// 樣式表的尺寸一律寫 rem（根字級 16px），舊寫法 px 也接受
 const px = value => {
-  const n = Number(String(value).replace('px', ''))
+  const text = String(value).trim()
+  const n = text.endsWith('rem') ? Number(text.slice(0, -3)) * 16 : Number(text.replace('px', ''))
   assert.ok(Number.isFinite(n), `無法解析長度：${value}`)
   return n
 }

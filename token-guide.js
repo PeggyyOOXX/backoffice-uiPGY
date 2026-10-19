@@ -4,7 +4,7 @@
 // **斷點用正式後台的**：斷點決定 RWD 行為，兩邊不一致的話同一個版面在原型與正式後台
 // 會在不同寬度換排法，移植時會整批重調。正式後台的斷點來自 tailwind.config.ts，
 // 數值本來就對齊 Element Plus（sm 768 / md 992 / lg 1200 / xl 1920）。
-import { guidePage, decisionTable } from "./guide-page.js";
+import { guidePage, decisionTable, remPx } from "./guide-page.js";
 import { icon } from "./icons.js";
 import "./guide-page.css";
 import "./token-guide.css";
@@ -34,24 +34,37 @@ const SURFACE = [
   ["--blue2", "#E7F7FA", "品牌色淺底"],
 ];
 
+// 字級只用偶數，最小 12px
 const TYPE = [
-  ["頁面標題", "19px", "700", "topbar 的頁名"],
+  ["頁面標題", "18px", "700", "topbar 的頁名"],
   ["區塊標題 h2", "16px", "650", "共用規格、使用規則"],
   ["小節標題 h3", "14px", "600", "卡片內的小節"],
   ["內文", "14px", "400", "表單、表格內容、按鈕文字（700）"],
-  ["說明文字", "13px", "400", "component-description"],
-  ["標籤與輔助", "12px", "400", "Label、表頭、Tooltip、標籤"],
-  ["極小輔助", "11px", "400", "單位、計數、來源檔名"],
+  ["說明與輔助", "12px", "400", "component-description、Label、表頭、Tooltip、標籤、單位、計數"],
 ];
 
+// 間距、圓角、定位都落在 4px 格線上
 const SPACING = [
-  ["4px", "緊鄰元素：分頁按鈕之間、標籤之間"],
-  ["6px", "圖示與文字之間"],
-  ["8px", "按鈕之間、控制與文案之間"],
-  ["12px", "欄位之間、直排選項之間"],
-  ["16px", "卡片內距、區塊內的群組之間"],
+  ["4px", "緊鄰元素：圖示與文字、分頁按鈕之間、標籤之間"],
+  ["8px", "按鈕之間、控制與文案之間、卡片內距、表格內距（上下）"],
+  ["12px", "欄位之間、直排選項之間、表格內距（左右）"],
+  ["16px", "區塊內的群組之間"],
   ["20px", "規範頁的區塊之間"],
   ["24px", "大段落之間"],
+];
+
+const RADIUS = [
+  ["4px", "按鈕、標籤、Tooltip、分頁"],
+  ["8px", "輸入框、下拉、卡片、日期面板"],
+];
+
+// 每一類數值要對齊的格線
+const UNIT_RULES = [
+  ["字級", "2px 的倍數（偶數），最小 12px", "12 / 14 / 16 / 18 / 20px", "13px、17px、19px"],
+  ["間距（padding／margin／gap）", "4px 的倍數", "4 / 8 / 12 / 16 / 20 / 24px", "6px、9px、11px"],
+  ["圓角", "4px 的倍數", "4 / 8 / 12 / 16px", "6px、7px、9px"],
+  ["定位（top／right／bottom／left）", "4px 的倍數", "4 / 8 / 12px", "7px、9px"],
+  ["寬高", "由內容推算，不強制格線", "34px（16 ＋ 8 × 2 ＋ 框線 1 × 2）", "—"],
 ];
 
 // 來自正式後台 tailwind.config.ts，數值對齊 Element Plus
@@ -93,18 +106,35 @@ window.renderTokenPage = () =>
           <thead><tr><th>用途</th><th>字級</th><th>字重</th><th>說明</th></tr></thead>
           <tbody>${TYPE.map(
             ([use, size, weight, note]) =>
-              `<tr><td style="font-size:${size};font-weight:${weight}">${use}</td><td><code>${size}</code></td><td><code>${weight}</code></td><td>${note}</td></tr>`,
+              `<tr><td style="font-size:${size};font-weight:${weight}">${use}</td><td><code>${remPx(size)}</code></td><td><code>${weight}</code></td><td>${note}</td></tr>`,
           ).join("")}</tbody>
         </table>
-        <p class="component-description">只有七級。手機不另造一套字級，只調整排列與觸控範圍；<strong>篩選列的輸入字級維持 16px</strong>，因為 iOS Safari 對 16px 以下的輸入欄位會在聚焦時自動放大整頁。</p>`,
+        <p class="component-description">字級只用偶數、最小 12px。手機不另造一套字級，只調整排列與觸控範圍；<strong>篩選列的輸入字級維持 ${remPx("16px")}</strong>，因為 iOS Safari 對 16px 以下的輸入欄位會在聚焦時自動放大整頁。</p>`,
       },
       {
         heading: "間距",
         body: `<div class="token-spacing">${SPACING.map(
           ([size, use]) =>
-            `<div class="token-space-row"><span class="token-space-bar" style="width:${size}"></span><code>${size}</code><small>${use}</small></div>`,
+            `<div class="token-space-row"><span class="token-space-bar" style="width:${size}"></span><code>${remPx(size)}</code><small>${use}</small></div>`,
         ).join("")}</div>
-        <p class="component-description">只用這七個值，不要出現 5px、7px、13px 這種中間值。需要新的間距先問是不是版面結構有問題。</p>`,
+        <p class="component-description">只用 4px 的倍數，不要出現 6px、9px、11px 這種中間值。需要新的間距先問是不是版面結構有問題。</p>`,
+      },
+      {
+        heading: "圓角",
+        body: `<div class="table-wrap"><table class="token-table-grid">
+          <thead><tr><th>圓角</th><th>用在哪裡</th></tr></thead>
+          <tbody>${RADIUS.map(([size, use]) => `<tr><td><code>${remPx(size)}</code></td><td>${use}</td></tr>`).join("")}</tbody>
+        </table></div>
+        <p class="component-description">按鈕的圓角統一定義在 <code>button-corner-radius</code>，頁面不得另設。其他元件的圓角同樣只用 4px 的倍數。</p>`,
+      },
+      {
+        heading: "單位與數值格線",
+        body: `<p class="component-description"><strong>CSS 的尺寸一律寫 rem，換算為 px ÷ 16</strong>（根字級 16px）。文件與規格表一律寫成 <code>${remPx("16px")}</code>：rem 在前是 CSS 實際寫的值，括號內的 px 是畫面上的大小。不用 em，因為 em 跟著元素自己的字級走，同一個 <code>0.5em</code> 在 12px 的表頭和 14px 的內文會算出不同大小。</p>
+        <div class="table-wrap"><table class="token-table-grid">
+          <thead><tr><th>類別</th><th>格線</th><th>可用的值</th><th>不得出現</th></tr></thead>
+          <tbody>${UNIT_RULES.map(([kind, grid, ok, bad]) => `<tr><td>${kind}</td><td>${grid}</td><td><code>${remPx(ok)}</code></td><td>${bad}</td></tr>`).join("")}</tbody>
+        </table></div>
+        <p class="component-description">維持 px 的三種例外：<strong>框線</strong>（border、outline 與 1–2px 的對齊微調，例如用 -1px 疊住底線；換成 rem 縮放後會變成 0.9px 而發糊）、<strong>@media 斷點</strong>（媒體查詢裡的 rem 依瀏覽器預設字級計算，不跟著 html）、<strong>JS 裡的數值</strong>（tooltip 定位這類計算拿到的是 px）。</p>`,
       },
       {
         heading: "斷點",
@@ -152,12 +182,13 @@ window.renderTokenPage = () =>
     tokens: [
       ["語意色", "8 個"],
       ["介面色", "9 個 CSS 變數"],
-      ["字級", "19 / 16 / 14 / 13 / 12 / 11px"],
+      ["單位", "rem（px ÷ 16），寫成 1rem(16px)"],
+      ["字級", "18 / 16 / 14 / 12px"],
       ["字重", "400 / 600 / 650 / 700"],
-      ["間距", "4 / 6 / 8 / 12 / 16 / 20 / 24px"],
+      ["間距", "4 / 8 / 12 / 16 / 20 / 24px"],
       ["圓角（按鈕）", "4px"],
-      ["圓角（輸入）", "7px"],
-      ["圓角（卡片）", "10px"],
+      ["圓角（輸入）", "8px"],
+      ["圓角（卡片）", "8px"],
       ["格線欄數", "12"],
       ["格線間距", "16px"],
       ["斷點", "768 / 992 / 1200 / 1920"],
@@ -185,8 +216,12 @@ window.renderTokenPage = () =>
         "原型用 CSS Grid、正式後台用 el-row/el-col，欄數與間距必須一致。",
       ],
       [
+        "尺寸寫 rem",
+        "CSS 一律 rem（px ÷ 16），文件寫成 1rem(16px)。框線、@media 斷點、JS 數值維持 px。",
+      ],
+      [
         "不要出現中間值",
-        "沒有 5px、7px、13px；需要新間距先確認是不是版面結構有問題。",
+        "字級只用偶數（最小 12px）；間距、圓角、定位只用 4px 的倍數。沒有 6px、9px、11px、13px。",
       ],
     ],
   });

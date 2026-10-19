@@ -4,12 +4,12 @@
 .example-form-bar {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 0.75rem;
   flex-wrap: wrap;
 }
 
 .example-form-crumb {
-  font-size: 13px;
+  font-size: 0.75rem;
   color: #718096;
 }
 
@@ -22,7 +22,7 @@
 .example-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 1rem;
 }
 
 /* 存檔列在表單最後，跟著內容走而不是固定在視窗底部——
@@ -34,18 +34,18 @@
   bottom: auto;
   box-shadow: none;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 0.5rem;
 }
 
 .example-form .guide-textarea {
   height: auto;
-  min-height: 88px;
-  padding: 8px 10px;
+  min-height: 5.5rem;
+  padding: 0.5rem 0.5rem;
   resize: vertical;
 }
 
 @media (max-width: 720px) {
   .example-form {
-    gap: 12px;
+    gap: 0.75rem;
   }
 }

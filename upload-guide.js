@@ -77,7 +77,7 @@ window.renderUploadPage = () => guidePage({
   tokens: [
     ['拖放區最小高度', '130px'],
     ['框線', '1px 虛線 #CDD8E0'],
-    ['圓角', '6px'],
+    ['圓角', '4px'],
     ['底色', '#F7F9FB'],
     ['拖曳中', '框線與圖示轉主題綠'],
     ['圖示', '24px'],

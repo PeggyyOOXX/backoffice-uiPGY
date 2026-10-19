@@ -7,4 +7,4 @@
 .choice-guide>.component-description:first-child{margin-top:0}
 
 /* 原本在各自卡片裡的 h4 小標，合併後要和 h3 拉開層級 */
-.choice-guide h4{margin:0 0 8px;font-size:12px;font-weight:600;color:#111b2b}
+.choice-guide h4{margin:0 0 0.5rem;font-size:0.75rem;font-weight:600;color:#111b2b}

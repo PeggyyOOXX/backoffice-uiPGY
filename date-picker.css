@@ -2,38 +2,38 @@
   min-width: 0;
   width: 100%;
   --el-color-primary: #1596ad;
-  --el-border-radius-base: 7px;
+  --el-border-radius-base: 0.5rem;
 }
 .date-range-host .el-date-editor.bo-date-range {
   width: 100%;
-  height: 34px;
-  min-height: 34px;
-  padding: 0 8px;
+  height: 2.125rem;
+  min-height: 2.125rem;
+  padding: 0 0.5rem;
   box-sizing: border-box;
-  box-shadow: 0 0 0 1px #dce2eb inset;
+  box-shadow: 0 0 0 0.0625rem #dce2eb inset;
 }
 .date-range-host .el-date-editor.bo-date-range.is-active {
-  box-shadow: 0 0 0 1px #1596ad inset;
+  box-shadow: 0 0 0 0.0625rem #1596ad inset;
 }
 .date-range-host .bo-date-range .el-range-input {
   min-width: 0;
   width: 0;
   flex: 1;
-  font-size: 13px;
+  font-size: 0.75rem;
   color: var(--text);
   background: transparent;
 }
 .date-range-host .bo-date-range .el-range-separator {
   flex: none;
-  padding: 0 3px;
-  font-size: 12px;
+  padding: 0 0.25rem;
+  font-size: 0.75rem;
 }
 .date-range-host .bo-date-range .el-range__icon {
-  margin-right: 4px;
-  font-size: 14px;
+  margin-right: 0.25rem;
+  font-size: 0.875rem;
 }
 .date-range-host .bo-date-range .el-range__close-icon {
-  width: 14px;
+  width: 0.875rem;
   margin-left: 2px;
 }
 .bo-date-range-popper {
@@ -41,10 +41,10 @@
 }
 @media (max-width: 720px) {
   .bo-date-range-popper {
-    max-width: calc(100vw - 16px);
+    max-width: calc(100vw - 1rem);
   }
   .bo-date-range-popper .el-date-range-picker {
-    width: calc(100vw - 24px);
+    width: calc(100vw - 1.5rem);
     max-height: 76vh;
     overflow-y: auto;
   }
@@ -54,12 +54,12 @@
     width: 100%;
     display: flex;
     flex-wrap: nowrap;
-    gap: 4px;
+    gap: 0.25rem;
     overflow-x: auto;
     scrollbar-width: none;
     border-right: 0;
     border-bottom: 1px solid var(--el-border-color-light);
-    padding: 8px;
+    padding: 0.5rem;
     box-sizing: border-box;
   }
   .bo-date-range-popper .el-picker-panel__sidebar::-webkit-scrollbar {
@@ -68,7 +68,7 @@
   .bo-date-range-popper .el-picker-panel__shortcut {
     width: auto;
     flex: none;
-    padding: 0 10px;
+    padding: 0 0.5rem;
     text-align: center;
     white-space: nowrap;
   }
@@ -88,7 +88,7 @@
     display: block;
     width: 100%;
     float: none;
-    padding: 12px;
+    padding: 0.75rem;
     box-sizing: border-box;
   }
   .bo-date-range-popper .el-date-range-picker__content.is-left {
@@ -97,32 +97,32 @@
   }
   /* 月份標頭的左右箭頭在窄版會壓到年月文字 */
   .bo-date-range-popper .el-date-range-picker__header div {
-    margin-left: 32px;
-    margin-right: 32px;
+    margin-left: 2rem;
+    margin-right: 2rem;
   }
   .bo-date-range-popper .el-date-table {
     width: 100%;
   }
   /* 日期格子放大到摸得到 */
   .bo-date-range-popper .el-date-table td .el-date-table-cell {
-    height: 36px;
+    height: 2.25rem;
   }
   .bo-date-range-popper .el-date-table td .el-date-table-cell__text {
-    width: 28px;
-    height: 28px;
-    line-height: 28px;
+    width: 1.75rem;
+    height: 1.75rem;
+    line-height: 1.75rem;
   }
   /* 起訖時間那一列也是 display:table，拆成上下兩行：起始一行、結束一行。 */
   .bo-date-range-popper .el-date-range-picker__time-header {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    padding: 8px;
+    gap: 0.25rem;
+    padding: 0.5rem;
   }
   .bo-date-range-popper .el-date-range-picker__editors-wrap {
     display: flex;
     width: 100%;
-    gap: 6px;
+    gap: 0.25rem;
   }
   .bo-date-range-popper .el-date-range-picker__editors-wrap.is-right {
     text-align: left;
@@ -145,8 +145,8 @@
 .bo-date-range-popper .el-picker-panel__footer {
   display: flex;
   justify-content: flex-end;
-  gap: 6px;
-  padding: 10px 12px;
+  gap: 0.25rem;
+  padding: 0.5rem 0.75rem;
 }
 /* 日期面板的「清空／確認」是 EP 的按鈕，外觀照抄 semantic-btn，
    尺寸也用同一組推算（行高＋上下內距＋框線），不再另外寫死 34／42。 */
@@ -155,13 +155,13 @@
   padding: var(--btn-pad-y) var(--btn-pad-x);
   line-height: var(--btn-content);
   border: 1px solid transparent;
-  border-radius: 4px;
+  border-radius: 0.25rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 0.25rem;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 700;
   line-height: 1;
   white-space: nowrap;
@@ -179,12 +179,12 @@
 }
 .bo-date-range-popper .el-picker-panel__footer .el-button:hover:not(:disabled) {
   filter: brightness(1.06);
-  box-shadow: 0 5px 13px rgba(28, 98, 120, 0.18);
+  box-shadow: 0 0.3125rem 0.8125rem rgba(28, 98, 120, 0.18);
 }
 .bo-date-range-popper
   .el-picker-panel__footer
   .el-button:active:not(:disabled) {
-  transform: translateY(1px);
+  transform: translateY(0.0625rem);
 }
 .bo-date-range-popper .el-picker-panel__footer .el-button:focus-visible {
   outline: 3px solid rgba(40, 127, 152, 0.2);
@@ -195,27 +195,27 @@
   cursor: not-allowed;
 }
 .date-picker-guide {
-  padding: 16px;
-  margin-bottom: 16px;
+  padding: 1rem;
+  margin-bottom: 1rem;
 }
 .date-picker-guide h3 {
-  margin: 0 0 8px;
-  font-size: 15px;
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
 }
 .date-picker-guide p {
   color: var(--muted);
   line-height: 1.6;
-  margin: 8px 0 12px;
+  margin: 0.5rem 0 0.75rem;
 }
 .date-picker-guide .date-range-host {
-  max-width: 340px;
+  max-width: 21.25rem;
 }
 .date-picker-guide .date-picker-rules {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 20px;
-  margin-top: 14px;
+  gap: 0.5rem 1.25rem;
+  margin-top: 0.75rem;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 

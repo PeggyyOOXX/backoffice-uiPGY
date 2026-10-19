@@ -2,15 +2,15 @@
    這裡只負責矩陣的結構：首欄靠左、分類列的底色、子項縮排。
    規範允許表格靠左的兩處之一就是權限矩陣首欄。 */
 .permission-dialog {
-  width: min(680px, calc(100vw - 32px));
+  width: min(42.5rem, calc(100vw - 2rem));
 }
 
 .permission-name {
-  margin-bottom: 12px;
+  margin-bottom: 0.75rem;
 }
 
 .permission-dialog .component-description {
-  margin: 0 0 12px;
+  margin: 0 0 0.75rem;
 }
 
 .page .permission-feature {
@@ -32,7 +32,7 @@
 .permission-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 0.25rem;
   padding: 0;
   border: 0;
   background: transparent;
@@ -50,6 +50,6 @@
 
 .permission-child {
   display: inline-block;
-  padding-left: 28px;
+  padding-left: 1.75rem;
 }
 

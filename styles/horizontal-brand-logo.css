@@ -1,19 +1,19 @@
 .brand {
   justify-content: flex-start;
-  padding: 0 16px;
+  padding: 0 1rem;
 }
 .brand-logo {
   display: block;
   width: auto;
-  max-width: 174px;
+  max-width: 10.875rem;
   height: auto;
-  max-height: 42px;
+  max-height: 2.625rem;
   object-fit: contain;
   object-position: left center;
 }
 @media (max-width: 720px) {
   .brand-logo {
-    max-width: 184px;
-    max-height: 44px;
+    max-width: 11.5rem;
+    max-height: 2.75rem;
   }
 }

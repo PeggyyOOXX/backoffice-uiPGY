@@ -1,12 +1,13 @@
 ﻿# UI implementation rules
 
+- CSS 的尺寸一律寫 rem，換算為 px ÷ 16（根字級 16px，例如 34px → 2.125rem、12px → 0.75rem），包含字級、間距、圓角、陰影、模糊半徑。不用 em：em 跟著元素自己的字級走，同一個值在 12px 表頭與 14px 內文會算出不同大小。三種例外維持 px：border／outline 類屬性與 --btn-border 這類框線變數（換成 rem 縮放時會變成 0.9px 而變糊）、@media 斷點、JS 裡的數值（tooltip 定位這類計算拿到的是 px）。本文件與註解裡寫的 px 是畫面上的實際尺寸，寫進 CSS 時要換成 rem。數值格線：字級只用偶數且最小 12px（12／14／16／18／20），不得出現 13、17、19；間距（padding、margin、gap）、圓角與定位（top／right／bottom／left）一律是 4px 的倍數（4、8、12、16…，即 0.25rem 的倍數），不得出現 6、7、9、11 這類數值；剛好在中間的值往小取。寬高不套格線，由內容推算（例如按鈕與輸入框的 34px）。1–2px 的框線對齊微調（例如 -1px 疊住底線）直接寫 px。規範頁與規格表上的數值一律寫成 1rem(16px)：rem 在前、px 在括號內，用 guide-page.js 的 remPx() 產生，不要手寫換算。完整說明在「設計 Token」頁的「單位與數值格線」。改動後跑 npm run check。
 - 全站按鈕必須沿用 `index.html`「樣式規範」與 `semantic-button-system` 的既有語意樣式，所有頁面及彈窗一致。
 - 按鈕的尺寸用推算的，不寫死高寬：**高 ＝ 文字行高（--btn-content 16px）＋ 上下內距（--btn-pad-y）×2 ＋ 框線（--btn-border 1px）×2；寬 ＝ 文字自動寬度 ＋ 左右內距（--btn-pad-x 12px）×2**。**文字按鈕與圖示按鈕共用同一個內容高度**：文字拿 --btn-content 當行高，圖示拿它當邊長（SVG 的 width/height 屬性要用 CSS 蓋掉），所以不管那個值是 16、20 還是 24，兩種按鈕一定同高——圖示按鈕四邊內距相同，自己就長成正方形。桌機與手機也是同一個尺寸，算出來都是 34px。要整站調高度就改 --btn-content 或 --btn-pad-y。連 min-height 都不要寫：line-height 是明確的像素值，高度已經是確定值。變數與公式只在 styles/semantic-button-system.css 定義，不得在任何頁面寫 height／width／min-width 把按鈕釘住；`min-height: var(--btn-h)` 不是第二個高度，是為了和 34px 的輸入框對齊而設的地板，數值與算出來的相同。例外只有純圖示按鈕與分頁、表頭排序這類方形控制（沒有文字寬度可推算），一律 34px 見方。不得為了塞進窄卡片或窄工具列把按鈕改小——規範頁自己把示範按鈕縮成 30px／38px、手機工具列縮成 34px、批量回報列縮成 28px，站上因此一度有四種按鈕高度。放不下就換行，不縮按鈕。改動後跑 node render-check.cjs。
 - 所有按鈕形狀的圓角一律 4px，統一定義在 index.html 的 `button-corner-radius`，包含 semantic-btn、primary、secondary、action、topbar icon-btn、抽屜與彈窗關閉鈕、quick-tabs、分頁按鈕與表格操作鈕。要調整只改該區塊，不得在個別頁面或元件另設圓角。
 - 關閉、取消、返回、刷新、重設使用 `semantic-btn btn-neutral`，配色及互動狀態由共用樣式決定。
 - 不得為個別頁面或彈窗新增或覆寫按鈕背景色、文字色、邊框色、hover、focus、disabled 等視覺樣式。不得自行創造規範外的按鈕配色。
 - 遇到按鈕可讀性問題，先檢查並移除局部覆寫，恢復既有規範；不要用新的自訂配色修補。
-- 列表工具列的操作按鈕群組一律從左側開始依序排列（justify-content: flex-start），不得把新增與排序拆到左右兩端。表格內的操作欄則置中（比照組合範例－搜尋的操作欄），處理人文字一併置中；手機卡片內的操作維持靠左。彈窗 footer 一律靠右排列。
+- 列表工具列的操作按鈕群組一律從左側開始依序排列（justify-content: flex-start），不得把新增與排序拆到左右兩端。表格內的操作欄則置中（比照組合範例－搜尋的操作欄），處理人文字一併置中；手機卡片內的操作靠右（data-table.css 的 .data-card-actions）。彈窗 footer 一律靠右排列。
 - 優惠活動的列表操作範例放在「組合範例－混合」的「優惠活動」頁籤，不另建活動類型列表或分頁。
 
 - 全站彈窗統一使用 modal-system.js 的 prepareModal 與 modal-system.css，以活動內容快照為基準：標題左側綠線、右上角 X、獨立捲動內容、固定 footer。彈窗按鈕靠右，取消在前、主要操作在後。
@@ -20,7 +21,7 @@
 - Switch 旁的文案一律使用一般字重（font-weight: 400），不得使用粗體。
 - 表頭排序一律使用 table-sort.js／table-sort.css 的 table-sort-control，欄名置於按鈕外。未排序為灰色雙箭頭，升／降冪以主題綠標示方向，依序循環未排序→升冪→降冪→未排序；th 使用 aria-sort。不得套用一般 semantic-btn 描邊按鈕。
 
-- 全站表格統一使用 index.html `unified-table-system` 的共用樣式，以組合範例－搜尋的會員列表為基準：表頭 #F7F8FB 底、#68758B 文字、12px、padding 8px 11px、line-height 1.25，內容 padding 9px 11px、置中、底線 #EDF0F4，tbody hover #F9FBFF，tfoot 同表頭底色。彈窗內表格沿用同一組樣式。
+- 全站表格統一使用 index.html `unified-table-system` 的共用樣式，以組合範例－搜尋的會員列表為基準：表頭 #F7F8FB 底、#68758B 文字、12px、padding 8px 12px、line-height 1.25，內容 padding 8px 12px、置中、底線 #EDF0F4，tbody hover #F9FBFF，tfoot 同表頭底色。彈窗內表格沿用同一組樣式。
 - 手機上同一份資料要用表格還是卡片，判準是「這一列要用來讀，還是用來比」，完整的決策表在「表格 Table → 手機版：卡片還是表格」。要讀完一整筆才能決定（審核、會員詳情）或列上的操作要先讀完資料的用卡片；要跨列比同一個欄位（報表、合計）或要勾選多筆做批量的維持表格；欄位多但只有 3–4 欄關鍵的用「精簡表格＋詳情抽屜」。不是「手機一律卡片」。
 - 卡片一律用 data-table.js 的 `dataCards()`，與表格吃同一份資料；不得在頁面自己手寫一套卡片（先前會員列表與風控審核各寫一份，間距與欄位排法都不一樣）。
 - 個別表格的 CSS 只負責結構：min-width、table-layout、colgroup、固定欄、欄寬、checkbox 欄。不得再自訂表頭底色、文字色、字級、內距、框線或對齊；需要靠左對齊的只限權限矩陣首欄與合計列標籤欄。

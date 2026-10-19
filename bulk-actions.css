@@ -2,13 +2,13 @@
 
 /* 勾選欄固定寬度，不隨內容撐開 */
 .page .bulk-pick-col {
-  width: 44px;
+  width: 2.75rem;
   text-align: center;
 }
 
 .page .bulk-pick-col input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
+  width: 1rem;
+  height: 1rem;
   accent-color: #1596ad;
   cursor: pointer;
 }
@@ -18,7 +18,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 0.25rem;
   position: relative;
 }
 
@@ -28,15 +28,15 @@
 
 .bulk-menu {
   position: absolute;
-  top: calc(100% + 6px);
+  top: calc(100% + 0.25rem);
   right: 0;
   z-index: 20;
-  min-width: 192px;
-  padding: 4px;
+  min-width: 12rem;
+  padding: 0.25rem;
   border: 1px solid #dce2eb;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   background: #fff;
-  box-shadow: 0 8px 24px rgba(21, 35, 63, 0.14);
+  box-shadow: 0 0.5rem 1.5rem rgba(21, 35, 63, 0.14);
   text-align: left;
 }
 
@@ -45,7 +45,7 @@
 }
 
 .bulk-menu hr {
-  margin: 4px 6px;
+  margin: 0.25rem 0.25rem;
   border: 0;
   border-top: 1px solid var(--line);
 }
@@ -53,12 +53,12 @@
 .bulk-menu button {
   display: block;
   width: 100%;
-  padding: 8px 10px;
+  padding: 0.5rem 0.5rem;
   border: 0;
-  border-radius: 4px;
+  border-radius: 0.25rem;
   background: transparent;
   color: var(--text);
-  font-size: 13px;
+  font-size: 0.75rem;
   font-weight: 400;
   text-align: left;
   white-space: nowrap;
@@ -84,10 +84,10 @@
 .bulk-feedback {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 0.75rem;
   flex-wrap: wrap;
-  margin: 0 0 12px;
-  font-size: 13px;
+  margin: 0 0 0.75rem;
+  font-size: 0.75rem;
   color: #1596ad;
 }
 

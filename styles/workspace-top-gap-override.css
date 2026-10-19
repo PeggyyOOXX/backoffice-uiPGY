@@ -1,11 +1,11 @@
 .main {
   /* 上緣留白與高度改由 sticky-topbar-and-workspace-tabs.css 的 --main-gap-top 決定，
      那段留白會把 topbar 整個往下推，是 topbar 底線與側欄分隔線對不齊的原因。 */
-  margin-left: 248px;
-  border-radius: 24px 0 0 0;
+  margin-left: 15.5rem;
+  border-radius: 1.5rem 0 0 0;
 }
 .topbar {
-  border-radius: 24px 0 0 0;
+  border-radius: 1.5rem 0 0 0;
 }
 @media (max-width: 720px) {
   .main {

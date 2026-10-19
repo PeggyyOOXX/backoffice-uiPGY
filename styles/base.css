@@ -11,7 +11,7 @@
   --green: #18a875;
   --red: #e85a66;
   --amber: #d98b18;
-  --shadow: 0 12px 32px rgba(21, 35, 63, 0.08);
+  --shadow: 0 0.75rem 2rem rgba(21, 35, 63, 0.08);
 }
 * {
   box-sizing: border-box;
@@ -21,7 +21,7 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: Inter, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 button,
 input,
@@ -37,7 +37,7 @@ button {
 .sidebar {
   position: fixed;
   inset: 0 auto 0 0;
-  width: 248px;
+  width: 15.5rem;
   background: var(--navy);
   color: #fff;
   z-index: 30;
@@ -46,52 +46,52 @@ button {
   transition: 0.25s;
 }
 .brand {
-  height: 72px;
+  height: 4.5rem;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 0 22px;
+  gap: 0.75rem;
+  padding: 0 1.25rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 .brand-mark {
-  width: 34px;
-  height: 34px;
-  border-radius: 11px;
+  width: 2.125rem;
+  height: 2.125rem;
+  border-radius: 0.75rem;
   background: linear-gradient(145deg, #7a9cff, #4168e7);
   display: grid;
   place-items: center;
   font-weight: 800;
-  box-shadow: 0 7px 18px rgba(79, 124, 255, 0.35);
+  box-shadow: 0 0.4375rem 1.125rem rgba(79, 124, 255, 0.35);
 }
 .brand strong {
-  font-size: 17px;
-  letter-spacing: 0.3px;
+  font-size: 1rem;
+  letter-spacing: 0.01875rem;
 }
 .brand small {
   display: block;
   color: #9dadca;
-  font-size: 10px;
+  font-size: 0.625rem;
   margin-top: 2px;
 }
 .nav-label {
-  padding: 24px 22px 8px;
-  font-size: 10px;
-  letter-spacing: 1.3px;
+  padding: 1.5rem 1.25rem 0.5rem;
+  font-size: 0.625rem;
+  letter-spacing: 0.08125rem;
   color: #7485a5;
 }
 .nav {
-  padding: 0 12px;
+  padding: 0 0.75rem;
   overflow: auto;
 }
 .nav-item {
-  height: 44px;
-  padding: 0 12px;
-  border-radius: 10px;
+  height: 2.75rem;
+  padding: 0 0.75rem;
+  border-radius: 0.5rem;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 0.75rem;
   color: #b9c5db;
-  margin: 3px 0;
+  margin: 0.25rem 0;
   transition: 0.18s;
 }
 .nav-item:hover {
@@ -101,7 +101,7 @@ button {
 .nav-item.active {
   background: linear-gradient(90deg, #4f7cff, #6b8cff);
   color: #fff;
-  box-shadow: 0 6px 18px rgba(42, 83, 190, 0.35);
+  box-shadow: 0 0.375rem 1.125rem rgba(42, 83, 190, 0.35);
 }
 /* 側欄圖示現在是 20px 的 SVG（icons.js），不再是文字字元，所以改用 flex 置中
    並把寬度對齊圖示本身；留 font-size 是因為還沒 hydrate 完的空殼仍可能有文字。 */
@@ -109,27 +109,27 @@ button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 1.25rem;
+  height: 1.25rem;
   flex: none;
-  font-size: 16px;
+  font-size: 1rem;
 }
 .chev {
   margin-left: auto;
   opacity: 0.55;
 }
 .profile-mini {
-  margin: auto 14px 16px;
-  padding: 12px;
+  margin: auto 0.75rem 1rem;
+  padding: 0.75rem;
   background: rgba(255, 255, 255, 0.07);
-  border-radius: 12px;
+  border-radius: 0.75rem;
   display: flex;
-  gap: 10px;
+  gap: 0.5rem;
   align-items: center;
 }
 .avatar {
-  width: 34px;
-  height: 34px;
+  width: 2.125rem;
+  height: 2.125rem;
   border-radius: 50%;
   background: #dbe4ff;
   color: #3459c7;
@@ -141,21 +141,21 @@ button {
   color: #8fa0bf;
 }
 .main {
-  margin-left: 248px;
+  margin-left: 15.5rem;
   min-width: 0;
 }
 .topbar {
-  height: 72px;
+  height: 4.5rem;
   background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(0.75rem);
   border-bottom: 1px solid var(--line);
   position: sticky;
   top: 0;
   z-index: 20;
   display: flex;
   align-items: center;
-  padding: 0 28px;
-  gap: 16px;
+  padding: 0 1.75rem;
+  gap: 1rem;
 }
 .menu-btn {
   display: none;
@@ -165,31 +165,31 @@ button {
 }
 .crumb {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .top-actions {
   margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 0.5rem;
 }
 .icon-btn {
-  width: 38px;
-  height: 38px;
+  width: 2.375rem;
+  height: 2.375rem;
   border: 1px solid var(--line);
   background: white;
-  border-radius: 10px;
+  border-radius: 0.5rem;
   color: var(--navy);
   position: relative;
 }
 .dot {
   position: absolute;
-  width: 7px;
-  height: 7px;
+  width: 0.4375rem;
+  height: 0.4375rem;
   border-radius: 50%;
   background: var(--red);
-  right: 7px;
-  top: 7px;
+  right: 0.5rem;
+  top: 0.5rem;
   border: 2px solid white;
 }
 .language {
@@ -198,20 +198,20 @@ button {
   color: var(--muted);
 }
 .page {
-  padding: 26px 28px 44px;
-  max-width: 1680px;
+  padding: 1.5rem 1.75rem 2.75rem;
+  max-width: 105rem;
   margin: auto;
 }
 .page-head {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  margin-bottom: 22px;
+  margin-bottom: 1.25rem;
 }
 .page-head h1 {
-  margin: 0 0 6px;
-  font-size: 26px;
-  letter-spacing: -0.6px;
+  margin: 0 0 0.25rem;
+  font-size: 1.625rem;
+  letter-spacing: -0.0375rem;
 }
 .page-head p {
   margin: 0;
@@ -221,96 +221,96 @@ button {
   border: 0;
   background: var(--blue);
   color: #fff;
-  border-radius: 10px;
-  padding: 11px 16px;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
   font-weight: 700;
-  box-shadow: 0 6px 14px rgba(79, 124, 255, 0.22);
+  box-shadow: 0 0.375rem 0.875rem rgba(79, 124, 255, 0.22);
 }
 .stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-  margin-bottom: 16px;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
 }
 .stat {
   background: var(--card);
   border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 17px 18px;
+  border-radius: 0.75rem;
+  padding: 1rem 1rem;
   display: flex;
   align-items: center;
-  gap: 13px;
+  gap: 0.75rem;
 }
 .stat-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
+  width: 2.625rem;
+  height: 2.625rem;
+  border-radius: 0.75rem;
   background: var(--blue2);
   display: grid;
   place-items: center;
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 .stat-label {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
-  margin-bottom: 4px;
+  margin-bottom: 0.25rem;
 }
 .stat-value {
-  font-size: 21px;
+  font-size: 1.25rem;
   font-weight: 800;
 }
 .delta {
-  font-size: 11px;
+  font-size: 0.75rem;
   color: var(--green);
-  margin-left: 5px;
+  margin-left: 0.25rem;
 }
 .card {
   background: var(--card);
   border: 1px solid var(--line);
-  border-radius: 16px;
-  box-shadow: 0 3px 14px rgba(21, 35, 63, 0.025);
+  border-radius: 1rem;
+  box-shadow: 0 0.1875rem 0.875rem rgba(21, 35, 63, 0.025);
 }
 .filters {
-  padding: 18px;
-  margin-bottom: 16px;
+  padding: 1rem;
+  margin-bottom: 1rem;
 }
 .filter-row {
   display: grid;
   grid-template-columns: 1.25fr 1fr 1fr 1.25fr auto;
-  gap: 10px;
+  gap: 0.5rem;
   align-items: end;
 }
 .field label {
   display: block;
-  font-size: 11px;
+  font-size: 0.75rem;
   font-weight: 700;
   color: #627087;
-  margin-bottom: 7px;
+  margin-bottom: 0.5rem;
 }
 .control {
   width: 100%;
-  height: 40px;
+  height: 2.5rem;
   border: 1px solid #dce2eb;
-  border-radius: 9px;
+  border-radius: 0.5rem;
   background: white;
-  padding: 0 12px;
+  padding: 0 0.75rem;
   color: var(--text);
   outline: none;
 }
 .control:focus {
   border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(79, 124, 255, 0.1);
+  box-shadow: 0 0 0 0.1875rem rgba(79, 124, 255, 0.1);
 }
 .filter-actions {
   display: flex;
-  gap: 8px;
+  gap: 0.5rem;
 }
 .secondary {
-  height: 40px;
+  height: 2.5rem;
   border: 1px solid var(--line);
   background: #fff;
-  border-radius: 9px;
-  padding: 0 14px;
+  border-radius: 0.5rem;
+  padding: 0 0.75rem;
   color: var(--text);
   font-weight: 650;
 }
@@ -321,28 +321,28 @@ button {
   overflow: hidden;
 }
 .table-toolbar {
-  padding: 17px 18px;
+  padding: 1rem 1rem;
   border-bottom: 1px solid var(--line);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0.5rem;
 }
 .table-toolbar h2 {
-  font-size: 16px;
+  font-size: 1rem;
   margin: 0;
 }
 .count {
   background: var(--blue2);
   color: #4369d7;
-  padding: 3px 8px;
-  border-radius: 20px;
-  font-size: 11px;
+  padding: 0.25rem 0.5rem;
+  border-radius: 1.25rem;
+  font-size: 0.75rem;
   font-weight: 700;
 }
 .toolbar-right {
   margin-left: auto;
   display: flex;
-  gap: 8px;
+  gap: 0.5rem;
 }
 .table-wrap {
   overflow: auto;
@@ -354,16 +354,16 @@ button {
 .user {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0.5rem;
 }
 .user .avatar {
-  width: 36px;
-  height: 36px;
-  font-size: 12px;
+  width: 2.25rem;
+  height: 2.25rem;
+  font-size: 0.75rem;
 }
 .user strong {
   display: block;
-  font-size: 13px;
+  font-size: 0.75rem;
 }
 .user small {
   color: var(--muted);
@@ -371,16 +371,16 @@ button {
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  border-radius: 20px;
-  padding: 5px 9px;
-  font-size: 11px;
+  gap: 0.25rem;
+  border-radius: 1.25rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
   font-weight: 700;
 }
 .badge:before {
   content: "";
-  width: 6px;
-  height: 6px;
+  width: 0.375rem;
+  height: 0.375rem;
   border-radius: 50%;
   background: currentColor;
 }
@@ -405,26 +405,26 @@ button {
   background: transparent;
   color: var(--blue);
   font-weight: 700;
-  padding: 6px;
+  padding: 0.25rem;
 }
 .pagination {
-  padding: 15px 18px;
+  padding: 1rem 1rem;
   display: flex;
   align-items: center;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .pages {
   margin-left: auto;
   display: flex;
-  gap: 5px;
+  gap: 0.25rem;
 }
 .page-btn {
   border: 1px solid var(--line);
   background: #fff;
-  width: 31px;
-  height: 31px;
-  border-radius: 8px;
+  width: 1.9375rem;
+  height: 1.9375rem;
+  border-radius: 0.5rem;
 }
 .page-btn.active {
   background: var(--blue);
@@ -452,7 +452,7 @@ button {
   right: 0;
   top: 0;
   height: 100%;
-  width: min(470px, 100%);
+  width: min(29.375rem, 100%);
   background: white;
   transform: translateX(100%);
   transition: 0.25s;
@@ -463,68 +463,68 @@ button {
   transform: none;
 }
 .drawer-head {
-  height: 72px;
-  padding: 0 22px;
+  height: 4.5rem;
+  padding: 0 1.25rem;
   border-bottom: 1px solid var(--line);
   display: flex;
   align-items: center;
 }
 .drawer-head h2 {
   margin: 0;
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 .close {
   margin-left: auto;
   border: 0;
   background: #f1f3f7;
-  border-radius: 9px;
-  width: 36px;
-  height: 36px;
+  border-radius: 0.5rem;
+  width: 2.25rem;
+  height: 2.25rem;
 }
 .drawer-body {
-  padding: 22px;
+  padding: 1.25rem;
   overflow: auto;
 }
 .person-hero {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding-bottom: 20px;
+  gap: 0.75rem;
+  padding-bottom: 1.25rem;
   border-bottom: 1px solid var(--line);
 }
 .person-hero .avatar {
-  width: 52px;
-  height: 52px;
+  width: 3.25rem;
+  height: 3.25rem;
 }
 .detail-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 18px 12px;
-  margin-top: 22px;
+  gap: 1rem 0.75rem;
+  margin-top: 1.25rem;
 }
 .detail label {
   display: block;
   color: var(--muted);
-  font-size: 11px;
-  margin-bottom: 5px;
+  font-size: 0.75rem;
+  margin-bottom: 0.25rem;
 }
 .detail strong {
-  font-size: 13px;
+  font-size: 0.75rem;
 }
 .risk-box {
   background: #fff6f6;
   border: 1px solid #ffdcdc;
-  border-radius: 12px;
-  padding: 14px;
-  margin-top: 22px;
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  margin-top: 1.25rem;
   color: #a83d47;
 }
 .drawer-foot {
   margin-top: auto;
-  padding: 16px 22px;
+  padding: 1rem 1.25rem;
   border-top: 1px solid var(--line);
   display: flex;
-  gap: 10px;
+  gap: 0.5rem;
 }
 .drawer-foot button {
   flex: 1;
@@ -543,11 +543,11 @@ button {
 }
 @media (max-width: 720px) {
   body {
-    font-size: 13px;
+    font-size: 0.75rem;
   }
   .sidebar {
     transform: translateX(-100%);
-    width: 276px;
+    width: 17.25rem;
   }
   .sidebar.mobile-open {
     transform: none;
@@ -566,8 +566,8 @@ button {
     margin-left: 0;
   }
   .topbar {
-    height: 60px;
-    padding: 0 14px;
+    height: 3.75rem;
+    padding: 0 0.75rem;
   }
   .menu-btn {
     display: block;
@@ -578,41 +578,41 @@ button {
     display: none;
   }
   .page {
-    padding: 18px 14px 32px;
+    padding: 1rem 0.75rem 2rem;
   }
   .page-head {
     align-items: center;
   }
   .page-head h1 {
-    font-size: 21px;
+    font-size: 1.25rem;
   }
   .page-head p {
-    font-size: 12px;
+    font-size: 0.75rem;
   }
   .page-head .primary {
     font-size: 0;
-    width: 40px;
-    height: 40px;
+    width: 2.5rem;
+    height: 2.5rem;
     padding: 0;
   }
   .page-head .primary:after {
     content: "＋";
-    font-size: 22px;
+    font-size: 1.375rem;
   }
   .stats {
     grid-template-columns: repeat(2, 1fr);
-    gap: 9px;
+    gap: 0.5rem;
   }
   .stat {
-    padding: 12px;
-    gap: 9px;
+    padding: 0.75rem;
+    gap: 0.5rem;
   }
   .stat-icon {
-    width: 34px;
-    height: 34px;
+    width: 2.125rem;
+    height: 2.125rem;
   }
   .stat-value {
-    font-size: 17px;
+    font-size: 1rem;
   }
   .delta {
     display: none;
@@ -622,15 +622,15 @@ button {
   }
   .mobile-filter {
     display: flex;
-    margin-bottom: 12px;
-    gap: 8px;
+    margin-bottom: 0.75rem;
+    gap: 0.5rem;
   }
   .mobile-filter .secondary {
     flex: 1;
     text-align: left;
   }
   .mobile-filter .primary {
-    width: 42px;
+    width: 2.625rem;
     padding: 0;
   }
   .table-card {
@@ -642,9 +642,9 @@ button {
   .mobile-card {
     background: #fff;
     border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 15px;
-    margin-bottom: 9px;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
   }
   .mobile-card-top {
     display: flex;
@@ -656,21 +656,21 @@ button {
   .mobile-meta {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-top: 15px;
-    padding-top: 13px;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    padding-top: 0.75rem;
     border-top: 1px solid var(--line);
   }
   .mobile-meta label {
     display: block;
-    font-size: 10px;
+    font-size: 0.625rem;
     color: var(--muted);
-    margin-bottom: 3px;
+    margin-bottom: 0.25rem;
   }
   .mobile-card-bottom {
     display: flex;
     align-items: center;
-    margin-top: 12px;
+    margin-top: 0.75rem;
   }
   .mobile-card-bottom .action {
     margin-left: auto;
@@ -681,7 +681,7 @@ button {
     width: 100%;
     height: auto;
     max-height: 88vh;
-    border-radius: 20px 20px 0 0;
+    border-radius: 1.25rem 1.25rem 0 0;
     transform: translateY(100%);
   }
   .open .filter-sheet {
@@ -691,7 +691,7 @@ button {
     display: block;
   }
   .filter-sheet .field {
-    margin-bottom: 14px;
+    margin-bottom: 0.75rem;
   }
   .filter-sheet .filter-actions {
     display: flex;

@@ -1,44 +1,44 @@
 .source-filter {
-  padding: 10px;
-  margin-bottom: 8px;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 .source-filter-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(150px, 1fr));
-  gap: 7px;
+  grid-template-columns: repeat(4, minmax(9.375rem, 1fr));
+  gap: 0.5rem;
   align-items: center;
 }
 .source-filter-actions {
   display: flex;
-  gap: 5px;
+  gap: 0.25rem;
   justify-content: flex-end;
 }
 /* 篩選列的重設／搜尋不另外給寬度：寬度就是文字寬加左右內距。
    這條 min-width:36px 是舊的純圖示版留下來的，現在兩顆都有文字。 */
 .member-actions {
-  padding: 8px 10px;
+  padding: 0.5rem 0.5rem;
   border-bottom: 1px solid var(--line);
 }
 .tag-dots {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 0.25rem;
 }
 .tag-dots i {
   display: block;
-  width: 12px;
-  height: 12px;
+  width: 0.75rem;
+  height: 0.75rem;
   border-radius: 50%;
   border: 1px solid rgba(0, 0, 0, 0.08);
 }
 .status-control {
-  height: 28px;
-  min-width: 70px;
+  height: 1.75rem;
+  min-width: 4.375rem;
   border: 1px solid var(--line);
-  border-radius: 6px;
+  border-radius: 0.25rem;
   background: #fff;
-  padding: 0 5px;
+  padding: 0 0.25rem;
   color: var(--text);
 }
 
@@ -53,19 +53,19 @@
 .member-card-head small {
   display: block;
   color: var(--muted);
-  margin-top: 3px;
+  margin-top: 0.25rem;
 }
 .member-card-head .status-control {
   margin-left: auto;
 }
 .login-record-list {
-  margin-top: 14px;
+  margin-top: 0.75rem;
 }
 .login-record-list div {
   display: flex;
   justify-content: space-between;
-  gap: 16px;
-  padding: 11px 0;
+  gap: 1rem;
+  padding: 0.75rem 0;
   border-bottom: 1px solid var(--line);
 }
 .login-record-list span {
@@ -81,12 +81,12 @@
 }
 @media (max-width: 1180px) {
   .source-filter-grid {
-    grid-template-columns: repeat(3, minmax(150px, 1fr));
+    grid-template-columns: repeat(3, minmax(9.375rem, 1fr));
   }
 }
 @media (max-width: 900px) {
   .source-filter-grid {
-    grid-template-columns: repeat(2, minmax(140px, 1fr));
+    grid-template-columns: repeat(2, minmax(8.75rem, 1fr));
   }
 }
 @media (max-width: 720px) {
@@ -94,7 +94,7 @@
     display: none;
   }
   .member-actions {
-    padding: 0 0 8px;
+    padding: 0 0 0.5rem;
     border: 0;
     display: flex;
     justify-content: flex-end;
@@ -104,10 +104,10 @@
     order: 1;
   }
   .member-card-head {
-    gap: 8px;
+    gap: 0.5rem;
   }
   .member-card-head strong {
-    font-size: 14px;
+    font-size: 0.875rem;
   }
   .member-mobile-only .mobile-card {
     background: #fff;
@@ -121,6 +121,6 @@
   }
   .login-record-list span {
     display: block;
-    margin-top: 4px;
+    margin-top: 0.25rem;
   }
 }

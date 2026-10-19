@@ -1,38 +1,38 @@
 /* 樣式規範 page: 20px between every section, 8px under every section title. */
 .page .style-guide {
-  margin-top: 10px;
+  margin-top: 0.5rem;
 }
 .page .style-guide > * {
-  margin: 0 0 20px;
+  margin: 0 0 1.25rem;
 }
 .page .style-guide > *:last-child {
   margin-bottom: 0;
 }
 .page .style-guide > .guide-section-heading {
-  margin: 0 2px 8px;
+  margin: 0 2px 0.5rem;
 }
 .page .style-guide h2 {
-  margin: 0 0 8px;
+  margin: 0 0 0.5rem;
 }
 .page .style-guide .guide-section-heading h2 {
   margin: 0;
 }
 .page .style-guide h3 {
-  margin: 20px 0 8px;
+  margin: 1.25rem 0 0.5rem;
 }
 .page .style-guide h3:first-child,
 .page .style-guide h3:first-of-type {
   margin-top: 0;
 }
 .page .style-guide h4 {
-  margin: 0 0 8px;
+  margin: 0 0 0.5rem;
 }
 
 /* 說明文字：規範頁、組合範例與元件示範共用的那一行小字。
    本來定義在 settings-demo.css（舊設定頁的樣式檔）裡，那支檔案已隨頁面改寫刪除。 */
 .component-description {
-  margin: 0 0 12px;
-  font-size: 13px;
+  margin: 0 0 0.75rem;
+  font-size: 0.75rem;
   line-height: 1.7;
   color: #718096;
 }

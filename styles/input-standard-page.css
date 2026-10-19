@@ -1,10 +1,10 @@
 .input-standard-intro {
-  padding: 16px;
-  margin-bottom: 10px;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
 }
 .input-standard-intro h2 {
-  margin: 0 0 5px;
-  font-size: 18px;
+  margin: 0 0 0.25rem;
+  font-size: 1.125rem;
 }
 .input-standard-intro p {
   margin: 0;
@@ -13,58 +13,58 @@
 }
 .input-standard-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(220px, 1fr));
-  gap: 10px;
-  margin-bottom: 10px;
+  grid-template-columns: repeat(3, minmax(13.75rem, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 .input-standard-card {
-  padding: 14px;
+  padding: 0.75rem;
 }
 .input-standard-card h3 {
-  margin: 0 0 4px;
-  font-size: 14px;
+  margin: 0 0 0.25rem;
+  font-size: 0.875rem;
 }
 .input-standard-card > p {
-  min-height: 34px;
-  margin: 0 0 12px;
+  min-height: 2.125rem;
+  margin: 0 0 0.75rem;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 0.75rem;
   line-height: 1.45;
 }
 .input-demo-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 9px;
+  gap: 0.5rem;
 }
 .input-demo-row label {
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 0.25rem;
   color: #627087;
-  font-size: 11px;
+  font-size: 0.75rem;
 }
 .input-demo-mobile {
-  max-width: 210px;
+  max-width: 13.125rem;
 }
 .standard-select {
   appearance: none;
   background: #fff
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23627087' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E")
-    no-repeat right 9px center;
-  padding-right: 28px;
+    no-repeat right 0.5625rem center;
+  padding-right: 1.75rem;
 }
 .standard-choice-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
-  height: 34px;
+  gap: 0.75rem;
+  height: 2.125rem;
 }
 .standard-switch {
-  width: 42px;
-  height: 24px;
-  padding: 3px;
+  width: 2.625rem;
+  height: 1.5rem;
+  padding: 0.25rem;
   border: 0;
-  border-radius: 20px;
+  border-radius: 1.25rem;
   background: #1596ad;
 }
 .standard-switch{cursor:pointer;flex:none}
@@ -79,40 +79,40 @@
 .standard-switch:after {
   content: "";
   display: block;
-  width: 18px;
-  height: 18px;
+  width: 1.125rem;
+  height: 1.125rem;
   margin-left: auto;
   border-radius: 50%;
   background: #fff;
-  box-shadow: 0 1px 2px rgba(17, 27, 43, 0.25);
+  box-shadow: 0 0.0625rem 0.125rem rgba(17, 27, 43, 0.25);
 }
 /* 停用不調整透明度，改成「淡底＋描邊」的空心外觀：可操作的兩種狀態都是實心、旋鈕帶陰影，
    停用的兩種都是空心、旋鈕平貼。先一眼分出能不能按，再由旋鈕位置與色相看出開或關。
    描邊用 inset box-shadow 畫在元素內側，才不會把 42 × 24px 撐大。 */
-.standard-switch:disabled{cursor:not-allowed;background:#e4f4f7;box-shadow:inset 0 0 0 1px #a9d8e1}
-.standard-switch[aria-checked="false"]:disabled{background:#f1f3f6;box-shadow:inset 0 0 0 1px #d4dbe4}
-.standard-switch:disabled:after{box-shadow:inset 0 0 0 1px #dde3ea}
+.standard-switch:disabled{cursor:not-allowed;background:#e4f4f7;box-shadow:inset 0 0 0 0.0625rem #a9d8e1}
+.standard-switch[aria-checked="false"]:disabled{background:#f1f3f6;box-shadow:inset 0 0 0 0.0625rem #d4dbe4}
+.standard-switch:disabled:after{box-shadow:inset 0 0 0 0.0625rem #dde3ea}
 .standard-upload {
   display: grid;
   place-items: center;
-  height: 68px;
+  height: 4.25rem;
   border: 1px dashed #9fb0bb;
-  border-radius: 7px;
+  border-radius: 0.5rem;
   background: #fafcfd;
   color: #627087;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .standard-editor {
-  height: 76px;
+  height: 4.75rem;
   border: 1px solid #dce2eb;
-  border-radius: 7px;
-  background: linear-gradient(#f5f7f9 28px, #fff 28px);
-  padding: 8px;
+  border-radius: 0.5rem;
+  background: linear-gradient(#f5f7f9 1.75rem, #fff 1.75rem);
+  padding: 0.5rem;
   color: #627087;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .input-standard-tokens {
-  padding: 14px;
+  padding: 0.75rem;
 }
 .input-standard-tokens table {
   min-width: 0;
@@ -123,7 +123,7 @@
 }
 @media (max-width: 1100px) {
   .input-standard-grid {
-    grid-template-columns: repeat(2, minmax(220px, 1fr));
+    grid-template-columns: repeat(2, minmax(13.75rem, 1fr));
   }
 }
 @media (max-width: 720px) {
@@ -131,7 +131,7 @@
     grid-template-columns: 1fr;
   }
   .input-standard-card {
-    padding: 12px;
+    padding: 0.75rem;
   }
   .input-demo-row {
     grid-template-columns: 1fr;
@@ -146,6 +146,6 @@
     overflow-x: auto;
   }
   .input-standard-tokens table {
-    min-width: 560px;
+    min-width: 35rem;
   }
 }

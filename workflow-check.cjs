@@ -24,7 +24,8 @@ w.eval('(function(){'+ON+ICON+strip(fs.readFileSync('message.js','utf8'))+';wind
 w.eval(ON+strip(fs.readFileSync('tooltip.js','utf8'))+';window.tooltipAttrs=tooltipAttrs');
 w.eval('const tooltipAttrs=window.tooltipAttrs;'+ICON+strip(fs.readFileSync('icon-button.js','utf8'))+';window.iconButton=iconButton');
 w.eval(strip(fs.readFileSync('choice-controls.js','utf8'))+';window.choiceControl=choiceControl;window.choiceCard=choiceCard');
-w.eval('const iconButton=window.iconButton;'+ICON+strip(fs.readFileSync('table-guide.js','utf8')));
+w.eval(strip(fs.readFileSync('guide-page.js','utf8'))+';window.remPx=remPx');
+w.eval('const iconButton=window.iconButton,remPx=window.remPx;'+ICON+strip(fs.readFileSync('table-guide.js','utf8')));
 w.eval(ON+ICON+strip(fs.readFileSync('tabs.js','utf8'))+';window.tabList=tabs');
 w.eval(strip(fs.readFileSync('states.js','utf8'))+';window.emptyRow=emptyRow;window.emptyState=emptyState;window.errorState=errorState');
 w.eval(strip(fs.readFileSync('data-table.js','utf8'))+';window.dataTable=dataTable;window.dataCards=dataCards;window.applyPaging=applyPaging;window.PAGE_SIZES=PAGE_SIZES');

@@ -116,7 +116,7 @@ window.renderStateGuide = () => `<div class="style-guide state-guide-page">
       <span>文字行</span><strong>14px / 600 / #526477</strong>
       <span>文字最大寬度</span><strong>40em</strong>
       <span>骨架列高</span><strong>13px / 圓角 4px</strong>
-      <span>骨架列間距</span><strong>9px</strong>
+      <span>骨架列間距</span><strong>8px</strong>
       <span>遮罩底色</span><strong>rgba(255,255,255,.6)</strong>
       <span>舊資料透明度</span><strong>0.45</strong>
       <span>Spinner</span><strong>18px / 2px / #1596AD</strong>

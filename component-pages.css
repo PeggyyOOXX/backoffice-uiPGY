@@ -1,5 +1,5 @@
 /* 由 component-pages.js 產生的規範頁用的樣式（提示氣泡的文字截斷示範）。 */
-.page .tooltip-truncate-table{width:100%;min-width:480px;table-layout:fixed;border-collapse:collapse}
+.page .tooltip-truncate-table{width:100%;min-width:30rem;table-layout:fixed;border-collapse:collapse}
 .page .tooltip-truncate-table td{text-align:left}
 /* 截斷本身就是規範：單行、超出以 … 收尾，欄寬由 table-layout: fixed 決定 */
 .page .tooltip-truncate-table .is-truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}

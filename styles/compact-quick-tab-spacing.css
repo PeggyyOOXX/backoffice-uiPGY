@@ -1,9 +1,9 @@
 .quick-tabs {
-  gap: 4px;
+  gap: 0.25rem;
 }
 .quick-tabs button {
-  gap: 3px;
-  padding: 0 6px;
+  gap: 0.25rem;
+  padding: 0 0.25rem;
 }
 .quick-tabs button span {
   margin-left: 1px;

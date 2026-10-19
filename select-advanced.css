@@ -1,29 +1,29 @@
 /* Select spec page. Structure only — colours, heights and radii come from select.css
    and the shared Input tokens; nothing here overrides the component itself. */
-.select-guide{padding:16px}
-.select-guide>.component-description{margin:0 0 12px}
+.select-guide{padding:0.5rem}
+.select-guide>.component-description{margin:0 0 0.75rem}
 
-.select-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.select-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:1rem}
 
-.select-field{display:flex;flex-direction:column;gap:4px;min-width:0}
-.select-field>label{font-size:12px;color:#68758b}
-.select-field>small{font-size:12px;line-height:1.6;color:#718096;overflow-wrap:anywhere}
+.select-field{display:flex;flex-direction:column;gap:0.25rem;min-width:0}
+.select-field>label{font-size:0.75rem;color:#68758b}
+.select-field>small{font-size:0.75rem;line-height:1.6;color:#718096;overflow-wrap:anywhere}
 .select-field>small.error-text{color:#dc2626}
 
-.select-panel{border:1px solid var(--line);border-radius:8px;padding:14px;min-width:0}
-.select-panel h4{margin:0 0 4px;font-size:12px;font-weight:600;color:#111b2b;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
-.select-panel>p{margin:0 0 12px;font-size:12px;line-height:1.6;color:#718096}
+.select-panel{border:1px solid var(--line);border-radius:0.5rem;padding:0.75rem;min-width:0}
+.select-panel h4{margin:0 0 0.25rem;font-size:0.75rem;font-weight:600;color:#111b2b;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.select-panel>p{margin:0 0 0.75rem;font-size:0.75rem;line-height:1.6;color:#718096}
 
-.select-readout{margin:10px 0 0;font-size:12px;color:#718096;overflow-wrap:anywhere}
+.select-readout{margin:0.5rem 0 0;font-size:0.75rem;color:#718096;overflow-wrap:anywhere}
 .select-readout output{color:#111b2b}
 
 .select-filter-demo{margin:0}
-.select-feedback{margin:10px 0 0;font-size:12px;color:#718096;min-height:19px}
+.select-feedback{margin:0.5rem 0 0;font-size:0.75rem;color:#718096;min-height:1.1875rem}
 
-.select-advanced code{font-size:12px;padding:1px 5px;border-radius:4px;background:#f1f4f8;color:#10707f;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.select-advanced code{font-size:0.75rem;padding:1px 0.25rem;border-radius:0.25rem;background:#f1f4f8;color:#10707f;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
 .select-token{margin-bottom:0}
 
 @media(max-width:720px){
-  .select-guide{padding:12px}
+  .select-guide{padding:0.5rem}
   .select-grid{grid-template-columns:1fr}
 }

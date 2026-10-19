@@ -9,5 +9,5 @@
 }
 
 /* 圖示與文字並排時的固定間距。按鈕、側欄、狀態列共用，不在各自的 CSS 重寫。 */
-.semantic-btn .icon,.primary .icon,.secondary .icon,.action .icon,.page-btn .icon{margin-right:6px}
+.semantic-btn .icon,.primary .icon,.secondary .icon,.action .icon,.page-btn .icon{margin-right:0.25rem}
 .semantic-btn.icon-action .icon,.icon-btn .icon,.page-btn.is-icon-only .icon{margin-right:0}

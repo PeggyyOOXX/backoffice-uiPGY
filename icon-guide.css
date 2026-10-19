@@ -1,39 +1,39 @@
 /* 圖示總覽頁。版面結構而已——圖示本身的尺寸、線寬與顏色都在 icons.css／icons.js。
    卡片內距、標題節奏、code 樣式比照 tabs-guide.css 與 state-guide.css。 */
-.icon-guide{padding:16px}
-.icon-guide>.component-description{margin:0 0 12px}
-.icon-guide-count{margin-left:8px;font-style:normal;font-size:12px;font-weight:400;color:#718096}
+.icon-guide{padding:0.5rem}
+.icon-guide>.component-description{margin:0 0 0.75rem}
+.icon-guide-count{margin-left:0.5rem;font-style:normal;font-size:0.75rem;font-weight:400;color:#718096}
 
-.icon-guide-jump{display:flex;flex-wrap:wrap;gap:8px}
-.icon-guide-jump a{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 10px;border:1px solid var(--line);border-radius:4px;font-size:13px;color:var(--text);text-decoration:none}
+.icon-guide-jump{display:flex;flex-wrap:wrap;gap:0.5rem}
+.icon-guide-jump a{display:inline-flex;align-items:center;gap:0.25rem;height:1.875rem;padding:0 0.5rem;border:1px solid var(--line);border-radius:0.25rem;font-size:0.75rem;color:var(--text);text-decoration:none}
 .icon-guide-jump a:hover{background:#F1F4F8}
-.icon-guide-jump em{font-style:normal;font-size:11px;color:#718096}
-.icon-guide-copied{min-height:18px;margin:10px 0 0;font-size:12px;color:#1596AD}
+.icon-guide-jump em{font-style:normal;font-size:0.75rem;color:#718096}
+.icon-guide-copied{min-height:1.125rem;margin:0.5rem 0 0;font-size:0.75rem;color:#1596AD}
 
-.icon-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:8px}
-.icon-cell{display:flex;flex-direction:column;align-items:center;gap:5px;padding:14px 8px;border:1px solid var(--line);border-radius:6px;background:#fff;cursor:pointer;text-align:center;font:inherit}
+.icon-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(9.25rem,1fr));gap:0.5rem}
+.icon-cell{display:flex;flex-direction:column;align-items:center;gap:0.25rem;padding:0.75rem 0.5rem;border:1px solid var(--line);border-radius:0.25rem;background:#fff;cursor:pointer;text-align:center;font:inherit}
 .icon-cell:hover{border-color:#1596AD;background:#F7FCFD}
-.icon-cell:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(21,150,173,.25)}
-.icon-cell-art{display:flex;align-items:center;justify-content:center;height:28px;color:var(--text)}
-.icon-cell code{font-size:12px;color:#2D3748;word-break:break-all}
-.icon-cell small{font-size:11px;color:#718096}
-.icon-cell em{font-style:normal;font-size:10px;color:#A0AEC0;word-break:break-all}
+.icon-cell:focus-visible{outline:none;box-shadow:0 0 0 0.1875rem rgba(21,150,173,.25)}
+.icon-cell-art{display:flex;align-items:center;justify-content:center;height:1.75rem;color:var(--text)}
+.icon-cell code{font-size:0.75rem;color:#2D3748;word-break:break-all}
+.icon-cell small{font-size:0.75rem;color:#718096}
+.icon-cell em{font-style:normal;font-size:0.625rem;color:#A0AEC0;word-break:break-all}
 
 .page .icon-guide-table{table-layout:auto}
 .page .icon-guide-table td{text-align:left}
-.icon-size-rows{display:flex;flex-direction:column;gap:10px}
-.icon-size-row{display:flex;align-items:flex-end;gap:16px}
-.icon-size-sample{display:flex;flex-direction:column;align-items:center;gap:4px}
-.icon-size-sample small{font-size:10px;color:#A0AEC0}
-.icon-size-row code{margin-left:auto;font-size:12px;color:#718096}
+.icon-size-rows{display:flex;flex-direction:column;gap:0.5rem}
+.icon-size-row{display:flex;align-items:flex-end;gap:1rem}
+.icon-size-sample{display:flex;flex-direction:column;align-items:center;gap:0.25rem}
+.icon-size-sample small{font-size:0.625rem;color:#A0AEC0}
+.icon-size-row code{margin-left:auto;font-size:0.75rem;color:#718096}
 
 
-.icon-guide-page code{font-size:12px;padding:1px 5px;border-radius:4px;background:#f1f4f8;color:#10707f;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.icon-guide-page code{font-size:0.75rem;padding:1px 0.25rem;border-radius:0.25rem;background:#f1f4f8;color:#10707f;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
 .icon-cell code{padding:0;background:none;color:#2D3748}
 .icon-token{margin-bottom:0}
 
 @media(max-width:720px){
-  .icon-guide{padding:12px}
-  .icon-grid{grid-template-columns:repeat(auto-fill,minmax(118px,1fr))}
+  .icon-guide{padding:0.5rem}
+  .icon-grid{grid-template-columns:repeat(auto-fill,minmax(7.375rem,1fr))}
   .icon-size-row code{display:none}
 }

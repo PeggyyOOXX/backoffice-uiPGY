@@ -11,7 +11,7 @@
   font: inherit;
   text-align: left;
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-underline-offset: 0.1875rem;
   cursor: pointer;
   overflow-wrap: anywhere;
 }

@@ -39,10 +39,10 @@ window.iconButtonGuide = () => `<section class="component-example" id="icon-butt
     ${iconButton({ icon:icon('edit'), label:'編輯', kind:'btn-edit' })}${iconButton({ icon:icon('loginRecord'), label:'登入紀錄', kind:'btn-record' })}${iconButton({ icon:icon('delete'), label:'刪除', kind:'btn-danger' })}
   </div>
   <dl>
-    <div><dt>尺寸</dt><dd>34 × 34px，桌機與手機相同；與文字按鈕、分頁按鈕、輸入框同高</dd></div>
-    <div><dt>圓角</dt><dd>4px，與一般按鈕相同</dd></div>
-    <div><dt>圖示大小</dt><dd>16px，stroke-width 2.5</dd></div>
-    <div><dt>按鈕間距</dt><dd>8px</dd></div>
+    <div><dt>尺寸</dt><dd>2.125rem(34px) × 2.125rem(34px)，桌機與手機相同；與文字按鈕、分頁按鈕、輸入框同高</dd></div>
+    <div><dt>圓角</dt><dd>0.25rem(4px)，與一般按鈕相同</dd></div>
+    <div><dt>圖示大小</dt><dd>1rem(16px)，stroke-width 2.5</dd></div>
+    <div><dt>按鈕間距</dt><dd>0.5rem(8px)</dd></div>
     <div><dt>配色</dt><dd>沿用 semantic-btn 語意色與 hover／focus／disabled</dd></div>
     <div><dt>排列</dt><dd>表格操作欄置中，工具列靠左</dd></div>
   </dl>

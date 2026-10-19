@@ -2,153 +2,153 @@
 .brand {
   /* 高度改由 sticky-topbar-and-workspace-tabs.css 的 --brand-h 決定（64px），
      topbar 高度要跟著它扣掉 .main 的上緣留白，兩條線才接得起來。 */
-  padding: 0 16px;
-  gap: 9px;
+  padding: 0 1rem;
+  gap: 0.5rem;
 }
 .brand-mark {
-  width: 30px;
-  height: 30px;
-  border-radius: 9px;
-  font-size: 12px;
+  width: 1.875rem;
+  height: 1.875rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
 }
 .brand strong {
-  font-size: 15px;
+  font-size: 0.875rem;
 }
 .nav-label {
-  padding: 15px 16px 5px;
+  padding: 1rem 1rem 0.25rem;
 }
 .nav {
-  padding: 0 8px;
+  padding: 0 0.5rem;
 }
 .nav-item {
-  height: 36px;
-  padding: 0 9px;
-  gap: 8px;
+  height: 2.25rem;
+  padding: 0 0.5rem;
+  gap: 0.5rem;
   margin: 2px 0;
-  border-radius: 7px;
+  border-radius: 0.5rem;
 }
 .profile-mini {
-  margin: auto 9px 10px;
-  padding: 8px;
-  border-radius: 9px;
+  margin: auto 0.5rem 0.5rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
 }
 .topbar {
   /* 高度改由 sticky-topbar-and-workspace-tabs.css 的 --topbar-h 決定，
      與側欄 .brand 的 64px 對齊，也與工作區頁籤的 sticky 偏移共用同一個值。 */
-  padding: 0 20px 0 22px;
-  gap: 10px;
+  padding: 0 1.25rem 0 1.25rem;
+  gap: 0.5rem;
 }
 .topbar-title {
-  font-size: 19px;
+  font-size: 1.125rem;
 }
 .top-actions {
-  gap: 6px;
+  gap: 0.25rem;
 }
 .icon-btn {
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
+  width: 2.125rem;
+  height: 2.125rem;
+  border-radius: 0.5rem;
 }
 .avatar {
-  width: 32px;
-  height: 32px;
+  width: 2rem;
+  height: 2rem;
 }
 .page {
-  min-height: calc(100vh - 72px);
-  padding: 12px 14px 24px;
+  min-height: calc(100vh - 4.5rem);
+  padding: 0.75rem 0.75rem 1.5rem;
 }
 .page-head {
-  min-height: 76px;
-  margin-bottom: 10px;
-  padding: 12px 14px;
-  border-radius: 10px;
+  min-height: 4.75rem;
+  margin-bottom: 0.5rem;
+  padding: 0.75rem 0.75rem;
+  border-radius: 0.5rem;
 }
 .page-head h1 {
-  font-size: 20px;
-  margin-bottom: 3px;
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
 }
 .page-head p {
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 .stats {
-  gap: 8px;
-  margin-bottom: 9px;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 .stat {
-  padding: 10px 11px;
-  gap: 8px;
-  border-radius: 9px;
+  padding: 0.5rem 0.75rem;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
 }
 .stat-icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
+  width: 2.125rem;
+  height: 2.125rem;
+  border-radius: 0.5rem;
 }
 .stat-label {
   margin-bottom: 2px;
 }
 .stat-value {
-  font-size: 19px;
+  font-size: 1.125rem;
 }
 .card {
-  border-radius: 10px;
+  border-radius: 0.5rem;
 }
 .filters {
-  padding: 11px;
-  margin-bottom: 9px;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 .filter-row {
-  gap: 7px;
+  gap: 0.5rem;
 }
 .field label {
-  margin-bottom: 4px;
-  font-size: 12px;
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
 }
 .control {
-  height: 34px;
-  padding: 0 9px;
-  border-radius: 7px;
+  height: 2.125rem;
+  padding: 0 0.5rem;
+  border-radius: 0.5rem;
 }
 .primary {
-  padding: 8px 12px;
-  border-radius: 7px;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
 }
 .secondary {
-  height: 34px;
-  padding: 0 10px;
-  border-radius: 7px;
+  height: 2.125rem;
+  padding: 0 0.5rem;
+  border-radius: 0.5rem;
 }
 .filter-actions {
-  gap: 5px;
+  gap: 0.25rem;
 }
 .table-toolbar {
-  padding: 9px 11px;
-  gap: 7px;
+  padding: 0.5rem 0.75rem;
+  gap: 0.5rem;
 }
 .table-toolbar h2 {
-  font-size: 15px;
+  font-size: 0.875rem;
 }
 /* 表格的密度跟其他外觀一起放在 unified-table-system.css。
    這裡原本有一組一模一樣的 padding／font-size，值相同、import 更早，
    純粹是重複——留著只會讓人以為表格樣式可以在這裡調。 */
 .user {
-  gap: 7px;
+  gap: 0.5rem;
 }
 .user .avatar {
-  width: 32px;
-  height: 32px;
+  width: 2rem;
+  height: 2rem;
 }
 .badge {
-  padding: 4px 7px;
+  padding: 0.25rem 0.5rem;
 }
 .action {
-  padding: 4px;
+  padding: 0.25rem;
 }
 .pagination {
-  padding: 9px 11px;
+  padding: 0.5rem 0.75rem;
 }
 .pages {
-  gap: 3px;
+  gap: 0.25rem;
 }
 /* 分頁按鈕與其他方形控制（圖示按鈕、排序鈕）同高，都是 34px；
    圓角由 button-corner-radius 統一成 4px。先前這裡壓成 28px，
@@ -164,43 +164,43 @@
 }
 .chart-grid,
 .split {
-  gap: 9px;
-  margin-bottom: 9px;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 .chart-card,
 .mini-card {
-  padding: 12px;
+  padding: 0.75rem;
 }
 .section-title {
-  margin-bottom: 10px;
+  margin-bottom: 0.5rem;
 }
 .bars {
-  height: 190px;
-  gap: 8px;
-  padding-top: 10px;
+  height: 11.875rem;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
 }
 .activity {
-  gap: 8px;
-  padding: 8px 0;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
 }
 .activity-icon {
-  width: 30px;
-  height: 30px;
-  border-radius: 7px;
+  width: 1.875rem;
+  height: 1.875rem;
+  border-radius: 0.5rem;
 }
 .review-row {
-  padding: 10px 11px;
-  gap: 8px;
+  padding: 0.5rem 0.75rem;
+  gap: 0.5rem;
 }
 .campaign-grid {
-  gap: 8px;
+  gap: 0.5rem;
 }
 .campaign {
-  padding: 12px;
-  min-height: 150px;
+  padding: 0.75rem;
+  min-height: 9.375rem;
 }
 .campaign h3 {
-  margin: 7px 0 4px;
+  margin: 0.5rem 0 0.25rem;
 }
 .campaign p {
   line-height: 1.4;
@@ -209,103 +209,103 @@
   margin-top: auto;
 }
 .setting-layout {
-  grid-template-columns: 190px 1fr;
-  gap: 9px;
+  grid-template-columns: 11.875rem 1fr;
+  gap: 0.5rem;
 }
 .setting-nav {
-  padding: 7px;
+  padding: 0.5rem;
 }
 .setting-nav div {
-  padding: 8px 9px;
+  padding: 0.5rem 0.5rem;
   margin: 1px;
-  border-radius: 7px;
+  border-radius: 0.5rem;
 }
 .setting-form {
-  padding: 14px;
+  padding: 0.75rem;
 }
 .setting-section {
-  padding-bottom: 14px;
-  margin-bottom: 14px;
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 .setting-section p {
-  margin-bottom: 10px;
+  margin-bottom: 0.5rem;
 }
 .form-grid {
-  gap: 8px;
+  gap: 0.5rem;
 }
 .setting-line {
-  padding: 8px 0;
+  padding: 0.5rem 0;
 }
 .detail-grid {
-  gap: 12px 9px;
-  margin-top: 14px;
+  gap: 0.75rem 0.5rem;
+  margin-top: 0.75rem;
 }
 .drawer-body {
-  padding: 15px;
+  padding: 1rem;
 }
 .drawer-foot {
-  padding: 10px 15px;
+  padding: 0.5rem 1rem;
 }
 .risk-box {
-  padding: 10px;
-  margin-top: 14px;
+  padding: 0.5rem;
+  margin-top: 0.75rem;
 }
 @media (max-width: 720px) {
   .topbar {
-    height: 56px;
-    padding: 0 10px;
+    height: 3.5rem;
+    padding: 0 0.5rem;
   }
   .icon-btn {
-    width: 40px;
-    height: 40px;
+    width: 2.5rem;
+    height: 2.5rem;
   }
   .page {
-    min-height: calc(100vh - 56px);
-    padding: 8px 8px 20px;
+    min-height: calc(100vh - 3.5rem);
+    padding: 0.5rem 0.5rem 1.25rem;
   }
   .page-head {
-    padding: 12px;
-    margin-bottom: 8px;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
   }
   .stats {
-    gap: 7px;
+    gap: 0.5rem;
   }
   .stat {
-    padding: 10px;
+    padding: 0.5rem;
   }
   /* Input／Select Token 定義 Mobile 高度與 Desktop 同為 34px。
      字級維持 16px：iOS Safari 對 16px 以下的輸入欄位會在聚焦時自動放大整頁。 */
   .control {
-    height: 34px;
-    font-size: 16px;
+    height: 2.125rem;
+    font-size: 1rem;
   }
   .primary,
   .secondary {
-    min-height: 42px;
+    min-height: 2.625rem;
   }
   .mobile-filter {
-    margin-bottom: 8px;
+    margin-bottom: 0.5rem;
   }
   .mobile-card {
-    padding: 12px;
-    margin-bottom: 7px;
-    border-radius: 10px;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0.5rem;
   }
   .mobile-meta {
-    gap: 9px;
-    margin-top: 10px;
-    padding-top: 9px;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
   }
   .mobile-card-bottom {
-    margin-top: 8px;
+    margin-top: 0.5rem;
   }
   .campaign-grid,
   .chart-grid,
   .split,
   .setting-layout {
-    gap: 7px;
+    gap: 0.5rem;
   }
   .campaign {
-    min-height: 138px;
+    min-height: 8.625rem;
   }
 }

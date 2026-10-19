@@ -15,9 +15,9 @@
   /* 按鈕裡那塊內容的高度。文字用它當行高，圖示用它當邊長——
      兩者共用同一個值，所以不管這個數字是多少，兩種按鈕都一樣高。
      要做大一號的按鈕就改這一個值（跟著圖示系統的 16／20／24 三個尺寸走）。 */
-  --btn-content: 16px;
-  --btn-pad-y: 8px;
-  --btn-pad-x: 12px;
+  --btn-content: 1rem;
+  --btn-pad-y: 0.5rem;
+  --btn-pad-x: 0.75rem;
   --btn-border: 1px;
   /* 算出來的高度。按鈕本身不用它（高度是內距撐開的），
      只有需要「同寬」的方形控制拿它當最小寬度。 */
@@ -29,14 +29,14 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 0.25rem;
   padding: var(--btn-pad-y) var(--btn-pad-x);
   border: var(--btn-border) solid transparent;
-  border-radius: 7px;
+  border-radius: 0.5rem;
   color: #fff;
   /* 字級與內容高度是兩回事：14px 的字放在 16px 的行高裡。
      真正決定按鈕高度的是行高，不是字級。 */
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 700;
   line-height: var(--btn-content);
   white-space: nowrap;
@@ -47,10 +47,10 @@
 }
 .semantic-btn:hover:not(:disabled) {
   filter: brightness(0.95);
-  box-shadow: 0 4px 11px rgba(24, 34, 56, 0.12);
+  box-shadow: 0 0.25rem 0.6875rem rgba(24, 34, 56, 0.12);
 }
 .semantic-btn:active:not(:disabled) {
-  transform: translateY(1px);
+  transform: translateY(0.0625rem);
 }
 .semantic-btn:focus-visible {
   outline: 3px solid rgba(40, 127, 152, 0.2);
@@ -131,12 +131,12 @@
 }
 .button-guide-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(210px, 1fr));
-  gap: 8px;
-  margin-bottom: 9px;
+  grid-template-columns: repeat(4, minmax(13.125rem, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 .button-spec {
-  padding: 14px;
+  padding: 0.75rem;
 }
 .button-spec-top {
   display: flex;
@@ -144,59 +144,59 @@
 }
 .button-spec-top code {
   margin-left: auto;
-  padding: 4px 6px;
-  border-radius: 5px;
+  padding: 0.25rem 0.25rem;
+  border-radius: 0.25rem;
   background: #f4f6f8;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 0.75rem;
 }
 .button-spec h3 {
-  font-size: 15px;
-  margin: 13px 0 5px;
+  font-size: 0.875rem;
+  margin: 0.75rem 0 0.25rem;
 }
 .button-spec p {
-  min-height: 48px;
+  min-height: 3rem;
   margin: 0;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.5;
 }
 .button-states {
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
-  margin-top: 13px;
-  padding-top: 11px;
+  gap: 0.25rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
   border-top: 1px solid var(--line);
 }
 /* 這三顆是「預設／次要／停用」的示範，尺寸必須與規範一致（桌機 34px、手機 42px）。
    先前為了塞進窄卡片把它縮成 30／38px，結果量規範頁量到的是另一組數字。
    卡片放不下就換行（上面已經有 flex-wrap），不縮按鈕。 */
 .guide-rules {
-  padding: 14px;
+  padding: 0.75rem;
 }
 .guide-rules h2 {
-  margin: 0 0 12px;
-  font-size: 16px;
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
 }
 .rule-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  gap: 0.75rem;
 }
 .rule-grid > div {
-  padding-left: 10px;
+  padding-left: 0.5rem;
   border-left: 3px solid var(--blue);
 }
 .rule-grid p {
-  margin: 4px 0 0;
+  margin: 0.25rem 0 0;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.45;
 }
 @media (max-width: 1180px) {
   .button-guide-grid {
-    grid-template-columns: repeat(2, minmax(210px, 1fr));
+    grid-template-columns: repeat(2, minmax(13.125rem, 1fr));
   }
   .rule-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -215,55 +215,55 @@
 
 /* --- 「尺寸是算出來的」那一節的排版（按鈕規範頁） --- */
 .button-sizing {
-  padding: 16px;
-  margin-bottom: 16px;
+  padding: 1rem;
+  margin-bottom: 1rem;
 }
 .button-sizing h2 {
-  margin: 0 0 8px;
-  font-size: 16px;
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
 }
 .button-sizing h3 {
-  margin: 20px 0 8px;
-  font-size: 14px;
+  margin: 1.25rem 0 0.5rem;
+  font-size: 0.875rem;
 }
 .button-sizing > p {
-  margin: 0 0 12px;
+  margin: 0 0 0.75rem;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 0.75rem;
   line-height: 1.7;
 }
 /* 公式的每一項：變數名、值、為什麼是這個值 */
 .button-formula {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
+  gap: 0.5rem;
 }
 .button-formula > div {
-  padding: 10px 12px;
+  padding: 0.5rem 0.75rem;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 0.5rem;
 }
 .button-formula code {
   display: block;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: #1596ad;
 }
 .button-formula span {
   display: block;
-  margin-top: 4px;
-  font-size: 15px;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
   font-weight: 700;
 }
 .button-formula em {
   font-style: normal;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 400;
   color: var(--muted);
 }
 .button-formula small {
   display: block;
-  margin-top: 4px;
-  font-size: 11px;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
   line-height: 1.6;
   color: var(--muted);
 }
@@ -276,12 +276,12 @@
 .button-width-demo {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
   flex-wrap: wrap;
 }
 @media (max-width: 720px) {
   .button-sizing {
-    padding: 12px;
+    padding: 0.75rem;
   }
 }
 
@@ -289,18 +289,18 @@
    第二組在容器上改變數，底下的文字按鈕與圖示按鈕會一起跟著變。 */
 .button-size-demo {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 12px;
-  margin-bottom: 4px;
+  grid-template-columns: repeat(auto-fit, minmax(13.75rem, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 0.25rem;
 }
 .button-size-demo > div {
-  padding: 12px;
+  padding: 0.75rem;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 0.5rem;
 }
 .button-size-demo h5 {
-  margin: 0 0 10px;
-  font-size: 12px;
+  margin: 0 0 0.5rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: #1596ad;
 }
@@ -310,11 +310,11 @@
   color: var(--muted);
 }
 .button-size-demo .is-alt {
-  --btn-content: 20px;
+  --btn-content: 1.25rem;
 }
 /* 兩顆底部對齊，才看得出它們一樣高 */
 .button-size-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
 }

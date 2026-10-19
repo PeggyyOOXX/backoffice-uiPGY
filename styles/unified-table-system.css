@@ -11,14 +11,14 @@
    min-width 去抵抗它，其中 5 個只是寫 min-width:0。
    現在改成：表格預設依內容決定寬度，真正寬的資料表自己宣告。 */
 .page .data-table-grid {
-  min-width: 720px;
+  min-width: 45rem;
 }
 .page th,
 .bo-modal th {
-  padding: 8px 11px;
+  padding: 0.5rem 0.75rem;
   background: #f7f8fb;
   color: #68758b;
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.25;
   text-align: center;
   white-space: normal;
@@ -27,7 +27,7 @@
 }
 .page td,
 .bo-modal td {
-  padding: 9px 11px;
+  padding: 0.5rem 0.75rem;
   text-align: center;
   border-bottom: 1px solid #edf0f4;
 }

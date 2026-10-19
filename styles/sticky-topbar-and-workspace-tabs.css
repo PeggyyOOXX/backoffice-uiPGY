@@ -16,9 +16,9 @@
    同一個高度。先前把它收進桌機的區段，720px 以下就掉回主題檔的 84px，logo 區會變高。 */
 :root {
   /* 側欄 logo 區的高度，也就是那條分隔線的位置 */
-  --brand-h: 64px;
+  --brand-h: 4rem;
   /* workspace-top-gap-override 讓 .main 浮起來的上緣留白 */
-  --main-gap-top: 12px;
+  --main-gap-top: 0.75rem;
   /* 扣掉留白之後，topbar 底線才會落在 --brand-h 上 */
   --topbar-h: calc(var(--brand-h) - var(--main-gap-top));
 
@@ -26,13 +26,13 @@
      所以另有一個高度。頁籤列的 top 必須等於它——先前 topbar 是 46px、
      頁籤列寫死 top: 50px，中間那 4px 沒有人蓋，捲動時內容會從縫裡穿過去。
      兩個值綁在同一個變數，就不會再各自飄走。 */
-  --topbar-h-mobile: 46px;
-  --quick-tabs-h-mobile: 38px;
+  --topbar-h-mobile: 2.875rem;
+  --quick-tabs-h-mobile: 2.375rem;
   /* 手機版「搜尋條件」那顆開關的高度，以及整疊固定內容的底部位置。
      篩選列面板、內容的上緣留白、背景遮板全部從這裡算，不各寫一個數字。 */
-  --mobile-search-toggle-h: 40px;
+  --mobile-search-toggle-h: 2.5rem;
   --mobile-header-h: calc(var(--topbar-h-mobile) + var(--quick-tabs-h-mobile));
-  --mobile-search-toggle-top: calc(var(--mobile-header-h) + 4px);
+  --mobile-search-toggle-top: calc(var(--mobile-header-h) + 0.25rem);
   --mobile-stack-bottom: calc(
     var(--mobile-search-toggle-top) + var(--mobile-search-toggle-h)
   );

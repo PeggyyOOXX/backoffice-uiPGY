@@ -1,27 +1,27 @@
 /* 組合範例（批量型）。版面沿用列表型範例的 .example-* ，這裡只補這一頁多出來的東西。 */
 .example-bulk-page .bulk-feedback {
-  margin-bottom: 12px;
+  margin-bottom: 0.75rem;
 }
 
 /* 遊戲名稱吃掉剩餘寬度，開關欄維持固定 */
 .example-bulk-page .data-table-grid th:nth-child(2),
 .example-bulk-page .data-table-grid td:nth-child(2) {
-  min-width: 160px;
+  min-width: 10rem;
 }
 
 /* 確認彈窗裡的影響清單：只列前幾筆，其餘收成一行 */
 .example-bulk-preview {
-  margin: 12px 0 0;
-  padding: 12px 16px 12px 32px;
+  margin: 0.75rem 0 0;
+  padding: 0.75rem 1rem 0.75rem 2rem;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 0.5rem;
   background: #f7f8fb;
   display: grid;
-  gap: 4px;
+  gap: 0.25rem;
 }
 
 .example-bulk-preview li {
-  font-size: 13px;
+  font-size: 0.75rem;
   line-height: 1.6;
   color: #4a5568;
 }

@@ -1,30 +1,30 @@
 /* 圖片上傳規範頁。拖放區的外觀是元件樣式本身，其他頁面要用就套 .upload-dropzone。 */
-.upload-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.upload-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:1rem}
 .upload-slot{min-width:0}
-.upload-slot-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:8px}
-.upload-slot-head strong{font-size:13px;font-weight:600;color:#111b2b}
-.upload-slot-head small{font-size:11px;color:#718096;white-space:nowrap}
+.upload-slot-head{display:flex;align-items:baseline;justify-content:space-between;gap:0.5rem;margin-bottom:0.5rem}
+.upload-slot-head strong{font-size:0.75rem;font-weight:600;color:#111b2b}
+.upload-slot-head small{font-size:0.75rem;color:#718096;white-space:nowrap}
 
 .upload-dropzone{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
-  min-height:130px;padding:16px;
-  border:1px dashed #CDD8E0;border-radius:6px;background:#F7F9FB;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.25rem;
+  min-height:8.125rem;padding:1rem;
+  border:1px dashed #CDD8E0;border-radius:0.25rem;background:#F7F9FB;
   color:#718096;text-align:center;cursor:pointer;
   transition:border-color .15s,color .15s,background .15s;
 }
 .upload-dropzone:hover,.upload-dropzone.is-dragging{border-color:#1596AD;color:#1596AD;background:#F4FBFC}
-.upload-dropzone:focus-visible{outline:none;border-color:#1596AD;box-shadow:0 0 0 3px rgba(21,150,173,.25)}
-.upload-dropzone p{margin:0;font-size:13px}
-.upload-dropzone small{font-size:11px;color:#A0AEC0}
+.upload-dropzone:focus-visible{outline:none;border-color:#1596AD;box-shadow:0 0 0 0.1875rem rgba(21,150,173,.25)}
+.upload-dropzone p{margin:0;font-size:0.75rem}
+.upload-dropzone small{font-size:0.75rem;color:#A0AEC0}
 
 /* 預覽不裁切，理由寫在使用規則 */
-.upload-preview{max-width:100%;max-height:160px;object-fit:contain;display:block;margin:auto}
+.upload-preview{max-width:100%;max-height:10rem;object-fit:contain;display:block;margin:auto}
 
 @media(max-width:720px){
   .upload-grid{grid-template-columns:1fr}
 }
 
 /* 尺寸提示：規則要在上傳之前就看得到，所以它是區塊的一部分，不是 Tooltip。 */
-.upload-tips{font-size:13px}
-.upload-tips strong{display:block;margin-bottom:6px;font-size:13px;font-weight:600;color:#111b2b}
-.upload-tips ul{margin:0;padding-left:18px;color:#718096;line-height:1.8}
+.upload-tips{font-size:0.75rem}
+.upload-tips strong{display:block;margin-bottom:0.25rem;font-size:0.75rem;font-weight:600;color:#111b2b}
+.upload-tips ul{margin:0;padding-left:1rem;color:#718096;line-height:1.8}

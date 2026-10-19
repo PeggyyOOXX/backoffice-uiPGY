@@ -6,7 +6,7 @@
 .example-mixed-page [data-tab-panel]:not([hidden]) {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 1rem;
 }
 
 .example-mixed-page .bo-tabs {
@@ -15,23 +15,23 @@
 
 /* 設定區塊之間的分隔線。只是一條線，不是另一種卡片。 */
 .example-mixed-divider {
-  height: 1px;
-  margin: 16px 0;
+  height: 0.0625rem;
+  margin: 1rem 0;
   background: var(--line);
 }
 
 .example-mixed-page .guide-switch-rows,
 .example-mixed-page .guide-switch-row + .guide-switch-row {
-  margin-top: 12px;
+  margin-top: 0.75rem;
 }
 
 .example-mixed-page .choice-group > legend {
-  margin-bottom: 12px;
+  margin-bottom: 0.75rem;
 }
 
 /* 批量套用：欄位與按鈕同一列，按鈕對齊欄位底線 */
 .example-mixed-bulk {
-  margin-bottom: 16px;
+  margin-bottom: 1rem;
   align-items: end;
 }
 
@@ -42,13 +42,13 @@
 /* 狀態篩選：一排小按鈕，沿用語意按鈕，不自製第三種樣式 */
 .example-mixed-filters {
   display: flex;
-  gap: 8px;
+  gap: 0.5rem;
   flex-wrap: wrap;
-  margin-bottom: 12px;
+  margin-bottom: 0.75rem;
 }
 
 .example-mixed-page .example-toolbar {
-  margin-bottom: 12px;
+  margin-bottom: 0.75rem;
 }
 
 .example-mixed-sort-hint {
@@ -65,7 +65,7 @@
   font: inherit;
   text-align: left;
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-underline-offset: 0.1875rem;
   cursor: pointer;
   overflow-wrap: anywhere;
 }
@@ -88,39 +88,39 @@
   bottom: auto;
   box-shadow: none;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 0.5rem;
 }
 
 .example-mixed-page .guide-textarea {
   height: auto;
-  min-height: 88px;
-  padding: 8px 10px;
+  min-height: 5.5rem;
+  padding: 0.5rem 0.5rem;
   resize: vertical;
 }
 
 /* 快照彈窗：外殼完全沿用 prepareModal，這裡只給它一個寬一點的規格寬度 */
 dialog.bo-modal.example-mixed-snapshot {
-  width: min(720px, calc(100vw - 32px));
+  width: min(45rem, calc(100vw - 2rem));
 }
 
 .example-mixed-snapshot-heading {
-  margin: 20px 0 12px;
-  font-size: 14px;
+  margin: 1.25rem 0 0.75rem;
+  font-size: 0.875rem;
   font-weight: 600;
   color: #1596ad;
 }
 
 .example-mixed-empty-copy {
   margin: 0;
-  padding: 24px 0;
+  padding: 1.5rem 0;
   text-align: center;
   color: #718096;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 @media (max-width: 720px) {
   .example-mixed-page [data-tab-panel]:not([hidden]) {
-    gap: 12px;
+    gap: 0.75rem;
   }
   .example-mixed-bulk-action {
     justify-content: flex-start;

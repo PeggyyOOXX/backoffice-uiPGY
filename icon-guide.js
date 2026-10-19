@@ -76,7 +76,7 @@ window.renderIconGuide = () => `<div class="style-guide icon-guide-page">
       <span>端點／轉角</span><strong>round</strong>
       <span>顏色</span><strong>currentColor</strong>
       <span>填色</span><strong>none</strong>
-      <span>與文字間距</span><strong>6px</strong>
+      <span>與文字間距</span><strong>4px</strong>
       <span>對齊</span><strong>vertical-align: -.125em</strong>
       <span>無障礙</span><strong>aria-hidden + focusable="false"</strong>
       <span>命名</span><strong>camelCase</strong>
