@@ -21,3 +21,25 @@
   line-height: 1.7;
   color: #4a5568;
 }
+
+/* 工具列的批量動作，與表頭選單並存：一邊可逆、一邊不可逆 */
+.bulk-guide-toolbar {
+  margin: 0 0 12px;
+}
+
+/* 確認彈窗裡的影響清單：只列前幾筆，其餘收成一行 */
+.bulk-guide-preview {
+  margin: 12px 0 0;
+  padding: 12px 16px 12px 32px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f7f8fb;
+  display: grid;
+  gap: 4px;
+}
+
+.bulk-guide-preview li {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #4a5568;
+}

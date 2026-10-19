@@ -3,6 +3,9 @@
 // 不是「有哪些選擇」。被淘汰的兩案留在下方的決策表裡，記錄為什麼不選。
 import { guidePage, decisionTable } from './guide-page.js'
 import { onMatch } from './delegate.js'
+import { icon } from './icons.js'
+import { tag } from './tag-guide.js'
+import { prepareModal } from './modal-system.js'
 import { selectAllControl, selectRowControl, bulkHeader, bulkFeedback, selectionOf, applyBulk, PICK_COLUMN } from './bulk-actions.js'
 import { dataTable } from './data-table.js'
 import './guide-page.css'
@@ -17,6 +20,7 @@ const NAMES = ['Mega Fortune', 'Golden Dragon', 'Lucky Panda', 'Ocean King', 'Fr
 
 const make = () => NAMES.map((name, i) => ({
   id: `G-${1001 + i}`, name, front: i % 2 === 0, home: i % 3 === 0, hot: i % 4 === 0,
+  reviewed: i % 3 === 1,
 }))
 
 const state = { rows: make(), selected: new Set(), menu: '', text: '', undo: null }
@@ -40,16 +44,30 @@ const table = () => {
         selected: state.selected.size, total: state.rows.length, open: state.menu === key,
       }),
     })),
+    { key: 'review', label: '審核', align: 'center' },
   ]
   const rows = state.rows.map(row => ({
     pick: selectRowControl({ name: 'guide', id: row.id, label: row.name, checked: state.selected.has(row.id) }),
     name: esc(row.name),
     ...Object.fromEntries(COLUMNS.map(([key, label]) => [key, switchCell(row, key, label)])),
+    review: tag(row.reviewed ? '已審核' : '待審核', row.reviewed ? 'success' : 'warning'),
   }))
   return dataTable({ name: 'bulk-guide', columns, rows, pagination: false })
 }
 
+// 工具列的批量動作。兩種入口要並存才看得出差別：
+// 表頭選單＝可逆、點了就生效；工具列按鈕＝不可逆、一定先確認。
+// 兩顆都在沒有勾選時停用，不讓人點了才發現沒作用。
+const toolbar = () => {
+  const n = state.selected.size
+  return `<div class="bulk-guide-toolbar member-actions">
+    <button type="button" class="semantic-btn btn-record" data-bulk-guide-review ${n ? '' : 'disabled'}>${icon('batchReview')}批量審核${n ? `（${n}）` : ''}</button>
+    <button type="button" class="semantic-btn btn-danger" data-bulk-guide-delete ${n ? '' : 'disabled'}>${icon('delete')}批量刪除${n ? `（${n}）` : ''}</button>
+  </div>`
+}
+
 const demo = () => `<div class="bulk-guide-demo" data-bulk-guide>
+  ${toolbar()}
   ${bulkFeedback({ name: 'guide', text: state.text, undo: !!state.undo })}
   ${table()}
 </div>`
@@ -60,17 +78,6 @@ const DECISION = [
   ['單筆的操作（編輯、停用、刪除）', '該列的圖示按鈕', '批量入口只處理「多筆的同一件事」，單筆不走這裡'],
   ['不可逆的批量動作（刪除、作廢）', '先開確認彈窗', '表頭選單點下去就生效，不可逆的動作不能這樣處理'],
   ['只有兩三筆資料', '不放批量入口', '一筆一筆改還比較快，多一個入口只是雜訊'],
-]
-
-// 正式後台實際用到批量操作的地方。全站只有 6 個 view 有勾選欄（type="selection"），
-// 掃過一遍的結果，不是憑印象列的。
-const USAGE = [
-  ['遊戲列表', 'gameProviderList/game.vue', '批次／全部調整：前台顯示、首頁顯示、熱門標記', '三個開關欄位'],
-  ['遊戲廳列表', 'gameProviderList/index.vue', '同上，作用在遊戲廳層級', '三個開關欄位'],
-  ['系統遊戲列表', 'systemGameProviderManagement/game.vue', '批次／全部調整狀態（僅啟用／停用）', '一個狀態欄位'],
-  ['系統遊戲廳列表', 'systemGameProviderManagement/index.vue', '同上', '一個狀態欄位'],
-  ['邀請好友審核', 'inviteFriendsReview/index.vue', '批次審核，送出前開 CustomDialog 確認', '不可逆'],
-  ['會員稽核調整', 'memberAuditAdjustment/index.vue', '批次清除／全部清除，送出前開確認彈窗', '不可逆'],
 ]
 
 const REJECTED = [
@@ -87,7 +94,12 @@ window.renderBulkGuide = () => guidePage({
     {
       heading: '勾選與批量入口',
       body: `${demo()}
-        <p class="component-description">點欄位標題旁的 ${'<code>⋯</code>'} 開啟選單。「已勾選」那兩條在沒有勾選任何列時是停用的，不會讓人點了才發現沒作用。</p>
+        <p class="component-description">批量入口有<strong>兩種</strong>，差別在能不能收回：</p>
+        <ul class="bulk-guide-list">
+          <li><strong>欄位表頭的 ${'<code>⋯</code>'} 選單</strong>——可逆的調整（開關、狀態）。點下去就生效，回報列留一個復原。</li>
+          <li><strong>表格上方的按鈕</strong>——不可逆的動作（審核、刪除）。一定先開確認彈窗並列出影響範圍，完成後<strong>不給復原鈕</strong>。</li>
+        </ul>
+        <p class="component-description">兩種入口在沒有勾選任何列時都是停用的——表頭選單停用的是「已勾選」那兩條，「全部」那兩條不受影響。不會讓人點了才發現沒作用。</p>
         <p class="component-description"><strong>全選只選本頁。</strong>跨頁全選要另外明講（例如「選取全部 238 筆」），因為使用者看不到的資料被一起改掉，是批量操作最常見的事故。</p>`,
     },
     {
@@ -98,13 +110,7 @@ window.renderBulkGuide = () => guidePage({
           <li><strong>實際變更幾筆</strong>——其中真的改變了狀態的有多少筆</li>
         </ul>
         <p class="component-description">把 20 筆都設為開啟、其中 17 筆本來就開著，只說「已更新 20 筆」會讓人以為真的動了 20 筆。沒有任何變更時也要講：「原本就是開啟，沒有變更。」</p>
-        <p class="component-description">每個批量動作都要能<strong>復原</strong>。復原鈕跟在回報文字後面，不另外找地方放。</p>`,
-    },
-    {
-      heading: '正式後台用在哪裡',
-      body: `<p class="component-description">全站只有 <strong>6 個頁面</strong>有勾選欄，掃過一遍的結果如下。四個遊戲列表做的是<strong>可逆的批量調整</strong>（點了就生效），兩個審核類做的是<strong>不可逆</strong>（送出前一定開確認彈窗）——這條界線就是上面那兩套規則的來源。</p>
-        ${decisionTable(USAGE, ['頁面', '檔案', '做什麼', '性質'])}
-        <p class="component-description">四個遊戲列表目前的入口是<strong>表格上方兩排下拉</strong>（批次調整／全部調整），也就是下面「沒有採用的做法」裡的第二項。改成表頭選單之後，這四頁可以共用同一組元件。</p>`,
+        <p class="component-description"><strong>可逆的</strong>批量動作都要能復原，復原鈕跟在回報文字後面，不另外找地方放。<strong>不可逆的</strong>則相反——完成後不要放復原鈕，點了沒用的按鈕比沒有更糟；它的退路是送出前那一道確認。</p>`,
     },
     { heading: '哪種情境用哪個入口', body: decisionTable(DECISION) },
     {
@@ -128,8 +134,9 @@ window.renderBulkGuide = () => guidePage({
     ['部分勾選要顯示不確定狀態', '不是未勾選。否則看不出已經選了一些。'],
     ['沒勾選時停用「已勾選」那幾條', '讓人點了才發現沒作用，比直接停用更糟。'],
     ['回報要同時給影響筆數與實際變更筆數', '只講影響筆數會讓人高估這次動作改了多少東西。'],
-    ['每個批量動作都要能復原', '批量動作的錯誤成本是單筆的 N 倍，沒有退路不能上線。'],
-    ['不可逆的批量動作要先確認', '表頭選單點下去就生效；刪除、作廢這類動作要改走確認彈窗。'],
+    ['可逆的批量動作要能復原', '批量動作的錯誤成本是單筆的 N 倍，沒有退路不能上線。'],
+    ['不可逆的批量動作先確認、事後不給復原', '確認彈窗要列出影響範圍。完成後放一個點了沒用的復原鈕，比沒有更糟。'],
+    ['不可逆的動作走工具列按鈕，不進表頭選單', '表頭選單點下去就生效，中間沒有攔截的機會。'],
     ['一次只開一個選單', '同時開兩欄會讓人分不清正在設定哪一欄。'],
     ['批量入口不處理單筆', '單筆操作一律用該列的圖示按鈕，兩者不混用。'],
   ],
@@ -186,3 +193,65 @@ onMatch('click', '[data-bulk-guide-toggle]', (event, button) => {
   const row = state.rows.find(r => r.id === button.dataset.id)
   if (row) { row[button.dataset.key] = !row[button.dataset.key]; redraw() }
 }, { owner: 'bulk-guide' })
+
+// 不可逆的批量動作：送出前先確認，並且在彈窗裡列出影響範圍。
+// 完成後不留復原鈕——點了沒用的復原比沒有更糟。
+function confirmBulk({ title, action, kind, body, run }) {
+  const picked = state.rows.filter(row => state.selected.has(row.id))
+  if (!picked.length) return
+  const dialog = document.createElement('dialog')
+  dialog.innerHTML = `<form>
+    <header><h2>${esc(title)}</h2></header>
+    <div class="bo-modal-body">
+      ${body(picked)}
+      <ul class="bulk-guide-preview">${picked.slice(0, 4).map(row => `<li>${esc(row.name)}</li>`).join('')}${picked.length > 4 ? `<li>…另外 ${picked.length - 4} 筆</li>` : ''}</ul>
+    </div>
+    <footer>
+      <button type="button" class="semantic-btn btn-neutral" data-bulk-guide-close>取消</button>
+      <button type="submit" class="semantic-btn ${kind}">${esc(action)}</button>
+    </footer>
+  </form>`
+  prepareModal(dialog)
+  dialog.querySelector('[data-bulk-guide-close]').onclick = () => dialog.close()
+  dialog.querySelector('form').onsubmit = submit => {
+    submit.preventDefault()
+    state.text = run(picked)
+    state.undo = null
+    dialog.close()
+    redraw()
+  }
+  dialog.addEventListener('close', () => dialog.remove(), { once: true })
+  document.body.append(dialog)
+  dialog.showModal()
+}
+
+onMatch('click', '[data-bulk-guide-review]', () => confirmBulk({
+  title: '批量審核',
+  action: '確認審核',
+  kind: 'btn-record',
+  body: picked => {
+    const pending = picked.filter(row => !row.reviewed).length
+    return `<p>已勾選 <strong>${picked.length}</strong> 筆，其中 <strong>${pending}</strong> 筆待審核。</p>
+      <p>審核通過後立即生效，此操作無法復原。</p>`
+  },
+  run: picked => {
+    const pending = picked.filter(row => !row.reviewed)
+    pending.forEach(row => { row.reviewed = true })
+    state.selected.clear()
+    return pending.length
+      ? `已審核 ${picked.length} 筆中的 ${pending.length} 筆，其餘原本就已審核。`
+      : `${picked.length} 筆原本就已審核，沒有變更。`
+  },
+}), { owner: 'bulk-guide' })
+
+onMatch('click', '[data-bulk-guide-delete]', () => confirmBulk({
+  title: '批量刪除',
+  action: '確認刪除',
+  kind: 'btn-danger',
+  body: picked => `<p>將刪除 <strong>${picked.length}</strong> 筆資料，刪除後無法復原。</p>`,
+  run: picked => {
+    state.rows = state.rows.filter(row => !state.selected.has(row.id))
+    state.selected.clear()
+    return `已刪除 ${picked.length} 筆。`
+  },
+}), { owner: 'bulk-guide' })

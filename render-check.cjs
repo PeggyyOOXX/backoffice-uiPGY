@@ -97,7 +97,7 @@ run(
     BTN +
     "const dataTable=window.dataTable,applyPaging=window.applyPaging,PAGE_SIZES=window.PAGE_SIZES;",
 );
-run("tag-guide.js", PAGE + ICON);
+run("tag-guide.js", PAGE + ICON, ";window.tag=tag");
 run("upload-guide.js", PAGE + ON + ICON + MSG);
 run("steps-guide.js", PAGE + ON + ICON + MSG);
 run(
@@ -118,8 +118,8 @@ run(
 );
 run(
   "bulk-guide.js",
-  PAGE + ON +
-    "const {selectAllControl,selectRowControl,bulkHeader,bulkFeedback,selectionOf,applyBulk,PICK_COLUMN}=window.bulkParts;const dataTable=window.dataTable;",
+  PAGE + ON + ICON + MODAL +
+    "const tag=window.tag;const {selectAllControl,selectRowControl,bulkHeader,bulkFeedback,selectionOf,applyBulk,PICK_COLUMN}=window.bulkParts;const dataTable=window.dataTable;",
 );
 
 const ok = (label) => console.log("  ✓ " + label);

@@ -65,6 +65,7 @@ const ALLOWED = {
   'steps-guide.js|switch': '開站流程的第 2、3 步就是一排開關，照正式後台的實際欄位做',
   'date-picker-guide.js|select': '純時間選擇（el-time-select）本來就是固定間隔選項的下拉，不是另一套 Select',
   'table-guide-page.js|iconButton': '表格的操作欄本來就放圖示按鈕，是真實列的樣子，不是另一套按鈕規範',
+  'bulk-guide.js|dialog': '不可逆的批量動作一定要先確認，這個確認彈窗正是規範本身要求的東西；用的是共用的 prepareModal',
   'bulk-guide.js|switch': '示範批量調整開關欄位，開關本身沿用共用規範',
   'message-guide.js|dialog': '從 <dialog>.showModal() 裡發 Toast，是驗證 top layer 處理的關鍵示範',
 }
