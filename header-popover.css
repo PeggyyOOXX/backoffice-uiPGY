@@ -8,10 +8,10 @@
   text-align:left;
 }
 .header-popover-panel[hidden]{display:none}
-.header-popover-panel>strong{display:block;margin-bottom:0.5rem;font-size:0.75rem;font-weight:600;color:#111b2b}
+.header-popover-panel>strong{display:block;margin-bottom:0.5rem;font-size:0.75rem;font-weight:600;color:var(--sidebar)}
 .header-popover-panel dl{display:flex;flex-direction:column;gap:0.25rem;margin:0}
 .header-popover-panel dl>div{display:flex;justify-content:space-between;gap:1rem}
-.header-popover-panel dt{font-size:0.75rem;color:#718096}
+.header-popover-panel dt{font-size:0.75rem;color:var(--text-muted)}
 .header-popover-panel dd{margin:0;font-size:0.75rem;color:var(--text);font-variant-numeric:tabular-nums}
 
 @media(max-width:720px){

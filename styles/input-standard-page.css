@@ -8,7 +8,7 @@
 }
 .input-standard-intro p {
   margin: 0;
-  color: var(--muted);
+  color: var(--text-muted);
   line-height: 1.55;
 }
 .input-standard-grid {
@@ -27,7 +27,7 @@
 .input-standard-card > p {
   min-height: 2.125rem;
   margin: 0 0 0.75rem;
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 0.75rem;
   line-height: 1.45;
 }
@@ -39,7 +39,7 @@
 .input-demo-row label {
   display: block;
   margin-bottom: 0.25rem;
-  color: #627087;
+  color: var(--text-subtle);
   font-size: 0.75rem;
 }
 .input-demo-mobile {
@@ -60,22 +60,32 @@
   height: 2.125rem;
 }
 .standard-switch {
+  /* inline-flex 不是 flex：flex 是區塊級，表格儲存格的 text-align: center 對它無效，
+     開關會黏在格子左邊（批量頁三個開關欄就是這樣歪掉的）。inline-flex 讓它對外還是
+     行內元素、跟著父層的對齊走，對內仍然用 flex 把旋鈕上下置中。 */
+  display: inline-flex;
+  align-items: center;
   width: 2.625rem;
   height: 1.5rem;
-  padding: 0.25rem;
+  /* 左右的 3px 是推算值，不是間距：(軌道 24 − 旋鈕 18) ÷ 2，讓旋鈕推到任一端時
+     都與軌道同心。上下不寫內距——垂直位置交給 align-items: center，之後不管旋鈕
+     或軌道的尺寸怎麼改都還是正中。
+     先前四邊都寫 3px，被當成一般間距套進 4px 格線後變成 4px：4 + 18 + 4 ＝ 26，
+     比 24px 的軌道還高，旋鈕被上內距往下推、底下只剩 2px，看起來就是偏上。 */
+  padding: 0 0.1875rem;
   border: 0;
   border-radius: 1.25rem;
-  background: #1596ad;
+  background: var(--blue);
 }
 .standard-switch{cursor:pointer;flex:none}
-/* 關閉是實心的中性灰（與 --muted 同一支色），不是淺灰。先前關閉是 #C5CDD7、停用只加 opacity:.45，
+/* 關閉是實心的中性灰（與 --text-muted 同一支色），不是淺灰。先前關閉是 #C5CDD7、停用只加 opacity:.45，
    兩者算出來只差一點亮度，「關閉」與「停用」看起來一樣，使用者分不出這顆能不能按。 */
-.standard-switch[aria-checked="false"]{background:#718087}
+.standard-switch[aria-checked="false"]{background:var(--text-muted)}
 .standard-switch[aria-checked="false"]:after{margin-left:0}
 /* 可操作的兩種狀態都有 hover：顏色加深一階，停用的不會變，滑過去就知道按不按得動。 */
 .standard-switch:not(:disabled):hover{background:#117e91}
 .standard-switch[aria-checked="false"]:not(:disabled):hover{background:#5c6878}
-.standard-switch:focus-visible,.standard-switch.is-focus{outline:3px solid #1596ad55;outline-offset:3px}
+.standard-switch:focus-visible,.standard-switch.is-focus{outline:3px solid var(--blue)55;outline-offset:3px}
 .standard-switch:after {
   content: "";
   display: block;
@@ -99,16 +109,16 @@
   border: 1px dashed #9fb0bb;
   border-radius: 0.5rem;
   background: #fafcfd;
-  color: #627087;
+  color: var(--text-subtle);
   font-size: 0.75rem;
 }
 .standard-editor {
   height: 4.75rem;
-  border: 1px solid #dce2eb;
+  border: 1px solid var(--line-control);
   border-radius: 0.5rem;
   background: linear-gradient(#f5f7f9 1.75rem, #fff 1.75rem);
   padding: 0.5rem;
-  color: #627087;
+  color: var(--text-subtle);
   font-size: 0.75rem;
 }
 .input-standard-tokens {

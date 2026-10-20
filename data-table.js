@@ -88,8 +88,13 @@ export function dataTable({ name = 'table', columns, rows, page = 1, pageSize = 
     const names = [c.className, c.sticky === 'right' && 'is-sticky-right'].filter(Boolean)
     return names.length ? ` class="${esc(names.join(' '))}"` : ''
   }
+  // 表頭只吃寬度，不吃 align：欄名一律置中（unified-table-system 定的），
+  // c.align 說的是「這一欄的內容」怎麼對齊——金額靠右、帳號靠左都是為了讀數字與
+  // 比對字串，欄名沒有這個需求。先前兩者共用同一個 style()，欄名就跟著內容跑掉，
+  // 一整排表頭出現置中、靠左、靠右三種，看起來像沒對齊。
+  const headStyle = c => (c.width ? ` style="width:${c.width}"` : '')
   // header 讓欄位表頭放得下控制項（批量選單、排序鈕）；沒給就是逸出後的 label。
-  const head = columns.map(c => `<th scope="col"${cls(c)}${style(c)}>${c.header ?? esc(c.label)}</th>`).join('')
+  const head = columns.map(c => `<th scope="col"${cls(c)}${headStyle(c)}>${c.header ?? esc(c.label)}</th>`).join('')
   // 分組列在欄名列之上；最後一欄若是固定欄，分組列的那一格也要一起固定，否則橫捲時會錯開。
   const groupRow = groups?.length
     ? `<tr class="data-table-groups">${groups.map((g, index) => {
@@ -130,6 +135,34 @@ export function dataTable({ name = 'table', columns, rows, page = 1, pageSize = 
     </div>
     ${pagination ? paginationBar({ name, page, pageSize, total: count }) : ''}
   </div>`
+}
+
+/**
+ * 重繪時保住表格的橫向捲動位置。
+ *
+ * 重繪一律是把容器的 innerHTML／outerHTML 換掉，新的 .data-table-scroll 是一個全新的
+ * 元素，scrollLeft 從 0 開始——所以橫捲到第七欄時按下任何一顆按鈕（開選單、勾一列、
+ * 切開關、套用批量），表格都會彈回最左邊，使用者得重新捲回去才找得到剛才那一欄。
+ *
+ * 位置以表格的 name（data-table-root）為鍵記住，所以同一頁有多張表也不會對錯。
+ * 重繪前後容器本身被換掉沒關係，查的是重繪後文件裡的那一個。
+ *
+ * 用法：keepTableScroll(() => { host.innerHTML = table() })
+ */
+export function keepTableScroll(render) {
+  const boxes = () => document.querySelectorAll('.data-table-scroll')
+  const nameOf = box => box.closest('[data-table-root]')?.dataset.tableRoot
+  const saved = new Map()
+  for (const box of boxes()) {
+    const name = nameOf(box)
+    if (name && box.scrollLeft) saved.set(name, box.scrollLeft)
+  }
+  render()
+  if (!saved.size) return
+  for (const box of boxes()) {
+    const name = nameOf(box)
+    if (saved.has(name)) box.scrollLeft = saved.get(name)
+  }
 }
 
 /**

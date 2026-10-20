@@ -2,9 +2,9 @@
 .token-swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(13.5rem,1fr));gap:0.75rem}
 .token-swatch{display:grid;grid-template-columns:1.75rem 1fr;grid-template-rows:auto auto auto;gap:2px 0.5rem;align-items:center;padding:0.5rem;border:1px solid var(--line);border-radius:0.25rem}
 .token-chip{grid-row:1/4;width:1.75rem;height:1.75rem;border-radius:0.25rem;border:1px solid rgba(0,0,0,.08)}
-.token-swatch code{font-size:0.75rem;color:#718096}
-.token-swatch strong{font-size:0.75rem;font-weight:600;color:#111b2b}
-.token-swatch small{font-size:0.75rem;color:#718096;line-height:1.5}
+.token-swatch code{font-size:0.75rem;color:var(--text-muted)}
+.token-swatch strong{font-size:0.75rem;font-weight:600;color:var(--sidebar)}
+.token-swatch small{font-size:0.75rem;color:var(--text-muted);line-height:1.5}
 
 .page .token-table-grid{table-layout:auto}
 .page .token-table-grid td{text-align:left}
@@ -14,14 +14,14 @@
 
 .token-spacing{display:flex;flex-direction:column;gap:0.5rem}
 .token-space-row{display:flex;align-items:center;gap:0.75rem}
-.token-space-bar{height:0.875rem;background:#1596AD;border-radius:2px;flex:none}
-.token-space-row code{flex:none;width:2.75rem;font-size:0.75rem;color:#718096}
-.token-space-row small{font-size:0.75rem;color:#718096}
+.token-space-bar{height:0.875rem;background:var(--blue);border-radius:2px;flex:none}
+.token-space-row code{flex:none;width:2.75rem;font-size:0.75rem;color:var(--text-muted)}
+.token-space-row small{font-size:0.75rem;color:var(--text-muted)}
 
 /* 12 欄格線示意：欄數與間距就是規範本身 */
 .token-grid-demo{display:grid;grid-template-columns:repeat(12,1fr);gap:1rem}
 .token-grid-demo+.token-grid-demo{margin-top:0.75rem}
-.token-grid-demo>span{display:flex;align-items:center;justify-content:center;height:2.125rem;border-radius:0.25rem;background:#E7F7FA;color:#10707f;font-size:0.75rem}
+.token-grid-demo>span{display:flex;align-items:center;justify-content:center;height:2.125rem;border-radius:0.25rem;background:var(--blue-tint);color:var(--blue-ink);font-size:0.75rem}
 .token-grid-demo>.span-3{grid-column:span 3}
 .token-grid-demo>.span-4{grid-column:span 4}
 .token-grid-demo>.span-6{grid-column:span 6}
@@ -30,5 +30,5 @@
 @media(max-width:720px){
   .token-swatches{grid-template-columns:1fr}
   .token-grid-demo{gap:0.5rem}
-  .token-grid-demo>span{font-size:0.625rem}
+  .token-grid-demo>span{font-size:0.75rem}
 }

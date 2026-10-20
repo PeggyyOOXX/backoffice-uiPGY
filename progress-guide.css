@@ -12,13 +12,13 @@
   min-width: 4rem;
   height: 0.5rem;
   border-radius: 0.25rem;
-  background: #edf1f5;
+  background: var(--line-faint);
   overflow: hidden;
 }
 .bo-progress-fill {
   height: 100%;
   border-radius: 0.25rem;
-  background: #1596ad;
+  background: var(--blue);
   transition: width 0.3s;
 }
 .bo-progress-text {
@@ -26,22 +26,22 @@
   width: 2.5rem;
   text-align: right;
   font-size: 0.75rem;
-  color: #718096;
+  color: var(--text-muted);
   font-variant-numeric: tabular-nums;
 }
 
 /* 自動變色只用在「用量／額度」這種越高越危險的量，理由寫在使用規則 */
 .bo-progress.is-success .bo-progress-fill {
-  background: #12b157;
+  background: var(--success);
 }
 .bo-progress.is-warning .bo-progress-fill {
-  background: #f59e0b;
+  background: var(--warning);
 }
 .bo-progress.is-danger .bo-progress-fill {
-  background: #dc2626;
+  background: var(--danger);
 }
 .bo-progress.is-info .bo-progress-fill {
-  background: #1596ad;
+  background: var(--blue);
 }
 
 /* --- 規範頁排版 --- */
@@ -66,7 +66,7 @@
   flex: none;
   width: 5.75rem;
   font-size: 0.75rem;
-  color: #718096;
+  color: var(--text-muted);
 }
 .page .progress-usage-table {
   min-width: 35rem;

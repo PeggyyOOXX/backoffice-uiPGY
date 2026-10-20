@@ -151,9 +151,20 @@ async function run() {
     }
   }
 
+  // Toast 的語意色改用狀態變數（--success 之類）之後，要先把變數解析回色碼才能
+  // 跟按鈕的最終背景色比對——比的是「畫面上是不是同一個顏色」，不是寫法。
+  const tokenHome = fs.readFileSync('styles/blue-teal-palette-override.css', 'utf8')
+  const resolve = value => {
+    const v = value.trim()
+    if (!v.startsWith('var(')) return v.toUpperCase()
+    const name = v.slice(4, -1).trim()
+    const m = tokenHome.match(new RegExp(name + ':\\s*([^;]+);'))
+    assert.ok(m, `找不到 ${name} 的定義`)
+    return resolve(m[1])
+  }
   const toastColour = Object.fromEntries(
-    [...messageCss.matchAll(/\.bo-message\.is-(\w+)\s*\{\s*color:\s*(#[0-9a-fA-F]{6})/g)]
-      .map(x => [x[1], x[2].toUpperCase()])
+    [...messageCss.matchAll(/\.bo-message\.is-(\w+)\s*\{\s*color:\s*(#[0-9a-fA-F]{6}|var\(--[\w-]+\))/g)]
+      .map(x => [x[1], resolve(x[2])])
   )
 
   const mismatched = []

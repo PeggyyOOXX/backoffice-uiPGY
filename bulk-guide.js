@@ -3,10 +3,11 @@
 // 不是「有哪些選擇」。被淘汰的兩案留在下方的決策表裡，記錄為什麼不選。
 import { guidePage, decisionTable } from './guide-page.js'
 import { onMatch } from './delegate.js'
+import { message } from './message.js'
 import { icon } from './icons.js'
 import { tag } from './tag-guide.js'
 import { prepareModal } from './modal-system.js'
-import { selectAllControl, selectRowControl, bulkHeader, bulkFeedback, selectionOf, applyBulk, PICK_COLUMN } from './bulk-actions.js'
+import { selectAllControl, selectRowControl, bulkHeader, selectionOf, applyBulk, PICK_COLUMN } from './bulk-actions.js'
 import { dataTable } from './data-table.js'
 import './guide-page.css'
 import './bulk-actions.css'
@@ -23,7 +24,7 @@ const make = () => NAMES.map((name, i) => ({
   reviewed: i % 3 === 1,
 }))
 
-const state = { rows: make(), selected: new Set(), menu: '', text: '', undo: null }
+const state = { rows: make(), selected: new Set(), menu: '' }
 const ids = () => state.rows.map(row => row.id)
 
 const switchCell = (row, key, label) =>
@@ -68,7 +69,6 @@ const toolbar = () => {
 
 const demo = () => `<div class="bulk-guide-demo" data-bulk-guide>
   ${toolbar()}
-  ${bulkFeedback({ name: 'guide', text: state.text, undo: !!state.undo })}
   ${table()}
 </div>`
 
@@ -94,10 +94,10 @@ window.renderBulkGuide = () => guidePage({
     {
       heading: '勾選與批量入口',
       body: `${demo()}
-        <p class="component-description">批量入口有<strong>兩種</strong>，差別在能不能收回：</p>
+        <p class="component-description">批量入口有<strong>兩種</strong>，差別在要不要先攔一道：</p>
         <ul class="bulk-guide-list">
-          <li><strong>欄位表頭的 ${'<code>⋯</code>'} 選單</strong>——可逆的調整（開關、狀態）。點下去就生效，回報列留一個復原。</li>
-          <li><strong>表格上方的按鈕</strong>——不可逆的動作（審核、刪除）。一定先開確認彈窗並列出影響範圍，完成後<strong>不給復原鈕</strong>。</li>
+          <li><strong>欄位表頭的 ${'<code>⋯</code>'} 選單</strong>——調整類（開關、狀態）。點下去就生效並直接記錄，結果用 Toast 回報。</li>
+          <li><strong>表格上方的按鈕</strong>——不可逆的動作（審核、刪除）。一定先開確認彈窗並列出影響範圍。</li>
         </ul>
         <p class="component-description">兩種入口在沒有勾選任何列時都是停用的——表頭選單停用的是「已勾選」那兩條，「全部」那兩條不受影響。不會讓人點了才發現沒作用。</p>
         <p class="component-description"><strong>全選只選本頁。</strong>跨頁全選要另外明講（例如「選取全部 238 筆」），因為使用者看不到的資料被一起改掉，是批量操作最常見的事故。</p>`,
@@ -110,7 +110,8 @@ window.renderBulkGuide = () => guidePage({
           <li><strong>實際變更幾筆</strong>——其中真的改變了狀態的有多少筆</li>
         </ul>
         <p class="component-description">把 20 筆都設為開啟、其中 17 筆本來就開著，只說「已更新 20 筆」會讓人以為真的動了 20 筆。沒有任何變更時也要講：「原本就是開啟，沒有變更。」</p>
-        <p class="component-description"><strong>可逆的</strong>批量動作都要能復原，復原鈕跟在回報文字後面，不另外找地方放。<strong>不可逆的</strong>則相反——完成後不要放復原鈕，點了沒用的按鈕比沒有更糟；它的退路是送出前那一道確認。</p>`,
+        <p class="component-description">回報一律用 <strong>Toast</strong>，不在表格上方留一條常駐的回報列——判準是「訊息消失後使用者還需不需要它」，而批量的結果看過就沒有下一步了。</p>
+        <p class="component-description"><strong>不給復原。</strong>點下去就生效並直接記錄；需要退路的動作改走確認彈窗，在送出<strong>之前</strong>攔，不是事後收回。一個放在畫面上的復原鈕會讓人以為批量可以隨便試。</p>`,
     },
     { heading: '哪種情境用哪個入口', body: decisionTable(DECISION) },
     {
@@ -126,7 +127,7 @@ window.renderBulkGuide = () => guidePage({
     ['選單位置', '表頭下方 4px，靠右對齊'],
     ['選單項目', '12px / 高 34px / 左對齊'],
     ['選單分隔線', '已勾選與全部之間一條 1px'],
-    ['回報文字', '12px / #1596ad'],
+    ['結果回報', 'Toast（message.success）'],
     ['同時展開的選單', '1（開新的會關掉舊的）'],
   ],
   rules: [
@@ -134,8 +135,8 @@ window.renderBulkGuide = () => guidePage({
     ['部分勾選要顯示不確定狀態', '不是未勾選。否則看不出已經選了一些。'],
     ['沒勾選時停用「已勾選」那幾條', '讓人點了才發現沒作用，比直接停用更糟。'],
     ['回報要同時給影響筆數與實際變更筆數', '只講影響筆數會讓人高估這次動作改了多少東西。'],
-    ['可逆的批量動作要能復原', '批量動作的錯誤成本是單筆的 N 倍，沒有退路不能上線。'],
-    ['不可逆的批量動作先確認、事後不給復原', '確認彈窗要列出影響範圍。完成後放一個點了沒用的復原鈕，比沒有更糟。'],
+    ['不給復原，點了就生效並直接記錄', '退路放在送出之前（確認彈窗），不是事後收回。畫面上留一顆復原鈕，會讓人以為批量可以隨便試。'],
+    ['不可逆的批量動作先確認', '確認彈窗要列出影響範圍，這是它唯一的退路。'],
     ['不可逆的動作走工具列按鈕，不進表頭選單', '表頭選單點下去就生效，中間沒有攔截的機會。'],
     ['一次只開一個選單', '同時開兩欄會讓人分不清正在設定哪一欄。'],
     ['批量入口不處理單筆', '單筆操作一律用該列的圖示按鈕，兩者不混用。'],
@@ -147,8 +148,6 @@ const redraw = () => {
   const host = document.querySelector('[data-bulk-guide]')
   if (host) host.outerHTML = demo()
 }
-
-const snapshot = () => state.rows.map(row => ({ ...row }))
 
 onMatch('click', '[data-bulk-all][data-bulk="guide"]', (event, box) => {
   if (box.checked) ids().forEach(id => state.selected.add(id))
@@ -171,22 +170,15 @@ onMatch('click', '[data-bulk-action][data-bulk="guide"]', (event, button) => {
   const { key, value, scope } = button.dataset
   const [, label] = COLUMNS.find(([k]) => k === key)
   const optionText = OPTIONS.find(([, v]) => v === value)[0]
-  state.undo = snapshot()
-  state.text = applyBulk({
+  const { text } = applyBulk({
     rows: state.rows,
     ids: scope === 'all' ? ids() : [...state.selected],
     key, value: value === '1', label, optionText,
-  }).text
+  })
   state.menu = ''
   redraw()
-}, { owner: 'bulk-guide' })
-
-onMatch('click', '[data-bulk-undo][data-bulk="guide"]', () => {
-  if (!state.undo) return
-  state.rows = state.undo
-  state.undo = null
-  state.text = '已復原上一次批量調整。'
-  redraw()
+  // 點了就生效並直接記錄，沒有復原。結果走 Toast，不在表格上方留常駐的回報列。
+  message.success(text)
 }, { owner: 'bulk-guide' })
 
 onMatch('click', '[data-bulk-guide-toggle]', (event, button) => {
@@ -195,7 +187,7 @@ onMatch('click', '[data-bulk-guide-toggle]', (event, button) => {
 }, { owner: 'bulk-guide' })
 
 // 不可逆的批量動作：送出前先確認，並且在彈窗裡列出影響範圍。
-// 完成後不留復原鈕——點了沒用的復原比沒有更糟。
+// 這是不可逆動作唯一的退路：攔在送出之前，而不是事後給一顆復原鈕。
 function confirmBulk({ title, action, kind, body, run }) {
   const picked = state.rows.filter(row => state.selected.has(row.id))
   if (!picked.length) return
@@ -215,10 +207,10 @@ function confirmBulk({ title, action, kind, body, run }) {
   dialog.querySelector('[data-bulk-guide-close]').onclick = () => dialog.close()
   dialog.querySelector('form').onsubmit = submit => {
     submit.preventDefault()
-    state.text = run(picked)
-    state.undo = null
+    const text = run(picked)
     dialog.close()
     redraw()
+    message.success(text)
   }
   dialog.addEventListener('close', () => dialog.remove(), { once: true })
   document.body.append(dialog)

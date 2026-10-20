@@ -9,7 +9,7 @@
 .page .bulk-pick-col input[type="checkbox"] {
   width: 1rem;
   height: 1rem;
-  accent-color: #1596ad;
+  accent-color: var(--blue);
   cursor: pointer;
 }
 
@@ -33,7 +33,7 @@
   z-index: 20;
   min-width: 12rem;
   padding: 0.25rem;
-  border: 1px solid #dce2eb;
+  border: 1px solid var(--line-control);
   border-radius: 0.5rem;
   background: #fff;
   box-shadow: 0 0.5rem 1.5rem rgba(21, 35, 63, 0.14);
@@ -66,34 +66,24 @@
 }
 
 .bulk-menu button:hover:not(:disabled) {
-  background: #f0fafb;
-  color: #1596ad;
+  background: var(--blue-tint);
+  color: var(--blue);
 }
 
 .bulk-menu button:disabled {
-  color: #98a2b3;
+  color: var(--text-faint);
   cursor: not-allowed;
 }
 
 .bulk-menu button:focus-visible {
-  outline: 2px solid #1596ad;
+  outline: 2px solid var(--blue);
   outline-offset: -2px;
 }
 
 /* 結果回報。沒有訊息時整行收起，版面不會留一條空白。 */
-.bulk-feedback {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  margin: 0 0 0.75rem;
-  font-size: 0.75rem;
-  color: #1596ad;
-}
 
-.bulk-feedback:empty {
-  display: none;
-}
+
+
 
 /* 高度、內距、字級都不在這裡決定——這顆「復原」和其他按鈕是同一種按鈕。
    先前縮成 28px／12px，站上因此多出第三種按鈕尺寸。 */

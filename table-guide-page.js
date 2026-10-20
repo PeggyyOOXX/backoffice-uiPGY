@@ -19,11 +19,13 @@ const MEMBERS = [
   ['MB-009640', 'Nina Kao', 'VIP 4', '$97,002.00', '觀察中'],
 ]
 
+// 對齊照「欄位對齊」那一節：編號與名稱要從頭比對 → 靠左；餘額要比大小 → 靠右；
+// 等級、狀態、操作只是辨識 → 置中。示範表自己也得照規範寫。
 const COLUMNS = [
-  { key: 'id', label: '會員編號' },
-  { key: 'name', label: '名稱' },
+  { key: 'id', label: '會員編號', align: 'left' },
+  { key: 'name', label: '名稱', align: 'left' },
   { key: 'level', label: '等級' },
-  { key: 'balance', label: '餘額' },
+  { key: 'balance', label: '餘額', align: 'right' },
   { key: 'status', label: '狀態' },
   { key: 'actions', label: '操作' },
 ]
@@ -41,8 +43,15 @@ const MOBILE_DECISION = [
   ['列上的操作要先看完資料才按得下去', '<strong>卡片</strong>', '通過／不通過、作廢這類操作，按之前要先讀'],
   ['要跨列比同一個欄位（報表、金額、佔比）', '<strong>表格</strong>', '拆成卡片就比不了，而且<strong>合計列在卡片裡沒有地方放</strong>'],
   ['要勾選多筆做批量', '<strong>表格</strong>', '卡片化之後「全選本頁」與連續勾選都變難，而勾選正是那一頁的重點'],
-  ['欄位少（4 欄以內）又短', '<strong>表格</strong>', '本來就塞得下，換成卡片反而更長'],
-  ['欄位多但只有 3–4 欄是關鍵', '精簡表格 ＋ 詳情抽屜', '手機只留關鍵欄，其餘點開抽屜看——會員列表就是這一型'],
+]
+
+// 四條主判準都不符合時（這一列只是拿來看）才用欄位數決定。
+// 這一組必須涵蓋所有欄位數，不能留下查不到答案的區間——先前是「4 欄以內 → 表格、
+// 10 欄以上 → 卡片」，5–9 欄沒有歸屬，而禮物卡正好是 9 欄。
+const MOBILE_TIEBREAK = [
+  ['4 欄以內又短', '<strong>表格</strong>', '本來就塞得下，換成卡片反而更長'],
+  ['5–9 欄', '<strong>表格 ＋ 橫向捲動</strong>', '上面四條都不符合，代表這一列只是拿來看——捲一下就看得到，拆成卡片只是把頁面拉長'],
+  ['10 欄以上', '<strong>卡片</strong>', '橫向捲動超過一個螢幕寬，欄位和操作不會同時在畫面上——會員列表 13 欄、風控審核 17 欄都是這一型'],
 ]
 
 // 同一份資料，上面那張表格與下面這組卡片是同一批列。
@@ -81,6 +90,17 @@ const DECISION = [
   ['單頁就放得下（10 筆以內）', '不分頁', '只有一頁時整列隱藏，不要顯示「1 / 1」'],
 ]
 
+// 欄位對齊。判準是「這一欄要拿來做什麼」，不是「它是文字還是數字」——
+// UID 是數字卻要靠左（拿來比對不是比大小），營收佔比是百分比卻要靠右（要比大小）。
+const ALIGN_DECISION = [
+  ['名稱、帳號、代號、說明、IP、設備指紋', '<strong>靠左</strong>',
+    '長度不一的字串，要從第一個字開始比對。靠左讓每一列的起點落在同一條垂直線上，眼睛沿著它往下掃'],
+  ['金額、筆數、百分比、比率', '<strong>靠右</strong>',
+    '個位數對齊之後，位數多寡就等於數字大小，不必一個一個讀。置中會讓 9,860 看起來和 128,420 一樣長'],
+  ['狀態、標籤、幣別、層級、日期時間、操作鈕', '置中',
+    '短、等寬，既不從頭讀也不比大小，只是辨識。窄欄置中看起來最穩'],
+]
+
 window.renderTablePage = () => guidePage({
   slug: 'table',
   title: '表格 Table',
@@ -104,10 +124,35 @@ window.renderTablePage = () => guidePage({
       ].join('\n')}</code></pre>
         <p class="component-description">分頁列由元件自己產生，頁面不再各自拼一組按鈕。換頁與改每頁筆數的狀態用 <code>applyPaging()</code> 計算，「改筆數跳回第 1 頁」的規則就不會有人漏掉。</p>`,
     },
+    {
+      heading: '欄位對齊',
+      body: `<p class="component-description">判準是<strong>「這一欄要拿來做什麼」</strong>，不是「它是文字還是數字」。UID 是數字卻靠左（拿來比對，不是比大小）；營收佔比是百分比卻靠右（要比大小）。</p>
+        ${decisionTable(ALIGN_DECISION, ['這一欄是什麼', '怎麼對齊', '為什麼'])}
+        <p class="component-description"><strong>欄名一律置中</strong>，不跟著內容跑。<code>align</code> 只設定這一欄的<strong>內容</strong>；表頭由共用樣式統一置中，<code>dataTable()</code> 不會把 <code>align</code> 寫進 <code>&lt;th&gt;</code>。一排表頭如果跟著內容出現置中、靠左、靠右三種，看起來就像沒對齊。</p>
+        <div class="guide-pair">
+          <div class="is-bad"><h4>${icon('cancelCircle')}不要</h4><p>整張表全部置中。金額置中之後位數對不齊，要比大小只能一個一個讀；帳號置中之後每一列的起點都不一樣，掃不下去。</p></div>
+          <div class="is-good"><h4>${icon('checkCircle')}要</h4><p>照用途分三種。同一個欄位在不同頁面要一致——「上層代理」在會員列表與審核頁都是帳號，兩邊都靠左。</p></div>
+        </div>
+        <h4>第一欄沒有特權</h4>
+        <p class="component-description">「第一欄」不是一種對齊理由，它一樣照上面的判準走。營收報表的維度欄會跟著頁籤換內容——「總營收」是日期，等寬，<strong>置中</strong>；「遊戲商」「單一遊戲」是長度不一的名稱，<strong>靠左</strong>。
+        同一欄在不同頁籤下對齊不同是對的：那是四張不同的表，欄名也跟著換，使用者不會拿它們互相對照。</p>
+        <p class="component-description">真正不照判準走的只有兩個，它們不是資料欄而是在替整列命名：<strong>合計列的標籤欄</strong>與<strong>權限矩陣的首欄</strong>，兩個都靠左。</p>`,
+    },
     { heading: '什麼時候要分頁', body: decisionTable(DECISION) },
     {
       heading: '手機版：卡片還是表格',
-      body: `<p class="component-description">判準是<strong>「這一列要用來讀，還是用來比」</strong>——不是看欄位多少。要讀完一整筆才能做決定的改成卡片；要跨列比同一個欄位的維持表格。</p>${decisionTable(MOBILE_DECISION, ['情境', '手機上怎麼呈現', '為什麼'])}<h4>同一份資料的兩種排法</h4><p class="component-description">下面是同一批列。桌機兩種並排著看得出差別；實際頁面上同一時間只會出現一種，由上面的判準決定。</p><div class="table-mobile-compare"><div><h5>表格</h5>${dataTable({ name: 'members-compare', columns: COLUMNS, rows: rows(), pagination: false })}</div><div><h5>卡片</h5>${mobileCards()}</div></div><div class="guide-pair"><div class="is-bad"><h4>${icon('cancelCircle')}不要一律改卡片</h4><p>報表拆成卡片就沒辦法上下對齊比數字，合計列也沒有地方放；有勾選的批量頁改成卡片之後，「全選本頁」與連續勾選都會變難。</p></div><div class="is-good"><h4>${icon('checkCircle')}兩種都要，而且有規則</h4><p>卡片與表格都用共用元件（<code>dataCards()</code> 與 <code>dataTable()</code>），吃同一份資料。要切換的是呈現方式，不是重寫一頁。</p></div></div>`,
+      body: `<p class="component-description">判準是<strong>「這一列要用來讀，還是用來比」</strong>——不是看欄位多少。要讀完一整筆才能做決定的改成卡片；要跨列比同一個欄位的維持表格。</p>
+        <div class="guide-pair">
+          <div class="is-bad"><h4>${icon('cancelCircle')}手機不得精簡欄位</h4><p>桌機有十個欄位，手機就要有十個。<strong>不存在「手機只放關鍵欄、其餘點開抽屜看」這種做法</strong>——省掉的欄位在手機上就等於查不到，使用者得換一台電腦才查得到同一筆資料。</p></div>
+          <div class="is-good"><h4>${icon('checkCircle')}換排法，不換資訊量</h4><p>表格與卡片是同一份資料的兩種<strong>排法</strong>，不是兩種<strong>詳細程度</strong>。欄位多就讓卡片長一點，或把關係相近的兩欄併成一格（風控審核的「異動前／後餘額」）——併是為了讀得順，不是為了少放。</p></div>
+        </div>
+        <h4>主判準：這一列要做什麼</h4>
+        <p class="component-description">依序往下看，<strong>第一個符合的就是答案</strong>，不必再往下讀。</p>
+        ${decisionTable(MOBILE_DECISION, ['情境', '手機上怎麼呈現', '為什麼'])}
+        <h4>四條都不符合時，才看欄位數</h4>
+        <p class="component-description">代表這一列只是拿來看，沒有要判斷也沒有要比對。欄位數只是輔助，不會凌駕上面四條——禮物卡 9 欄，但它列上有「作廢」這種不可逆操作，所以走第二條用卡片，不是走這裡。</p>
+        ${decisionTable(MOBILE_TIEBREAK, ['欄位數', '手機上怎麼呈現', '為什麼'])}
+        <h4>同一份資料的兩種排法</h4><p class="component-description">下面是同一批列。桌機兩種並排著看得出差別；實際頁面上同一時間只會出現一種，由上面的判準決定。</p><div class="table-mobile-compare"><div><h5>表格</h5>${dataTable({ name: 'members-compare', columns: COLUMNS, rows: rows(), pagination: false })}</div><div><h5>卡片</h5>${mobileCards()}</div></div><div class="guide-pair"><div class="is-bad"><h4>${icon('cancelCircle')}不要一律改卡片</h4><p>報表拆成卡片就沒辦法上下對齊比數字，合計列也沒有地方放；有勾選的批量頁改成卡片之後，「全選本頁」與連續勾選都會變難。</p></div><div class="is-good"><h4>${icon('checkCircle')}兩種都要，而且有規則</h4><p>卡片與表格都用共用元件（<code>dataCards()</code> 與 <code>dataTable()</code>），吃同一份資料。要切換的是呈現方式，不是重寫一頁。</p></div></div>`,
     },
     {
       heading: '折疊規則',
@@ -138,11 +183,14 @@ window.renderTablePage = () => guidePage({
     },
   ],
   tokens: [
-    ['表頭底色', '#F7F8FB'],
-    ['表頭文字', '#68758B / 12px'],
+    ['表頭底色', 'var(--surface-head) #E9EDF4'],
+    ['表頭文字', 'var(--text-subtle) #56637A / 12px'],
     ['表頭內距', '8px 12px'],
     ['內容內距', '8px 12px'],
-    ['內容對齊', '置中'],
+    ['表頭對齊', '一律置中，不跟著內容'],
+    ['表頭換行', '不換行，塞不下改橫向捲動'],
+    ['表頭分隔線', '1px var(--line-strong)（比內容的 #EDF0F4 深一階）'],
+    ['內容對齊', '依用途：名稱帳號靠左、金額靠右、其餘置中'],
     ['列底線', '#EDF0F4'],
     ['hover 底色', '#F9FBFF'],
     ['排序未啟用', '灰色雙箭頭'],

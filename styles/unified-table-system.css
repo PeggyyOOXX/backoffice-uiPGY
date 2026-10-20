@@ -1,5 +1,11 @@
 /* One table look everywhere, taken from the member list table. Per-table CSS
    only sets structure (min-width, layout, sticky column), never these. */
+
+/* 表頭與合計列的配色用 --surface-head／--text-subtle，欄位分隔線用 --line-strong。
+   三支都定義在 styles/blue-teal-palette-override.css 的 :root，與其他介面色放在一起，
+   也列在「設計 Token → 介面色」上；這裡只使用，不在元件檔另開一組色。
+   用變數而不是複製色碼，是因為固定欄（data-table.css 的 .is-sticky-right）橫捲時
+   蓋在內容上，底色必須與表頭完全相同，否則整條表頭會從固定欄那裡斷開。 */
 .page table,
 .bo-modal table {
   width: 100%;
@@ -16,28 +22,30 @@
 .page th,
 .bo-modal th {
   padding: 0.5rem 0.75rem;
-  background: #f7f8fb;
-  color: #68758b;
+  background: var(--surface-head);
+  color: var(--text-subtle);
   font-size: 0.75rem;
   line-height: 1.25;
   text-align: center;
-  white-space: normal;
-  overflow-wrap: anywhere;
-  border-bottom: 1px solid var(--line);
+  /* 欄名一律一橫排，不換行。欄名短、而且是用來「認欄位」的標籤，一換行就會在窄欄
+     裡被拆成一字一行（「活 動 名 稱」），讀起來比橫向捲動還吃力，整列表頭的高度
+     也會被最長的那一欄撐開。塞不下時由 .table-wrap 的橫向捲動吸收，不是壓縮欄名。 */
+  white-space: nowrap;
+  border-bottom: 1px solid var(--line-strong);
 }
 .page td,
 .bo-modal td {
   padding: 0.5rem 0.75rem;
   text-align: center;
-  border-bottom: 1px solid #edf0f4;
+  border-bottom: 1px solid var(--line-faint);
 }
 .page th,
 .bo-modal th {
-  border-right: 1px solid var(--line);
+  border-right: 1px solid var(--line-strong);
 }
 .page td,
 .bo-modal td {
-  border-right: 1px solid #edf0f4;
+  border-right: 1px solid var(--line-faint);
 }
 .page tr > *:last-child,
 .bo-modal tr > *:last-child {
@@ -45,11 +53,11 @@
 }
 .page tbody tr:hover,
 .bo-modal tbody tr:hover {
-  background: #f1f8fa;
+  background: var(--surface-row-hover);
 }
 .page tfoot td,
 .bo-modal tfoot td {
-  background: #f7f8fb;
+  background: var(--surface-head);
 }
 .bo-modal table {
   border-collapse: collapse;

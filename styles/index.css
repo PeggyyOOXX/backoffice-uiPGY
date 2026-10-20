@@ -1,8 +1,6 @@
 /* index.html 原本的 40 個 <style> 區塊，拆檔後順序不變。
    後面的檔案會覆寫前面的，調整順序等同調整層疊優先序。 */
 @import './base.css';
-@import './warm-card-theme.css';
-@import './teal-full-shell-theme.css';
 @import './blue-framed-dashboard-theme.css';
 @import './full-viewport-override.css';
 @import './workspace-top-gap-override.css';
@@ -13,8 +11,6 @@
 @import './quick-tabs-and-grid-alignment.css';
 @import './semantic-button-system.css';
 @import './compact-quick-tab-spacing.css';
-@import './bright-semantic-button-palette.css';
-@import './high-contrast-semantic-palette.css';
 @import './list-toolbar-action-palette.css';
 @import './strict-semantic-token-mapping.css';
 @import './strict-four-column-filter-grid.css';

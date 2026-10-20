@@ -1,11 +1,61 @@
+/* 介面色的單一來源。設計 Token 頁的「介面色」就是照這個 :root 列的，
+   token-check.cjs 會逐支比對兩邊是否一致——規範頁公告一個站上沒有的顏色，
+   比沒有規範更糟。--card 與 --bg 先前定義在更前面的佈景層，值相同，搬過來只是
+   讓「介面色在哪裡」有一個答案。 */
 :root {
-  --navy: #111b2b;
-  --navy2: #172d3a;
-  --blue: #287f98;
-  --blue2: #e8f4f5;
+  --card: #ffffff;
+  --bg: #dfe3e8;
+  --sidebar: #111b2b;
+  --sidebar-deep: #172d3a;
+  --blue: #1596ad;
+  --blue-tint: #e7f7fa;
   --text: #17282e;
-  --muted: #718087;
+  /* 文字四級。先前只定義 --text 與 --text-muted，但站上實際用了十種灰——說明文字、
+     欄名、佔位字各自寫死一個相近的色碼（光是 #718096 就被寫死 71 次，和 --text-muted
+     的 #718087 只差藍色通道 15/255）。補成四級之後每一種用途都有名字可用。 */
+  --text-subtle: #4a5568; /* 次要正文：說明段落、狀態敘述 */
+  --text-muted: #718087; /* 輔助文字：Label、欄名、單位、計數 */
+  --text-faint: #98a2b3; /* 佔位與停用文字 */
+  /* 線三級。--line 畫在白底上，--line-faint 更輕（列底線、格線），
+     --line-strong 用在有底色的區塊上。 */
+  --line-faint: #edf0f4;
   --line: #e1e9e9;
+  /* --line 是為白底畫的。放到有底色的區塊上（表頭 #E9EDF4、面板裡的卡片）亮度差
+     太小就看不見，所以另有一支深一階的線色。兩種用途共用同一支，不各開一個：
+     表頭的欄位分隔線與手機卡片的外框，要的都是「比 --line 重一階」這件事。 */
+  --line-strong: #c6d1db;
+  /* 控制項的框線：輸入框、下拉、日期欄位、選項卡片。比 --line 深一點點，因為
+     它要畫出「這裡可以輸入」的邊界，而不只是分隔兩塊內容。站上原本寫死 21 次。 */
+  --line-control: #dce2eb;
+  /* 表頭與合計列的底色。它比白色列重一階才看得出是表頭；表頭文字直接用
+     --text-subtle，在這個底色上有 6.4:1，比原本專用的 #56637A（5.17:1）更好，
+     也少一支只有表格在用的色。 */
+  --surface-head: #e9edf4;
+  /* 底色三級（白卡片之外的淺底）：--surface 是區塊標頭與停用底，
+     --surface-hover 是 hover 底，--surface-head 最重。 */
+  --surface: #f7f8fb;
+  --surface-hover: #f1f4f8;
+  /* 品牌色深階：連結、強調文字。--blue 當文字用在白底上只有 3.1:1，過不了 AA。 */
+  --blue-ink: #10707f;
+  /* 品牌色淺框線：捲軸拉桿、下拉的選取邊、狀態插圖。比 --blue-tint 重、比 --blue 輕，
+     用在「要看得出是品牌色，但不能搶走內容」的線條上。 */
+  --blue-line: #b9e3ea;
+  /* 表格整列 hover 的底色。它與 --surface-hover（中性灰）不同：表格的 hover 帶品牌
+     色相，因為整列反白時要和「選取」讀起來是同一個系統。AGENTS.md 本來就寫了
+     這個值，只是一直沒有名字。 */
+  --surface-row-hover: #f1f8fa;
+  /* 狀態色。先前站上有兩套並存：base.css 的 --green/--red/--amber，以及語意色的
+     btn-export／btn-danger／btn-warning——同一個「成功」是兩個不同的綠，而元件要用
+     時兩套都沒有變數，只好寫死色碼（光是 #DC2626 就被寫死 19 次）。
+     統一成語意色那一套（它才是「設計 Token → 語意色」上公告的值），
+     舊名字保留為別名，既有的 var(--green) 不必逐一改寫。 */
+  --success: #12b157;
+  --warning: #f59e0b;
+  --danger: #dc2626;
+  --neutral: #a3a3a3;
+  --green: var(--success);
+  --red: var(--danger);
+  --amber: var(--warning);
 }
 .sidebar {
   background: linear-gradient(180deg, #0d1b25 0%, #122a35 100%);

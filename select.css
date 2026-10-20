@@ -1,40 +1,40 @@
-.bo-select-host{width:100%;min-width:0;--el-color-primary:#1596ad;--el-border-radius-base:0.5rem;--el-font-size-base:0.875rem}
-.bo-select-host .el-select__wrapper{min-height:2.125rem;padding:0 0.5rem;border-radius:0.5rem;box-shadow:0 0 0 0.0625rem #dce2eb inset;font-size:0.875rem;font-weight:400}
-.bo-select-host .el-select__wrapper.is-focused{box-shadow:0 0 0 0.0625rem #1596ad inset,0 0 0 0.1875rem rgba(21,150,173,.1)}
+.bo-select-host{width:100%;min-width:0;--el-color-primary:var(--blue);--el-border-radius-base:0.5rem;--el-font-size-base:0.875rem}
+.bo-select-host .el-select__wrapper{min-height:2.125rem;padding:0 0.5rem;border-radius:0.5rem;box-shadow:0 0 0 0.0625rem var(--line-control) inset;font-size:0.875rem;font-weight:400}
+.bo-select-host .el-select__wrapper.is-focused{box-shadow:0 0 0 0.0625rem var(--blue) inset,0 0 0 0.1875rem rgba(21,150,173,.1)}
 .bo-select-host .el-select__selected-item{color:var(--text)}
-.bo-select-host .el-select__placeholder.is-transparent{color:#98a2b3}
-.bo-select-popper{--el-color-primary:#1596ad;border-radius:0.5rem!important;border-color:#dce2eb!important;box-shadow:0 0 0.75rem rgba(21,35,63,.1)!important}
+.bo-select-host .el-select__placeholder.is-transparent{color:var(--text-faint)}
+.bo-select-popper{--el-color-primary:var(--blue);border-radius:0.5rem!important;border-color:var(--line-control)!important;box-shadow:0 0 0.75rem rgba(21,35,63,.1)!important}
 .bo-select-popper .el-select-dropdown__list{padding:0.25rem}
-.bo-select-popper .el-select-dropdown__item{height:2.125rem;line-height:2.125rem;padding:0 0.5rem;border-radius:0.25rem;font-size:0.875rem;color:#111b2b}
-.bo-select-popper .el-select-dropdown__item.is-hovering,.bo-select-popper .el-select-dropdown__item.is-selected{background:#e7f7fa;color:#1596ad;font-weight:400}
+.bo-select-popper .el-select-dropdown__item{height:2.125rem;line-height:2.125rem;padding:0 0.5rem;border-radius:0.25rem;font-size:0.875rem;color:var(--sidebar)}
+.bo-select-popper .el-select-dropdown__item.is-hovering,.bo-select-popper .el-select-dropdown__item.is-selected{background:var(--blue-tint);color:var(--blue);font-weight:400}
 .bo-select-status{width:5.375rem;display:inline-block}
 .bo-select-status .el-select__wrapper{min-height:1.75rem}
 .member-card-head .bo-select-status{margin-left:auto}
 .bo-select-page-size{width:9.75rem;flex:none}
-/* 只調高度，框線沿用一般下拉的灰階（#dce2eb）。
-   這裡原本是 #1596ad，但主色在這套系統裡代表「聚焦中」——.is-focused 就是這個色，
+/* 只調高度，框線沿用一般下拉的灰階（var(--line-control)）。
+   這裡原本是 var(--blue)，但主色在這套系統裡代表「聚焦中」——.is-focused 就是這個色，
    常駐著色會讓人以為這個下拉被選取了。要強調的是旁邊的頁碼，不是每頁筆數。 */
 .bo-select-page-size .el-select__wrapper{min-height:2rem}
 .page select[hidden],.bo-modal select[hidden]{display:none!important}
 
 /* Multi-select tags: same 34px field height, tags sit inside without pushing it taller. */
 .bo-select-host .el-select__selection{gap:0.25rem}
-.bo-select-host .el-tag{height:1.375rem;padding:0 0.25rem;border-radius:0.25rem;background:#e7f7fa;border-color:#b9e3ea;color:#10707f;font-size:0.75rem;font-weight:400}
-.bo-select-host .el-tag .el-tag__close{color:#10707f}
-.bo-select-host .el-tag .el-tag__close:hover{background:#1596ad;color:#fff}
+.bo-select-host .el-tag{height:1.375rem;padding:0 0.25rem;border-radius:0.25rem;background:var(--blue-tint);border-color:var(--blue-line);color:var(--blue-ink);font-size:0.75rem;font-weight:400}
+.bo-select-host .el-tag .el-tag__close{color:var(--blue-ink)}
+.bo-select-host .el-tag .el-tag__close:hover{background:var(--blue);color:#fff}
 .bo-select-host .el-select__input{font-size:0.875rem}
-.bo-select-host.is-error .el-select__wrapper{box-shadow:0 0 0 0.0625rem #dc2626 inset}
-.bo-select-host.is-error .el-select__wrapper.is-focused{box-shadow:0 0 0 0.0625rem #dc2626 inset,0 0 0 0.1875rem rgba(220,38,38,.1)}
+.bo-select-host.is-error .el-select__wrapper{box-shadow:0 0 0 0.0625rem var(--danger) inset}
+.bo-select-host.is-error .el-select__wrapper.is-focused{box-shadow:0 0 0 0.0625rem var(--danger) inset,0 0 0 0.1875rem rgba(220,38,38,.1)}
 
 /* Dropdown header: select-all and the minimum-length hint. */
-.bo-select-popper .el-select-dropdown__header{padding:0.25rem 0.5rem;border-bottom:1px solid #edf0f4}
+.bo-select-popper .el-select-dropdown__header{padding:0.25rem 0.5rem;border-bottom:1px solid var(--line-faint)}
 .bo-select-popper .el-select-dropdown__header:empty{display:none}
 .bo-select-all{width:100%;font-size:0.875rem;line-height:2.125rem}
 .bo-select-all input{margin:0.5rem 0 0}
-.bo-select-hint{margin:0;padding:0.25rem 0;font-size:0.75rem;color:#718096}
-.bo-select-popper .el-select-dropdown__item.is-disabled{color:#98a2b3}
-.bo-select-popper .el-select-group__title{padding-left:0.5rem;font-size:0.75rem;color:#718096}
-.bo-select-popper .el-select-dropdown__empty{font-size:0.75rem;color:#718096}
+.bo-select-hint{margin:0;padding:0.25rem 0;font-size:0.75rem;color:var(--text-muted)}
+.bo-select-popper .el-select-dropdown__item.is-disabled{color:var(--text-faint)}
+.bo-select-popper .el-select-group__title{padding-left:0.5rem;font-size:0.75rem;color:var(--text-muted)}
+.bo-select-popper .el-select-dropdown__empty{font-size:0.75rem;color:var(--text-muted)}
 
 /* Long option text wraps instead of being cut off. */
 .bo-select-wrap .el-select-dropdown__item{height:auto;min-height:2.125rem;line-height:1.5;padding-top:0.5rem;padding-bottom:0.5rem;white-space:normal;overflow-wrap:anywhere}

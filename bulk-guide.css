@@ -19,7 +19,7 @@
 .bulk-guide-list li {
   font-size: 0.75rem;
   line-height: 1.7;
-  color: #4a5568;
+  color: var(--text-subtle);
 }
 
 /* 工具列的批量動作，與表頭選單並存：一邊可逆、一邊不可逆 */
@@ -33,7 +33,7 @@
   padding: 0.75rem 1rem 0.75rem 2rem;
   border: 1px solid var(--line);
   border-radius: 0.5rem;
-  background: #f7f8fb;
+  background: var(--surface);
   display: grid;
   gap: 0.25rem;
 }
@@ -41,5 +41,5 @@
 .bulk-guide-preview li {
   font-size: 0.75rem;
   line-height: 1.6;
-  color: #4a5568;
+  color: var(--text-subtle);
 }

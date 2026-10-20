@@ -10,16 +10,17 @@ const ROWS = [
   ['WD-260918-8819', 'mina_wu', 'LV3', '46,000.00', '已拒絕', 'risk-b'],
 ]
 const TOKENS = [
-  ['表頭底色', '#F7F8FB'],
-  ['表頭文字', '#68758B／12px／line-height 1.25'],
+  ['表頭底色', 'var(--surface-head) #E9EDF4'],
+  ['表頭文字', 'var(--text-subtle) #56637A／12px／line-height 1.25'],
   ['表頭內距', '8px 12px'],
   ['內容內距', '8px 12px'],
-  ['對齊', '表頭與內容一律置中'],
+  ['對齊', '表頭一律置中；內容依用途（名稱帳號靠左、金額靠右、其餘置中）'],
+  ['表頭換行', '不換行，塞不下由 .table-wrap 橫向捲動吸收'],
   ['列底線', '1px #EDF0F4'],
-  ['直分隔線', '表頭 1px var(--line)，內容 1px #EDF0F4'],
+  ['直分隔線', '表頭 1px var(--line-strong)，內容 1px #EDF0F4'],
   ['每列最後一格', '不畫右側分隔線'],
   ['整列 hover', '#F1F8FA'],
-  ['合計列', '底色同表頭 #F7F8FB'],
+  ['合計列', '底色同表頭 var(--surface-head)'],
 ]
 const RULES = [
   ['單一來源', '共用外觀定義在 index.html 的 unified-table-system，以搜尋結果／會員列表為基準。個別表格的 CSS 只負責結構：min-width、table-layout、colgroup、固定欄、欄寬。'],

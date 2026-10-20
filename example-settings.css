@@ -8,9 +8,8 @@
   gap: 1rem;
 }
 
-.example-settings-card {
-  padding: 1rem;
-}
+/* 內距由 example-page.css 的卡片規則統一給（8px，手機 4px），這裡不再另訂——
+   先前這裡寫 16px，同一頁的表單卡片就比表格卡片胖一圈。 */
 
 .example-settings-heading {
   margin: 0 0 0.75rem;
@@ -28,7 +27,7 @@
   margin: 0 0 0.75rem;
   font-size: 0.75rem;
   line-height: 1.6;
-  color: #718096;
+  color: var(--text-muted);
 }
 
 /* 前台／後台 HEAD 並排，窄螢幕疊起來 */
@@ -54,7 +53,7 @@
   gap: 0.75rem;
   padding: 0.75rem 1rem;
   border-bottom: 1px solid var(--line);
-  background: #f7f8fb;
+  background: var(--surface);
 }
 
 .example-mode-head h3 {
@@ -83,7 +82,7 @@
   gap: 0.75rem;
   min-height: 2.5rem;
   padding: 0.25rem 0;
-  border-bottom: 1px solid #eef1f6;
+  border-bottom: 1px solid var(--line-faint);
 }
 
 .example-field-row:last-child {

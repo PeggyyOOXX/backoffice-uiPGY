@@ -1,14 +1,14 @@
 /* 組合範例（審核型）。表格外觀與分頁由共用元件負責，這裡只剩這一頁自己的東西：
    篩選列的欄位排法、明細抽屜的兩欄定義列表、審核彈窗的備註欄與手機卡片。 */
 .risk-actions{display:flex;align-items:center;justify-content:flex-start;gap:0.5rem;flex-wrap:wrap}
-.risk-feedback{margin:0 0 0.75rem;font-size:0.75rem;color:#1596ad}
-.risk-feedback:empty{display:none}
+
+
 
 .risk-search .source-filter-grid>.filter-field{grid-column:auto;grid-row:auto}
 .risk-search .source-filter-grid>.filter-span-2{grid-column:span 2}
 .risk-search .source-filter-actions{grid-row:1/span 4}
 .risk-refresh-row{margin-top:0.75rem;border-top:1px solid var(--line);padding-top:0.75rem}
-.risk-refresh-count{font-size:0.75rem;color:#718096;margin-left:0.75rem}
+.risk-refresh-count{font-size:0.75rem;color:var(--text-muted);margin-left:0.75rem}
 .risk-list-card{overflow:hidden}
 
 
@@ -18,43 +18,48 @@
 
 
 
-.risk-link{color:#1596ad;text-decoration:underline;text-underline-offset:0.1875rem;cursor:pointer}
-.risk-link:focus-visible{outline:2px solid #1596ad;outline-offset:3px}
-.risk-secondary{font-size:0.75rem;color:#718096}
+.risk-link{color:var(--blue);text-decoration:underline;text-underline-offset:0.1875rem;cursor:pointer}
+.risk-link:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+.risk-secondary{font-size:0.75rem;color:var(--text-muted)}
 /* 「誰在處理」：兩種情況（我自己／別人）用同一種字，差別只在下面有沒有按鈕。 */
-.risk-operator{display:block;text-align:left;font-size:0.75rem;color:#718096}
+.risk-operator{display:block;text-align:left;font-size:0.75rem;color:var(--text-muted)}
 .risk-operator:has(+.risk-actions){margin-bottom:0.25rem}
 .page .data-table-grid .risk-actions{justify-content:center}
 .page .data-table-grid .risk-operator{text-align:center}
-.risk-level{display:inline-block;width:0.625rem;height:0.625rem;border-radius:50%;margin-right:0.25rem;background:#1596ad}
+.risk-level{display:inline-block;width:0.625rem;height:0.625rem;border-radius:50%;margin-right:0.25rem;background:var(--blue)}
 .risk-level-2{background:#436ded}.risk-level-3{background:#9763c8}
 
 
 dialog.bo-modal.risk-wide-dialog{width:min(62.5rem,calc(100vw - 2rem))}
 .risk-confirm-note{text-align:center;font-size:0.875rem;margin:0 0 1rem}
-.risk-detail-section{margin-bottom:1.5rem}.risk-detail-section h3{color:#1596ad;font-size:0.875rem;margin:0 0 0.75rem}
+.risk-detail-section{margin-bottom:1.5rem}.risk-detail-section h3{color:var(--blue);font-size:0.875rem;margin:0 0 0.75rem}
 .risk-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border:1px solid var(--line);border-radius:0.5rem;overflow:hidden;margin:0}
 .risk-detail-grid>div{padding:0.75rem 1rem;border-bottom:1px solid var(--line);min-width:0}
-.risk-detail-grid dt{font-size:0.75rem;color:#718096}.risk-detail-grid dd{margin:0.5rem 0 0;font-size:0.875rem;overflow-wrap:anywhere;line-height:1.6}
-.risk-actual{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem;margin-bottom:1.5rem;border:1px solid var(--line);border-radius:0.5rem;color:#1596ad;background:#f5fafb}
+.risk-detail-grid dt{font-size:0.75rem;color:var(--text-muted)}.risk-detail-grid dd{margin:0.5rem 0 0;font-size:0.875rem;overflow-wrap:anywhere;line-height:1.6}
+.risk-actual{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem;margin-bottom:1.5rem;border:1px solid var(--line);border-radius:0.5rem;color:var(--blue);background:var(--blue-tint)}
 .risk-actual strong{font-size:1.25rem}
 .risk-review-notes{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.risk-review-notes label{font-size:0.75rem;min-width:0}.risk-review-notes textarea{display:block;margin-top:0.5rem;resize:vertical;min-height:5.5rem}
-.risk-note-count{display:block;text-align:right;color:#718096;font-size:0.75rem;margin-top:0.25rem}
+.risk-note-count{display:block;text-align:right;color:var(--text-muted);font-size:0.75rem;margin-top:0.25rem}
 .risk-audit-entry{border:1px solid var(--line);border-radius:0.5rem;overflow:hidden;margin-bottom:1rem}
-.risk-audit-entry>header{display:flex;align-items:center;gap:0.75rem;padding:0.75rem 1rem;background:#f7f8fb;border-bottom:1px solid var(--line)}
+.risk-audit-entry>header{display:flex;align-items:center;gap:0.75rem;padding:0.75rem 1rem;background:var(--surface);border-bottom:1px solid var(--line)}
 .risk-audit-entry h3{margin:0;font-size:0.875rem}
-.risk-audit-time{display:block;margin-top:0.25rem;font-size:0.75rem;color:#718096}
+.risk-audit-time{display:block;margin-top:0.25rem;font-size:0.75rem;color:var(--text-muted)}
 .risk-audit-entry>header .badge{margin-left:auto;flex:none}
 .risk-audit-entry .risk-detail-grid{border:0;border-radius:0}
-.risk-audit-deduction{display:flex;align-items:center;justify-content:space-between;gap:0.75rem;margin:0;padding:0.75rem 1rem;color:#1596ad}
+.risk-audit-deduction{display:flex;align-items:center;justify-content:space-between;gap:0.75rem;margin:0;padding:0.75rem 1rem;color:var(--blue)}
 .risk-audit-deduction strong{font-size:1rem}
-.risk-mobile-list{padding:0.5rem}
-.risk-mobile-list .member-card-head small{display:block;margin-top:0.25rem;font-size:0.75rem;color:#718096}
-.risk-mobile-list .member-card-head .badge{margin-left:auto}
-.risk-mobile-list .mobile-meta strong{line-height:1.6;overflow-wrap:anywhere}
-.risk-mobile-list .mobile-meta>div:last-child{grid-column:span 2}
-.risk-mobile-list .mobile-card-bottom{flex-direction:column;align-items:flex-start;gap:0.5rem}
+/* 手機卡片。版面與配色由共用的 dataCards() 決定，這裡只留這一頁多出來的東西。
+   先前這一段還掛著 .member-card-head／.mobile-meta／.mobile-card-bottom 三組選擇器，
+   那是手寫卡片時代的 class——改用 dataCards() 之後它們再也沒有被產生過，整段都選不到
+   東西。其中 .mobile-card-bottom 那條（直向堆疊、靠左）正是舊的操作列排法，留著只會
+   讓人以為現在還是那樣。 */
+/* 容器不自己加內距：左右留白由外層的 .example-card 負責，與會員列表、禮物卡一致。
+   先前這裡有 padding:0.5rem，是手寫卡片時代留下的——那時候卡片外面沒有 .example-card。
+   三頁用同一個 dataCards()、同一種容器，只有這頁多縮一圈，手機上就少了 16px 可用寬度。 */
 .risk-mobile-list .risk-operator{margin:0}
-.risk-mobile-list .risk-actions{width:100%}
+/* 操作靠右，與會員列表一致（共用規則是 .data-card-actions 的 justify-content:flex-end）。
+   先前這裡寫 width:100% 把按鈕組撐滿整列，靠右就失效了——父層確實把它推到右邊，
+   但它本身已經占滿寬度，裡面的按鈕又是 flex-start，看起來就是靠左。 */
+.risk-mobile-list .risk-actions{justify-content:flex-end}
 
 @media(max-width:720px){.example-audit-page .data-table-scroll{display:none}.risk-detail-grid,.risk-review-notes{grid-template-columns:1fr}.risk-actual{align-items:flex-start;flex-direction:column}.risk-refresh-count{display:block;margin:0.25rem 0 0}}

@@ -8,7 +8,20 @@
 .nav-level-3.active {
   padding-left: 3.5rem;
 }
-.nav-level-2 .hierarchy-mark,
+/* 第二層用一個圓點起頭，第三層什麼都不加。
+   層級已經靠縮排表示了，記號只是幫第二層在一長串平鋪項目裡站出來；第三層再加一個
+   就變成兩種記號互相競爭，反而看不出誰包含誰。
+   先前這裡把兩層的記號都關掉（three-level-sidebar-navigation.css 畫的是 L 形轉角），
+   所以兩層都是光禿禿的。 */
+.nav-level-2 .hierarchy-mark {
+  display: block;
+  left: 1.25rem;
+  width: 0.25rem;
+  height: 0.25rem;
+  border: 0;
+  border-radius: 50%;
+  background: currentColor;
+}
 .nav-level-3 .hierarchy-mark {
   display: none;
 }

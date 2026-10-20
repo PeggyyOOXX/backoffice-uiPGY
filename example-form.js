@@ -51,7 +51,7 @@ const dirty = () => JSON.stringify(draft) !== clean
 
 // --- 列表 ---
 const COLUMNS = [
-  { key: 'uid', label: '會員編號' },
+  { key: 'uid', label: '會員編號', align: 'left' },
   { key: 'account', label: '帳號', align: 'left' },
   { key: 'name', label: '姓名', align: 'left' },
   { key: 'branch', label: '所屬站台' },

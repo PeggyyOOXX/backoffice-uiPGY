@@ -147,7 +147,7 @@
   padding: 0.25rem 0.25rem;
   border-radius: 0.25rem;
   background: #f4f6f8;
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 0.75rem;
 }
 .button-spec h3 {
@@ -157,7 +157,7 @@
 .button-spec p {
   min-height: 3rem;
   margin: 0;
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 0.75rem;
   line-height: 1.5;
 }
@@ -190,7 +190,7 @@
 }
 .rule-grid p {
   margin: 0.25rem 0 0;
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 0.75rem;
   line-height: 1.45;
 }
@@ -228,7 +228,7 @@
 }
 .button-sizing > p {
   margin: 0 0 0.75rem;
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 0.75rem;
   line-height: 1.7;
 }
@@ -258,14 +258,14 @@
   font-style: normal;
   font-size: 0.75rem;
   font-weight: 400;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 .button-formula small {
   display: block;
   margin-top: 0.25rem;
   font-size: 0.75rem;
   line-height: 1.6;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 /* 算出來的那一格是結論，底色標出來 */
 .button-formula .is-result {
@@ -307,7 +307,7 @@
 .button-size-demo h5 em {
   font-style: normal;
   font-weight: 400;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 .button-size-demo .is-alt {
   --btn-content: 1.25rem;

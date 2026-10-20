@@ -10,8 +10,8 @@
 .switch-state{display:grid;grid-template-columns:2.625rem minmax(0,1fr);align-items:start;gap:1rem;padding:0.75rem;border:1px solid var(--line);border-radius:0.5rem}
 .switch-state-control{display:flex;align-items:center;min-height:1.5rem}
 .switch-state strong{display:block;font-size:0.75rem;font-weight:600;line-height:1.5}
-.switch-state small{display:block;margin-top:0.25rem;font-size:0.75rem;line-height:1.6;color:#718096;overflow-wrap:anywhere}
-.switch-state-grid+.switch-state-sub{margin:1rem 0 0.5rem;font-size:0.75rem;font-weight:600;color:#718096}
+.switch-state small{display:block;margin-top:0.25rem;font-size:0.75rem;line-height:1.6;color:var(--text-muted);overflow-wrap:anywhere}
+.switch-state-grid+.switch-state-sub{margin:1rem 0 0.5rem;font-size:0.75rem;font-weight:600;color:var(--text-muted)}
 /* 單獨當一張卡用時（window.switchLayoutGuide），小節標題要和其他規範頁同一個字級。 */
 .switch-layout-guide h3{margin:1.5rem 0 0.75rem;font-size:0.875rem}
 

@@ -1,7 +1,10 @@
 /* 組合範例頁的共用版面。三頁（列表／設定／批量）都套這一份，
    個別頁面的 css 只放自己多出來的東西，不要各自再定義一次 .example-page。 */
+/* 這一層只負責把區塊堆起來，不自己加內距：左右留白全站只由 .page 一層給（桌機
+   12px、手機 8px），規範頁的 .style-guide 也是這樣。先前這裡還寫了 16px，桌機就變成
+   .page 12 ＋ 這層 16 ＝ 每邊 28px，同一個瀏覽器裡組合範例比規範頁窄一截。
+   gap 留著，它是區塊之間的垂直節奏，不是外緣留白。 */
 .example-page {
-  padding: 1rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -20,13 +23,14 @@
   margin: 0;
 }
 
-/* 基礎 .card 本身沒有內距，8px 是規範頁 section.card 的值。
-   這裡不能寫 padding:0——表格與分頁列的左右留白一向由外層卡片負責，
-   分頁列自己只帶 margin-top，歸零就會整個貼到卡片邊緣。 */
-.example-card {
-  padding: 0.5rem;
-}
-
+/* 組合範例的卡片內距只有這一個值：8px，就是「設計 Token → 間距」裡的卡片內距。
+   基礎 .card 本身沒有內距，所以要在這裡給；但不能寫 padding:0——表格與分頁列的
+   左右留白一向由外層卡片負責，分頁列自己只帶 margin-top，歸零就會貼到卡片邊緣。
+   三種卡片（包表格的、包表單的、頁尾規範的）吃同一條，不各自訂一個。
+   先前 .example-settings-card 自己寫 16px，同一頁裡表單卡片比表格卡片胖一圈，
+   手機版更是完全沒跟著收。 */
+.example-card,
+.example-settings-card,
 .example-note {
   padding: 0.5rem;
 }
@@ -47,7 +51,7 @@
 .example-note li {
   font-size: 0.75rem;
   line-height: 1.7;
-  color: #4a5568;
+  color: var(--text-subtle);
 }
 
 .example-note strong {
@@ -69,12 +73,12 @@
   gap: 0.75rem;
   padding: 0.5rem 0.75rem;
   background: #fff;
-  border-top: 1px solid #dce2eb;
+  border-top: 1px solid var(--line-control);
   box-shadow: 0 -0.25rem 1.25rem #15233f08;
 }
 .example-save-status {
   font-size: 0.75rem;
-  color: #1596ad;
+  color: var(--blue);
   font-weight: 400;
 }
 .example-save-actions {
@@ -101,8 +105,15 @@
 }
 
 @media (max-width: 720px) {
+  /* 手機把區塊之間的節奏收一階。內距本來就沒有（見上面那條），這裡只調 gap。 */
   .example-page {
-    padding: 0.75rem;
-    gap: 0.75rem;
+    gap: 0.5rem;
+  }
+  /* 卡片自己的內距也收一階。不能歸零——表格與分頁列的左右留白靠這一層，
+     歸零後總筆數與頁碼會貼到卡片邊緣（桌機那條註解講的就是這件事）。 */
+  .example-card,
+  .example-settings-card,
+  .example-note {
+    padding: 0.25rem;
   }
 }

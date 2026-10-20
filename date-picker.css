@@ -1,7 +1,7 @@
 .date-range-host {
   min-width: 0;
   width: 100%;
-  --el-color-primary: #1596ad;
+  --el-color-primary: var(--blue);
   --el-border-radius-base: 0.5rem;
 }
 .date-range-host .el-date-editor.bo-date-range {
@@ -10,10 +10,10 @@
   min-height: 2.125rem;
   padding: 0 0.5rem;
   box-sizing: border-box;
-  box-shadow: 0 0 0 0.0625rem #dce2eb inset;
+  box-shadow: 0 0 0 0.0625rem var(--line-control) inset;
 }
 .date-range-host .el-date-editor.bo-date-range.is-active {
-  box-shadow: 0 0 0 0.0625rem #1596ad inset;
+  box-shadow: 0 0 0 0.0625rem var(--blue) inset;
 }
 .date-range-host .bo-date-range .el-range-input {
   min-width: 0;
@@ -37,7 +37,7 @@
   margin-left: 2px;
 }
 .bo-date-range-popper {
-  --el-color-primary: #1596ad;
+  --el-color-primary: var(--blue);
 }
 @media (max-width: 720px) {
   .bo-date-range-popper {
@@ -166,16 +166,16 @@
   line-height: 1;
   white-space: nowrap;
   color: #fff;
-  background: #1596ad;
-  border-color: #1596ad;
+  background: var(--blue);
+  border-color: var(--blue);
   transition:
     filter 0.16s,
     transform 0.16s,
     box-shadow 0.16s;
 }
 .bo-date-range-popper .el-picker-panel__footer .el-button.is-text {
-  background: #a3a3a3;
-  border-color: #a3a3a3;
+  background: var(--neutral);
+  border-color: var(--neutral);
 }
 .bo-date-range-popper .el-picker-panel__footer .el-button:hover:not(:disabled) {
   filter: brightness(1.06);
@@ -203,7 +203,7 @@
   font-size: 0.875rem;
 }
 .date-picker-guide p {
-  color: var(--muted);
+  color: var(--text-muted);
   line-height: 1.6;
   margin: 0.5rem 0 0.75rem;
 }
@@ -215,7 +215,7 @@
   flex-wrap: wrap;
   gap: 0.5rem 1.25rem;
   margin-top: 0.75rem;
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 0.75rem;
 }
 

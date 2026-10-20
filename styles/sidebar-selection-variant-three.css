@@ -9,7 +9,7 @@
     90deg,
     #416fd5 0%,
     #2589b4 52%,
-    #1596ad 100%
+    var(--blue) 100%
   );
   box-shadow: none;
 }

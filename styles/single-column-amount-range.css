@@ -16,7 +16,7 @@
   opacity: 0.58;
 }
 .amount-range-control span {
-  color: var(--muted);
+  color: var(--text-muted);
   line-height: 1;
   text-align: center;
 }

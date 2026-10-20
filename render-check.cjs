@@ -87,7 +87,7 @@ const STATES = "const emptyRow=window.emptyRow,emptyState=window.emptyState;";
 run(
   "data-table.js",
   ICON + STATES,
-  ";window.dataTable=dataTable;window.dataCards=dataCards;window.applyPaging=applyPaging;window.PAGE_SIZES=PAGE_SIZES",
+  ";window.dataTable=dataTable;window.dataCards=dataCards;window.applyPaging=applyPaging;window.keepTableScroll=keepTableScroll;window.PAGE_SIZES=PAGE_SIZES",
 );
 run("tag-guide.js", PAGE + ICON, ";window.tag=tag");
 run(
@@ -114,12 +114,12 @@ run("message-guide.js", PAGE + ON + ICON + MSG + MODAL);
 run(
   "bulk-actions.js",
   ICON + BTN,
-  ";window.bulkParts={selectAllControl,selectRowControl,bulkHeader,bulkFeedback,selectionOf,applyBulk,PICK_COLUMN}",
+  ";window.bulkParts={selectAllControl,selectRowControl,bulkHeader,selectionOf,applyBulk,PICK_COLUMN}",
 );
 run(
   "bulk-guide.js",
   PAGE + ON + ICON + MODAL +
-    "const tag=window.tag;const {selectAllControl,selectRowControl,bulkHeader,bulkFeedback,selectionOf,applyBulk,PICK_COLUMN}=window.bulkParts;const dataTable=window.dataTable;",
+    "const tag=window.tag;const {selectAllControl,selectRowControl,bulkHeader,selectionOf,applyBulk,PICK_COLUMN}=window.bulkParts;const dataTable=window.dataTable;",
 );
 
 const ok = (label) => console.log("  ✓ " + label);
@@ -338,10 +338,28 @@ assert.ok(
 const switchCss = fs.readFileSync("styles/input-standard-page.css", "utf8");
 // 關閉是實心中性灰、停用是淡底加內描邊，三條都要在——先前停用只加 opacity:.45，
 // 算出來和可操作的關閉是同一個灰，使用者分不出這顆按不按得動。
-assert.ok(
-  switchCss.includes(".standard-switch[aria-checked=\"false\"]{background:#718087}"),
-  "關閉的開關要用實心中性灰 #718087",
-);
+// 關閉用的中性灰現在走 token（--text-muted）。驗的是「畫面上是哪個顏色」而不是寫法，
+// 所以把變數解析回色碼再比對——用變數比寫色碼更不容易走鐘，但值仍然要是那一個。
+{
+  const tokenHome = fs.readFileSync("styles/blue-teal-palette-override.css", "utf8");
+  const resolveVar = (value) => {
+    const v = value.trim();
+    if (!v.startsWith("var(")) return v.toLowerCase();
+    const name = v.slice(4, -1).trim();
+    const m = tokenHome.match(new RegExp(name + ":\\s*([^;]+);"));
+    assert.ok(m, `找不到 ${name} 的定義`);
+    return resolveVar(m[1]);
+  };
+  const off = switchCss.match(
+    /\.standard-switch\[aria-checked="false"\]\{background:([^;}]+)\}/,
+  );
+  assert.ok(off, "找不到關閉狀態的開關配色");
+  assert.equal(
+    resolveVar(off[1]),
+    "#718087",
+    "關閉的開關要用實心中性灰 #718087（--text-muted）",
+  );
+}
 assert.ok(
   switchCss.includes(".standard-switch:disabled{cursor:not-allowed;background:#e4f4f7") &&
     switchCss.includes(".standard-switch[aria-checked=\"false\"]:disabled{background:#f1f3f6"),
@@ -545,10 +563,13 @@ const PALETTE = [
   "#DC2626",
   "#a3a3a3",
 ];
+// 狀態色現在有變數（--success／--warning／--danger／--neutral），指向的就是上面那組
+// 色碼。用變數比寫色碼更不可能跑掉，所以兩種寫法都收；寫死的仍然要落在調色盤上。
+const STATE_VARS = ["--success", "--warning", "--danger", "--neutral", "--blue", "--blue-ink"];
 const SEMANTIC_SOURCES = [
   // \s* 讓它容忍 prettier 把宣告排成多行
-  ['tag-guide.css', /\.bo-tag\.is-[\w-]+\s*\{\s*color:\s*(#[0-9A-Fa-f]{6})/g],
-  ['message.css', /\.bo-message\.is-[\w-]+\s*\{\s*color:\s*(#[0-9A-Fa-f]{6})/g],
+  ['tag-guide.css', /\.bo-tag\.is-[\w-]+\s*\{\s*color:\s*(#[0-9A-Fa-f]{6}|var\(--[\w-]+\))/g],
+  ['message.css', /\.bo-message\.is-[\w-]+\s*\{\s*color:\s*(#[0-9A-Fa-f]{6}|var\(--[\w-]+\))/g],
 ];
 const offPalette = [];
 for (const [file, re] of SEMANTIC_SOURCES) {
@@ -556,8 +577,26 @@ for (const [file, re] of SEMANTIC_SOURCES) {
   const found = [...text.matchAll(re)];
   assert.ok(found.length >= 4, file + " 找不到語意色宣告，選擇器可能改了");
   for (const m of found) {
-    if (!PALETTE.map(c => c.toUpperCase()).includes(m[1].toUpperCase()))
-      offPalette.push(file + " 用了 " + m[1]);
+    const value = m[1];
+    if (value.startsWith("var(")) {
+      const name = value.slice(4, -1);
+      if (!STATE_VARS.includes(name)) offPalette.push(file + " 用了非狀態色的變數 " + value);
+      continue;
+    }
+    if (!PALETTE.map(c => c.toUpperCase()).includes(value.toUpperCase()))
+      offPalette.push(file + " 用了 " + value);
+  }
+}
+// 狀態色的變數必須真的指向調色盤上的值，否則變數只是換個地方發明顏色
+{
+  const home = fs.readFileSync("styles/blue-teal-palette-override.css", "utf8");
+  for (const name of ["--success", "--warning", "--danger", "--neutral"]) {
+    const m = home.match(new RegExp(name + ":\\s*(#[0-9A-Fa-f]{6})"));
+    assert.ok(m, name + " 要在 blue-teal-palette-override.css 的 :root 定義");
+    assert.ok(
+      PALETTE.map(c => c.toUpperCase()).includes(m[1].toUpperCase()),
+      name + " 的值 " + m[1] + " 不在按鈕頁已定義的那一組裡",
+    );
   }
 }
 assert.deepEqual(

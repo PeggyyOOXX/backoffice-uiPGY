@@ -24,14 +24,25 @@ const SEMANTIC = [
 // 介面色：CSS 變數，定義在 styles/ 的層疊最後一層
 const SURFACE = [
   ["--text", "#17282E", "正文"],
-  ["--muted", "#718087", "次要文字、說明"],
-  ["--line", "#E1E9E9", "框線、分隔線"],
+  ["--text-subtle", "#4A5568", "次要正文：說明段落、狀態敘述"],
+  ["--text-muted", "#718087", "輔助文字：Label、欄名、單位、計數"],
+  ["--text-faint", "#98A2B3", "佔位與停用文字"],
+  ["--line-faint", "#EDF0F4", "最輕的線：列底線、卡片內的格線"],
+  ["--line", "#E1E9E9", "框線、分隔線（畫在白底上）"],
+  ["--line-strong", "#C6D1DB", "有底色的區塊上的線：表頭分隔線、手機卡片外框"],
+  ["--line-control", "#DCE2EB", "控制項框線：輸入框、下拉、日期欄位、選項卡片"],
   ["--card", "#FFFFFF", "卡片底"],
+  ["--surface", "#F7F8FB", "淺底：區塊標頭、停用底"],
+  ["--surface-hover", "#F1F4F8", "hover 底"],
+  ["--surface-head", "#E9EDF4", "表頭與合計列底（表頭文字用 --text-subtle）"],
   ["--bg", "#DFE3E8", "頁面底"],
-  ["--navy", "#111B2B", "側欄底"],
-  ["--navy2", "#172D3A", "側欄次層"],
+  ["--sidebar", "#111B2B", "側欄底"],
+  ["--sidebar-deep", "#172D3A", "側欄次層"],
   ["--blue", "#1596AD", "品牌色（同 btn-search）"],
-  ["--blue2", "#E7F7FA", "品牌色淺底"],
+  ["--blue-ink", "#10707F", "品牌色深階：連結、強調文字（--blue 當文字只有 3.1:1）"],
+  ["--blue-line", "#B9E3EA", "品牌色淺框線：捲軸拉桿、選取邊、狀態插圖"],
+  ["--blue-tint", "#E7F7FA", "品牌色淺底"],
+  ["--surface-row-hover", "#F1F8FA", "表格整列 hover（帶品牌色相，與中性的 --surface-hover 不同）"],
 ];
 
 // 字級只用偶數，最小 12px

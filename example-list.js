@@ -5,7 +5,7 @@
 // Toast 這條線完整走過一遍，正好驗證各個規範拼起來是否自洽。
 //
 // 這一頁不套 guidePage()：它是示範「元件怎麼組」，不是規範頁，所以長得像真的頁面。
-import { dataTable, applyPaging, PAGE_SIZES } from './data-table.js'
+import { dataTable, dataCards, applyPaging, keepTableScroll, PAGE_SIZES } from './data-table.js'
 import { tag } from './tag-guide.js'
 import { progressBar } from './progress-guide.js'
 import { iconButton } from './icon-button.js'
@@ -23,7 +23,7 @@ const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': 
 // 狀態／兌換進度／兌換日期區間／建立時間／操作）
 const COLUMNS = [
   { key: 'name', label: '活動名稱', align: 'left' },
-  { key: 'code', label: '兌換代碼' },
+  { key: 'code', label: '兌換代碼', align: 'left' },
   { key: 'face', label: '面額', align: 'right' },
   { key: 'count', label: '生成數量', align: 'right' },
   { key: 'status', label: '狀態' },
@@ -150,11 +150,44 @@ const table = () => {
   return dataTable({
     name: 'gift',
     columns: COLUMNS,
+    caption: '禮物卡管理',
+    // 九欄在手機上塞不下。宣告 scroll 之後捲動容器才帶 tabindex 與 role="region"，
+    // 鍵盤也捲得動；少了它雖然一樣會捲，但只有滑鼠與觸控碰得到。
+    scroll: '1100px',
     rows: list.slice(start, start + STATE.pageSize),
     page: STATE.page,
     pageSize: STATE.pageSize,
     total: list.length,
   })
+}
+
+// 手機換成卡片。判準走「表格 Table → 手機版」的第二條：列上的操作要先看完資料才按
+// 得下去。這一列有「作廢」——不可逆，而且按之前非看不可的是兌換進度：作廢一檔已兌換
+// 1,486 / 2,000 的活動，跟作廢一檔 0 / 3,000 的是完全不同的決定。表格要橫向捲過四欄
+// 才看得到進度，捲回來才按得到按鈕，資料與操作不在同一個畫面上。
+// 九個欄位一個不漏（手機不得精簡欄位）：標題＝活動名稱、副標＝兌換代碼、
+// 右上＝狀態、meta 五格、底下＝三顆操作。
+const cards = () => {
+  const list = visible()
+  const start = (STATE.page - 1) * STATE.pageSize
+  return `<div class="member-mobile-only example-gift-cards">${dataCards({
+    name: 'gift',
+    rows: list.slice(start, start + STATE.pageSize)
+      .map(([id, name, code, face, count, status, claimed, range, created]) => ({
+        attrs: `data-gift-card="${esc(id)}"`,
+        title: esc(name),
+        subtitle: `<code>${esc(code)}</code>`,
+        status: tag(STATUS[status][0], STATUS[status][1]),
+        meta: [
+          ['面額', `$${face.toLocaleString()}`],
+          ['生成數量', count.toLocaleString()],
+          ['兌換進度', `<div class="example-progress-cell"><span>${claimed.toLocaleString()} / ${count.toLocaleString()}</span>${progressBar({ value: (claimed / count) * 100, label: `${name} 已兌換 ${claimed} / ${count}`, tone: 'info', text: 'none' })}</div>`],
+          ['兌換日期區間', esc(range)],
+          ['建立時間', esc(created)],
+        ],
+        actions: actions(id, status),
+      })),
+  })}</div>`
 }
 
 window.renderExampleList = () => `<section class="example-page example-list-page" data-gift-root>
@@ -164,7 +197,7 @@ window.renderExampleList = () => `<section class="example-page example-list-page
   </div>
   ${filters()}
   ${toolbar()}
-  <section class="card example-card" data-gift-list>${table()}</section>
+  <section class="card example-card" data-gift-list>${cards()}${table()}</section>
   <section class="card example-note">
     <h3>這一頁用到哪些規範</h3>
     <ul>
@@ -185,7 +218,7 @@ const redraw = () => {
   // 篩選會改變總筆數，分頁的頁數上限要跟著變，否則停在已不存在的頁碼上會看到空表格
   STATE.total = visible().length
   const host = document.querySelector('[data-gift-list]')
-  if (host) host.innerHTML = table()
+  keepTableScroll(() => { if (host) host.innerHTML = cards() + table() })
 }
 
 const findCard = id => CARDS.find(c => c[0] === id)

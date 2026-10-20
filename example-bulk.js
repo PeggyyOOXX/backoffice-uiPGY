@@ -6,11 +6,11 @@
 // 兜在一起之後還成不成立。
 //
 // 兩種批量情境都走過一遍：
-//   批量開關 → 表頭選單，點下去就生效，可復原。正式後台這一頁本來就有。
+//   批量開關 → 表頭選單，點下去就生效並直接記錄，不給復原。正式後台這一頁本來就有。
 //   批量審核 → 不可逆，先開確認彈窗。行為取自 inviteFriendsReview，
 //              搬過來是因為規範裡「不可逆的批量動作要先確認」需要有地方示範。
-import { dataTable, applyPaging, PAGE_SIZES } from './data-table.js'
-import { selectAllControl, selectRowControl, bulkHeader, bulkFeedback, selectionOf, applyBulk, PICK_COLUMN } from './bulk-actions.js'
+import { dataTable, applyPaging, keepTableScroll, PAGE_SIZES } from './data-table.js'
+import { selectAllControl, selectRowControl, bulkHeader, selectionOf, applyBulk, PICK_COLUMN } from './bulk-actions.js'
 import { tag } from './tag-guide.js'
 import { message } from './message.js'
 import { prepareModal } from './modal-system.js'
@@ -55,8 +55,6 @@ const STATE = {
   rows: makeRows(),
   selected: new Set(),
   menu: '',
-  text: '',
-  undo: null,
   page: 1,
   pageSize: PAGE_SIZES[0],
   total: TITLES.length,
@@ -64,8 +62,6 @@ const STATE = {
   vendor: '',
   status: '',
 }
-
-const snapshot = () => STATE.rows.map(row => ({ ...row }))
 
 const visible = () => STATE.rows.filter(row => {
   const k = STATE.keyword.trim().toLowerCase()
@@ -93,7 +89,7 @@ const table = () => {
   const columns = [
     { ...PICK_COLUMN, header: selectAllControl({ name: NAME, checked, indeterminate }) },
     { key: 'name', label: '遊戲名稱', align: 'left' },
-    { key: 'vendor', label: '遊戲商' },
+    { key: 'vendor', label: '遊戲商', align: 'left' },
     { key: 'type', label: '遊戲類型' },
     { key: 'status', label: '狀態' },
     ...SWITCHES.map(([key, label]) => ({
@@ -108,6 +104,10 @@ const table = () => {
   return dataTable({
     name: NAME,
     columns,
+    caption: '遊戲列表',
+    // 九欄（含勾選欄與三個開關欄）在手機上塞不下。宣告 scroll 之後捲動容器才帶
+    // tabindex 與 role="region"，鍵盤也捲得動。
+    scroll: '1080px',
     rows: rows.map(row => ({
       pick: selectRowControl({ name: NAME, id: row.id, label: row.name, checked: STATE.selected.has(row.id) }),
       name: esc(row.name),
@@ -171,7 +171,6 @@ window.renderExampleBulk = () => `<section class="example-page example-bulk-page
   ${filters()}
   ${toolbar()}
   <section class="card example-card" data-game-list>
-    ${bulkFeedback({ name: NAME, text: STATE.text, undo: !!STATE.undo })}
     ${table()}
   </section>
   <section class="card example-note">
@@ -179,29 +178,32 @@ window.renderExampleBulk = () => `<section class="example-page example-bulk-page
     <ul>
       <li><strong>批量操作</strong>：三個開關欄位的入口收在各自的表頭，選單寫出「已勾選 N 筆」與「全部 N 筆」</li>
       <li><strong>全選只選本頁</strong>：換頁後勾選會保留，但全選框只反映目前這一頁</li>
-      <li><strong>結果回報</strong>：同時給影響筆數與實際變更筆數，並留一個復原</li>
+      <li><strong>結果回報</strong>：同時給影響筆數與實際變更筆數——把 24 筆都設為開啟、其中 12 筆本來就開著，只說「已更新 24 筆」會讓人高估這次動了多少東西</li>
       <li><strong>不可逆的動作先確認</strong>：批量審核會開確認彈窗並列出影響範圍；批量開關不會</li>
       <li><strong>沒勾選就停用</strong>：批量審核在沒勾選時是停用的，表頭選單裡「已勾選 N 筆」那兩條也是</li>
       <li><strong>表格</strong>：表格外殼與分頁都來自 <code>dataTable()</code>，批量元件只提供勾選欄與表頭控制項</li>
       <li><strong>標籤</strong>：狀態與審核狀態依語意對應型別，不是依狀態碼</li>
-      <li><strong>訊息提示</strong>：一次性的結果用 Toast，批量結果用常駐的回報列（因為它帶著復原鈕）</li>
+      <li><strong>訊息提示</strong>：批量結果用 Toast，不在表格上方留常駐的回報列——訊息消失後使用者不再需要它</li>
     </ul>
   </section>
 </section>`
 
 // --- 互動 ---
-const redraw = () => {
+const redraw = () => keepTableScroll(() => {
   const root = document.querySelector('[data-game-root]')
   if (root) root.outerHTML = window.renderExampleBulk()
-}
+})
 
-const refreshList = () => {
+// 批量頁的每一次互動都會重繪整塊（開選單、勾選、切開關、套用），所以重繪一定要
+// 保住橫向捲動位置——九個欄位在手機上捲到第七欄才按得到開關選單，彈回最左邊
+// 等於每按一次就要重捲一次。
+const refreshList = () => keepTableScroll(() => {
   const host = document.querySelector('[data-game-list]')
   if (!host) return redraw()
-  host.innerHTML = `${bulkFeedback({ name: NAME, text: STATE.text, undo: !!STATE.undo })}${table()}`
+  host.innerHTML = table()
   const bar = document.querySelector('[data-game-root] .example-toolbar')
   if (bar) bar.outerHTML = toolbar()
-}
+})
 
 const only = (event, el) => el.dataset.bulk === NAME
 
@@ -263,23 +265,17 @@ onMatch('click', '[data-bulk-action]', (event, button) => {
   const { key, value, scope } = button.dataset
   const [, label] = SWITCHES.find(([k]) => k === key)
   const optionText = OPTIONS.find(([, v]) => v === value)[0]
-  STATE.undo = snapshot()
   // scope=all 作用於「篩選後的全部」，不是資料庫裡的全部——選單上的數字就是這個數
-  STATE.text = applyBulk({
+  const { text } = applyBulk({
     rows: STATE.rows,
     ids: scope === 'all' ? visible().map(row => row.id) : [...STATE.selected],
     key, value: value === '1', label, optionText,
-  }).text
+  })
   STATE.menu = ''
   refreshList()
-}, { owner: 'example-bulk' })
-
-onMatch('click', '[data-bulk-undo]', (event, button) => {
-  if (!only(event, button) || !STATE.undo) return
-  STATE.rows = STATE.undo
-  STATE.undo = null
-  STATE.text = '已復原上一次批量調整。'
-  refreshList()
+  // 點了就生效、直接記錄，沒有復原。結果用 Toast 回報（操作結果一律走 message.js），
+  // 不在表格上方留一條常駐的回報列——訊息消失後使用者不再需要它。
+  message.success(text)
 }, { owner: 'example-bulk' })
 
 onMatch('click', '[data-game-toggle]', (event, button) => {
@@ -315,9 +311,6 @@ onMatch('click', '[data-game-review]', (event, trigger) => {
   dialog.querySelector('form').onsubmit = submit => {
     submit.preventDefault()
     pending.forEach(row => { row.reviewed = true })
-    // 不可逆，所以不給復原——留一個會用不了的復原鈕比沒有更糟
-    STATE.undo = null
-    STATE.text = `已審核 ${pending.length} 款遊戲。`
     dialog.close()
     refreshList()
     message.success(`已審核 ${pending.length} 款遊戲`)

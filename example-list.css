@@ -10,7 +10,7 @@
 
 .example-progress-cell > span {
   font-size: 0.75rem;
-  color: #718096;
+  color: var(--text-muted);
   white-space: nowrap;
 }
 
@@ -25,5 +25,11 @@
 @media (max-width: 720px) {
   .example-progress-cell {
     min-width: 0;
+  }
+  /* 手機換成卡片：表格收起來，分頁留著（卡片一樣要換頁）。
+     卡片的顯示由共用的 .member-mobile-only 控制，這裡不重複定義。
+     與會員列表同一套作法，兩頁不各寫一份。 */
+  .example-list-page .data-table-scroll {
+    display: none;
   }
 }

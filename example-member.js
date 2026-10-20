@@ -6,15 +6,20 @@
 //
 // 它與「列表型」範例（禮物卡）的差別：欄位多到要橫向捲動且操作欄固定、列上有狀態下拉、
 // 工具列有七顆按鈕且手機要收起來。
-import { dataTable, dataCards, applyPaging, PAGE_SIZES } from './data-table.js'
+import { dataTable, dataCards, applyPaging, keepTableScroll, PAGE_SIZES } from './data-table.js'
 import { iconButton } from './icon-button.js'
 import { requestExport } from './download-center.js'
 import { message } from './message.js'
 import { icon } from './icons.js'
 import { filterToggle } from './filter-toggle.js'
 import { onMatch } from './delegate.js'
+import { prepareModal } from './modal-system.js'
 import './example-page.css'
 import './example-member.css'
+// 編輯是獨立的表單頁，外殼（返回列、麵包屑、表單卡片、存檔列）與「表單頁型」範例
+// 的新增共用同一份；分區卡片沿用設定型的 .example-settings-card。
+import './example-form.css'
+import './example-settings.css'
 
 const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
 
@@ -27,9 +32,9 @@ const MEMBERS = [
   ['1009328', 'emma_tsai', 'agent_36220', 'Emma Tsai', ['#3d6df2'], '2026-09-10 08:22:49', '211.72.31.16', '211.72.31.16', '226,840.00', '682,000.00', '405,600.00', '2026-09-14 19:18:52', '啟用'],
   ['1009214', 'noah_wang', 'agent_20861', 'Noah Wang', ['#d6a13a'], '2026-09-09 15:41:28', '203.69.82.17', '203.69.82.21', '64,991.20', '188,400.00', '126,900.00', '2026-09-14 17:06:35', '啟用'],
   ['1009176', 'sophia_lee', 'agent_10188', 'Sophia Lee', ['#22a06b'], '2026-09-08 10:12:44', '60.251.33.74', '60.251.33.74', '93,570.00', '294,000.00', '175,200.00', '2026-09-14 15:32:19', '啟用'],
-  ['1009088', 'ethan_kuo', 'agent_45102', 'Ethan Kuo', ['#8d63cc'], '2026-09-07 21:05:13', '101.12.27.91', '101.12.27.91', '31,205.80', '96,000.00', '72,500.00', '2026-09-13 22:48:07', '停用'],
+  ['1009088', 'ethan_kuo', 'agent_45102', 'Ethan Kuo', ['#8d63cc'], '2026-09-07 21:05:13', '101.12.27.91', '101.12.27.91', '31,205.80', '96,000.00', '72,500.00', '2026-09-13 22:48:07', '凍結'],
   ['1008963', 'olivia_hsu', 'agent_36220', 'Olivia Hsu', ['#3d6df2', '#d6a13a'], '2026-09-06 13:47:36', '61.216.45.103', '61.216.45.108', '175,430.00', '520,000.00', '318,700.00', '2026-09-13 18:21:42', '啟用'],
-  ['1008841', 'liam_chang', '-', 'Liam Chang', [], '2026-09-05 09:33:51', '111.250.16.44', '111.250.16.44', '9,860.50', '32,000.00', '21,600.00', '2026-09-12 20:15:30', '啟用'],
+  ['1008841', 'liam_chang', '-', 'Liam Chang', [], '2026-09-05 09:33:51', '111.250.16.44', '111.250.16.44', '9,860.50', '32,000.00', '21,600.00', '2026-09-12 20:15:30', '凍結'],
   ['1008725', 'isla_chen', 'agent_45102', 'Isla Chen', ['#22a06b', '#8d63cc'], '2026-09-04 17:26:08', '210.61.148.29', '210.61.148.29', '58,790.00', '164,800.00', '102,400.00', '2026-09-12 16:44:11', '啟用'],
   ['1008619', 'mason_lai', 'agent_20861', 'Mason Lai', ['#d6a13a'], '2026-09-03 12:18:47', '114.136.92.57', '114.136.92.60', '27,340.75', '88,500.00', '55,900.00', '2026-09-11 23:09:54', '停用'],
   ['1008502', 'mia_lin', 'agent_10188', 'Mia Lin', ['#3d6df2'], '2026-09-02 08:54:20', '122.116.73.12', '122.116.73.12', '142,680.00', '436,000.00', '278,300.00', '2026-09-11 19:37:26', '啟用'],
@@ -37,13 +42,13 @@ const MEMBERS = [
   ({ uid, account, agent, name, tags, register, regIp, loginIp, balance, deposit, withdraw, last, status }))
 
 const COLUMNS = [
-  { key: 'uid', label: 'UID', width: '110px' },
+  { key: 'uid', label: 'UID', align: 'left', width: '110px' },
   { key: 'account', label: '帳號', align: 'left', width: '140px' },
-  { key: 'agent', label: '上層代理', width: '140px' },
+  { key: 'agent', label: '上層代理', align: 'left', width: '140px' },
   { key: 'name', label: '姓名', align: 'left', width: '130px' },
   { key: 'tags', label: '會員標籤', width: '110px' },
   { key: 'register', label: '註冊時間', width: '170px' },
-  { key: 'ip', label: '註冊／最後登入 IP', width: '160px' },
+  { key: 'ip', label: '註冊／最後登入 IP', align: 'left', width: '160px' },
   { key: 'balance', label: '總餘額', align: 'right', width: '130px' },
   { key: 'deposit', label: '總存款', align: 'right', width: '130px' },
   { key: 'withdraw', label: '總提款', align: 'right', width: '130px' },
@@ -52,7 +57,21 @@ const COLUMNS = [
   { key: 'actions', label: '操作', width: '120px', sticky: 'right' },
 ]
 
-const STATE = { page: 1, pageSize: PAGE_SIZES[0], keyword: '', status: 'all' }
+// 會員狀態有三種，列上的下拉與篩選列的下拉吃同一份清單，不各寫一次。
+const STATUSES = ['啟用', '停用', '凍結']
+
+// 標籤在列表上是色點，在表單裡要可讀可選，所以兩邊用同一張對照表換算。
+const TAG_OPTIONS = [['高價值', '#3d6df2'], ['活躍', '#22a06b'], ['觀察中', '#d6a13a'], ['VIP 專案', '#8d63cc']]
+const TAG_NAME = new Map(TAG_OPTIONS.map(([name, color]) => [color, name]))
+const TAG_COLOR = new Map(TAG_OPTIONS.map(([name, color]) => [name, color]))
+
+// view：list ／ edit。正式後台是兩個 route，原型用同一頁切換，動線一樣。
+const STATE = { page: 1, pageSize: PAGE_SIZES[0], keyword: '', status: 'all', view: 'list', editing: null }
+
+let draft = {}
+let clean = '{}'
+let errors = {}
+const dirty = () => JSON.stringify(draft) !== clean
 
 const visible = () => MEMBERS.filter(u => {
   const k = STATE.keyword.trim().toLowerCase()
@@ -62,7 +81,7 @@ const visible = () => MEMBERS.filter(u => {
 })
 
 const statusSelect = u => `<select class="guide-select status-control" data-member-status="${esc(u.uid)}" aria-label="${esc(u.account)} 的狀態">
-  ${['啟用', '停用'].map(value => `<option ${u.status === value ? 'selected' : ''}>${value}</option>`).join('')}
+  ${STATUSES.map(value => `<option ${u.status === value ? 'selected' : ''}>${value}</option>`).join('')}
 </select>`
 
 const rowActions = u => `<div class="icon-action-group example-member-actions">
@@ -113,14 +132,104 @@ const cards = () => {
     rows: list.slice(start, start + STATE.pageSize).map(u => ({
       attrs: `data-member-card="${esc(u.uid)}"`,
       title: `<button type="button" class="example-member-link" data-member-summary="${esc(u.uid)}">${esc(u.account)}</button>`,
-      subtitle: `UID ${esc(u.uid)}`,
       status: statusSelect(u),
-      // 卡片上只放四個關鍵欄位，完整的 13 欄到抽屜裡看——
-      // 這一頁是「精簡 ＋ 詳情抽屜」那一型，不是把每一欄都搬上卡片。
-      meta: [['上層代理', esc(u.agent)], ['姓名', esc(u.name)], ['總餘額', esc(u.balance)], ['最後登入', esc(u.last)]],
-      actions: `${dots(u)}${rowActions(u)}`,
+      // 手機看得到的欄位與桌機表格一樣，順序也一樣，不因為版面窄就省略——
+      // 少掉的欄位在手機上就等於查不到，而這一頁的 13 欄都是要拿來比對的資料。
+      // UID 也排在這裡（而不是當帳號底下的副標）：它跟其他欄位一樣是「欄名在上、
+      // 值在下」的一格，顏色與字級才會和同一張卡片裡的其他資料一致。
+      // 標籤與金額同理，都是資料不是操作，底下那一列只留操作按鈕。
+      meta: [
+        ['UID', esc(u.uid)],
+        ['上層代理', esc(u.agent)],
+        ['姓名', esc(u.name)],
+        ['會員標籤', dots(u)],
+        ['註冊時間', esc(u.register)],
+        ['註冊／最後登入 IP', `${esc(u.regIp)}<br>${esc(u.loginIp)}`],
+        ['總餘額', esc(u.balance)],
+        ['總存款', esc(u.deposit)],
+        ['總提款', esc(u.withdraw)],
+        ['最後登入', esc(u.last)],
+      ],
+      actions: rowActions(u),
     })),
   })}</div>`
+}
+
+// --- 編輯會員：獨立表單頁 ---
+//
+// 為什麼是獨立頁而不是彈窗或抽屜：正式後台有 8 個功能的新增與編輯都是獨立路由頁，
+// 而且會員資料欄位多到要分區——塞進彈窗就變成「彈窗裡捲動、外面頁面也在捲」。
+// 抽屜更不適合：抽屜在本站是唯讀資訊的容器（底部只有「關閉」），一放進要做決定的
+// 表單，使用者看到從右邊滑出來仍然預期「看完關掉」，不會預期裡面有沒存的東西。
+//
+// 出口有兩個，各自回答不同的問題：左上的「返回列表」是導覽（我要離開這件事），
+// 底部存檔列的「取消／儲存」是任務（我要結束這件事）。不放右上角的 X——X 的意思是
+// 「關掉蓋在上面的東西」，那是彈窗與抽屜的語彙，獨立頁底下沒有東西可以露出來。
+const editField = (key, label, control, { required = false, hint = '' } = {}) => `<div class="guide-field">
+  <label for="member-edit-${key}">${label}${required ? '<span class="required-mark" aria-hidden="true"> *</span>' : ''}</label>
+  ${control}
+  ${hint ? `<small>${hint}</small>` : ''}
+  <small class="error-text" id="member-edit-${key}-error">${esc(errors[key] ?? '')}</small>
+</div>`
+
+const editText = (key, extra = '') => `<input id="member-edit-${key}" class="guide-input${errors[key] ? ' is-error' : ''}" value="${esc(draft[key])}" data-member-field="${key}"${errors[key] ? ` aria-invalid="true" aria-describedby="member-edit-${key}-error"` : ''} ${extra}>`
+
+// 唯讀欄位用純文字呈現，不做成停用的輸入框——停用的輸入框看起來還是可以點，
+// 使用者會先試著打字才發現不能改。
+const editReadonly = (label, value) => `<div class="guide-field">
+  <span class="example-readonly-label">${label}</span>
+  <p class="example-readonly-value">${value}</p>
+</div>`
+
+const editView = () => {
+  const u = MEMBERS.find(item => item.uid === STATE.editing)
+  if (!u) return ''
+  return `
+  <div class="example-form-bar">
+    <button type="button" class="semantic-btn btn-neutral" data-member-back>${icon('arrowLeft')}返回列表</button>
+    <span class="example-form-crumb">會員列表 ／ <strong>編輯 ${esc(u.account)}</strong></span>
+  </div>
+  <form class="example-form" data-member-edit-form novalidate>
+    <section class="card example-settings-card">
+      <h3 class="example-settings-heading">會員識別</h3>
+      <p class="example-settings-hint">這一區不可修改，建立後就固定了。</p>
+      <div class="guide-fields">
+        ${editReadonly('UID', esc(u.uid))}
+        ${editReadonly('帳號', esc(u.account))}
+        ${editReadonly('註冊時間', esc(u.register))}
+      </div>
+    </section>
+
+    <section class="card example-settings-card">
+      <h3 class="example-settings-heading">基本資料</h3>
+      <div class="guide-fields">
+        ${editField('name', '姓名', editText('name', 'maxlength="30"'), { required: true })}
+        ${editField('agent', '上層代理', editText('agent', 'maxlength="30"'), { hint: '留空或填 - 代表直屬總公司' })}
+        ${editField('status', '狀態', `<select id="member-edit-status" class="guide-select" data-member-field="status">
+          ${STATUSES.map(v => `<option ${draft.status === v ? 'selected' : ''}>${esc(v)}</option>`).join('')}
+        </select>`)}
+        ${editField('tags', '會員標籤', `<select id="member-edit-tags" class="guide-select" multiple data-collapse="2" data-clearable data-member-field="tags">
+          ${TAG_OPTIONS.map(([name]) => `<option ${draft.tags.includes(name) ? 'selected' : ''}>${esc(name)}</option>`).join('')}
+        </select>`)}
+      </div>
+    </section>
+
+    <section class="card example-settings-card">
+      <h3 class="example-settings-heading">備註</h3>
+      <div class="guide-field">
+        <label for="member-edit-note">備註</label>
+        <textarea id="member-edit-note" class="guide-input guide-textarea" maxlength="500" data-member-field="note">${esc(draft.note)}</textarea>
+      </div>
+    </section>
+
+    <footer class="example-savebar example-form-savebar">
+      <div class="example-save-status" role="status">${dirty() ? '有尚未儲存的變更' : '目前沒有未儲存的變更'}</div>
+      <div class="example-save-actions">
+        <button type="button" class="semantic-btn btn-neutral" data-member-back>取消</button>
+        <button type="submit" class="semantic-btn btn-search">儲存變更</button>
+      </div>
+    </footer>
+  </form>`
 }
 
 const filters = () => `${filterToggle('member-search-panel')}
@@ -146,8 +255,7 @@ const filters = () => `${filterToggle('member-search-panel')}
         <label for="member-status">會員狀態</label>
         <select id="member-status" class="control guide-select" name="status">
           <option value="all">全部狀態</option>
-          <option ${STATE.status === '啟用' ? 'selected' : ''}>啟用</option>
-          <option ${STATE.status === '停用' ? 'selected' : ''}>停用</option>
+          ${STATUSES.map(value => `<option ${STATE.status === value ? 'selected' : ''}>${value}</option>`).join('')}
         </select>
       </div>
       <div class="filter-field">
@@ -199,17 +307,17 @@ const toolbar = () => `<div class="example-toolbar member-actions">
 
 window.renderExampleMember = () => `<section class="example-page example-member-page" data-member-root>
   <div class="guide-section-heading">
-    <h2>會員列表</h2>
+    <h2>${STATE.view === 'edit' ? '會員列表 ／ 編輯會員' : '會員列表'}</h2>
     <p class="component-description">組合範例（搜尋結果型），照正式後台 <code>membersManagement/index.vue</code> 做。它是整站表格與抽屜規範的基準頁：13 欄要橫向捲動、操作欄固定在右側、唯讀詳情走右側抽屜、列表內不放任何操作以外的狀態按鈕。</p>
   </div>
-  ${filters()}
+  ${STATE.view === 'edit' ? editView() : `${filters()}
   ${toolbar()}
-  <section class="card example-card" data-member-list>${cards()}${table()}</section>
+  <section class="card example-card" data-member-list>${cards()}${table()}</section>`}
   <section class="card example-note">
     <h3>這一頁用到哪些規範</h3>
     <ul>
       <li><strong>表格</strong>：13 欄、固定操作欄、橫向捲動與分頁都在共用的 <code>dataTable()</code> 裡，頁面不自己兜分頁</li>
-      <li><strong>抽屜</strong>：會員摘要與登入紀錄是唯讀資訊，用右側抽屜，底部只有「關閉」</li>
+      <li><strong>抽屜還是獨立頁</strong>：唯讀的會員摘要與登入紀錄用右側抽屜（底部只有「關閉」）；要輸入、要做決定的編輯用獨立表單頁，兩個出口是左上的「返回列表」與底部的「取消／儲存」，不放右上角 X</li>
       <li><strong>表格內的控制項</strong>：狀態用共用下拉，改了就生效；操作欄是圖示按鈕，各自有 aria-label 與 Tooltip</li>
       <li><strong>列表工具列</strong>：七顆操作一律從左側排起，位置不隨表格狀態改變；手機把次要操作收進「更多」</li>
       <li><strong>匯出</strong>：建立下載任務，完成後到頁首的下載中心取得</li>
@@ -257,10 +365,10 @@ window.openMemberSummary = memberSummary
 window.openLoginRecords = loginRecords
 
 // --- 互動 ---
-const redraw = () => {
+const redraw = () => keepTableScroll(() => {
   const host = document.querySelector('[data-member-list]')
   if (host) host.innerHTML = cards() + table()
-}
+})
 
 onMatch('submit', '[data-member-filter]', (event, form) => {
   event.preventDefault()
@@ -295,9 +403,104 @@ onMatch('click', '[data-member-summary]', (event, button) => memberSummary(butto
 onMatch('click', '[data-member-records]', (event, button) => loginRecords(button.dataset.memberRecords), { owner: 'example-member' })
 onMatch('click', '[data-member-drawer-close]', () => window.closeDetailDrawer(), { owner: 'example-member' })
 
+// --- 編輯會員的動線 ---
+const redrawPage = () => {
+  const host = document.querySelector('[data-member-root]')
+  if (host) host.outerHTML = window.renderExampleMember()
+}
+
+const leaveEdit = () => {
+  STATE.view = 'list'
+  STATE.editing = null
+  draft = {}
+  clean = '{}'
+  errors = {}
+  redrawPage()
+}
+
+const validateEdit = () => {
+  const next = {}
+  if (!draft.name.trim()) next.name = '請輸入姓名'
+  const agent = draft.agent.trim()
+  if (agent && agent !== '-' && !/^[A-Za-z0-9_]{3,30}$/.test(agent)) {
+    next.agent = '代理帳號需為 3–30 碼英數字或底線'
+  }
+  errors = next
+  return !Object.keys(next).length
+}
+
 onMatch('click', '[data-member-edit]', (event, button) => {
-  // 編輯是獨立的表單頁，動線在「表單頁型」範例裡走過一遍
-  message.info(`編輯 ${button.dataset.memberEdit} 會進獨立的表單頁`)
+  const u = MEMBERS.find(item => item.uid === button.dataset.memberEdit)
+  if (!u) return
+  STATE.view = 'edit'
+  STATE.editing = u.uid
+  draft = {
+    name: u.name,
+    agent: u.agent,
+    status: u.status,
+    tags: u.tags.map(color => TAG_NAME.get(color)).filter(Boolean),
+    note: u.note ?? '',
+  }
+  clean = JSON.stringify(draft)
+  errors = {}
+  redrawPage()
+}, { owner: 'example-member' })
+
+// 輸入時不重繪（重繪會讓游標跳到字尾），只更新資料與存檔列的狀態
+onMatch('input', '[data-member-field]', (event, input) => {
+  if (input.multiple) return
+  draft[input.dataset.memberField] = input.value
+  const status = document.querySelector('[data-member-root] .example-save-status')
+  if (status) status.textContent = dirty() ? '有尚未儲存的變更' : '目前沒有未儲存的變更'
+}, { owner: 'example-member' })
+
+onMatch('change', '[data-member-field]', (event, input) => {
+  const key = input.dataset.memberField
+  draft[key] = input.multiple ? [...input.selectedOptions].map(o => o.value) : input.value
+}, { owner: 'example-member' })
+
+// 沒改過就直接回列表，不跳確認——沒有變更卻還要按一次「確認離開」只是擋路。
+// 真的改過才問，文案與「表單頁型」「設定型」兩個範例的守衛一致。
+onMatch('click', '[data-member-back]', () => {
+  if (!dirty()) return leaveEdit()
+  const dialog = document.createElement('dialog')
+  dialog.innerHTML = `<form>
+    <header><h2>離開編輯會員</h2></header>
+    <div class="bo-modal-body"><p>異動資訊未保存，請確認是否離開？</p><p>離開後這次修改的內容不會保留。</p></div>
+    <footer>
+      <button type="button" class="semantic-btn btn-neutral" data-example-close>留在此頁</button>
+      <button type="submit" class="semantic-btn btn-warning">離開並放棄</button>
+    </footer>
+  </form>`
+  prepareModal(dialog)
+  dialog.querySelector('[data-example-close]').onclick = () => dialog.close()
+  dialog.querySelector('form').onsubmit = submit => {
+    submit.preventDefault()
+    dialog.close()
+    leaveEdit()
+  }
+  dialog.addEventListener('close', () => dialog.remove(), { once: true })
+  document.body.append(dialog)
+  dialog.showModal()
+}, { owner: 'example-member' })
+
+onMatch('submit', '[data-member-edit-form]', event => {
+  event.preventDefault()
+  if (!validateEdit()) {
+    redrawPage()
+    // 欄位錯誤不用 Toast，只把焦點送到第一個出錯的欄位
+    document.querySelector('[data-member-root] .guide-input.is-error')?.focus()
+    return
+  }
+  const u = MEMBERS.find(item => item.uid === STATE.editing)
+  const account = u.account
+  u.name = draft.name.trim()
+  u.agent = draft.agent.trim() || '-'
+  u.status = draft.status
+  u.tags = draft.tags.map(name => TAG_COLOR.get(name)).filter(Boolean)
+  u.note = draft.note
+  leaveEdit()
+  message.success(`已更新會員 ${account}`)
 }, { owner: 'example-member' })
 
 onMatch('change', '[data-member-status]', (event, select) => {

@@ -7,7 +7,7 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: #1596ad;
+  color: var(--blue);
   font: inherit;
   text-align: left;
   text-decoration: underline;
@@ -17,11 +17,11 @@
 }
 
 .example-member-link:hover {
-  color: #10778a;
+  color: var(--blue-ink);
 }
 
 .example-member-link:focus-visible {
-  outline: 2px solid #1596ad;
+  outline: 2px solid var(--blue);
   outline-offset: 3px;
   border-radius: 2px;
 }
@@ -38,4 +38,21 @@
   .example-member-page .data-table-scroll {
     display: none;
   }
+}
+
+/* 編輯頁的唯讀欄位。刻意不做成停用的輸入框：停用的框看起來仍然像可以點，
+   使用者會先試著打字才發現改不了。純文字一眼就知道這是結果不是輸入。
+   欄名沿用 .guide-field > label 的字級與顏色，值對齊同一組 14px 內文。 */
+.example-member-page .example-readonly-label {
+  font-size: 0.75rem;
+  font-weight: 650;
+  color: var(--text-subtle);
+}
+
+.example-member-page .example-readonly-value {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 2.125rem;
+  color: var(--text);
+  overflow-wrap: anywhere;
 }

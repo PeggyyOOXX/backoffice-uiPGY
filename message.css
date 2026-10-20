@@ -99,33 +99,33 @@
 }
 
 /* 語意色取自「按鈕 Button」已定義的那一組，不另訂配色：
-   success #12b157（btn-export）  info #1596AD（btn-search）
-   warning #F59E0B（btn-warning） error #DC2626（btn-danger）
+   success var(--success)（btn-export）  info var(--blue)（btn-search）
+   warning var(--warning)（btn-warning） error var(--danger)（btn-danger）
    底色與框線用同一個色碼疊透明度算出來，不必再維護一組淺色值。 */
 /* 背景必須是實色：Toast 浮在內容之上，半透明會透出底下的文字而讀不清楚。
    先前只寫 rgba() 會把上面那條 background:#fff 整個蓋掉，白底就沒了。
    這裡疊兩層——上層是語意色的淡色調，下層是不透明的白——結果是實色，
    但色調仍然從同一個語意色算出來，改色票時不必手動重算十六進位值。 */
 .bo-message.is-success {
-  color: #12b157;
+  color: var(--success);
   background:
     linear-gradient(rgba(34, 197, 94, 0.07), rgba(34, 197, 94, 0.07)), #fff;
   border-color: rgba(34, 197, 94, 0.3);
 }
 .bo-message.is-info {
-  color: #1596ad;
+  color: var(--blue);
   background:
     linear-gradient(rgba(21, 150, 173, 0.07), rgba(21, 150, 173, 0.07)), #fff;
   border-color: rgba(21, 150, 173, 0.3);
 }
 .bo-message.is-warning {
-  color: #f59e0b;
+  color: var(--warning);
   background:
     linear-gradient(rgba(245, 158, 11, 0.07), rgba(245, 158, 11, 0.07)), #fff;
   border-color: rgba(245, 158, 11, 0.3);
 }
 .bo-message.is-error {
-  color: #dc2626;
+  color: var(--danger);
   background:
     linear-gradient(rgba(220, 38, 38, 0.07), rgba(220, 38, 38, 0.07)), #fff;
   border-color: rgba(220, 38, 38, 0.3);

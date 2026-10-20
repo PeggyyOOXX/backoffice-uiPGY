@@ -7,7 +7,7 @@
   position:absolute;top:-2px;right:-2px;
   min-width:1.125rem;height:1.125rem;padding:0 0.25rem;
   display:grid;place-items:center;
-  border-radius:0.5rem;background:#f59e0b;color:#fff;
+  border-radius:0.5rem;background:var(--warning);color:#fff;
   font-size:0.75rem;font-weight:700;line-height:1;
 }
 .download-panel{
@@ -19,7 +19,7 @@
 }
 .download-panel[hidden]{display:none}
 .download-panel-head{display:flex;align-items:center;justify-content:space-between;gap:0.75rem;margin-bottom:0.75rem}
-.download-panel-head>strong{font-size:0.75rem;font-weight:600;color:#111b2b}
+.download-panel-head>strong{font-size:0.75rem;font-weight:600;color:var(--sidebar)}
 .download-list{
   display:flex;flex-direction:column;gap:0.75rem;
   max-height:25rem;overflow-y:auto;

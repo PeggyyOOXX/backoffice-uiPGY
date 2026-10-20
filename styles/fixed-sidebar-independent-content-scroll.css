@@ -21,10 +21,14 @@
        滾輪、觸控、鍵盤與拖曳選取都不受影響。 */
     scrollbar-width: none;
     -ms-overflow-style: none;
-    /* 捲軸沒了就少了「下面還有」的線索，改用上下緣淡出代替：不佔寬度、不搶視線，
-       捲到頂或底時那一端自然就不淡了。 */
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 0.875rem, #000 calc(100% - 0.875rem), transparent 100%);
-    mask-image: linear-gradient(to bottom, transparent 0, #000 0.875rem, #000 calc(100% - 0.875rem), transparent 100%);
+    /* 捲軸沒了就少了「下面還有」的線索，改用上下緣淡出代替：不佔寬度、不搶視線。
+       下緣是「還有內容可以捲」的提示，範圍拉到 64px——先前 14px 比一個導覽項目還短，
+       看起來像沒對齊而不像還有東西。上緣維持 14px：這一端沒有內距墊著，淡出一加長
+       就會在沒捲動時把第一個項目蓋掉。
+       下內距 40px 是最後一項與側欄底部之間的呼吸空間，不讓選項直接貼底。 */
+    padding-bottom: 2.5rem;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 0.875rem, #000 calc(100% - 4rem), transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 0.875rem, #000 calc(100% - 4rem), transparent 100%);
   }
   .sidebar .nav::-webkit-scrollbar {
     width: 0;

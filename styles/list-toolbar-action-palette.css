@@ -15,7 +15,7 @@
 }
 .toolbar-demo p {
   margin: 0 0 0.75rem;
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 0.75rem;
 }
 .member-actions .semantic-btn {
@@ -26,8 +26,8 @@
   border-color: #4f6bed !important;
 }
 .btn-export {
-  background: #12b157 !important;
-  border-color: #12b157 !important;
+  background: var(--success) !important;
+  border-color: var(--success) !important;
 }
 .btn-edit,
 .row-actions button.btn-edit {
@@ -38,7 +38,7 @@
   --button-color: #4f6bed;
 }
 .btn-export.outline {
-  --button-color: #12b157;
+  --button-color: var(--success);
 }
 .btn-edit.outline {
   --button-color: #4169c9;

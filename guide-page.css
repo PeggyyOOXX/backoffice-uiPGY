@@ -28,8 +28,8 @@
   font-size: 0.75rem;
   padding: 1px 0.25rem;
   border-radius: 0.25rem;
-  background: #f1f4f8;
-  color: #10707f;
+  background: var(--surface-hover);
+  color: var(--blue-ink);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 .style-guide pre {
@@ -37,7 +37,7 @@
   padding: 0.75rem;
   border: 1px solid var(--line);
   border-radius: 0.5rem;
-  background: #f7f8fb;
+  background: var(--surface);
   overflow-x: auto;
 }
 .style-guide pre code {
@@ -65,27 +65,27 @@
   gap: 0.25rem;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #111b2b;
+  color: var(--sidebar);
 }
 .guide-pair p {
   margin: 0;
   font-size: 0.75rem;
   line-height: 1.7;
-  color: #718096;
+  color: var(--text-muted);
 }
 .guide-pair > .is-bad {
   border-color: rgba(220, 38, 38, 0.3);
   background: rgba(220, 38, 38, 0.05);
 }
 .guide-pair > .is-bad h4 {
-  color: #dc2626;
+  color: var(--danger);
 }
 .guide-pair > .is-good {
   border-color: rgba(34, 197, 94, 0.3);
   background: rgba(34, 197, 94, 0.05);
 }
 .guide-pair > .is-good h4 {
-  color: #12b157;
+  color: var(--success);
 }
 
 /* 示範區：把元件放在有邊界的舞台上，與說明文字分開 */
@@ -142,7 +142,7 @@
 .guide-field > small {
   margin-top: 0.25rem;
   font-size: 0.75rem;
-  color: #718096;
+  color: var(--text-muted);
 }
 /* 欄位級錯誤留在欄位下方，不用 Toast——Toast 會消失，使用者回頭找不到是哪一格。
    顏色用 Input 規範的錯誤色，必填星號同一支紅，整站只有這一處定義。 */

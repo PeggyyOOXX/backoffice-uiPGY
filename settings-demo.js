@@ -51,4 +51,4 @@ document.querySelector('[data-download-center]')?.replaceWith(
 )
 
 // 所有 render 函式與導覽 handler 都準備好之後，才開啟著陸頁。
-document.querySelector('.nav-item[data-route-key="設計Token"]')?.click()
+document.querySelector('.nav-item[data-route-key="組合範例搜尋"]')?.click()

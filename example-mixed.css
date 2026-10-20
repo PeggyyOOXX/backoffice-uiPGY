@@ -61,7 +61,7 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: #1596ad;
+  color: var(--blue);
   font: inherit;
   text-align: left;
   text-decoration: underline;
@@ -71,11 +71,11 @@
 }
 
 .example-mixed-link:hover {
-  color: #10778a;
+  color: var(--blue-ink);
 }
 
 .example-mixed-link:focus-visible {
-  outline: 2px solid #1596ad;
+  outline: 2px solid var(--blue);
   outline-offset: 3px;
   border-radius: 2px;
 }
@@ -107,14 +107,14 @@ dialog.bo-modal.example-mixed-snapshot {
   margin: 1.25rem 0 0.75rem;
   font-size: 0.875rem;
   font-weight: 600;
-  color: #1596ad;
+  color: var(--blue);
 }
 
 .example-mixed-empty-copy {
   margin: 0;
   padding: 1.5rem 0;
   text-align: center;
-  color: #718096;
+  color: var(--text-muted);
   font-size: 0.875rem;
 }
 

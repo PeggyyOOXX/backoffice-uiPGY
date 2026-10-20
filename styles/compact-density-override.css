@@ -259,6 +259,9 @@
     width: 2.5rem;
     height: 2.5rem;
   }
+  /* 左右這 8px 是全站 29 頁唯一的外緣留白，不能再收。.card 是兩種頁型共用的基礎區塊
+     （規範頁的每個 section.card、組合範例的篩選列／表格卡／規範卡），都直接佔滿 .page，
+     這一層歸零的話每一頁的卡片邊框都會貼死螢幕邊緣。手機要省空間請改內層的內距。 */
   .page {
     min-height: calc(100vh - 3.5rem);
     padding: 0.5rem 0.5rem 1.25rem;

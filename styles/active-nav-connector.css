@@ -23,6 +23,6 @@
 @media (max-width: 720px) {
   .nav-item.active::after {
     right: -0.5rem;
-    border-right-color: #f5f7fb;
+    border-right-color: var(--surface);
   }
 }

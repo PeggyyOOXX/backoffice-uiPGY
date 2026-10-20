@@ -16,8 +16,8 @@
 .icon-button-guide h3:first-of-type{margin-top:0}
 .icon-button-guide .icon-action-group{flex-wrap:wrap;gap:0.75rem}
 .icon-button-sample{display:flex;flex-direction:column;align-items:center;gap:0.5rem;min-width:4rem}
-.icon-button-sample small{font-size:0.75rem;color:#718096;text-align:center}
+.icon-button-sample small{font-size:0.75rem;color:var(--text-muted);text-align:center}
 .icon-button-guide dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(11.25rem,1fr));gap:1rem;margin:1rem 0 0;padding-top:1rem;border-top:1px solid var(--line)}
-.icon-button-guide dt{font-size:0.75rem;color:#718096}
+.icon-button-guide dt{font-size:0.75rem;color:var(--text-muted)}
 .icon-button-guide dd{margin:0.25rem 0 0;font-size:0.75rem}
 @media(max-width:720px){.icon-button-guide{padding:0.5rem}}

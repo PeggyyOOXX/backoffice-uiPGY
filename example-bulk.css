@@ -1,7 +1,5 @@
 /* 組合範例（批量型）。版面沿用列表型範例的 .example-* ，這裡只補這一頁多出來的東西。 */
-.example-bulk-page .bulk-feedback {
-  margin-bottom: 0.75rem;
-}
+
 
 /* 遊戲名稱吃掉剩餘寬度，開關欄維持固定 */
 .example-bulk-page .data-table-grid th:nth-child(2),
@@ -15,7 +13,7 @@
   padding: 0.75rem 1rem 0.75rem 2rem;
   border: 1px solid var(--line);
   border-radius: 0.5rem;
-  background: #f7f8fb;
+  background: var(--surface);
   display: grid;
   gap: 0.25rem;
 }
@@ -23,7 +21,7 @@
 .example-bulk-preview li {
   font-size: 0.75rem;
   line-height: 1.6;
-  color: #4a5568;
+  color: var(--text-subtle);
 }
 
 @media (max-width: 720px) {

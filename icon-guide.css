@@ -2,34 +2,34 @@
    卡片內距、標題節奏、code 樣式比照 tabs-guide.css 與 state-guide.css。 */
 .icon-guide{padding:0.5rem}
 .icon-guide>.component-description{margin:0 0 0.75rem}
-.icon-guide-count{margin-left:0.5rem;font-style:normal;font-size:0.75rem;font-weight:400;color:#718096}
+.icon-guide-count{margin-left:0.5rem;font-style:normal;font-size:0.75rem;font-weight:400;color:var(--text-muted)}
 
 .icon-guide-jump{display:flex;flex-wrap:wrap;gap:0.5rem}
 .icon-guide-jump a{display:inline-flex;align-items:center;gap:0.25rem;height:1.875rem;padding:0 0.5rem;border:1px solid var(--line);border-radius:0.25rem;font-size:0.75rem;color:var(--text);text-decoration:none}
-.icon-guide-jump a:hover{background:#F1F4F8}
-.icon-guide-jump em{font-style:normal;font-size:0.75rem;color:#718096}
-.icon-guide-copied{min-height:1.125rem;margin:0.5rem 0 0;font-size:0.75rem;color:#1596AD}
+.icon-guide-jump a:hover{background:var(--surface-hover)}
+.icon-guide-jump em{font-style:normal;font-size:0.75rem;color:var(--text-muted)}
+.icon-guide-copied{min-height:1.125rem;margin:0.5rem 0 0;font-size:0.75rem;color:var(--blue)}
 
 .icon-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(9.25rem,1fr));gap:0.5rem}
 .icon-cell{display:flex;flex-direction:column;align-items:center;gap:0.25rem;padding:0.75rem 0.5rem;border:1px solid var(--line);border-radius:0.25rem;background:#fff;cursor:pointer;text-align:center;font:inherit}
-.icon-cell:hover{border-color:#1596AD;background:#F7FCFD}
+.icon-cell:hover{border-color:var(--blue);background:var(--blue-tint)}
 .icon-cell:focus-visible{outline:none;box-shadow:0 0 0 0.1875rem rgba(21,150,173,.25)}
 .icon-cell-art{display:flex;align-items:center;justify-content:center;height:1.75rem;color:var(--text)}
-.icon-cell code{font-size:0.75rem;color:#2D3748;word-break:break-all}
-.icon-cell small{font-size:0.75rem;color:#718096}
-.icon-cell em{font-style:normal;font-size:0.625rem;color:#A0AEC0;word-break:break-all}
+.icon-cell code{font-size:0.75rem;color:var(--text);word-break:break-all}
+.icon-cell small{font-size:0.75rem;color:var(--text-muted)}
+.icon-cell em{font-style:normal;font-size:0.75rem;color:var(--text-faint);word-break:break-all}
 
 .page .icon-guide-table{table-layout:auto}
 .page .icon-guide-table td{text-align:left}
 .icon-size-rows{display:flex;flex-direction:column;gap:0.5rem}
 .icon-size-row{display:flex;align-items:flex-end;gap:1rem}
 .icon-size-sample{display:flex;flex-direction:column;align-items:center;gap:0.25rem}
-.icon-size-sample small{font-size:0.625rem;color:#A0AEC0}
-.icon-size-row code{margin-left:auto;font-size:0.75rem;color:#718096}
+.icon-size-sample small{font-size:0.75rem;color:var(--text-faint)}
+.icon-size-row code{margin-left:auto;font-size:0.75rem;color:var(--text-muted)}
 
 
-.icon-guide-page code{font-size:0.75rem;padding:1px 0.25rem;border-radius:0.25rem;background:#f1f4f8;color:#10707f;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
-.icon-cell code{padding:0;background:none;color:#2D3748}
+.icon-guide-page code{font-size:0.75rem;padding:1px 0.25rem;border-radius:0.25rem;background:var(--surface-hover);color:var(--blue-ink);font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.icon-cell code{padding:0;background:none;color:var(--text)}
 .icon-token{margin-bottom:0}
 
 @media(max-width:720px){

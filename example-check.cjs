@@ -58,10 +58,10 @@ run("states.js", "", ";window.emptyRow=emptyRow;window.emptyState=emptyState");
 run(
   "data-table.js",
   ICON + "const emptyRow=window.emptyRow;",
-  ";window.dataTable=dataTable;window.dataCards=dataCards;window.applyPaging=applyPaging;window.PAGE_SIZES=PAGE_SIZES",
+  ";window.dataTable=dataTable;window.dataCards=dataCards;window.applyPaging=applyPaging;window.keepTableScroll=keepTableScroll;window.PAGE_SIZES=PAGE_SIZES",
 );
 const TABLE =
-  "const dataTable=window.dataTable,dataCards=window.dataCards,applyPaging=window.applyPaging,PAGE_SIZES=window.PAGE_SIZES;";
+  "const dataTable=window.dataTable,dataCards=window.dataCards,applyPaging=window.applyPaging,keepTableScroll=window.keepTableScroll,PAGE_SIZES=window.PAGE_SIZES;";
 run(
   "guide-page.js",
   "",
@@ -76,8 +76,8 @@ run("tabs.js", ON + ICON, ";window.tabs=tabs;window.tabPanels=tabPanels");
 run("choice-controls.js", "", ";window.choiceControl=choiceControl");
 run("upload-guide.js", PAGE + ON + ICON + MSG, ";window.uploadSlot=uploadSlot");
 
-run("bulk-actions.js", ICON + BTN, ";window.bulkParts={selectAllControl,selectRowControl,bulkHeader,bulkFeedback,selectionOf,applyBulk,PICK_COLUMN}");
-const BULK = "const {selectAllControl,selectRowControl,bulkHeader,bulkFeedback,selectionOf,applyBulk,PICK_COLUMN}=window.bulkParts;";
+run("bulk-actions.js", ICON + BTN, ";window.bulkParts={selectAllControl,selectRowControl,bulkHeader,selectionOf,applyBulk,PICK_COLUMN}");
+const BULK = "const {selectAllControl,selectRowControl,bulkHeader,selectionOf,applyBulk,PICK_COLUMN}=window.bulkParts;";
 
 run("filter-toggle.js", ON + ICON, ";window.filterToggle=filterToggle");
 const FILTER = "const filterToggle=window.filterToggle;";
@@ -150,14 +150,30 @@ ok("列表頁：篩選列、工具列、表格＋分頁都套共用元件");
 // 卡片寫成 padding:0 的話，總筆數與頁碼會直接貼到卡片邊緣。
 {
   const css = fs.readFileSync("example-page.css", "utf8");
-  const rule = css.match(/\.example-card\s*\{([^}]*)\}/);
-  assert.ok(rule, "example-page.css 缺少 .example-card");
+  // 三種卡片（包表格的、包表單的、頁尾規範的）必須在同一條規則裡拿到內距。
+  // 先前 .example-settings-card 自己寫 16px，同一頁的表單卡片比表格卡片胖一圈，
+  // 手機版也沒跟著收——卡片內距只能有一個來源。
+  const rule = css.match(
+    /\.example-card\s*,\s*\.example-settings-card\s*,\s*\.example-note\s*\{([^}]*)\}/,
+  );
+  assert.ok(rule, "三種組合範例卡片要共用同一條內距規則（example-page.css）");
   const padding = rule[1].match(/padding\s*:\s*([^;]+)/);
-  assert.ok(padding, ".example-card 必須明確宣告 padding（基礎 .card 沒有內距）");
+  assert.ok(padding, "卡片必須明確宣告 padding（基礎 .card 沒有內距）");
   assert.ok(
     !/^0(px)?$/.test(padding[1].trim()),
     `包住表格的卡片不能把內距歸零，目前是 padding:${padding[1].trim()}`,
   );
+  // 內距要落在間距 token 上（4px 的倍數）
+  const px = parseFloat(padding[1]) * 16;
+  assert.equal(px % 4, 0, `卡片內距要是 4px 的倍數，目前是 ${px}px`);
+  // 個別頁面不得再自己訂一次
+  for (const file of ["example-settings.css", "example-member.css", "example-list.css"]) {
+    const src = fs.readFileSync(file, "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+    assert.ok(
+      !/\.example-settings-card\s*\{[^}]*padding/.test(src),
+      `${file} 不該再自己訂卡片內距，交給 example-page.css`,
+    );
+  }
 }
 ok("列表頁：包住表格的卡片有內距，分頁列不會貼邊");
 
@@ -403,33 +419,25 @@ assert.equal(q('[data-bulk-all][data-bulk="game"]').checked, true,
   "回到第 1 頁，全選框應恢復為勾選");
 ok("批量頁：全選只選本頁，換頁後勾選保留、全選框只反映本頁");
 
-// 批量開關：回報要同時給影響筆數與實際變更筆數，而且可以復原
+// 批量開關：點了就生效並直接記錄，結果用 Toast 回報兩個數字，沒有復原
+const lastToast = () => qa(".bo-message").at(-1)?.textContent ?? "";
 click(q('[data-bulk-menu="front"][data-bulk="game"]'));
-const beforeOn = gameRows().filter(tr =>
-  tr.querySelector('[data-key="front"]').getAttribute("aria-checked") === "true").length;
 click(q('[data-bulk-menu-for="front"] [data-scope="selected"][data-value="1"]'));
-const feedback = q('[data-bulk-feedback="game"]');
-assert.ok(/已將 10 筆/.test(feedback.textContent), "回報要寫出影響筆數");
-assert.ok(/實際變更 \d+ 筆/.test(feedback.textContent), "回報要寫出實際變更筆數");
+assert.ok(/已將 10 筆/.test(lastToast()), "回報要寫出影響筆數");
+assert.ok(/實際變更 \d+ 筆/.test(lastToast()), "回報要寫出實際變更筆數");
 assert.equal(
   gameRows().filter(tr =>
     tr.querySelector('[data-key="front"]').getAttribute("aria-checked") === "true").length,
   10, "本頁 10 筆的前台顯示都應該開啟");
-assert.ok(q('[data-bulk-undo][data-bulk="game"]'), "批量動作後要出現復原鈕");
-click(q('[data-bulk-undo][data-bulk="game"]'));
-assert.equal(
-  gameRows().filter(tr =>
-    tr.querySelector('[data-key="front"]').getAttribute("aria-checked") === "true").length,
-  beforeOn, "復原後應回到原本的開啟筆數");
-assert.ok(!q('[data-bulk-undo][data-bulk="game"]'), "復原之後不該還留著復原鈕");
-ok("批量頁：回報給兩個數字，且可復原一次");
+// 回報不得留在畫面上：訊息消失後使用者不再需要它，而且已經沒有復原鈕要掛了
+assert.ok(!q("[data-bulk-feedback]"), "批量結果不該在表格上方留一條常駐的回報列");
+assert.ok(!q("[data-bulk-undo]"), "批量不給復原——退路放在送出之前，不是事後收回");
+ok("批量頁：點了就生效並直接記錄，結果用 Toast 給兩個數字，沒有復原鈕");
 
 // 沒有任何變更時也要講清楚
 click(q('[data-bulk-menu="front"][data-bulk="game"]'));
 click(q('[data-bulk-menu-for="front"] [data-scope="selected"][data-value="1"]'));
-click(q('[data-bulk-menu="front"][data-bulk="game"]'));
-click(q('[data-bulk-menu-for="front"] [data-scope="selected"][data-value="1"]'));
-assert.ok(/沒有變更/.test(q('[data-bulk-feedback="game"]').textContent),
+assert.ok(/沒有變更/.test(lastToast()),
   "原本就是該狀態時要說「沒有變更」，不能報成已更新 N 筆");
 ok("批量頁：原本就是該狀態時明說沒有變更");
 
@@ -442,12 +450,10 @@ assert.ok(/已勾選/.test(reviewDialog.textContent), "確認彈窗要列出影�
 reviewDialog
   .querySelector("form")
   .dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true }));
-assert.ok(!q('[data-bulk-undo][data-bulk="game"]'),
-  "不可逆的動作不該給復原鈕——點了沒用比沒有更糟");
 assert.equal(
   gameRows().filter(tr => tr.innerHTML.includes("待審核")).length, 0,
   "本頁勾選的資料審核後不該還有待審核");
-ok("批量頁：批量審核先確認、說明不可逆，完成後不給復原");
+ok("批量頁：批量審核先確認、說明不可逆");
 
 // 取消全選：工具列沒有「清除勾選」，靠全選框再點一次取消本頁
 // 目前是全選狀態，再點一次就是取消（jsdom 的 click 會自己切換 checked，不要手動預設）
@@ -676,6 +682,70 @@ click(q("[data-member-export]"));
 assert.equal(qa(".download-task").length, tasksBefore + 1, "匯出要建立下載任務");
 ok("搜尋頁：匯出走下載中心");
 
+// ===== 編輯會員走獨立表單頁 =====
+//
+// 正式後台 8 個功能的新增與編輯都是獨立路由頁。這裡守的是獨立頁該有的三件事：
+// 出口講得出要去哪、沒改動不擋路、改過才問，以及存檔後列表要跟著變。
+{
+  host().innerHTML = w.renderExampleMember();
+  click(q("[data-member-reset]"));
+  const firstAccount = q(".example-member-page tbody .example-member-link").textContent;
+
+  click(q("[data-member-edit]"));
+  assert.ok(q("[data-member-edit-form]"), "編輯要進獨立的表單頁，不是彈窗或抽屜");
+  assert.ok(!q(".example-member-page .data-table-grid"), "進了表單頁就不該還留著列表");
+
+  // 出口：左上返回列表 ＋ 底部取消／儲存，沒有右上角的 X（那是彈窗與抽屜的語彙）
+  const back = qa("[data-member-back]");
+  assert.equal(back.length, 2, "獨立頁要有兩個出口：左上的返回列表與存檔列的取消");
+  assert.match(back[0].textContent, /返回列表/, "返回鍵要寫得出會落到哪裡，不能只有箭頭");
+  assert.ok(!q("[data-member-edit-form] .bo-modal-close, .example-form-bar [aria-label*='關閉']"),
+    "獨立頁不放 X：它底下沒有東西可以露出來");
+  assert.ok(q("[data-member-edit-form] [type='submit']"), "存檔列要有主要操作");
+
+  // 身分欄位唯讀，而且不是用停用的輸入框假裝
+  assert.ok(q(".example-readonly-value"), "UID／帳號／註冊時間要是唯讀文字");
+  assert.ok(!q("[data-member-edit-form] input[disabled]"), "唯讀欄位不得做成停用的輸入框");
+
+  // 沒改動就直接回列表，不跳確認
+  click(back[0]);
+  assert.ok(!q("dialog[open]"), "沒有變更時返回不該跳確認");
+  assert.ok(q(".example-member-page .data-table-grid"), "返回後要回到列表");
+
+  // 改過之後才問，而且可以留在此頁
+  click(q("[data-member-edit]"));
+  const nameInput = q("[data-member-field='name']");
+  nameInput.value = "改過的名字";
+  nameInput.dispatchEvent(new w.Event("input", { bubbles: true }));
+  click(qa("[data-member-back]")[0]);
+  const guard = q("dialog[open]");
+  assert.ok(guard, "改過之後離開要先確認");
+  click(guard.querySelector("[data-example-close]"));
+  assert.ok(q("[data-member-edit-form]"), "選擇留在此頁就不能把表單收掉");
+
+  // 必填擋得住，而且錯誤是行內文字不是 Toast
+  const toastsBefore = qa(".bo-message").length;
+  nameInput.value = "";
+  nameInput.dispatchEvent(new w.Event("input", { bubbles: true }));
+  q("[data-member-edit-form]").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true }));
+  assert.ok(q("#member-edit-name-error").textContent.trim(), "姓名空白要擋下來");
+  assert.equal(qa(".bo-message").length, toastsBefore, "欄位錯誤不得用 Toast 報");
+  assert.ok(q("[data-member-edit-form]"), "驗證沒過要留在表單頁");
+
+  // 存檔後回列表，列表上看得到新資料，Toast 帶受詞
+  const renamed = "Renamed Member";
+  const nameAgain = q("[data-member-field='name']");
+  nameAgain.value = renamed;
+  nameAgain.dispatchEvent(new w.Event("input", { bubbles: true }));
+  q("[data-member-edit-form]").dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true }));
+  assert.ok(!q("[data-member-edit-form]"), "存檔後要導回列表");
+  assert.ok(q(".example-member-page .data-table-grid").textContent.includes(renamed),
+    "存檔後列表要跟著更新");
+  assert.ok(qa(".bo-message").some((t) => new RegExp(`已更新會員 ${firstAccount}`).test(t.textContent)),
+    "存檔的 Toast 要帶受詞");
+  ok("搜尋頁：編輯走獨立表單頁，兩個出口、沒改動不擋路、改過才問、存檔回列表");
+}
+
 // ===== 表格內的操作欄一律置中，而且由共用表格決定 =====
 //
 // 先前是每一頁自己寫一次 justify-content:center，漏一頁就左靠；
@@ -703,6 +773,71 @@ ok("搜尋頁：匯出走下載中心");
       file + " 不該再自己寫操作欄置中，共用表格已經統一處理");
   }
   ok("表格內的操作欄置中與欄寬由共用表格統一決定");
+
+  // 欄名一律置中：align 說的是「內容」怎麼對齊（金額靠右、帳號靠左），欄名沒有那個需求。
+  // 以前 th 跟著 td 吃同一個 align，一整排表頭會出現置中、靠左、靠右三種。
+  host().innerHTML = w.renderExampleMember();
+  const heads = qa(".example-member-page thead th");
+  assert.ok(heads.length, "找不到表頭");
+  const strayed = heads
+    .filter((th) => /text-align/.test(th.getAttribute("style") || ""))
+    .map((th) => th.textContent.trim());
+  assert.deepEqual(strayed, [], `表頭不得自帶 text-align：${strayed.join("、")}`);
+  // 內容的對齊要留著，否則金額就不是靠右了
+  const amount = qa(".example-member-page tbody td").filter((td) =>
+    /text-align:\s*right/.test(td.getAttribute("style") || ""),
+  );
+  assert.ok(amount.length, "金額欄的內容仍要靠右，只有欄名置中");
+  ok("表頭欄名一律置中，內容維持各自的對齊");
+
+  // 表格上方不放任何說明或狀態文字（全站規範）。那行字不會自己消失，使用者做完下一件事
+  // 它還留在原地；操作結果一律用 Toast。常駐的只有欄位級錯誤與表格內的狀態區。
+  for (const [render, page] of [
+    [w.renderExampleList, "禮物卡"], [w.renderExampleBulk, "批量"],
+    [w.renderExampleMember, "會員列表"],
+    [w.renderExampleReport, "報表"],
+  ]) {
+    host().innerHTML = render();
+    for (const table of qa(".data-table")) {
+      // 表格所在的卡片裡，表格之前不該有任何文字段落
+      const card = table.parentElement;
+      const before = [...card.children].slice(0, [...card.children].indexOf(table));
+      const stray = before
+        // 手機卡片是同一份資料的另一種排法，不是說明文字
+        .filter((el) => !el.classList.contains("data-cards") && !el.querySelector(".data-cards"))
+        .filter((el) => el.textContent.trim())
+        .map((el) => el.textContent.trim().slice(0, 30));
+      assert.deepEqual(stray, [],
+        `${page}頁在表格上方留了說明文字：${stray.join("／")}——操作結果要用 Toast`);
+    }
+  }
+  ok("四個列表頁的表格上方都沒有說明或狀態文字（風控審核在 workflow-check 驗）");
+
+  // 欄位對齊照「表格 Table → 欄位對齊」：要從頭比對的字串靠左、要比大小的數字靠右。
+  // 同一個欄位在不同頁面要一致——「上層代理」在會員列表與審核頁都是帳號，兩邊都靠左。
+  const ALIGN_LEFT = /^(UID|帳號|上層代理|上級代理|姓名|名稱|會員編號|轉點 ID|兌換代碼|遊戲商|說明|角色名稱|活動名稱|遊戲分類|遊戲名稱|功能|設備指紋|瀏覽器與版本|會員帳號／真實姓名|註冊／最後登入 IP|IP 地址|轉點渠道)$/;
+  const ALIGN_RIGHT = /(金額|餘額|存款|提款|面額|數量|筆數|成員數|投注|派彩|營收|佔比|行政費)/;
+  const misaligned = [];
+  for (const file of ["example-member.js", "example-list.js", "example-bulk.js",
+    "example-form.js", "example-permission.js", "example-audit.js", "table-guide-page.js"]) {
+    const src = fs.readFileSync(file, "utf8");
+    for (const m of src.matchAll(/\{ key: '(\w+)', label: '([^']*)'([^}]*)\}/g)) {
+      const [, , label, rest] = m;
+      const align = (rest.match(/align: '(\w+)'/) || [])[1] || "center";
+      if (ALIGN_LEFT.test(label) && align !== "left") misaligned.push(`${file} 的「${label}」應靠左，現在是 ${align}`);
+      if (ALIGN_RIGHT.test(label) && align !== "right") misaligned.push(`${file} 的「${label}」應靠右，現在是 ${align}`);
+    }
+  }
+  assert.deepEqual(misaligned, [], "欄位對齊不符規範：\n  " + misaligned.join("\n  "));
+  // 審核頁的欄位是 [key, label, width, align] 的 tuple，另外驗
+  const auditSrc = fs.readFileSync("example-audit.js", "utf8");
+  for (const m of auditSrc.matchAll(/\['(\w+)', '([^']*)', \d+(?:, '(\w+)')?\]/g)) {
+    const [, , label, align = "center"] = m;
+    if (ALIGN_LEFT.test(label) && align !== "left") misaligned.push(`審核頁的「${label}」應靠左`);
+    if (ALIGN_RIGHT.test(label) && align !== "right") misaligned.push(`審核頁的「${label}」應靠右`);
+  }
+  assert.deepEqual(misaligned, [], "審核頁欄位對齊不符規範：\n  " + misaligned.join("\n  "));
+  ok("欄位對齊照用途分三種，同一個欄位在各頁一致");
 }
 
 // ===== 手機：有篩選列的頁面都要有打得開的入口 =====
@@ -749,19 +884,99 @@ ok("手機：四個有篩選列的頁面都用同一個共用開關，開得起�
     memberCards[0].textContent.includes(firstAccount),
     "卡片與表格要吃同一份資料，不是各自一套",
   );
-  // 這一頁是「精簡 ＋ 詳情抽屜」那一型：卡片上只放關鍵欄位，不是把 13 欄全搬上去
-  assert.ok(
-    qa(".example-member-page .data-card")[0].querySelectorAll(".data-card-meta div").length <= 6,
-    "卡片上只放關鍵欄位，其餘到抽屜看",
+  // 手機不得比桌機少欄位：少掉的欄位在手機上就等於查不到。
+  // 帳號是卡片標題、狀態是卡片右上的下拉、操作在底下那一列，其餘都要是 meta 的一格。
+  const headers = qa(".example-member-page thead th")
+    .map((th) => th.textContent.trim())
+    .filter((label) => label && !["帳號", "狀態", "操作"].includes(label));
+  const cardFields = qa(
+    ".example-member-page .data-card:first-child .data-card-meta dt",
+  ).map((dt) => dt.textContent.trim());
+  assert.deepEqual(
+    headers.filter((label) => !cardFields.includes(label)),
+    [],
+    `手機卡片少了桌機有的欄位：卡片上只有 ${cardFields.join("、")}`,
   );
-  for (const file of ["example-member.js", "example-audit.js"]) {
+  ok(`手機卡片帶齊桌機的 ${headers.length} 個欄位，順序與表格一致`);
+
+  // 風控審核的卡片把相近的欄位併成一格（「異動前／後餘額」），欄名對不起來，
+  // 改從原始碼比對：表格列用到的每一個 row.X，卡片也要用到。併格可以，少放不行。
+  {
+    const src = fs.readFileSync("example-audit.js", "utf8");
+    const bodyOf = (name) => {
+      const start = src.indexOf(name);
+      assert.ok(start > -1, `example-audit.js 找不到 ${name}`);
+      return src.slice(start, src.indexOf("\n}", start));
+    };
+    const fields = (body) => new Set([...body.matchAll(/\brow\.(\w+)/g)].map((m) => m[1]));
+    const inTable = fields(bodyOf("const tableRows ="));
+    const inCards = fields(bodyOf("function cardsMarkup"));
+    const dropped = [...inTable].filter((f) => !inCards.has(f));
+    assert.deepEqual(dropped, [],
+      `審核頁的手機卡片少了桌機有的欄位：${dropped.join("、")}——手機不得精簡欄位`);
+    ok(`審核頁：手機卡片帶齊表格用到的 ${inTable.size} 個欄位，併格但不少放`);
+  }
+
+  // 狀態是三選一，列上的下拉與篩選列的下拉要給同一組選項
+  const rowStatus = qa(
+    ".example-member-page .data-card:first-child [data-member-status] option",
+  ).map((o) => o.textContent.trim());
+  assert.deepEqual(rowStatus, ["啟用", "停用", "凍結"], "列上的狀態下拉要有三種狀態");
+  const filterStatus = qa('.example-member-page [name="status"] option').map((o) =>
+    o.textContent.trim(),
+  );
+  assert.deepEqual(
+    filterStatus,
+    ["全部狀態", "啟用", "停用", "凍結"],
+    "篩選列的狀態下拉要與列上的同一組選項",
+  );
+  for (const file of ["example-member.js", "example-audit.js", "example-list.js"]) {
     const src = fs.readFileSync(file, "utf8");
     assert.ok(
       !/class="mobile-card"/.test(src),
       file + " 不該再自己手寫卡片，改用共用的 dataCards()",
     );
   }
-  ok("手機卡片：兩頁都用共用的 dataCards()，與表格吃同一份資料");
+  ok("手機卡片：三頁都用共用的 dataCards()，與表格吃同一份資料");
+
+  // 包住卡片的容器不得自己加內距：左右留白由外層的 .example-card 一層負責。
+  // 三頁用同一個元件、同一種容器，其中一頁多縮一圈就會比另外兩頁窄。
+  for (const [file, wrapper] of [
+    ["example-member.css", "example-member-cards"],
+    ["example-list.css", "example-gift-cards"],
+    ["example-audit.css", "risk-mobile-list"],
+  ]) {
+    const src = fs.readFileSync(file, "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+    const rule = src.match(new RegExp(`\\.${wrapper}\\s*\\{([^}]*)\\}`));
+    assert.ok(!rule || !/padding/.test(rule[1]),
+      `${file} 的 .${wrapper} 不該自己加內距，留白由 .example-card 負責`);
+  }
+  ok("手機卡片的容器不自己加內距，三頁寬度一致");
+
+  // 禮物卡：列上有「作廢」這種不可逆操作，按之前要先看完兌換進度，所以手機用卡片。
+  // 九個欄位一個不漏——活動名稱是標題、兌換代碼是副標、狀態在右上、操作在底下。
+  {
+    host().innerHTML = w.renderExampleList();
+    const giftHeads = qa(".example-list-page thead th")
+      .map((th) => th.textContent.trim())
+      .filter((label) => label && !["活動名稱", "兌換代碼", "狀態", "操作"].includes(label));
+    const giftCard = q(".example-list-page .data-card");
+    assert.ok(giftCard, "禮物卡的手機卡片要用共用的 dataCards()");
+    const giftFields = [...giftCard.querySelectorAll(".data-card-meta dt")].map((dt) =>
+      dt.textContent.trim(),
+    );
+    assert.deepEqual(
+      giftHeads.filter((label) => !giftFields.includes(label)),
+      [],
+      `禮物卡的手機卡片少了桌機有的欄位：卡片上只有 ${giftFields.join("、")}`,
+    );
+    // 三顆操作要跟著進卡片，否則手機上看得到卻按不到
+    assert.equal(
+      giftCard.querySelectorAll(".data-card-actions button").length, 3,
+      "禮物卡的卡片要帶齊編輯／暫停啟用／作廢三顆操作",
+    );
+    ok(`禮物卡：手機卡片帶齊桌機的 ${giftHeads.length} 個欄位與三顆操作`);
+  }
 }
 
 console.log(

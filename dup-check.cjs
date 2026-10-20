@@ -61,6 +61,7 @@ const ALLOWED = {
   'upload-guide.js|message': '示範上傳失敗要怎麼回報——用共用 Toast 正是規範要求的做法',
   'select-advanced.js|datePicker': '篩選列的組合示範，呈現 Select 與其他欄位並排的實際樣子',
   'steps-guide.js|message': '最後一步送出後用共用 Toast 回報，正是規範要求的做法',
+  'bulk-guide.js|message': '批量結果用共用 Toast 回報，正是這一頁的規範要求——先前那條常駐的回報列已隨「不給復原」一起移除',
   'steps-guide.js|input': '步驟示範是開站流程的表單，每一步本來就有欄位；不是另一套輸入規範',
   'steps-guide.js|switch': '開站流程的第 2、3 步就是一排開關，照正式後台的實際欄位做',
   'date-picker-guide.js|select': '純時間選擇（el-time-select）本來就是固定間隔選項的下拉，不是另一套 Select',

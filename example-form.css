@@ -10,7 +10,7 @@
 
 .example-form-crumb {
   font-size: 0.75rem;
-  color: #718096;
+  color: var(--text-muted);
 }
 
 .example-form-crumb strong {

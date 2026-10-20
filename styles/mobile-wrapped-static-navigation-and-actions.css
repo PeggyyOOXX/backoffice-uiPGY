@@ -59,8 +59,8 @@
     height: calc(var(--mobile-stack-bottom) + 0.5rem);
     background: linear-gradient(
       to bottom,
-      #eef2f8 0,
-      #eef2f8 var(--mobile-header-h),
+      var(--surface-hover) 0,
+      var(--surface-hover) var(--mobile-header-h),
       #fff var(--mobile-header-h),
       #fff calc(var(--mobile-stack-bottom) + 0.5rem)
     );
@@ -159,8 +159,8 @@
     padding: 0 0.75rem;
     align-items: center;
     justify-content: space-between;
-    border: 1px solid #cbd8ec;
-    border: 1px solid #dce2eb;
+    border: 1px solid var(--line-control);
+    border: 1px solid var(--line-control);
     border-radius: 0.5rem;
     background: #fff;
     color: var(--text);
@@ -222,8 +222,8 @@
     display: inline-flex;
     margin-left: auto;
     background: #fff !important;
-    color: #1596ad !important;
-    border: 1px solid #1596ad !important;
+    color: var(--blue) !important;
+    border: 1px solid var(--blue) !important;
     box-shadow: none !important;
   }
   .member-actions.show-mobile-more .mobile-secondary-action {

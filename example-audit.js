@@ -1,12 +1,13 @@
 // 移植：el-table + 固定欄與分組表頭、el-pagination、el-drawer。自動刷新沿用 SearchForm 的 isAutoRefresh。詳見 ELEMENT-PLUS-MAPPING.md
 import { prepareModal } from './modal-system.js'
 import { emptyRow } from './states.js'
-import { dataTable, dataCards, applyPaging } from './data-table.js'
+import { dataTable, dataCards, applyPaging, keepTableScroll } from './data-table.js'
 import './example-page.css'
 import './example-audit.css'
 import { on } from './delegate.js'
 import { icon } from './icons.js'
 import { filterToggle } from './filter-toggle.js'
+import { message } from './message.js'
 // 事件委派統一走 delegate.js：每種事件只掛一個 document 監聽，並登記擁有權。
 const OWNED = [".risk-review-notes textarea", "[data-risk-action]", "[data-risk-search]", '[data-table-page][data-table="risk"]', '[data-table-size][data-table="risk"]']
 const listen = (type, handler, capture = false) => on(type, handler, { owner: 'risk-audit', claims: OWNED, capture })
@@ -36,7 +37,7 @@ const rows = Array.from({ length: 14 }, (_, i) => {
     firstName:name.split(' ')[0], lastName:name.split(' ').at(-1), phone:`09000000${String(i).padStart(2,'0')}`,
     thirdParty:i%2?`DEMO-${99001+i}`:'—', remark:'', frontendRemark:'' }
 })
-let draft = defaults(), applied = {...draft}, page = 1, pageSize = 10, feedback = '', autoRefresh = false, countdown = 15, timer = null
+let draft = defaults(), applied = {...draft}, page = 1, pageSize = 10, autoRefresh = false, countdown = 15, timer = null
 const rowState = row => row.operator ? '處理中' : '待審核'
 const accountNo = row => row.channel === 'bank' ? row.bankAccount : row.channel === 'wallet' ? row.walletAccount : row.address
 const contains = (haystack, needle) => String(haystack).toLowerCase().includes(String(needle).trim().toLowerCase())
@@ -106,15 +107,19 @@ function cardsMarkup(list) {
 }
 
 // 欄位定義取代原本的 colgroup 與兩層 thead：寬度、分組、固定欄都交給共用表格。
+// 第四格是對齊，規則見「表格 Table → 欄位對齊」：要從頭比對的字串靠左
+// （ID、帳號、代理、渠道、IP、指紋、瀏覽器），要比大小的數字靠右（四個金額欄），
+// 只用來辨識的短標記置中（時間、層級、稽核、狀態、操作）＝ 留空。
 const COLUMNS = [
-  ['id', '轉點 ID', 210], ['time', '申請時間', 180], ['uid', 'UID', 100],
-  ['account', '會員帳號／真實姓名', 160], ['agent', '上級代理', 150], ['level', '層級', 100],
-  ['bank', '轉點渠道', 140], ['audit', '稽核', 90], ['fee', '扣除行政費', 120],
-  ['amount', '轉點金額', 130], ['before', '異動前餘額', 130], ['after', '異動後餘額', 130],
-  ['state', '狀態', 110], ['ip', 'IP 地址', 145], ['fingerprint', '設備指紋', 170],
-  ['browser', '瀏覽器與版本', 195], ['actions', '風控審核', 170],
-].map(([key, label, width], index, all) => ({
+  ['id', '轉點 ID', 210, 'left'], ['time', '申請時間', 180], ['uid', 'UID', 100, 'left'],
+  ['account', '會員帳號／真實姓名', 160, 'left'], ['agent', '上級代理', 150, 'left'], ['level', '層級', 100],
+  ['bank', '轉點渠道', 140, 'left'], ['audit', '稽核', 90], ['fee', '扣除行政費', 120, 'right'],
+  ['amount', '轉點金額', 130, 'right'], ['before', '異動前餘額', 130, 'right'], ['after', '異動後餘額', 130, 'right'],
+  ['state', '狀態', 110], ['ip', 'IP 地址', 145, 'left'], ['fingerprint', '設備指紋', 170, 'left'],
+  ['browser', '瀏覽器與版本', 195, 'left'], ['actions', '風控審核', 170],
+].map(([key, label, width, align], index, all) => ({
   key, label, width: `${width}px`,
+  ...(align ? { align } : {}),
   ...(index === all.length - 1 ? { sticky: 'right' } : {}),
 }))
 
@@ -150,8 +155,9 @@ function listMarkup() {
   const list = filtered(), pages = Math.max(1, Math.ceil(list.length / pageSize))
   page = Math.min(page, pages)
   const current = list.slice((page - 1) * pageSize, page * pageSize)
+  // 表格上方不放任何說明或狀態文字：操作結果一律用 Toast（全站規範）。
+  // 先前這裡有一條 .risk-feedback，審核完會留下「WD-… 已通過風控審核。」不會消失。
   return `<section class="card example-card risk-list-card" data-risk-list>
-    <p class="risk-feedback" role="status">${esc(feedback)}</p>
     ${cardsMarkup(current)}
     ${dataTable({
       name: 'risk',
@@ -189,10 +195,13 @@ export function renderRiskAudit() {
 
 window.renderExampleAudit = renderRiskAudit
 
+// 橫向捲動位置的保留本來是這一頁自己手寫的（15 秒自動刷新會一直把表格彈回最左邊，
+// 所以這裡最早發現）。現在收進 data-table.js 的 keepTableScroll，其他頁一起受惠。
 function redrawList() {
-  const node=document.querySelector('[data-risk-list]'); if(!node)return
-  const offset=node.querySelector('.data-table-scroll')?.scrollLeft||0
-  node.outerHTML=listMarkup(); const next=document.querySelector('[data-risk-list] .data-table-scroll'); if(next)next.scrollLeft=offset
+  keepTableScroll(() => {
+    const node=document.querySelector('[data-risk-list]'); if(!node)return
+    node.outerHTML=listMarkup()
+  })
 }
 function readDraft() {
   const form=document.querySelector('[data-risk-search]'); if(!form)return
@@ -216,7 +225,7 @@ function validIP(value) {
 function search(refresh=false) {
   readDraft(); const error=validate(); const node=document.querySelector('[data-risk-search-error]');if(node)node.textContent=error
   if(error)return false
-  applied={...draft};page=1;feedback=refresh?'已刷新示範資料。':'';countdown=15;redrawList();return true
+  applied={...draft};page=1;countdown=15;redrawList();if(refresh)message.info('已刷新列表');return true
 }
 const fields = (title, pairs) => `<section class="risk-detail-section"><h3>${title}</h3><dl class="risk-detail-grid">${pairs.map(([label,value])=>`<div><dt>${label}</dt><dd>${value&&value.html?value.html:esc(value)}</dd></div>`).join('')}</dl></section>`
 const stateBadge = value => ({ html:`<span class="badge ${value==='通過'?'active-b':'risk-b'}">${esc(value)}</span>` })
@@ -253,7 +262,7 @@ function review(row,pass) {
   dialog(title,`<p class="risk-confirm-note">請再次確認以下轉點資訊</p>${detailMarkup(row,pass?'通過':'不通過')}<div class="risk-review-notes">${[['remark','後台備註'],['frontendRemark','前台備註']].map(([key,label])=>`<label>${label}<textarea class="guide-input guide-textarea" name="${key}" rows="3" maxlength="200" placeholder="請輸入${label}"></textarea><span class="risk-note-count" data-note-count="${key}">0 / 200</span></label>`).join('')}</div>`,
     `<button type="submit" class="semantic-btn ${pass?'btn-search':'btn-danger'}">${pass?'通過':'不通過'}</button>`, node=>{
       row.remark=node.querySelector('[name="remark"]').value.trim();row.frontendRemark=node.querySelector('[name="frontendRemark"]').value.trim();row.completed=pass?'通過':'不通過'
-      feedback=`${row.id} 已${pass?'通過風控審核':'審核不通過'}。`;redrawList();node.close()
+      redrawList();node.close();message.success(`${row.id} 已${pass?'通過風控審核':'審核不通過'}`)
     },true)
 }
 function auditDetails(row) {
@@ -297,7 +306,7 @@ listen('click',event=>{
   const pager=event.target.closest('[data-table-page][data-table="risk"]');if(pager){page=Number(pager.dataset.tablePage);redrawList();return}
   const target=event.target.closest('[data-risk-action]');if(!target)return
   event.preventDefault();const name=target.dataset.riskAction,row=rows.find(row=>row.id===target.dataset.id)
-  if(name==='reset'){const open=document.querySelector('[data-risk-search]').classList.contains('mobile-open');draft=defaults();applied={...draft};page=1;feedback='';document.querySelector('[data-risk-page-root]').outerHTML=renderRiskAudit();if(open)document.querySelector('[data-filter-toggle]')?.click();return}
+  if(name==='reset'){const open=document.querySelector('[data-risk-search]').classList.contains('mobile-open');draft=defaults();applied={...draft};page=1;document.querySelector('[data-risk-page-root]').outerHTML=renderRiskAudit();if(open)document.querySelector('[data-filter-toggle]')?.click();return}
   if(name==='auto'){autoRefresh=!autoRefresh;target.setAttribute('aria-checked',String(autoRefresh));const label=document.querySelector('[data-risk-countdown]');label.hidden=!autoRefresh;label.textContent='15 秒後刷新';autoRefresh?startTimer():stopTimer();return}
   if(name==='close-drawer'){window.closeDetailDrawer();return}
   if(name==='close-modal'){target.closest('dialog').close();return}

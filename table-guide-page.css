@@ -27,10 +27,10 @@
   font-size: 0.75rem;
 }
 .status-field.is-on {
-  color: #12b157;
+  color: var(--success);
 }
 .status-field.is-off {
-  color: #dc2626;
+  color: var(--danger);
 }
 button.status-field {
   cursor: pointer;
@@ -50,7 +50,7 @@ button.status-field:focus-visible {
 /* 手機版呈現的對照：桌機兩欄並排看得出差別，窄螢幕疊起來。 */
 .table-mobile-compare{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-bottom:1rem}
 .table-mobile-compare > div{min-width:0}
-.table-mobile-compare h5{margin:0 0 0.5rem;font-size:0.75rem;font-weight:600;color:#718096}
+.table-mobile-compare h5{margin:0 0 0.5rem;font-size:0.75rem;font-weight:600;color:var(--text-muted)}
 /* 這一節的表格刻意不給 min-width，兩欄並排時才看得出「欄位被擠扁」的樣子 */
 .table-mobile-compare .data-table-grid{min-width:0}
 @media(max-width:900px){

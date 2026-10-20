@@ -52,7 +52,7 @@
 }
 .member-card-head small {
   display: block;
-  color: var(--muted);
+  color: var(--text-muted);
   margin-top: 0.25rem;
 }
 .member-card-head .status-control {
@@ -69,7 +69,7 @@
   border-bottom: 1px solid var(--line);
 }
 .login-record-list span {
-  color: var(--muted);
+  color: var(--text-muted);
 }
 /* Long translations may wrap; controls grow instead of clipping labels. */
 .source-filter-grid .control {
@@ -112,8 +112,11 @@
   .member-mobile-only .mobile-card {
     background: #fff;
   }
-  .member-mobile-only 
-  .member-mobile-only .tag-dots {
+  /* 標籤在桌機表格裡置中（跟著操作欄那一套），在手機卡片裡是一般欄位，
+     要和同一格的 dt／dd 一樣靠左起排。
+     先前這條的選擇器被斷成兩行，變成 .member-mobile-only .member-mobile-only
+     .tag-dots，選不到任何東西，所以一直沒生效。 */
+  .member-mobile-only .data-card-meta .tag-dots {
     justify-content: flex-start;
   }
   .login-record-list div {

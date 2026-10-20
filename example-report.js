@@ -4,7 +4,7 @@
 // 全都在這一頁上——多維度頁籤（同一組指標換一個維度看）、日期區間有天數上限、
 // 合計列、金額要千分位且負數紅字、匯出是建立下載任務而不是直接下檔。
 // 先前原型完全沒有這一型，表格規範頁只有一條孤立的 tfoot 示範。
-import { dataTable, applyPaging, PAGE_SIZES } from './data-table.js'
+import { dataTable, applyPaging, keepTableScroll, PAGE_SIZES } from './data-table.js'
 import { tabs, tabPanels } from './tabs.js'
 import { requestExport } from './download-center.js'
 import { message } from './message.js'
@@ -55,7 +55,10 @@ const money = n => n.toLocaleString('en-US')
 const amount = n => `<span class="example-amount${n < 0 ? ' is-negative' : ''}">${n < 0 ? '-' : ''}$${money(Math.abs(n))}</span>`
 
 const columns = key => [
-  { key: 'name', label: DIMENSION[key][0], align: 'left' },
+  // 維度欄的對齊跟著內容走，不因為它是第一欄就一律靠左：
+  // 「總營收」的維度是日期，等寬，比照全站其他日期時間欄置中；
+  // 其餘三個維度（遊戲類型／遊戲商／遊戲名稱）是長度不一的名稱，靠左才掃得動。
+  { key: 'name', label: DIMENSION[key][0], ...(key === 'total' ? {} : { align: 'left' }) },
   { key: 'bet', label: '有效投注', align: 'right' },
   { key: 'payout', label: '派彩', align: 'right' },
   { key: 'revenue', label: '遊戲營收', align: 'right' },
@@ -82,6 +85,11 @@ const report = () => {
   return dataTable({
     name: 'report',
     columns: columns(STATE.tab),
+    caption: '遊戲營收報表',
+    // 六欄金額在手機上塞不下。報表維持表格不改卡片（要跨列比同一個欄位，而且合計列
+    // 在卡片裡沒有地方放），所以橫向捲動是這一頁唯一的出路——宣告 scroll 之後捲動
+    // 容器才帶 tabindex 與 role="region"，鍵盤也捲得動。
+    scroll: '680px',
     rows,
     page: STATE.page,
     pageSize: STATE.pageSize,
@@ -153,10 +161,10 @@ window.renderExampleReport = () => `<section class="example-page example-report-
 </section>`
 
 // --- 互動 ---
-const redraw = () => {
+const redraw = () => keepTableScroll(() => {
   const host = document.querySelector('[data-report-list]')
   if (host) host.innerHTML = report()
-}
+})
 
 const redrawAll = () => {
   const host = document.querySelector('[data-report-root]')

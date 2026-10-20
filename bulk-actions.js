@@ -46,12 +46,10 @@ export function bulkHeader({ name, key, label, options, selected = 0, total = 0,
   </span>`
 }
 
-/**
- * 批量操作的結果回報。批量動作一次改很多筆，螢幕上看不出到底動了什麼，
- * 所以一定要說出「影響幾筆、實際變更幾筆」，並且留一個復原。
- */
-export const bulkFeedback = ({ name, text, undo = false }) =>
-  `<p class="bulk-feedback" role="status" data-bulk-feedback="${esc(name)}">${esc(text)}${undo ? `<button type="button" class="semantic-btn btn-neutral outline" data-bulk-undo data-bulk="${esc(name)}">${icon('reset', 16)}復原</button>` : ''}</p>`
+// 結果回報沒有自己的元件：applyBulk() 回傳文案，頁面直接丟給 message.success()。
+// 先前這裡有一個 bulkFeedback()，在表格上方畫一條常駐的回報列並掛一顆復原鈕。
+// 批量改成「點了就生效並直接記錄、不給復原」之後，那條列子就沒有留下來的理由了——
+// 訊息消失後使用者不再需要它，照全站的訊息層級規範就該是 Toast。
 
 /** 勾選狀態：本頁是否全選、是否部分勾選。只看本頁，不跨頁。 */
 export const selectionOf = (ids, selected) => ({

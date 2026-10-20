@@ -6,8 +6,8 @@
   align-items: center;
   overflow-x: auto;
   overflow-y: hidden;
-  background: #eef2f8;
-  border-bottom: 1px solid #e2e8f1;
+  background: var(--surface-hover);
+  border-bottom: 1px solid var(--line-control);
   scrollbar-width: thin;
 }
 .quick-tabs button {
@@ -17,10 +17,10 @@
   align-items: center;
   gap: 0.25rem;
   padding: 0 0.5rem;
-  border: 1px solid #cbd8ec;
+  border: 1px solid var(--line-control);
   border-radius: 0.25rem;
   background: #fff;
-  color: #748095;
+  color: var(--text-muted);
   font-size: 0.75rem;
   white-space: nowrap;
 }

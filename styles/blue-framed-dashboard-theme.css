@@ -1,12 +1,12 @@
 :root {
-  --navy: #111827;
-  --navy2: #17243a;
+  --sidebar: #111827;
+  --sidebar-deep: #17243a;
   --blue: #3d6df2;
-  --blue2: #edf2ff;
+  --blue-tint: #edf2ff;
   --bg: #dfe3e8;
   --card: #ffffff;
   --text: #182238;
-  --muted: #748095;
+  --text-muted: #748095;
   --line: #e5e9f0;
   --green: #218b6a;
   --red: #d55766;
@@ -27,7 +27,9 @@ body {
   width: min(92.5rem, 100%);
   min-height: calc(100vh - 4.25rem);
   margin: 0 auto;
-  background: #111827;
+  /* 與側欄同色，視覺上從側欄延伸出來。吃同一支 token 才不會其中一邊被改掉時
+     另一邊沒跟上——先前這裡寫死 #111827，和側欄的 #111B2B 差一點點。 */
+  background: var(--sidebar);
   border-radius: 1.5rem;
   box-shadow: 0 1.75rem 4.6875rem rgba(23, 31, 47, 0.2);
   overflow: hidden;
@@ -244,5 +246,24 @@ body {
     margin-bottom: 0.75rem;
     padding: 1rem;
     border-radius: 0.75rem;
+  }
+}
+
+/* --- 從 warm-card-theme.css 與 teal-full-shell-theme.css 搬過來 ---
+   那兩支是更早的佈景層，整支 165 條宣告裡只剩下面這 8 條還沒被後面的檔案蓋掉
+   （存活率 4% 與 6%），其餘全是死碼。把活的搬到這裡、刪掉那兩支檔案：
+   位置往後移不影響結果，因為這幾條的後面本來就沒有人再宣告同一個鍵。 */
+.profile-mini {
+  background: rgba(255, 255, 255, 0.08);
+}
+.sidebar {
+  overflow: hidden;
+}
+@media (max-width: 720px) {
+  .main {
+    border: 0;
+  }
+  .page {
+    border-radius: 1rem;
   }
 }
