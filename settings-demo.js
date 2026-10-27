@@ -4,6 +4,7 @@
 // 快照彈窗、拖曳排序都寫在這裡），那一頁已改寫成組合範例（example-mixed.js），
 // 所以這裡只剩開站要做的事。檔名維持不變：index.html 的 <script> 與 nav-check 都認它。
 import './filter-toggle.js'
+import './sidebar-fade.js'
 import './longtext.js'
 import './example-audit.js'
 import './switch-layout-guide.js'

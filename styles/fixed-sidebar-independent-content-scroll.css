@@ -16,27 +16,57 @@
     flex: 0 1 auto;
     overflow-y: auto;
     overflow-x: hidden;
-    /* 側欄只有 248px，系統捲軸要吃掉 12–17px，而且正好落在作用中項目與內容區
-       之間，把 active-nav-connector 的白色尖角切斷。這裡讓它不畫也不佔寬度，
-       滾輪、觸控、鍵盤與拖曳選取都不受影響。 */
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    /* 捲軸沒了就少了「下面還有」的線索，改用上下緣淡出代替：不佔寬度、不搶視線。
-       下緣是「還有內容可以捲」的提示，範圍拉到 64px——先前 14px 比一個導覽項目還短，
-       看起來像沒對齊而不像還有東西。上緣維持 14px：這一端沒有內距墊著，淡出一加長
-       就會在沒捲動時把第一個項目蓋掉。
-       下內距 40px 是最後一項與側欄底部之間的呼吸空間，不讓選項直接貼底。 */
+    /* 下內距 40px 是最後一項與側欄底部之間的呼吸空間，不讓選項直接貼底。 */
     padding-bottom: 2.5rem;
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 0.75rem, #000 calc(100% - 4rem), transparent 100%);
-    mask-image: linear-gradient(to bottom, transparent 0, #000 0.75rem, #000 calc(100% - 4rem), transparent 100%);
-  }
-  .sidebar .nav::-webkit-scrollbar {
-    width: 0;
-    height: 0;
   }
   .main {
     height: 100vh;
     overflow-y: auto;
     overflow-x: hidden;
   }
+}
+
+/* ---- 側欄捲動提示（桌機側欄與手機抽屜共用） ----
+   側欄只有 248px，系統捲軸要吃掉 12–17px，而且正好落在作用中項目與內容區
+   之間，把 active-nav-connector 的白色尖角切斷。這裡讓它不畫也不佔寬度，
+   滾輪、觸控、鍵盤與拖曳選取都不受影響。
+
+   捲軸沒了就少了「還有內容」的線索，改用上下緣淡出代替——但只在那一側真的還有
+   內容時才畫：捲到底下緣就不淡出、在最上面上緣就不淡出，否則最後一項永遠是半透明，
+   看起來像還有東西卻捲不動。狀態由 sidebar-fade.js 依捲動位置掛上
+   .can-scroll-up／.can-scroll-down。
+   下緣 96px，前半段就淡到 30%：線性淡出在深色側欄上看不太出來，要淡得早、淡得深，
+   最後一兩個項目才看得出「被截掉、下面還有」。
+   上緣 12px：這一端沒有內距墊著，淡出一加長就會把第一個看得到的項目蓋掉。
+   兩個長度註冊成 <length>，切換時淡出會平順地收起來而不是跳一下。 */
+@property --nav-fade-top {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+@property --nav-fade-bottom {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+.sidebar .nav {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  --nav-fade-top: 0px;
+  --nav-fade-bottom: 0px;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 var(--nav-fade-top), #000 calc(100% - var(--nav-fade-bottom)), rgba(0, 0, 0, 0.3) calc(100% - var(--nav-fade-bottom) / 2), transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 var(--nav-fade-top), #000 calc(100% - var(--nav-fade-bottom)), rgba(0, 0, 0, 0.3) calc(100% - var(--nav-fade-bottom) / 2), transparent 100%);
+  transition:
+    --nav-fade-top 0.2s,
+    --nav-fade-bottom 0.2s;
+}
+.sidebar .nav.can-scroll-up {
+  --nav-fade-top: 0.75rem;
+}
+.sidebar .nav.can-scroll-down {
+  --nav-fade-bottom: 6rem;
+}
+.sidebar .nav::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }

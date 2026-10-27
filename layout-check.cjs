@@ -250,4 +250,20 @@ ok(`表格外觀只有 ${SOURCE} 一個來源，且沒有全域 min-width`)
   ok('表單欄位格線 1／2／3／4／6 欄照 el-col，彈窗 2 欄，只有 guide-page.css 一處定義')
 }
 
-console.log('\nPASS: Shell 版面對齊（topbar 底線 ＝ 側欄分隔線）＋ 表格外觀單一來源＋疊放順序＋表單欄位格線')
+// --- 側欄捲動提示 ---
+// 淡出只在那一側還有內容時才畫（捲到底下緣消失），而且桌機側欄與手機抽屜共用。
+// 先前淡出寫死在 mask 裡、又包在桌機的 @media 內：捲到底最後一項仍是半透明，手機抽屜則完全沒有。
+{
+  const fadeCss = fs.readFileSync('styles/fixed-sidebar-independent-content-scroll.css', 'utf8')
+  const outside = fadeCss.replace(/@media[^{]*\{(?:[^{}]*\{[^{}]*\})*[^{}]*\}/g, '')
+  assert.ok(/\.sidebar \.nav \{[^}]*mask-image:[^;]*var\(--nav-fade-top\)[^;]*var\(--nav-fade-bottom\)/.test(outside),
+    '側欄的淡出要寫在 @media 外（手機抽屜也要有），而且長度要用 --nav-fade-top／--nav-fade-bottom，不能寫死')
+  assert.ok(/\.can-scroll-down\s*\{[^}]*--nav-fade-bottom/.test(outside) && /\.can-scroll-up\s*\{[^}]*--nav-fade-top/.test(outside),
+    '淡出只在 .can-scroll-up／.can-scroll-down 時才有長度')
+  const fadeJs = fs.readFileSync('sidebar-fade.js', 'utf8')
+  assert.ok(/can-scroll-up/.test(fadeJs) && /can-scroll-down/.test(fadeJs), 'sidebar-fade.js 要依捲動位置切換兩個 class')
+  assert.ok(fs.readFileSync('settings-demo.js', 'utf8').includes("import './sidebar-fade.js'"), '進入點要載入 sidebar-fade.js')
+  ok('側欄淡出只在那一側還有內容時才畫，桌機側欄與手機抽屜共用')
+}
+
+console.log('\nPASS: Shell 版面對齊（topbar 底線 ＝ 側欄分隔線）＋ 表格外觀單一來源＋疊放順序＋表單欄位格線＋側欄淡出')
