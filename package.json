@@ -7,7 +7,7 @@
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
     "preview": "vite preview --host 0.0.0.0",
-    "check": "node dup-check.cjs && node nav-check.cjs && node layout-check.cjs && node render-check.cjs && node icon-check.cjs && node message-check.cjs && node workflow-check.cjs && node example-check.cjs && node token-check.cjs"
+    "check": "node dup-check.cjs && node nav-check.cjs && node layout-check.cjs && node render-check.cjs && node icon-check.cjs && node message-check.cjs && node workflow-check.cjs && node example-check.cjs && node token-check.cjs && node i18n-check.cjs"
   },
   "devDependencies": {
     "jsdom": "^29.1.1",

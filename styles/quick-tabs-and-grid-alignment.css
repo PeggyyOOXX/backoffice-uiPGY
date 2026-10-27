@@ -1,17 +1,21 @@
+/* 高度不寫死：頁籤最多 10 個，長語系的頁名（越南文約 1.8 倍、高棉文更長）會讓
+   一行排不下。桌機讓它換到第二行，高度由內容撐開——這一列是 sticky 不是 fixed，
+   變高時底下的內容會自己往下讓。手機版另有一套固定高度的單行捲動（見
+   mobile-wrapped-static-navigation-and-actions.css）：那一疊的位置全部從
+   --quick-tabs-h-mobile 算出來，一換行下面每一層都會錯位。 */
 .quick-tabs {
-  height: 2.4375rem;
+  min-height: 2.4375rem;
   padding: 0.25rem 0.75rem;
   display: flex;
+  flex-wrap: wrap;
   gap: 0.25rem;
   align-items: center;
-  overflow-x: auto;
-  overflow-y: hidden;
   background: var(--surface-hover);
   border-bottom: 1px solid var(--line-control);
   scrollbar-width: thin;
 }
 .quick-tabs button {
-  height: 1.6875rem;
+  min-height: 1.6875rem;
   flex: none;
   display: inline-flex;
   align-items: center;
@@ -89,7 +93,7 @@
 }
 @media (max-width: 720px) {
   .quick-tabs {
-    height: 2.375rem;
+    min-height: 2.375rem;
     padding: 0.25rem 0.5rem;
   }
   .page {

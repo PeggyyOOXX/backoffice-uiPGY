@@ -12,6 +12,9 @@
   --red: #e85a66;
   --amber: #d98b18;
   --shadow: 0 0.75rem 2rem rgba(21, 35, 63, 0.08);
+  /* 側欄寬度。.sidebar、.main 的左外距、組合範例的固定列都靠它對齊，
+     所以只在這裡定義一次——要為長語系調寬就改這一個值。 */
+  --sidebar-w: 15.5rem;
 }
 * {
   box-sizing: border-box;
@@ -37,7 +40,7 @@ button {
 .sidebar {
   position: fixed;
   inset: 0 auto 0 0;
-  width: 15.5rem;
+  width: var(--sidebar-w);
   background: var(--sidebar);
   color: #fff;
   z-index: 30;
@@ -83,9 +86,13 @@ button {
   padding: 0 0.75rem;
   overflow: auto;
 }
+/* 高度不寫死：換語系後項目文字可能變兩行（越南文平均 1.8 倍、高棉文更長），
+   寫死高度的話第二行會直接溢出蓋到下一項。高度由上下內距與行高撐出來，
+   單行時的視覺高度與原本相同。 */
 .nav-item {
-  height: 2.75rem;
-  padding: 0 0.75rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.75rem;
+  line-height: 1.25;
   border-radius: 0.5rem;
   display: flex;
   align-items: center;
@@ -141,7 +148,7 @@ button {
   color: #8fa0bf;
 }
 .main {
-  margin-left: 15.5rem;
+  margin-left: var(--sidebar-w);
   min-width: 0;
 }
 .topbar {
@@ -182,19 +189,14 @@ button {
   color: var(--sidebar);
   position: relative;
 }
-.dot {
-  position: absolute;
-  width: 0.4375rem;
-  height: 0.4375rem;
-  border-radius: 50%;
-  background: var(--red);
-  right: 0.5rem;
-  top: 0.5rem;
-  border: 2px solid white;
-}
 .language {
   border: 0;
   background: transparent;
+  color: var(--text-muted);
+}
+/* 站台時區：唯讀文字，不是可切換的下拉。理由見「頁首 Header」規範頁。 */
+.clock {
+  font-size: 0.75rem;
   color: var(--text-muted);
 }
 .page {

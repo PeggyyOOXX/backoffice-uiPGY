@@ -499,7 +499,7 @@ host().insertAdjacentHTML("beforeend", w.downloadCenter());
 click(q("[data-report-export]"));
 assert.equal(qa(".download-task").length, 1, "匯出應該在下載中心建立一筆任務");
 assert.ok(q(".download-task-name").textContent.trim().endsWith(".xlsx"), "任務要帶檔名");
-assert.ok(q("[data-download-root] .download-badge"), "有任務處理中時頁首要有計數");
+assert.ok(q("[data-download-root] .header-badge.is-task"), "有任務處理中時頁首要有計數");
 const toasts = qa(".bo-message");
 assert.ok(toasts.some((t) => /已建立匯出任務/.test(t.textContent)),
   "按下匯出當時檔案還不存在，只能說已建立任務");

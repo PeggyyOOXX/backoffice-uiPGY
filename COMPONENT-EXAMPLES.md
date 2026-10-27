@@ -17,6 +17,7 @@
 
 ## 跨頁的共用行為
 
+- **頁首**（header.js）：右側只有六個位置，順序固定（下載中心 → 轉點審核 → 存款審核 → 語系 → 站台時區 → 帳號）。規範在側欄「頁首 Header」，對應 `Header.vue`。
 - **下載中心**（download-center.js）：匯出一律 `requestExport()` 建立任務，頁首每 3 秒輪詢，完成才可下載。對應 `useDownloadCenterApi` 與 Header.vue 的下載進度氣泡，正式後台 14 個 view 在用。
 - **右側抽屜**：唯讀資訊（會員摘要、登入紀錄、轉點明細、稽核詳情）共用 shell 的 `#detailOverlay`，底部只有「關閉」。
 - **共用表格**：合計列、分組表頭、固定欄、橫向捲動與分頁都在 `dataTable()` 裡，九頁都用同一個。

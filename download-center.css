@@ -3,13 +3,8 @@
    進度條、標籤、圖示按鈕、空狀態都是共用元件，這裡不重畫也不調色。 */
 .download-center{position:relative;display:inline-flex}
 .download-center .icon-btn{position:relative}
-.download-badge{
-  position:absolute;top:-2px;right:-2px;
-  min-width:1.125rem;height:1.125rem;padding:0 0.25rem;
-  display:grid;place-items:center;
-  border-radius:0.5rem;background:var(--warning);color:#fff;
-  font-size:0.75rem;font-weight:700;line-height:1;
-}
+/* 角標的幾何與配色在 header.css 的 .header-badge：下載任務用 .is-task（橘色，系統自己會跑完），
+   待辦用預設的紅色。尺寸與位置不得各寫一份。 */
 .download-panel{
   position:absolute;top:calc(100% + 0.25rem);right:0;z-index:40;
   width:21.25rem;max-width:calc(100vw - 1.5rem);padding:0.75rem;
@@ -30,6 +25,18 @@
 .download-task-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.75rem;color:var(--text)}
 .download-task .bo-progress{margin:0}
 
+/* 手機的面板改成固定在畫面上方置中，不跟著按鈕右對齊。
+   下載鈕是 top-actions 的第一顆，面板 340px 寬往左展開時左緣會跑到畫面外，
+   而手機版的 html／body／.app／.main 都有 overflow-x: hidden，超出去的部分會被整個裁掉。
+   垂直位置從 --topbar-h-mobile 算出來，不另外寫數字（見 AGENTS.md 的固定列規則）。
+   z-index 介於 topbar(30) 與側欄抽屜(40) 之間：要蓋住頁籤列，但抽屜打開時不該壓在它上面。 */
 @media(max-width:720px){
-  .download-panel{right:-0.5rem;width:min(21.25rem,calc(100vw - 1.5rem))}
+  .download-panel{
+    position:fixed;
+    top:calc(var(--topbar-h-mobile) + 0.25rem);
+    right:auto;left:50%;
+    transform:translateX(-50%);
+    z-index:31;
+    width:min(21.25rem,calc(100vw - 1.5rem));
+  }
 }

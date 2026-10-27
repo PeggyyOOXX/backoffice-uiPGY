@@ -87,13 +87,15 @@
     background: #fff !important;
     backdrop-filter: none !important;
   }
+  /* 全站只有一個按鈕高度，不分斷點：34px，與輸入框、分頁、表格操作鈕一致。
+     先前這裡縮成 32px，手機的頁首就成了第二種按鈕尺寸。 */
   .topbar .menu-btn,
   .topbar .icon-btn {
-    width: 2rem;
-    height: 2rem;
+    width: 2.125rem;
+    height: 2.125rem;
   }
   .topbar .top-actions {
-    gap: 0.25rem;
+    gap: 0.5rem;
   }
   .quick-tabs {
     position: fixed;

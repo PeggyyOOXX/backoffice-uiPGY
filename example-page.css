@@ -64,7 +64,7 @@
 .example-savebar {
   position: fixed;
   bottom: 0;
-  left: 15.5rem;
+  left: var(--sidebar-w);
   right: 0;
   z-index: 25;
   display: flex;

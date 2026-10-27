@@ -109,6 +109,10 @@ run(
 );
 run("token-guide.js", PAGE + ICON);
 run("nav-guide.js", PAGE + ICON);
+run("header.js", PAGE + ON + ICON);
+run("form-guide.js", PAGE + ICON);
+run("search-guide.js", PAGE + ON + ICON);
+run("permission-guide.js", PAGE + ICON);
 run("progress-guide.js", PAGE + ON + ICON);
 run("message-guide.js", PAGE + ON + ICON + MSG + MODAL);
 run(
@@ -138,6 +142,10 @@ const PAGES = [
   ["renderTooltipPage", "tooltip-guide", "提示氣泡"],
   ["renderTokenPage", "token-guide", "設計 Token"],
   ["renderNavPage", "nav-guide", "導覽"],
+  ["renderHeaderPage", "header-guide", "頁首"],
+  ["renderFormPage", "form-guide", "表單"],
+  ["renderSearchPage", "search-guide", "搜尋篩選列"],
+  ["renderPermissionPage", "permission-guide", "權限控制"],
   ["renderProgressPage", "progress-guide", "進度條"],
   ["renderIconGuide", "icon-guide", "圖示"],
   ["renderMessageGuide", "message-guide", "訊息提示"],
@@ -221,6 +229,47 @@ ok("表格頁：表格＋分頁＋表頭排序同頁，換頁與改每頁筆數�
     "空狀態應有圖示與標題，不是一行純文字",
   );
   ok("空表格沿用共用空狀態，撐滿表寬");
+}
+
+// 規範頁上的示範按鈕必須真的會動。按不動的示範比沒有示範更糟——它正好示範了
+// 一件規範禁止的事（「權限控制」寫著不得留按不動的按鈕）。
+// 實際踩過兩個：「唯讀檢視」掛了別的頁面的 data 屬性，handler 找不到資料就 return；
+// 「表單彈窗」的 prepareModal 在補必填星號時丟 NotFoundError，整個中斷。
+// 兩種壞法在畫面上都只是「按了沒反應」，render 也照樣通過。
+{
+  d.querySelector(".page").innerHTML = w.renderOverlayPage();
+  const triggers = [...d.querySelectorAll("[data-modal-example]")];
+  assert.ok(triggers.length >= 3, "彈窗頁應有唯讀／表單／刪除三顆示範按鈕");
+  const broken = [];
+  for (const trigger of triggers) {
+    d.querySelectorAll("dialog.bo-modal").forEach((el) => el.remove());
+    const label = trigger.textContent.trim();
+    try {
+      trigger.dispatchEvent(new w.MouseEvent("click", { bubbles: true }));
+      const dialog = d.querySelector("dialog.bo-modal[open]");
+      if (!dialog) broken.push(`${label}：按了沒有彈窗`);
+      else if (!dialog.querySelector(".bo-modal-header h2"))
+        broken.push(`${label}：彈窗沒有標題`);
+      else if (!dialog.querySelector(".bo-modal-footer button"))
+        broken.push(`${label}：彈窗沒有 footer 按鈕`);
+    } catch (error) {
+      broken.push(`${label}：${error.name} ${error.message}`);
+    }
+  }
+  d.querySelectorAll("dialog.bo-modal").forEach((el) => el.remove());
+  assert.deepEqual(broken, [], "彈窗頁的示範按鈕按不動：\n  " + broken.join("\n  "));
+  // 必填欄位的星號要補得上去，而且不得因為 label 與欄位是兄弟節點就整個中斷
+  d.querySelectorAll("dialog.bo-modal").forEach((el) => el.remove());
+  d.querySelector('[data-modal-example="form"]').dispatchEvent(
+    new w.MouseEvent("click", { bubbles: true }),
+  );
+  const form = d.querySelector("dialog.bo-modal[open]");
+  assert.ok(
+    form.querySelector('label[for="modal-example-name"] .required-mark'),
+    "必填欄位的星號沒有補在標籤上",
+  );
+  form.remove();
+  ok(`彈窗頁 ${triggers.length} 顆示範按鈕都開得起來，必填星號補得上`);
 }
 
 d.querySelector(".page").innerHTML = w.renderStepsPage();

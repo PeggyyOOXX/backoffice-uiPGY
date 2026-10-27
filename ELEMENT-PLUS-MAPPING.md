@@ -46,6 +46,11 @@
 | `states.js` 失敗／無權限 | `el-result` | 無 | 頁面層級用 `el-result`；表格內仍用 `el-empty` 配 `#empty` slot |
 | `modal-system.js` | `el-dialog` | `CustomDialog.vue` | 標題左側綠線、footer 靠右已在 `_element-ui.scss` 可統一處理 |
 | 右側抽屜 | `el-drawer` | 無（目前自製） | 唯讀詳情用，底部只有「關閉」 |
+| `header.js` 帳號選單 | `el-popover` | `Header.vue` 的 `account-popper` | 已在用，面板寬度與六個欄位照規範頁；不得再加第三顆按鈕 |
+| `form-guide.js` | `el-form` / `el-form-item` | 59 個 view 已在用 | 已符合：label-position="top"、require-asterisk-position="right"、rules 的 trigger 一律 blur。**缺的是送出失敗後的處理**——全站 0 處 `scrollToField`，要補上「捲到第一個錯誤並聚焦」 |
+| `search-guide.js` | `SearchForm.vue`（內部用 el-form ＋ el-input/el-select/el-date-picker） | **65 / 72 個 view** | 設定驅動，概念沿用。三處要改：搜尋與重設改成帶文字的語意按鈕、按鈕固定在格線最後一欄靠右（重設在前、搜尋在後，不再因為有沒有進階條件而置中）、進階收合鈕要有文字並自成一列 |
+| `permission-guide.js` | 不是 EP 元件，對應 `usePermission.ts` | 61 個檔案已在用 | `v-if` 141 處與 `:disabled` 161 處混用且無判準。統一成「動作沒了就不渲染，資料沒了就停用」 |
+| `header.js` 待辦角標 | `el-badge` 或自繪 | `Header.vue` 的絕對定位 `<div>`（自繪） | 數字來自 `/api/v0/notifications`，WebSocket 推播更新。EP 的 `el-badge` 預設 `is-fixed` 位置與規範的 `-2px` 不同，要覆寫；`:max="99"` 與規範的 99+ 一致 |
 | `tooltip.js` | `el-tooltip` | `IconBtn.vue`、`TruncateTooltip.vue` | `data-tooltip-placement` → `placement`；自動翻面 EP 內建 |
 | `icon-button.js` | `el-button` + `el-tooltip` | `IconBtn.vue` | 尺寸 34×34（觸控 44×44）、圓角 4px 要覆寫 EP 預設 |
 | `choice-controls.js` | `el-radio` / `el-checkbox` + `-group` | 全站已在用 | 16×16、`accent-color #1596AD`、間距 8px 要覆寫；部分選取用 `indeterminate` |
@@ -56,7 +61,7 @@
 | 步驟導覽 | `el-steps` / `el-step` | `StepLine.vue`（自製 SVG） | 建議改用 `el-steps`，省掉自製的 line/lineActive 圖 |
 | Toast | `ElMessage` | 全站 **189 處**已在用 | 分級已齊（success 164／error 17／warning 6／物件寫法 2），問題在**文案**：164 則成功裡有 149 則是同一句 `t("success")`。另需補 `grouping: true`、依型別的 `duration` 與 `showClose`、常駐 live region。見 `MESSAGE-SYSTEM.md` |
 | 圖片上傳 | `el-upload` | 16 個 view 已在用 | 搭配 `useImageUploadRule` 的每功能像素規則 |
-| 批量開關方案 B | `el-dropdown` | 無（全站 0 處） | 表頭的批量選單。正式後台沒有任何 el-dropdown，el-popover 的 15 處全在 Header.vue 做資訊提示，不是動作選單。原型因此**不另立下拉按鈕規範**；若最後選定方案 B，移植時再評估要不要引入 |
+| 批量開關方案 B | `el-dropdown` | 無（全站 0 處） | 表頭的批量選單。正式後台沒有任何 el-dropdown，el-popover 的 15 處全在 Header.vue，而且其中只有兩處真的在跑（下載中心、帳號選單），其餘被 `<!-- 暫時隱藏 -->` 註解掉；都是資訊提示，不是動作選單。原型因此**不另立下拉按鈕規範**；若最後選定方案 B，移植時再評估要不要引入 |
 | 權限矩陣 | `el-table` + `el-checkbox` | 無 | 群組列用 `indeterminate` |
 | 圖示 | **不是 EP 元件**，沿用既有 `SvgIcon.vue` + `vite-plugin-svg-icons` | `SvgIcon.vue`、120 個 SVG | 架構不動，來源改用 Lucide；EP 內建的 22 個圖示另以 alias shim 攔截，見下方「圖示來源的例外」與 `ICON-SYSTEM.md` |
 
@@ -135,3 +140,17 @@ shim 範本已寫好在原型的 `porting/ep-shim.ts`，22 個名稱一個不缺
 先拿**一個頁面**完整落地驗證，再往下鋪。建議用「搜尋結果／會員列表」，因為它同時用到 Select、DatePicker、Table、Pagination、Tabs、空狀態與 Icon Button —— 一頁就能驗完大部分覆寫是否吃得下。
 
 驗完之後再處理 `_element-ui.scss` 的變數收斂，最後才逐頁套用。
+
+---
+
+## 移植前要先清掉的東西
+
+這一節不是規範，是掃描正式後台時順手記下來的待辦。都在 `project_Newgit/backoffice`，與原型無關。
+
+| 項目 | 現況 | 建議 |
+| --- | --- | --- |
+| `echarts` ^6.0.0 | `components/Chart.vue` 存在，但**沒有任何 view 在用** | 砍掉依賴與 Chart.vue，或補圖表規範再用。原型的儀表板長條圖與甜甜圈是純 CSS 畫的假圖，不是規範 |
+| 拖曳套件三套 | `sortablejs`、`vuedraggable`、`vue-draggable-plus` 同時在 package.json，實際只有 `sortSetting/index.vue` 一個 view 在用 | 留一套（`vue-draggable-plus` 對 Vue 3 ＋ setup 最直接），另外兩套移除 |
+| `:gutter` 三種值 | 10（38 處）／20（7 處）／16（1 處） | 統一成 16，見「設計 Token → 版面格線」 |
+| `SettingFile.vue` 的正負配色 | 每個使用者可自選「負紅正綠／負綠正紅」 | 建議拿掉這個選項，改為站台層級設定，見「設計 Token → 數值呈現」 |
+| 表單送出失敗 | 全站 0 處 `scrollToField`，長表單的第一個錯誤可能在畫面外 | 補上捲動與聚焦，見「表單 Form」 |

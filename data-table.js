@@ -57,7 +57,11 @@ function paginationBar({ name, page, pageSize, total }) {
 /**
  * 表格＋分頁。
  * @param name       識別字串，事件靠它找回對應的表格
- * @param columns    [{ key, label, align, width, className, header }]
+ * @param columns    [{ key, label, align, width, minWidth, className, header }]
+ *                   width 用在「格式固定」的欄位（日期時間、UID、金額、狀態）——
+ *                   內容長度本來就可預期，給了寬度整欄才不會隨資料忽寬忽窄。
+ *                   minWidth 用在「長度不可控」的欄位（名稱、帳號、備註、IP）——
+ *                   只給下限、不給上限，讓版面流自己決定要多寬。判準見「表格 Table」。
  *                   header 是表頭的原始 HTML（批量選單、排序鈕），省略時用逸出後的 label
  * @param rows       資料列，每筆是物件；值可以是 HTML 字串。保留鍵 rowAttrs 會原樣輸出到 <tr> 上。
  * @param page       目前頁（1 起算）
@@ -80,7 +84,7 @@ export function dataTable({ name = 'table', columns, rows, page = 1, pageSize = 
   // align 與 width 要合併成同一個 style；先前是兩個 style 屬性，後面那個會被瀏覽器直接丟掉，
   // 所以同時指定 align 與 width 時 width 從來沒生效過。
   const style = c => {
-    const parts = [c.align && `text-align:${c.align}`, c.width && `width:${c.width}`].filter(Boolean)
+    const parts = [c.align && `text-align:${c.align}`, c.width && `width:${c.width}`, c.minWidth && `min-width:${c.minWidth}`].filter(Boolean)
     return parts.length ? ` style="${parts.join(';')}"` : ''
   }
   // 固定欄與個別欄的 class 合併成一個 class 屬性：兩個 class 屬性瀏覽器只認第一個。
@@ -92,7 +96,10 @@ export function dataTable({ name = 'table', columns, rows, page = 1, pageSize = 
   // c.align 說的是「這一欄的內容」怎麼對齊——金額靠右、帳號靠左都是為了讀數字與
   // 比對字串，欄名沒有這個需求。先前兩者共用同一個 style()，欄名就跟著內容跑掉，
   // 一整排表頭出現置中、靠左、靠右三種，看起來像沒對齊。
-  const headStyle = c => (c.width ? ` style="width:${c.width}"` : '')
+  const headStyle = c => {
+    const parts = [c.width && `width:${c.width}`, c.minWidth && `min-width:${c.minWidth}`].filter(Boolean)
+    return parts.length ? ` style="${parts.join(';')}"` : ''
+  }
   // header 讓欄位表頭放得下控制項（批量選單、排序鈕）；沒給就是逸出後的 label。
   const head = columns.map(c => `<th scope="col"${cls(c)}${headStyle(c)}>${c.header ?? esc(c.label)}</th>`).join('')
   // 分組列在欄名列之上；最後一欄若是固定欄，分組列的那一格也要一起固定，否則橫捲時會錯開。

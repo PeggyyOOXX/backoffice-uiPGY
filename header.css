@@ -1,0 +1,270 @@
+/* 頁首右側的六個位置。版面骨架（.topbar／.top-actions／.icon-btn）在 styles/ 裡，
+   這一支只負責頁首自己的東西：角標、資訊氣泡面板、帳號面板，以及規範頁的示範。 */
+
+/* 模組掛載時用一層 span 包住產生的 HTML，display:contents 讓裡面的按鈕
+   直接變成 .top-actions 的 flex 項目，間距才會跟其他位置一致。 */
+.header-slot {
+  display: contents;
+}
+
+/* --- 角標 ---------------------------------------------------------------
+   只有兩種顏色：紅＝有人在等你處理，橘＝系統自己會跑完。
+   尺寸是內容撐出來的最小值，不套 4px 格線（寬高由內容推算）。
+
+   四件事一起決定它蓋不蓋得住圖示：
+   1. 高度 14px——字級最小只能到 12px（規範的級距下限），所以只能從高度與內距省。
+   2. 往外推到 -4px（4px 格線上的最大值），整顆挪出按鈕的框線之外。
+      再往外就會超出手機 46px 的 topbar 上緣被視窗裁掉。
+   3. 外圈 2px 的底色環：就算邊角仍有重疊，圖示也讀得出來是「被壓在下面的另一層」，
+      而不是跟角標糊成一團。這是 GitHub／Gmail／Element Plus 都在用的做法。
+   4. 相鄰按鈕的間距拉回 8px（.top-actions），三個字元的角標才不會壓到隔壁那顆。
+   上限是 99（見 header.js 的 badgeText）。「99+」在 34px 的按鈕上一定會碰到圖示的
+   邊角——GitHub、Gmail、Element Plus 都一樣——真正讓圖示仍然讀得出來的是那圈
+   底色環，它把角標與圖示分成兩層。圖示本身是圓框箭頭，被蓋到的是圓弧上緣，
+   中間的箭頭不受影響。 */
+.header-badge {
+  position: absolute;
+  top: -0.25rem;
+  right: -0.25rem;
+  min-width: 0.875rem;
+  height: 0.875rem;
+  padding: 0 0.25rem;
+  display: grid;
+  place-items: center;
+  border-radius: 0.5rem;
+  background: var(--danger);
+  color: #fff;
+  box-shadow: 0 0 0 0.125rem var(--card);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+}
+/* 進行中（下載任務）：系統自己會跑完，沒有人在等 */
+.header-badge.is-task {
+  background: var(--warning);
+}
+
+/* --- 待辦角標 ----------------------------------------------------------- */
+/* Tooltip 掛在外層容器：按鈕停用時不觸發滑鼠事件，掛在按鈕上會整個失效 */
+.header-alert {
+  position: relative;
+  display: inline-flex;
+}
+
+/* --- 身分鈕與分隔線 -----------------------------------------------------
+   左邊三顆是動作（去處理、去拿檔案），最右邊這顆是身分（我是誰、用什麼幣別看）。
+   四顆都做成白底灰框的方鈕時，最右邊那顆會被讀成「第四個待辦」。
+   尺寸不變（仍是 34 × 34px，與全站同高），只換形狀與配色：
+   圓形是全網路公認的「這是人」符號，而整個頁首只有這一顆是圓的。
+
+   圓角的例外具名寫在 styles/button-corner-radius.css，不在這裡另設。
+
+   底色用品牌色 --blue 實心，試過的另外兩個方向都不對：
+   - --blue-tint（淺底）在白色 topbar 上只有 1.1:1，整顆被背景吃掉，
+     遠看只剩一個孤零零的人形圖示，比原本的白底灰框還弱。
+   - --sidebar（深藍黑）看得見，但在一條白底的列上太重，整個頁首的視覺重心
+     會被拉到最右邊那一個點上。
+   --blue 落在中間：白字對比 3.0:1，過 WCAG 非文字元素的 3:1 下限，
+   而且它是全站的品牌色，用在「我」身上讀起來是歸屬，不是警示。
+   hover 往深走到 --blue-ink，與其他品牌色控制一致。 */
+.icon-btn.is-identity {
+  border-color: transparent;
+  background: var(--blue);
+  color: #fff;
+}
+.icon-btn.is-identity:hover {
+  background: var(--blue-ink);
+}
+/* 把「動作」與「身分」兩類東西斷開。高度取圖示的 20px，不是整顆按鈕的高度——
+   分隔線要比它隔開的東西矮，才不會自己變成一個框。 */
+.header-divider {
+  flex: none;
+  /* 1px 的分隔線與框線同一類，維持 px：換成 0.0625rem 後在非整數縮放下會變成
+     0.9px 而發糊，與 AGENTS 對 border 的處理一致。 */
+  width: 1px;
+  height: 1.25rem;
+  margin: 0 0.25rem;
+  background: var(--line);
+}
+
+/* --- 資訊氣泡 -----------------------------------------------------------
+   唯讀內容，不放操作——要放操作就該是選單或彈窗。 */
+.header-popover {
+  position: relative;
+  display: inline-flex;
+}
+.header-popover-panel {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  right: 0;
+  z-index: 40;
+  min-width: 12.5rem;
+  padding: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  background: var(--card);
+  box-shadow: 0 0.5rem 1.5rem rgba(23, 35, 59, 0.14);
+  text-align: left;
+}
+.header-popover-panel[hidden] {
+  display: none;
+}
+.header-popover-panel > strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--sidebar);
+}
+.header-popover-panel dl {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0;
+}
+.header-popover-panel dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+/* 標籤允許換行，不截斷：面板寬度是固定的，而「上次登入時間」在越南文有 20 個
+   字元。這裡是唯讀資訊，換兩行只是變高；截斷會讓人看不出這一列在說什麼。 */
+.header-popover-panel dt {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  overflow-wrap: anywhere;
+}
+.header-popover-panel dd {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  word-break: break-all;
+  text-align: right;
+}
+
+/* --- 帳號選單 ----------------------------------------------------------- */
+.header-popover-panel.is-account {
+  min-width: 15rem;
+}
+.header-account-id {
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--line-faint);
+}
+.header-account-id strong {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--text);
+}
+.header-account-id span {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+.header-account-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding-top: 0.75rem;
+  margin-top: 0.75rem;
+  border-top: 1px solid var(--line-faint);
+}
+
+@media (max-width: 720px) {
+  .header-popover-panel {
+    right: -0.5rem;
+    min-width: 11rem;
+  }
+  .header-popover-panel.is-account {
+    min-width: 14rem;
+  }
+}
+
+/* --- 規範頁 -------------------------------------------------------------
+   示範套用真正的 .topbar / .icon-btn / .header-badge，不複製一份數值；
+   這裡只負責把它們從「固定在視窗頂端的整條列」還原成卡片裡的普通區塊。 */
+.header-guide {
+  padding: 1rem;
+}
+.header-demo {
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+.header-demo .topbar {
+  position: static;
+  width: auto;
+  z-index: auto;
+  backdrop-filter: none;
+  background: var(--card);
+}
+/* 示範裡的控制不可聚焦也不會動作，游標不要暗示可以點 */
+.header-demo .icon-btn,
+.header-demo .language {
+  cursor: default;
+  pointer-events: none;
+}
+.header-demo-legend {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.75rem 1.25rem;
+  list-style: none;
+  counter-reset: header-slot;
+  border-top: 1px solid var(--line-faint);
+  background: var(--surface);
+}
+.header-demo-legend li {
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+.header-demo-legend li::before {
+  counter-increment: header-slot;
+  content: counter(header-slot);
+  display: inline-grid;
+  place-items: center;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.25rem;
+  border-radius: 0.5rem;
+  background: var(--blue-tint);
+  color: var(--blue-ink);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.header-demo-legend strong {
+  display: block;
+  color: var(--text);
+}
+
+.header-badge-stage {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: var(--card);
+}
+/* 身分鈕與動作鈕並排對照：示範裡的按鈕不可聚焦也不會動作 */
+.header-identity-stage {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: var(--card);
+}
+.header-identity-stage .icon-btn {
+  cursor: default;
+  pointer-events: none;
+}
+/* 面板在規範頁裡是攤開給人看的，不是氣泡，所以回到文件流 */
+.header-account-stage .header-popover-panel {
+  position: static;
+  box-shadow: none;
+  width: 15rem;
+}
+
+@media (max-width: 720px) {
+  .header-demo-legend {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

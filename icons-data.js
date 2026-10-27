@@ -1,6 +1,6 @@
 // 由 build-icons.cjs 產生，請勿手改。來源：Lucide 1.6.0 (ISC)
 //
-// 這份清單就是本專案的圖示許可清單。Lucide 有 1940 個圖示，這裡只收 88 個；
+// 這份清單就是本專案的圖示許可清單。Lucide 有 1940 個圖示，這裡只收 92 個；
 // 要用新的先加進 build-icons.cjs 的 ALLOWLIST 再重跑，不要在頁面上自己拼 svg。
 //
 // 名稱沿用正式後台 SvgIcon 的 camelCase：icon('edit') ↔ <SvgIcon name="edit" />
@@ -375,16 +375,16 @@ export const ICONS = [
   {
     "group": "domain",
     "name": "deposit",
-    "file": "arrow-down-to-line",
+    "file": "circle-arrow-down",
     "label": "存款",
-    "body": "<path d=\"M12 17V3\"/><path d=\"m6 11 6 6 6-6\"/><path d=\"M19 21H5\"/>"
+    "body": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 8v8\"/><path d=\"m8 12 4 4 4-4\"/>"
   },
   {
     "group": "domain",
     "name": "withdrawal",
-    "file": "arrow-up-from-line",
+    "file": "circle-arrow-up",
     "label": "提款",
-    "body": "<path d=\"m18 9-6-6-6 6\"/><path d=\"M12 3v14\"/><path d=\"M5 21h14\"/>"
+    "body": "<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m16 12-4-4-4 4\"/><path d=\"M12 16V8\"/>"
   },
   {
     "group": "domain",
@@ -644,5 +644,33 @@ export const ICONS = [
     "file": "align-left",
     "label": "編輯器",
     "body": "<path d=\"M21 5H3\"/><path d=\"M15 12H3\"/><path d=\"M17 19H3\"/>"
+  },
+  {
+    "group": "sidebar",
+    "name": "headerBar",
+    "file": "panel-top-dashed",
+    "label": "頁首",
+    "body": "<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M14 9h1\"/><path d=\"M19 9h2\"/><path d=\"M3 9h2\"/><path d=\"M9 9h1\"/>"
+  },
+  {
+    "group": "sidebar",
+    "name": "formGuide",
+    "file": "clipboard-list",
+    "label": "表單",
+    "body": "<rect width=\"8\" height=\"4\" x=\"8\" y=\"2\" rx=\"1\" ry=\"1\"/><path d=\"M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2\"/><path d=\"M12 11h4\"/><path d=\"M12 16h4\"/><path d=\"M8 11h.01\"/><path d=\"M8 16h.01\"/>"
+  },
+  {
+    "group": "sidebar",
+    "name": "searchForm",
+    "file": "list-filter",
+    "label": "搜尋篩選列",
+    "body": "<path d=\"M2 5h20\"/><path d=\"M6 12h12\"/><path d=\"M9 19h6\"/>"
+  },
+  {
+    "group": "sidebar",
+    "name": "permission",
+    "file": "shield-check",
+    "label": "權限控制",
+    "body": "<path d=\"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z\"/><path d=\"m9 12 2 2 4-4\"/>"
   }
 ]

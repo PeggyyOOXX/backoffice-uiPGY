@@ -164,7 +164,11 @@ window.renderTokenPage = () =>
       },
       {
         heading: "版面格線",
-        body: `<p class="component-description">全站一套格線：<strong>12 欄、間距 16px</strong>。正式後台用 <code>el-row</code> / <code>el-col</code>（22 個檔案在用），原型用 CSS Grid，兩者的欄數與間距必須一致。</p>
+        body: `<p class="component-description">全站一套格線：<strong>12 欄、間距 16px</strong>。正式後台用 <code>el-row</code> / <code>el-col</code>（20 個檔案在用），原型用 CSS Grid，欄數一致。</p>
+        <div class="guide-pair">
+          <div class="is-bad"><h4>${icon("cancelCircle")}目前的落差</h4><p>間距兩邊對不上：正式後台 <code>:gutter="10"</code> <strong>38 處</strong>、<code>20</code> 7 處、<code>16</code> 只有 1 處。10 不在 4px 格線上，而且同一個後台裡同時存在三種欄距。</p></div>
+          <div class="is-good"><h4>${icon("checkCircle")}統一成 16px</h4><p>16 是 4px 的倍數，也是本頁間距級距的上限。移植時把 <code>:gutter</code> 全部改成 16，不保留 10 與 20。</p></div>
+        </div>
         <div class="guide-stage">
           <div class="token-grid-demo">${Array.from({ length: 12 }, (_, i) => `<span>${i + 1}</span>`).join("")}</div>
         </div>
@@ -187,7 +191,53 @@ window.renderTokenPage = () =>
             ["整列的表格", "12", "表格自己橫向捲動，不切欄"],
           ],
           ["情境", "欄數", "為什麼"],
-        )}`,
+        )}
+        <h3>響應式欄數</h3>
+        <p class="component-description">欄位不是固定幾欄，是<strong>隨斷點變</strong>。正式後台最常見的那一組 <code>:sm="12" :md="8" :lg="6" :xl="4"</code>（分別用了 124／97／78／29 次）換算過來就是下表，原型的表單與篩選列都照它排：</p>
+        ${decisionTable(
+          [
+            ["&lt; 768px", "<strong>1 欄</strong>", "欄位佔滿整列。兩欄在手機上每欄只剩不到 160px，一組日期區間放不下"],
+            ["≥ 768px（sm）", "<strong>2 欄</strong>", "<code>:sm=\"12\"</code>"],
+            ["≥ 992px（md）", "<strong>3 欄</strong>", "<code>:md=\"8\"</code>"],
+            ["≥ 1200px（lg）", "<strong>4 欄</strong>", "<code>:lg=\"6\"</code>。桌機的預設排法"],
+            ["≥ 1920px（xl）", "<strong>6 欄</strong>", "<code>:xl=\"4\"</code>。再寬也不要繼續加——一行超過六個欄位，眼睛要橫跨整個螢幕才讀得完一列"],
+          ],
+          ["寬度", "一行幾欄", "對應的 el-col"],
+        )}
+        <p class="component-description">需要整行的欄位（備註、說明、上傳、權限矩陣）直接佔滿一列，不跟短欄位併排——高度不一樣，底線就對不齊。</p>
+        <h3>數值呈現</h3>
+        <p class="component-description">金額與筆數在整個後台出現的次數比任何一個元件都多，所以它的規則屬於這一頁，不屬於表格或報表。四條：</p>
+        <ul class="token-number-rules">
+          <li><strong>千分位</strong>：顯示時補上，輸入時不補（邊打邊跳位會讓游標亂跑），送出前去掉。</li>
+          <li><strong>小數位</strong>：依幣別固定，不讓使用者自由輸入第三位。金額欄位一律 <code>font-variant-numeric: tabular-nums</code>，個位數才對得齊。</li>
+          <li><strong>正負色</strong>：負數 <code>var(--danger)</code>、正數 <code>var(--success)</code>、零用一般文字色。</li>
+          <li><strong>對齊</strong>：要比大小的數字靠右，只用來辨識的（UID、訂單號）置中或靠左，判準在「表格 Table → 欄位對齊」。</li>
+        </ul>
+        <div class="guide-pair">
+          <div class="is-bad"><h4>${icon("cancelCircle")}不要讓顏色可以個人化</h4><p>正式後台的 <code>SettingFile.vue</code> 讓<strong>每個使用者自己選</strong>千分位分隔符（空格／逗號）與正負配色（<strong>負紅正綠／負綠正紅</strong>）。同一張報表在兩個人螢幕上顏色相反，而後台的對帳有一半是靠截圖轉傳完成的——收到圖的人沒有辦法知道對方用的是哪一套。</p></div>
+          <div class="is-good"><h4>${icon("checkCircle")}顏色固定，分隔符跟語系</h4><p>正負色是<strong>站台層級</strong>的設定，不是個人偏好：整個站只有一套，要改就整站一起改。千分位分隔符可以跟著語系走，因為那是書寫慣例，不會改變數字的意思。</p></div>
+        </div>
+        <p class="component-description"><strong>這是原型與正式後台分歧的一處</strong>，移植時要先做決定：把 <code>SettingFile</code> 的正負配色選項拿掉（建議），或是接受報表的顏色因人而異、並在所有會被轉傳的畫面上標出目前用的是哪一套。</p>
+        <h3>多語系</h3>
+        <p class="component-description">正式後台有 <strong>9 個語系</strong>（zh-tw、zh-cn、en-us、vi-vn、ja-jp、ko-kr、km-kh 高棉、bn-bd 孟加拉、fil-ph），同一個 key 的長度差距最多到 <strong>8 倍</strong>：</p>
+        ${decisionTable(
+          [
+            ['待審核轉點', '5 字元', '英 29／越 26／<strong>高棉 40</strong>／孟加拉 34'],
+            ['會員帳號', '4 字元', '英 14／<strong>越南 20</strong>／孟加拉 16'],
+            ['上級設定', '4 字元', '英 19／越 18／<strong>孟加拉 22</strong>'],
+          ],
+          ['這個欄名', '繁中', '其他語系'],
+        )}
+        <p class="component-description">所以<strong>文字容器不得寫死寬高</strong>——高度用 <code>min-height</code> 讓內距撐開，寬度交給版面流。先前側欄項目是 <code>height: 36px</code>，換成越南文第二行會直接溢出蓋到下一項；工作區頁籤列是單行捲動，10 個長頁名排不下。兩處都已改成由內容撐開。</p>
+        <p class="component-description">塞不下的時候只有兩種合法做法：<strong>換行</strong>或<strong>橫向捲動</strong>。<strong>截斷是例外</strong>，只用在「同一列重複出現、而且有 Tooltip 補得回來」的地方（多選的收合標籤、表格的長備註欄）。</p>
+        <div class="guide-pair">
+          <div class="is-bad"><h4>${icon('cancelCircle')}不得截斷</h4><p><strong>按鈕</strong>（「確認新…」比換行糟一百倍）、<strong>表頭欄名</strong>（截斷等於這一欄沒有名字，塞不下由橫向捲動吸收）、<strong>側欄導覽</strong>（使用者靠文字決定去哪一頁，「組合範例－搜…」「組合範例－設…」會長得一樣）。</p></div>
+          <div class="is-good"><h4>${icon('checkCircle')}可以截斷</h4><p>多選的收合標籤、表格裡的長文字欄、下載中心的檔名、日期面板的快捷區間——共同點是<strong>完整內容在別的地方拿得到</strong>，截斷不會讓資訊消失。一律配 Tooltip，而且只在真的被截斷時才掛。</p></div>
+        </div>
+        <p class="component-description">驗證方式：網址加上 <code>?longtext</code>，畫面上的中文會被換成 2.5 倍長的字串，等同於跑一次最長語系。新頁面做完就跑一次，比等翻譯進來才發現便宜得多。回歸由 <code>node i18n-check.cjs</code> 擋住「文字容器被釘死寬高」與「nowrap 沒有出路」。</p>
+        <h4>RTL（右到左）</h4>
+        <p class="component-description">RTL 指阿拉伯文、希伯來文那一類<strong>整個版面要鏡像</strong>的語系——側欄換到右邊、文字靠右、方向性圖示要翻面。<strong>目前不支援，也不需要</strong>：正式後台的 9 個語系全部是左到右（孟加拉文雖是南亞文字，書寫方向仍為 LTR）。</p>
+        <p class="component-description">若未來要進中東市場，代價是整站 CSS 的 <code>margin-left</code>／<code>padding-right</code>／<code>left</code> 改用邏輯屬性（<code>margin-inline-start</code> 這一類）再加圖示鏡像，涉及 70 多支樣式檔。<strong>記在這裡是為了讓它是一個有標價的決定，而不是一個被遺忘的洞</strong>——在那之前不要為了「以後可能要」提前付這筆錢。</p>`,
       },
     ],
     tokens: [
@@ -200,10 +250,20 @@ window.renderTokenPage = () =>
       ["圓角（按鈕）", "4px"],
       ["圓角（輸入）", "8px"],
       ["圓角（卡片）", "8px"],
+      ["正數色", "var(--success)"],
+      ["負數色", "var(--danger)"],
+      ["數字字體", "tabular-nums"],
+      ["一行欄數", "1 / 2 / 3 / 4 / 6（隨斷點）"],
       ["格線欄數", "12"],
       ["格線間距", "16px"],
       ["斷點", "768 / 992 / 1200 / 1920"],
       ["斷點來源", "正式後台 tailwind.config.ts"],
+      ["側欄寬度", "var(--sidebar-w) 15.5rem"],
+      ["語系數", "9（全部為 LTR）"],
+      ["最長字長倍數", "約 8 倍（高棉文）"],
+      ["文字容器高度", "min-height，不寫死"],
+      ["塞不下的做法", "換行或橫向捲動；截斷是例外"],
+      ["RTL", "不支援"],
     ],
     rules: [
       [

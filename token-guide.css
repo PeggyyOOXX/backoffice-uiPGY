@@ -32,3 +32,7 @@
   .token-grid-demo{gap:0.5rem}
   .token-grid-demo>span{font-size:0.75rem}
 }
+
+/* 數值呈現：金額與筆數的四條規則，列成清單比塞進段落好讀 */
+.token-number-rules{margin:0 0 0.75rem;padding-left:1rem}
+.token-number-rules li{margin-bottom:0.25rem;font-size:0.75rem;line-height:1.7}

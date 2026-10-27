@@ -3,3 +3,7 @@
 .page .tooltip-truncate-table td{text-align:left}
 /* 截斷本身就是規範：單行、超出以 … 收尾，欄寬由 table-layout: fixed 決定 */
 .page .tooltip-truncate-table .is-truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* 三步判斷：編號清單比段落好讀，而且順序本身就是規則的一部分 */
+.overlay-steps{margin:0 0 0.75rem;padding-left:1.25rem}
+.overlay-steps li{margin-bottom:0.5rem;font-size:0.75rem;line-height:1.7}

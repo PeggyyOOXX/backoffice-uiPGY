@@ -20,7 +20,10 @@ const OWNS = {
   'table-guide-page.js': ['table', 'tableSort', 'pagination'],
   'token-guide.js': ['token'],
   'nav-guide.js': ['sidebar', 'breadcrumb'],
-  'header-popover.js': ['popover'],
+  'header.js': ['popover', 'header'],
+  'form-guide.js': ['form'],
+  'search-guide.js': ['searchForm'],
+  'permission-guide.js': ['permission'],
   'progress-guide.js': ['progress'],
   'tag-guide.js': ['tag'],
   'steps-guide.js': ['steps'],
@@ -53,6 +56,10 @@ const MARKERS = {
   tabs: /bo-tab\b|tabs\(\{/,
   states: /emptyState|skeletonTable|loadingVeil/,
   bulk: /bulk-head|data-bulk-action/,
+  header: /header-badge|header-popover-panel/,
+  form: /form-demo-grid|form-demo-field/,
+  searchForm: /data-search-advanced|source-filter-more/,
+  permission: /permission-demo-col|permission-demo-actions/,
   message: /bo-message\b|message\.(success|error|warning|info)/,
 }
 
@@ -69,6 +76,11 @@ const ALLOWED = {
   'bulk-guide.js|dialog': '不可逆的批量動作一定要先確認，這個確認彈窗正是規範本身要求的東西；用的是共用的 prepareModal',
   'bulk-guide.js|switch': '示範批量調整開關欄位，開關本身沿用共用規範',
   'message-guide.js|dialog': '從 <dialog>.showModal() 裡發 Toast，是驗證 top layer 處理的關鍵示範',
+  'header.js|select': '頁首的語系切換本來就是一個無框的原生 <select>，示範的是它在頁首的位置，不是另一套 Select 規範',
+  'header.js|tooltip': '純圖示按鈕必須同時有 aria-label 與同文字的 Tooltip，這是圖示按鈕規範本身的要求',
+  'form-guide.js|input': '表單規範講的是「一堆欄位怎麼排成一張表單」，示範當然要有欄位；欄位本身的外觀與狀態仍由「輸入框 Input」決定',
+  'search-guide.js|select': '示範直接套組合範例－搜尋那一列的真實欄位，下拉是共用 Select；規範頁的參照物不能用 div 假造',
+  'search-guide.js|datePicker': '同上，查詢區間用的是共用日期元件本體，示範的是它在篩選列上的位置與天數上限',
 }
 
 const owner = {}

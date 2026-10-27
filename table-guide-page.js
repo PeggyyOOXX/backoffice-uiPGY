@@ -90,6 +90,17 @@ const DECISION = [
   ['單頁就放得下（10 筆以內）', '不分頁', '只有一頁時整列隱藏，不要顯示「1 / 1」'],
 ]
 
+// 欄寬。判準是「這一欄的長度可不可控」，不是「這一頁的資料剛好有多長」。
+const WIDTH_DECISION = [
+  ['日期時間', '<code>width: 160px</code>', '格式固定，而且數字與日期不翻譯，換語系也不變'],
+  ['UID／訂單號', '<code>width: 120px</code>', '位數固定'],
+  ['金額／筆數', '<code>width: 120px</code>', '千分位之後長度可預期；靠右對齊要對得上個位數，寬度一跳就白對了'],
+  ['狀態／標籤', '<code>width: 96px</code>', '短詞，但要留給長語系的餘裕'],
+  ['操作欄', '由按鈕數推算', '34px × n ＋ 8px × (n−1) ＋ 內距，不寫死'],
+  ['名稱／帳號／備註／IP', '<strong>只給 <code>minWidth</code></strong>', '長度不可控，給下限不給上限；超出的部分配 TruncateTooltip，真的被截斷才掛提示'],
+  ['勾選欄', '<code>width: 44px</code>', '只放一個 16px 的方框，寬度由它推算'],
+]
+
 // 欄位對齊。判準是「這一欄要拿來做什麼」，不是「它是文字還是數字」——
 // UID 是數字卻要靠左（拿來比對不是比大小），營收佔比是百分比卻要靠右（要比大小）。
 const ALIGN_DECISION = [
@@ -123,6 +134,15 @@ window.renderTablePage = () => guidePage({
         'dataTable({ columns, rows, pagination: false })',
       ].join('\n')}</code></pre>
         <p class="component-description">分頁列由元件自己產生，頁面不再各自拼一組按鈕。換頁與改每頁筆數的狀態用 <code>applyPaging()</code> 計算，「改筆數跳回第 1 頁」的規則就不會有人漏掉。</p>`,
+    },
+    {
+      heading: '欄寬',
+      body: `<p class="component-description">判準是<strong>「這一欄的長度可不可控」</strong>，不是「這一頁的資料剛好有多長」。拿某一頁的內容去量，下一批資料來了就不準；全部交給瀏覽器自動分配，同一個欄位在第 1 頁與第 2 頁會不一樣寬。</p>
+        ${decisionTable(WIDTH_DECISION, ['這一欄是什麼', '給什麼', '為什麼'])}
+        <p class="component-description"><code>dataTable()</code> 的欄位同時吃 <code>width</code> 與 <code>minWidth</code>：<strong>格式固定的給 width，長度不可控的只給 minWidth</strong>。minWidth 是下限不是上限，欄位可以被內容撐開，版面流自己決定要多寬。</p>
+        <p class="component-description"><strong>不設 <code>table-layout: fixed</code>。</strong>固定版面會把所有欄寬鎖死在第一列的量測結果，長內容只能被硬切；讓它照版面流排，同一欄在不同頁略有寬窄差異是可以接受的——那代表欄位正在配合內容，不是版面壞了。真正要避免的是「欄位窄到讀不出內容」，那由 minWidth 擋住。</p>
+        <p class="component-description">各欄寬度加總超過容器時，整張表給 <code>scroll</code>（min-width），由 <code>.table-wrap</code> 橫向捲動吸收。<strong>不得為了塞進畫面把欄位壓到讀不出來</strong>，也不得在手機精簡欄位。</p>
+        <p class="component-description">換語系對欄寬的影響比想像小：<strong>資料本身不翻譯</strong>（帳號、金額、日期、IP 都不變），會變長的只有<strong>表頭</strong>。表頭不換行、塞不下由橫向捲動吸收，所以長語系不會把欄位擠扁——這也是表頭不加省略號的原因，欄名被截斷等於這一欄沒有名字。</p>`,
     },
     {
       heading: '欄位對齊',
@@ -189,6 +209,9 @@ window.renderTablePage = () => guidePage({
     ['內容內距', '8px 12px'],
     ['表頭對齊', '一律置中，不跟著內容'],
     ['表頭換行', '不換行，塞不下改橫向捲動'],
+    ['格式固定的欄寬', 'width（日期 160px／UID・金額 120px／狀態 96px）'],
+    ['長度不可控的欄寬', '只給 minWidth，不給上限'],
+    ['table-layout', '不設 fixed，照版面流排'],
     ['表頭分隔線', '1px var(--line-strong)（比內容的 #EDF0F4 深一階）'],
     ['內容對齊', '依用途：名稱帳號靠左、金額靠右、其餘置中'],
     ['列底線', '#EDF0F4'],
@@ -202,6 +225,9 @@ window.renderTablePage = () => guidePage({
   rules: [
     ['表格與分頁用同一個元件', '不要在頁面自己兜一組分頁按鈕；分頁從來不會單獨出現。'],
     ['共用樣式不得覆寫', '表頭底色、文字色、字級、內距、框線與對齊一律沿用，個別頁面只定義欄寬與固定欄。'],
+    ['欄寬依資料型態，不依這一頁的內容', '格式固定的給 width，長度不可控的只給 minWidth。拿某一頁的資料去量，下一批資料來了就不準。'],
+    ['不設 table-layout: fixed', '固定版面會把欄寬鎖死在第一列的量測結果，長內容只能被硬切。同一欄在不同頁略有寬窄差異是可接受的。'],
+    ['塞不下用橫向捲動，不壓窄欄位', '表頭不換行也不加省略號——欄名被截斷等於這一欄沒有名字。'],
     ['改每頁筆數跳回第 1 頁', '停在原頁碼會看到完全不同的資料，使用者會以為查詢出錯。'],
     ['只有一頁就整列隱藏', '不要顯示「1 / 1」或一顆孤零零的按鈕。'],
     ['目前頁要標 aria-current', '只靠底色，螢幕報讀器讀不出現在在第幾頁。'],

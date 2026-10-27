@@ -81,8 +81,17 @@ const ALLOWLIST = [
   ['domain', 'operator', 'building-2', '營運商'],
   ['domain', 'personalCenter', 'circle-user', '個人中心'],
   ['domain', 'finance', 'wallet', '金流'],
-  ['domain', 'deposit', 'arrow-down-to-line', '存款'],
-  ['domain', 'withdrawal', 'arrow-up-from-line', '提款'],
+  // 存款／提款用「圓框＋大箭頭」，這是交易所與金流後台的通用寫法（入金／出金）。
+  // 試過也退掉的兩組：
+  //   arrow-down-to-line／arrow-up-from-line：裸箭頭，與旁邊的 download（匯出）
+  //     在 20px 下幾乎是同一個圖，頁首三顆並排時得逐一讀 Tooltip 才分得出來。
+  //   banknote-arrow-down／-up：區分方向的箭頭只佔 24 單位裡的 6 單位，縮到 20px
+  //     只剩 5px，兩顆反而會變成同一個圖。piggy-bank／hand-coins 則是筆劃太碎，
+  //     20px 下看起來只是一團墨。
+  // circle-arrow 只有三個節點（圓＋豎線＋箭頭），全部佔滿 24 單位，16px 也銳利，
+  // 而且圓框的輪廓與 download 的托盤形完全不同，一眼就分得開。
+  ['domain', 'deposit', 'circle-arrow-down', '存款'],
+  ['domain', 'withdrawal', 'circle-arrow-up', '提款'],
   ['domain', 'amount', 'circle-dollar-sign', '金額'],
   ['domain', 'bet', 'coins', '投注'],
   ['domain', 'rebate', 'percent', '返水'],
@@ -122,6 +131,10 @@ const ALLOWLIST = [
   ['sidebar', 'iconGuide', 'shapes', '圖示系統'],
   ['sidebar', 'settings', 'settings', '系統設定'],
   ['sidebar', 'editor', 'align-left', '編輯器'],
+  ['sidebar', 'headerBar', 'panel-top-dashed', '頁首'],
+  ['sidebar', 'formGuide', 'clipboard-list', '表單'],
+  ['sidebar', 'searchForm', 'list-filter', '搜尋篩選列'],
+  ['sidebar', 'permission', 'shield-check', '權限控制'],
 ]
 
 // --- 抽取 ---

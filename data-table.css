@@ -34,8 +34,10 @@
 
 /* 分頁列：總筆數在左、每頁筆數接著、頁碼靠右 */
 .data-table-pagination{display:flex;align-items:center;flex-wrap:wrap;gap:0.75rem 1rem;margin-top:1rem}
-.pagination-total{flex:none;white-space:nowrap;font-size:0.75rem;color:var(--text-muted)}
-.pagination-size{display:flex;flex:none;align-items:center;gap:0.5rem;white-space:nowrap;font-size:0.75rem;color:var(--text-muted)}
+/* 這兩段是會被翻譯的文字（「共 N 筆」「每頁筆數」），不再 nowrap：
+   外層已經是 flex-wrap: wrap，容器窄時先整塊換行，真的還放不下就讓文字自己折。 */
+.pagination-total{flex:none;font-size:0.75rem;color:var(--text-muted)}
+.pagination-size{display:flex;flex:none;align-items:center;gap:0.5rem;font-size:0.75rem;color:var(--text-muted)}
 /* select.js 會把原生 select 換成 Element Plus 的下拉，原生的那個變成 hidden。
    所以真正要給寬度的是 .bo-select-host，不是 .guide-select——先前只設了後者，
    畫面上看到的是 width:100% 在 flex 容器裡塌掉的空框。

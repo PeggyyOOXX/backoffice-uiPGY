@@ -39,8 +39,39 @@
 .bo-date-range-popper {
   --el-color-primary: var(--blue);
 }
+/* 兩段日期中間的分隔符號改成 ~，與欄位本身的 range-separator 一致。
+   Element Plus 放的是 ArrowRight 圖示（一個沒有 class 的 span 包著 .el-icon），
+   箭頭讀起來像「往後跳一頁」，但這兩格是同一個區間的兩端，不是先後步驟。
+   這不算「用文字字元當圖示」：它是標點符號，不承擔任何操作語意。 */
+.bo-date-range-popper .el-date-range-picker__time-header > span:not([class]) > .el-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+.bo-date-range-popper .el-date-range-picker__time-header > span:not([class]) > .el-icon svg {
+  display: none;
+}
+.bo-date-range-popper .el-date-range-picker__time-header > span:not([class]) > .el-icon::after {
+  content: "~";
+}
 @media (max-width: 720px) {
+  /* 手機上面板改成固定在畫面正中央。
+     Element Plus 的 popper 位置是 inline style 算出來的（貼著欄位左緣往下展開），
+     欄位若靠右或靠近畫面底部，面板就會被視窗邊緣裁掉——而且外層的
+     html／body／.app／.main 在手機版都有 overflow-x: hidden，超出去的部分
+     不是出現捲軸，是整塊被切掉。
+     inline style 不帶 !important，所以這裡蓋得過去；transform 被整個接管，
+     垂直位置也要一起指定，否則會掉回 EP 算出來的那個 translate。 */
   .bo-date-range-popper {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: translate(-50%, -50%) !important;
     max-width: calc(100vw - 1rem);
   }
   .bo-date-range-popper .el-date-range-picker {
@@ -65,7 +96,11 @@
   .bo-date-range-popper .el-picker-panel__sidebar::-webkit-scrollbar {
     height: 0;
   }
+  /* 快捷區間在長語系會變長（高棉文的「本月」有 11 個字元），而這一欄的寬度
+     由 Element Plus 的面板決定，撐不開；截斷後仍看得出是哪一個區間。 */
   .bo-date-range-popper .el-picker-panel__shortcut {
+    overflow: hidden;
+    text-overflow: ellipsis;
     width: auto;
     flex: none;
     padding: 0 0.5rem;

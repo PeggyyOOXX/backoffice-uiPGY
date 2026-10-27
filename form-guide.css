@@ -1,0 +1,33 @@
+/* 表單規範頁。
+   欄位排版、標籤、必填星號、錯誤邊框與錯誤文字全部是既有的共用樣式
+   （guide-page.css 的 .guide-fields / .guide-field / .required-mark，
+   input-component-standard.css 的 .guide-input.is-error），這一支不再定義一次。
+   這裡只剩兩件這一頁自己的事：分區標題與示範用的 footer。 */
+.form-guide {
+  padding: 1rem;
+}
+
+/* 分區標題：值與組合範例的 .example-settings-heading 相同（14px / 600 / --text），
+   兩邊是同一個東西，規格以本頁的「共用規格」為準。
+   正式後台用的是 20px 粗體品牌色，原型統一成與其他卡片小節一致的大小，
+   理由寫在頁面上——分區標題只是給眼睛一個落點，不該比卡片標題還重。 */
+.form-demo h4 {
+  margin: 0 0 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.form-demo h4:not(:first-child) {
+  margin-top: 1.5rem;
+}
+
+/* 示範用的 footer。真實頁面用的是組合範例－表單頁的 .example-savebar
+   （整頁底部的儲存列，帶未儲存狀態），這裡只是把「靠右、取消在前」畫出來。 */
+.form-demo-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line-faint);
+}

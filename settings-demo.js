@@ -4,6 +4,7 @@
 // 快照彈窗、拖曳排序都寫在這裡），那一頁已改寫成組合範例（example-mixed.js），
 // 所以這裡只剩開站要做的事。檔名維持不變：index.html 的 <script> 與 nav-check 都認它。
 import './filter-toggle.js'
+import './longtext.js'
 import './example-audit.js'
 import './switch-layout-guide.js'
 import './icon-button.js'
@@ -26,8 +27,11 @@ import './data-table.js'
 import './table-guide-page.js'
 import './token-guide.js'
 import './nav-guide.js'
+import './form-guide.js'
+import './search-guide.js'
+import './permission-guide.js'
 import './progress-guide.js'
-import { headerPopovers } from './header-popover.js'
+import { headerAlerts, headerAccount } from './header.js'
 import { downloadCenter } from './download-center.js'
 import './tag-guide.js'
 import './upload-guide.js'
@@ -42,13 +46,15 @@ import './example-mixed.js'
 import './example-member.js'
 import './modal-system.js'
 
-// topbar 是靜態 HTML，資訊氣泡與下載中心在模組載入後補上。
-document.querySelector('[data-header-popovers]')?.replaceWith(
-  Object.assign(document.createElement('span'), { className: 'header-popover-group', innerHTML: headerPopovers() })
+// topbar 是靜態 HTML，三個由模組產生的位置在載入後補上。
+// 包一層 .header-slot（display:contents），裡面的按鈕才會直接成為 .top-actions 的項目，
+// 間距與其他位置一致。
+const mountSlot = (slot, html) => document.querySelector(slot)?.replaceWith(
+  Object.assign(document.createElement('span'), { className: 'header-slot', innerHTML: html })
 )
-document.querySelector('[data-download-center]')?.replaceWith(
-  Object.assign(document.createElement('span'), { className: 'header-popover-group', innerHTML: downloadCenter() })
-)
+mountSlot('[data-download-center]', downloadCenter())
+mountSlot('[data-header-alerts]', headerAlerts())
+mountSlot('[data-header-account]', headerAccount())
 
 // 所有 render 函式與導覽 handler 都準備好之後，才開啟著陸頁。
 document.querySelector('.nav-item[data-route-key="組合範例搜尋"]')?.click()

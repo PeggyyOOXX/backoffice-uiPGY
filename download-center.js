@@ -95,7 +95,7 @@ export const downloadCenter = () => {
   return `<div class="download-center" data-download-root>
     <button type="button" class="icon-btn" data-download-toggle aria-expanded="false" aria-haspopup="dialog" aria-label="下載中心${count ? `，${count} 個任務處理中` : ''}">
       ${icon('download', 20)}
-      ${count ? `<span class="download-badge" aria-hidden="true">${count}</span>` : ''}
+      ${count ? `<span class="header-badge is-task" aria-hidden="true">${count}</span>` : ''}
     </button>
     <div class="download-panel" role="dialog" aria-label="下載進度" hidden>
       <div class="download-panel-head">

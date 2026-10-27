@@ -3,7 +3,9 @@
 .upload-slot{min-width:0}
 .upload-slot-head{display:flex;align-items:baseline;justify-content:space-between;gap:0.5rem;margin-bottom:0.5rem}
 .upload-slot-head strong{font-size:0.75rem;font-weight:600;color:var(--sidebar)}
-.upload-slot-head small{font-size:0.75rem;color:var(--text-muted);white-space:nowrap}
+/* 尺寸提示是會被翻譯的文字（「建議 1200 × 400px」），不 nowrap：
+   欄位窄時讓它自己折行，比撐破上傳框好。 */
+.upload-slot-head small{font-size:0.75rem;color:var(--text-muted)}
 
 .upload-dropzone{
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.25rem;

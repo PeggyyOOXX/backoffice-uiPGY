@@ -1,0 +1,28 @@
+/* 搜尋篩選列規範頁。
+   版面、欄位、按鈕全部套組合範例－搜尋在用的那一套（.source-filter / .filter-field /
+   .control），這一支只補兩件規範頁自己的事：收合進階條件，以及讓示範在手機上看得到。 */
+.search-guide {
+  padding: 1rem;
+}
+
+/* .filter-field 是 display:flex，hidden 屬性預設的 display:none 會被蓋掉。
+   收合用 hidden 而不是另一個 class，是為了讓報讀器與 Tab 鍵也跟著看不到。 */
+.source-filter-grid > .filter-field[hidden] {
+  display: none;
+}
+
+/* 收合鈕自成一列、靠左：它是對整張篩選卡的操作，不是查詢動作。
+   右下角那一格只有六分之一欄寬，再塞第三顆按鈕會溢出。 */
+.source-filter-more {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 0.5rem;
+}
+
+/* 規範頁的示範在手機上不收起來——這一頁的目的就是讓人看到欄位怎麼堆疊。
+   真實頁面的 .source-filter 在 720px 以下是 display:none，由 filterToggle() 開關。 */
+@media (max-width: 720px) {
+  .search-guide .source-filter {
+    display: block;
+  }
+}

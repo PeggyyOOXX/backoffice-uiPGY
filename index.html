@@ -59,6 +59,8 @@
             <span class="ico" data-icon="iconGuide" data-icon-size="20"></span
             >圖示 Icon
           </div>
+          <div class="nav-item" data-route-key="權限控制"><span class="ico" data-icon="permission" data-icon-size="20"></span>權限控制 Permission</div>
+          <div class="nav-item" data-route-key="表單"><span class="ico" data-icon="formGuide" data-icon-size="20"></span>表單 Form</div>
           <div class="nav-item" data-route-key="按鈕">
             <span class="ico" data-icon="add" data-icon-size="20"></span>按鈕
             Button
@@ -91,6 +93,7 @@
             <span class="ico" data-icon="editor" data-icon-size="20"></span
             >內容編輯 Editor
           </div>
+          <div class="nav-item" data-route-key="搜尋篩選列"><span class="ico" data-icon="searchForm" data-icon-size="20"></span>搜尋篩選列 SearchForm</div>
           <div class="nav-item" data-route-key="表格">
             <span
               class="ico"
@@ -109,6 +112,7 @@
             >頁籤 Tabs
           </div>
           <div class="nav-item" data-route-key="導覽"><span class="ico" data-icon="menu" data-icon-size="20"></span>導覽 Navigation</div>
+          <div class="nav-item" data-route-key="頁首"><span class="ico" data-icon="headerBar" data-icon-size="20"></span>頁首 Header</div>
           <div class="nav-item" data-route-key="步驟導覽">
             <span class="ico" data-icon="steps" data-icon-size="20"></span
             >步驟導覽 Steps
@@ -167,20 +171,17 @@
             <span data-icon="menu" data-icon-size="20"></span>
           </button>
           <div><div class="topbar-title">樣式規範</div></div>
+          <!-- 頁首右側只有六個位置，順序照正式後台 Header.vue：
+               下載中心 → 轉點審核 → 存款審核 → 語系 → 站台時區 → 帳號。
+               規範見側欄「頁首 Header」。模組載入後由 settings-demo.js 補上三個 slot。 -->
           <div class="top-actions">
-            <span data-header-popovers></span
-            ><span data-download-center></span
-            ><span class="clock" style="color: var(--text-muted)">GMT+8 · 14:32</span
+            <span data-download-center></span
+            ><span data-header-alerts></span
             ><select class="language">
               <option>繁體中文</option>
               <option>English</option></select
-            ><button class="icon-btn" aria-label="搜尋">
-              <span data-icon="search" data-icon-size="20"></span></button
-            ><button class="icon-btn" aria-label="通知">
-              <span data-icon="bell" data-icon-size="20"></span
-              ><span class="dot"></span>
-            </button>
-            <div class="avatar">PG</div>
+            ><span class="clock">GMT+8</span
+            ><span data-header-account></span>
           </div>
         </header>
         <div class="quick-tabs" id="quickTabs">
@@ -767,6 +768,10 @@
       const routes = {        設計Token: ["設計 Token", "設計系統 / 元件規範", () => window.renderTokenPage()],
         進度條: ["進度條 Progress", "設計系統 / 元件規範", () => window.renderProgressPage()],
         導覽: ["導覽 Navigation", "設計系統 / 元件規範", () => window.renderNavPage()],
+        頁首: ["頁首 Header", "設計系統 / 元件規範", () => window.renderHeaderPage()],
+        權限控制: ["權限控制 Permission", "設計系統 / 元件規範", () => window.renderPermissionPage()],
+        表單: ["表單 Form", "設計系統 / 元件規範", () => window.renderFormPage()],
+        搜尋篩選列: ["搜尋篩選列 SearchForm", "設計系統 / 元件規範", () => window.renderSearchPage()],
 
         圖示系統: [
           "圖示 Icon",
