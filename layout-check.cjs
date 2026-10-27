@@ -166,4 +166,48 @@ assert.ok(
 )
 ok(`表格外觀只有 ${SOURCE} 一個來源，且沒有全域 min-width`)
 
-console.log('\nPASS: Shell 版面對齊（topbar 底線 ＝ 側欄分隔線）＋ 表格外觀單一來源')
+// --- 疊放順序只能從 token 取 ---
+//
+// 先前十支檔案各寫各的數字，結果是：側欄抽屜與頁首氣泡面板都是 40（誰在上面
+// 靠 DOM 順序決定）、右側詳情抽屜 50 反而蓋在導覽上面、Tooltip 60 蓋過全部。
+// 這一段守兩件事：順序本身，以及「不要再自己挑一個數字」。
+{
+  const files = [
+    ...fs.readdirSync('.').filter(f => f.endsWith('.css')),
+    ...fs.readdirSync('styles').map(f => 'styles/' + f),
+  ]
+  const base = fs.readFileSync('styles/base.css', 'utf8')
+  const LAYERS = ['--z-sticky', '--z-fixed', '--z-popover', '--z-drawer', '--z-nav-backdrop', '--z-nav', '--z-tooltip']
+  const value = name => {
+    const match = base.match(new RegExp(`${name}:\\s*(\\d+)`))
+    assert.ok(match, `styles/base.css 缺少 ${name}`)
+    return Number(match[1])
+  }
+  const values = LAYERS.map(value)
+  for (let i = 1; i < values.length; i += 1) {
+    assert.ok(
+      values[i] > values[i - 1],
+      `疊放順序反了：${LAYERS[i]}(${values[i]}) 應該大於 ${LAYERS[i - 1]}(${values[i - 1]})`,
+    )
+  }
+  // 側欄導覽是全站導覽，必須蓋過頁首氣泡與右側抽屜——這就是這組 token 的存在理由
+  assert.ok(value('--z-nav') > value('--z-drawer'), '側欄導覽抽屜要蓋過右側詳情抽屜')
+  assert.ok(value('--z-nav') > value('--z-popover'), '側欄導覽抽屜要蓋過頁首的氣泡面板')
+
+  // 覆蓋層不得再寫死數字。1–3 是元件內部的堆疊（表格固定欄、頁籤底線），不跨出自己的卡片；
+  // 2000 是 Toast 在沒有 Popover API 時的退路，已在 message.css 註記。
+  const INLINE_OK = new Set([1, 2, 3, 2000])
+  const strip = s => s.replace(/\/\*[\s\S]*?\*\//g, m => m.replace(/[^\n]/g, ' '))
+  const literals = []
+  for (const file of files) {
+    strip(fs.readFileSync(file, 'utf8')).split('\n').forEach((line, i) => {
+      const match = line.match(/z-index\s*:\s*(\d+)/)
+      if (!match || INLINE_OK.has(Number(match[1]))) return
+      literals.push(`${file}:${i + 1} ${line.trim()}`)
+    })
+  }
+  assert.deepEqual(literals, [], '覆蓋層的 z-index 要用 --z-* 變數，不要自己挑數字：\n  ' + literals.join('\n  '))
+  ok(`疊放順序 ${LAYERS.length} 層由 token 決定（側欄導覽 ${value('--z-nav')} 蓋過抽屜 ${value('--z-drawer')} 與氣泡 ${value('--z-popover')}）`)
+}
+
+console.log('\nPASS: Shell 版面對齊（topbar 底線 ＝ 側欄分隔線）＋ 表格外觀單一來源＋疊放順序')

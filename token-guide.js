@@ -237,7 +237,28 @@ window.renderTokenPage = () =>
         <p class="component-description">驗證方式：網址加上 <code>?longtext</code>，畫面上的中文會被換成 2.5 倍長的字串，等同於跑一次最長語系。新頁面做完就跑一次，比等翻譯進來才發現便宜得多。回歸由 <code>node i18n-check.cjs</code> 擋住「文字容器被釘死寬高」與「nowrap 沒有出路」。</p>
         <h4>RTL（右到左）</h4>
         <p class="component-description">RTL 指阿拉伯文、希伯來文那一類<strong>整個版面要鏡像</strong>的語系——側欄換到右邊、文字靠右、方向性圖示要翻面。<strong>目前不支援，也不需要</strong>：正式後台的 9 個語系全部是左到右（孟加拉文雖是南亞文字，書寫方向仍為 LTR）。</p>
-        <p class="component-description">若未來要進中東市場，代價是整站 CSS 的 <code>margin-left</code>／<code>padding-right</code>／<code>left</code> 改用邏輯屬性（<code>margin-inline-start</code> 這一類）再加圖示鏡像，涉及 70 多支樣式檔。<strong>記在這裡是為了讓它是一個有標價的決定，而不是一個被遺忘的洞</strong>——在那之前不要為了「以後可能要」提前付這筆錢。</p>`,
+        <p class="component-description">若未來要進中東市場，代價是整站 CSS 的 <code>margin-left</code>／<code>padding-right</code>／<code>left</code> 改用邏輯屬性（<code>margin-inline-start</code> 這一類）再加圖示鏡像，涉及 70 多支樣式檔。<strong>記在這裡是為了讓它是一個有標價的決定，而不是一個被遺忘的洞</strong>——在那之前不要為了「以後可能要」提前付這筆錢。</p>
+        <h3>疊放順序 z-index</h3>
+        <p class="component-description">只有會互相蓋到的那幾層才需要編號，數值一律從 <code>styles/base.css</code> 的 <code>--z-*</code> 取，<strong>不要在元件裡自己挑一個數字</strong>。元件內部的堆疊（表格固定欄、頁籤底線、骨架遮罩）維持 1–3，它們不會跨出自己的卡片。</p>
+        ${decisionTable(
+          [
+            ['<code>--z-sticky</code> 20', '頁內固定列', '桌機 topbar 與工作區頁籤（頁籤 −1，貼在 topbar 底下）'],
+            ['<code>--z-fixed</code> 30', '全畫面固定元素', '桌機側欄；手機的 topbar 那一疊（頁籤列 −1、搜尋開關 −2、背景遮板 −3）'],
+            ['<code>--z-popover</code> 40', '氣泡面板', '下載中心、帳號選單；手機展開的篩選列 −1'],
+            ['<code>--z-drawer</code> 50', '右側詳情抽屜', '會員詳情、登入紀錄、轉點明細'],
+            ['<code>--z-nav-backdrop</code> 60', '側欄抽屜的遮罩', '手機'],
+            ['<code>--z-nav</code> 70', '側欄導覽抽屜', '全站導覽，要蓋過上面全部'],
+            ['<code>--z-tooltip</code> 80', 'Tooltip', '附著在哪一層就要在那一層之上，所以數值最大'],
+          ],
+          ['變數', '哪一層', '誰在用'],
+        )}
+        <p class="component-description">再往上是兩個不吃 z-index 的東西：<strong>Toast</strong> 走 Popover API（不支援時退回 2000），<strong>彈窗</strong>是原生 <code>&lt;dialog&gt;.showModal()</code> 的 top layer——它在所有 z-index 之上，這也是彈窗不需要編號的原因。</p>
+        <div class="guide-pair">
+          <div class="is-bad"><h4>${icon('cancelCircle')}先前的三個問題</h4><p>側欄抽屜與頁首氣泡面板都是 40，誰在上面只能靠 DOM 順序決定；右側詳情抽屜是 50，打開選單時反而蓋在導覽上面；Tooltip 是 60，蓋過所有東西。十支檔案各寫各的數字，沒有任何地方記得住完整順序。</p></div>
+          <div class="is-good"><h4>${icon('checkCircle')}現在</h4><p>七個變數、一個地方定義。要插進新的一層就在這張表上找位置，用 <code>calc(var(--z-X) - 1)</code> 掛在既有那一層底下，不要發明 35 或 45 這種中間值。</p></div>
+        </div>
+        <p class="component-description"><strong>Tooltip 不是一層，它是附著物。</strong>所以它的數值最大——不管掛在內容、頁首還是抽屜上都要浮在那一層之上。它在任何 <code>pointerdown</code>、捲動、Esc 時就關閉，不會留在畫面上擋住剛打開的東西。</p>
+        <p class="component-description">另外一個不明顯的陷阱：<strong>flex 項目的 <code>z-index</code> 即使 <code>position</code> 是 <code>static</code> 也會生效</strong>。Tooltip 規範頁那個示範用的靜態標籤改成 <code>position: static</code> 之後仍帶著 <code>.bo-tooltip</code> 的 z-index，自己開了一個堆疊脈絡，於是蓋到手機的側欄抽屜上面——把 <code>position</code> 改掉時記得一起把 <code>z-index</code> 歸 <code>auto</code>。</p>`,
       },
     ],
     tokens: [
@@ -259,6 +280,8 @@ window.renderTokenPage = () =>
       ["斷點", "768 / 992 / 1200 / 1920"],
       ["斷點來源", "正式後台 tailwind.config.ts"],
       ["側欄寬度", "var(--sidebar-w) 15.5rem"],
+      ["疊放層數", "7（--z-sticky 20 → --z-tooltip 80）"],
+      ["彈窗", "原生 dialog top layer，不吃 z-index"],
       ["語系數", "9（全部為 LTR）"],
       ["最長字長倍數", "約 8 倍（高棉文）"],
       ["文字容器高度", "min-height，不寫死"],

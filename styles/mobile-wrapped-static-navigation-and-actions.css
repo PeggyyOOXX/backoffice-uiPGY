@@ -14,7 +14,7 @@
   .sidebar-backdrop {
     position: fixed !important;
     inset: 0 !important;
-    z-index: 39 !important;
+    z-index: var(--z-nav-backdrop) !important;
     width: 100vw;
     height: 100vh;
     background: rgba(12, 23, 44, 0.56) !important;
@@ -25,7 +25,7 @@
     right: auto !important;
     bottom: 0.5rem !important;
     left: 0.5rem !important;
-    z-index: 40 !important;
+    z-index: var(--z-nav) !important;
     width: min(17.25rem, calc(100vw - 3.5rem)) !important;
     height: auto !important;
     min-height: 0 !important;
@@ -54,7 +54,7 @@
     top: 0;
     left: 0;
     right: 0;
-    z-index: 27;
+    z-index: calc(var(--z-fixed) - 3);
     width: 100vw;
     height: calc(var(--mobile-stack-bottom) + 0.5rem);
     background: linear-gradient(
@@ -74,7 +74,7 @@
     top: 0;
     left: 0;
     right: 0;
-    z-index: 30;
+    z-index: var(--z-fixed);
     width: 100vw;
     max-width: 100vw;
     height: var(--topbar-h-mobile) !important;
@@ -103,7 +103,7 @@
     top: var(--topbar-h-mobile);
     left: 0;
     right: 0;
-    z-index: 29;
+    z-index: calc(var(--z-fixed) - 1);
     height: var(--quick-tabs-h-mobile);
     min-height: var(--quick-tabs-h-mobile);
     flex-wrap: nowrap !important;
@@ -154,7 +154,7 @@
     top: var(--mobile-search-toggle-top);
     left: 0.5rem;
     right: 0.5rem;
-    z-index: 28;
+    z-index: calc(var(--z-fixed) - 2);
     width: calc(100vw - 1rem);
     height: var(--mobile-search-toggle-h);
     margin: 0;
@@ -188,7 +188,7 @@
     top: calc(var(--mobile-stack-bottom) + 0.5rem);
     left: 0.5rem;
     right: 0.5rem;
-    z-index: 32;
+    z-index: calc(var(--z-popover) - 1);
     max-height: calc(100vh - var(--mobile-stack-bottom) - 0.75rem);
     margin: 0;
     padding: 0.75rem;

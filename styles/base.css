@@ -15,6 +15,17 @@
   /* 側欄寬度。.sidebar、.main 的左外距、組合範例的固定列都靠它對齊，
      所以只在這裡定義一次——要為長語系調寬就改這一個值。 */
   --sidebar-w: 15.5rem;
+  /* 覆蓋層的疊放順序。只有這幾層會互相蓋到，數值一律從這裡取，不要在元件裡
+     自己挑一個——先前側欄抽屜與頁首氣泡面板都是 40，誰在上面只能靠 DOM 順序
+     決定；右側詳情抽屜是 50，打開選單時反而蓋在導覽上面。
+     完整的表在「設計 Token → 疊放順序」。 */
+  --z-sticky: 20;       /* 頁內固定列：桌機 topbar 與工作區頁籤 */
+  --z-fixed: 30;        /* 全畫面固定元素：桌機側欄、手機的 topbar 那一疊 */
+  --z-popover: 40;      /* 氣泡面板：下載中心、帳號選單、手機展開的篩選列 */
+  --z-drawer: 50;       /* 右側詳情抽屜 */
+  --z-nav-backdrop: 60; /* 側欄抽屜的遮罩 */
+  --z-nav: 70;          /* 側欄導覽抽屜——全站導覽，蓋過上面全部 */
+  --z-tooltip: 80;      /* 附著在哪一層就要在那一層之上，所以數值最大 */
 }
 * {
   box-sizing: border-box;
@@ -43,7 +54,7 @@ button {
   width: var(--sidebar-w);
   background: var(--sidebar);
   color: #fff;
-  z-index: 30;
+  z-index: var(--z-fixed);
   display: flex;
   flex-direction: column;
   transition: 0.25s;
@@ -158,7 +169,7 @@ button {
   border-bottom: 1px solid var(--line);
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: var(--z-sticky);
   display: flex;
   align-items: center;
   padding: 0 1.75rem;
@@ -447,7 +458,7 @@ button {
   position: fixed;
   inset: 0;
   background: rgba(12, 23, 44, 0.42);
-  z-index: 50;
+  z-index: var(--z-drawer);
   opacity: 0;
   pointer-events: none;
   transition: 0.2s;
@@ -566,7 +577,7 @@ button {
     position: fixed;
     inset: 0;
     background: rgba(12, 23, 44, 0.45);
-    z-index: 29;
+    z-index: calc(var(--z-fixed) - 1);
   }
   .sidebar-backdrop.show {
     display: block;

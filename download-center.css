@@ -6,7 +6,7 @@
 /* 角標的幾何與配色在 header.css 的 .header-badge：下載任務用 .is-task（橘色，系統自己會跑完），
    待辦用預設的紅色。尺寸與位置不得各寫一份。 */
 .download-panel{
-  position:absolute;top:calc(100% + 0.25rem);right:0;z-index:40;
+  position:absolute;top:calc(100% + 0.25rem);right:0;z-index:var(--z-popover);
   width:21.25rem;max-width:calc(100vw - 1.5rem);padding:0.75rem;
   border:1px solid var(--line);border-radius:0.5rem;background:#fff;
   box-shadow:0 0.5rem 1.5rem rgba(23,35,59,.14);
@@ -29,14 +29,14 @@
    下載鈕是 top-actions 的第一顆，面板 340px 寬往左展開時左緣會跑到畫面外，
    而手機版的 html／body／.app／.main 都有 overflow-x: hidden，超出去的部分會被整個裁掉。
    垂直位置從 --topbar-h-mobile 算出來，不另外寫數字（見 AGENTS.md 的固定列規則）。
-   z-index 介於 topbar(30) 與側欄抽屜(40) 之間：要蓋住頁籤列，但抽屜打開時不該壓在它上面。 */
+   疊放順序用 --z-popover：蓋得過手機那一疊固定列，但在側欄導覽抽屜之下。 */
 @media(max-width:720px){
   .download-panel{
     position:fixed;
     top:calc(var(--topbar-h-mobile) + 0.25rem);
     right:auto;left:50%;
     transform:translateX(-50%);
-    z-index:31;
+    z-index:var(--z-popover);
     width:min(21.25rem,calc(100vw - 1.5rem));
   }
 }

@@ -30,7 +30,8 @@
   position: absolute;
   top: calc(100% + 0.25rem);
   right: 0;
-  z-index: 20;
+  /* 表頭裡展開的選單：要蓋過表格的固定欄與表頭，但不該蓋過頁面的固定列 */
+  z-index: calc(var(--z-sticky) - 1);
   min-width: 12rem;
   padding: 0.25rem;
   border: 1px solid var(--line-control);

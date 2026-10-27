@@ -67,12 +67,12 @@
     position: sticky;
     top: 0;
     height: var(--topbar-h);
-    z-index: 20;
+    z-index: var(--z-sticky);
   }
   .quick-tabs {
     position: sticky;
     top: var(--topbar-h);
-    z-index: 19;
+    z-index: calc(var(--z-sticky) - 1);
   }
 }
 
@@ -82,6 +82,6 @@
   .quick-tabs {
     position: sticky;
     top: var(--topbar-h-mobile);
-    z-index: 19;
+    z-index: calc(var(--z-sticky) - 1);
   }
 }
