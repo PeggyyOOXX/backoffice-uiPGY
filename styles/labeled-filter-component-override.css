@@ -42,7 +42,7 @@
   justify-content: center;
   gap: 0.25rem;
   min-width: auto;
-  height: 2.125rem;
+  height: 2rem;
 }
 @media (max-width: 1180px) {
   .source-filter-grid {

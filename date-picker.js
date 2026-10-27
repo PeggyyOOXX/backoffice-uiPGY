@@ -47,7 +47,16 @@ const shortcuts = [
   { text: '本月', value: PRESETS.thisMonth },
   { text: '上月', value: PRESETS.lastMonth },
 ]
+// 快捷區間用規範的次要按鈕，桌機與手機一樣，不然看不出可以點。
+// EP 的快捷鈕沒有 class 參數可傳，只能在面板插進 DOM 後補上。
+const SHORTCUT_BTN = ['semantic-btn', 'btn-search', 'outline']
+function styleShortcuts() {
+  document.querySelectorAll('.bo-date-range-popper .el-picker-panel__shortcut').forEach(btn => {
+    btn.classList.add(...SHORTCUT_BTN)
+  })
+}
 function mountPickers() {
+  styleShortcuts()
   for (const [host, entry] of mounted) {
     if (!host.isConnected) { entry.app.unmount(); mounted.delete(host) }
   }

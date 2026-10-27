@@ -67,7 +67,7 @@
 /* 以下兩組原本在 bright-semantic-button-palette.css */
 .semantic-btn:hover:not(:disabled) {
   filter: brightness(1.06);
-  box-shadow: 0 0.3125rem 0.8125rem rgba(28, 98, 120, 0.18);
+  box-shadow: var(--shadow-sm);
 }
 .button-spec-top code {
   background: #f1f6f7;

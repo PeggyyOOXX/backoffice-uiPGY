@@ -16,7 +16,7 @@
 .crumb-demo ol{display:flex;align-items:center;flex-wrap:wrap;gap:0.25rem;margin:0;padding:0;list-style:none}
 .crumb-demo li{display:flex;align-items:center;font-size:0.75rem;color:var(--text-muted)}
 .crumb-demo a{color:var(--blue);text-decoration:none}
-.crumb-demo a:hover{text-decoration:underline;text-underline-offset:0.1875rem}
+.crumb-demo a:hover{text-decoration:underline;text-underline-offset:3px}
 .crumb-demo [aria-current="page"]{color:var(--text)}
 
 .nav-guide-list{margin:0 0 0.75rem;padding-left:1rem}

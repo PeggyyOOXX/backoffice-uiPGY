@@ -2,7 +2,7 @@
    semantic-button-system, so it never introduces a palette of its own. */
 /* 圖示按鈕與文字按鈕用同一組變數撐開，不寫死高寬：
    四邊內距都是 --btn-pad-y，圖示尺寸等於 --btn-content（16px），
-   所以 高 = 寬 = 16 + 8×2 + 1×2 = 34px——它自己長成正方形，
+   所以 高 = 寬 = 16 + 8×2 = 32px——它自己長成正方形（描邊畫在內側，不佔尺寸），
    而且永遠和文字按鈕一樣高。改 --btn-pad-y 兩種按鈕會一起變。 */
 .page .semantic-btn.icon-action,.bo-modal .semantic-btn.icon-action,.semantic-btn.icon-action{padding:var(--btn-pad-y);gap:0;font-size:var(--btn-content);font-weight:400;line-height:var(--btn-content)}
 /* SVG 自己帶 width/height 屬性，要讓圖示跟著 --btn-content 走就得在這裡蓋過去，

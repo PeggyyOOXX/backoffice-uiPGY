@@ -52,7 +52,11 @@ const COLOUR_ALLOWED = [
   { file: 'states.css', hex: '#e59aa4', why: '錯誤狀態插圖的淡紅，是 --danger 的插圖階；它只出現在空狀態圖示上，不當介面色用' },
 ]
 
-const fontBad = [], gridBad = [], colourBad = []
+// 不套格線的屬性：字級與由內容推算的寬高。自訂變數這裡拿到的是去掉 -- 的名字，
+// 以 -h／-w／-size（可帶 -mobile）結尾或含 font-size 的視為尺寸變數。
+const SIZE = /^(font-size|line-height|width|height|min-width|min-height|max-width|max-height|flex-basis|flex|grid-template-columns|grid-template-rows|grid-auto-rows|background-size|btn-content|[\w-]*font-size[\w-]*|[\w-]+-(h|w|width|height|size)(-mobile)?)$/
+
+const fontBad = [], gridBad = [], colourBad = [], offGrid = []
 for (const file of files) {
   const isDefiner = file in DEFINERS
   strip(fs.readFileSync(file, 'utf8')).split('\n').forEach((line, i) => {
@@ -79,6 +83,14 @@ for (const file of files) {
         if (GRID.test(prop) && Math.round(px * 100) % 400 !== 0) {
           if (GRID_ALLOWED.some(a => a.file === file && a.value === rem)) continue
           gridBad.push(`${at}  ${prop}: ${token} = ${px}px`)
+          continue
+        }
+        // 4px 格線換成 rem 是 0.25 的倍數，最多兩位小數；三位以上小數代表這個值不在格線上。
+        // 只有字級（14px ＝ 0.875rem）與由內容推算的寬高（例如手機頁首 46px ＝ 2.875rem）可以不在格線上。
+        // 陰影、字距、底線位移這類一樣要在格線上；1–3px 的細線與光圈照框線例外直接寫 px。
+        if (!SIZE.test(prop) && Math.round(px * 100) % 400 !== 0) {
+          if (GRID_ALLOWED.some(a => a.file === file && a.value === rem)) continue
+          offGrid.push(`${at}  ${prop}: ${token} = ${px}px`)
         }
       }
     }
@@ -91,12 +103,28 @@ ok('字級全部落在級距上（偶數、≥12px）')
 assert.deepEqual(gridBad, [], '間距／圓角／定位要落在 4px 格線上：\n  ' + gridBad.join('\n  ') + '\n')
 ok(`間距、圓角與定位都是 4px 的倍數（${GRID_ALLOWED.length} 個推算值例外）`)
 
+assert.deepEqual(offGrid, [], '陰影、字距、位移這類 rem 值也要在 4px 格線上（rem 最多兩位小數）；1–3px 的細線與光圈寫 px：\n  ' + offGrid.join('\n  ') + '\n')
+ok('字級與寬高以外的 rem 值都在 4px 格線上（三位以上小數只出現在字級與推算的寬高）')
+
 assert.deepEqual(
   colourBad, [],
   '元件層不得寫死色碼，一律用「設計 Token → 介面色」的變數：\n  ' + colourBad.join('\n  ') +
   '\n  （真的需要新顏色，先補進 token-guide.js 與 blue-teal-palette-override.css 的 :root）\n',
 )
 ok(`${files.length - Object.keys(DEFINERS).length} 個元件樣式檔都用 token，沒有寫死色碼`)
+
+// var(--blue)55 這種「變數後面接兩碼透明度」不是合法 CSS，瀏覽器會整條宣告丟掉，
+// 畫面上什麼都不出現（開關的鍵盤聚焦外框就曾因此消失）。要半透明用 color-mix()。
+{
+  const bad = []
+  for (const file of files) {
+    strip(fs.readFileSync(file, 'utf8')).split('\n').forEach((line, i) => {
+      for (const m of line.match(/var\(--[\w-]+\)[0-9a-fA-F]{2}\b/g) || []) bad.push(`${file}:${i + 1}  ${m}`)
+    })
+  }
+  assert.deepEqual(bad, [], '變數後面不能直接接透明度，改用 color-mix(in srgb, var(--x) N%, transparent)：\n  ' + bad.join('\n  ') + '\n')
+  ok('沒有 var(--x)NN 這種無效的透明度寫法')
+}
 
 // token 頁列出的每一支變數都要真的存在，否則規範頁會公告一個站上沒有的顏色
 {

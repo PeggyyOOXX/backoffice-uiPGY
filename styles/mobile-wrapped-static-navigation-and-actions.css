@@ -18,7 +18,7 @@
     width: 100vw;
     height: 100vh;
     background: rgba(12, 23, 44, 0.56) !important;
-    backdrop-filter: blur(0.0625rem);
+    backdrop-filter: blur(1px);
   }
   .sidebar {
     top: 0.5rem !important;
@@ -87,12 +87,12 @@
     background: #fff !important;
     backdrop-filter: none !important;
   }
-  /* 全站只有一個按鈕高度，不分斷點：34px，與輸入框、分頁、表格操作鈕一致。
-     先前這裡縮成 32px，手機的頁首就成了第二種按鈕尺寸。 */
+  /* 全站只有一個按鈕高度，不分斷點：32px，與輸入框、分頁、表格操作鈕一致。
+     手機頁首不另外縮放，否則就成了第二種按鈕尺寸。 */
   .topbar .menu-btn,
   .topbar .icon-btn {
-    width: 2.125rem;
-    height: 2.125rem;
+    width: 2rem;
+    height: 2rem;
   }
   .topbar .top-actions {
     gap: 0.5rem;
@@ -142,7 +142,7 @@
     box-shadow: none;
   }
   /* 只調排列，不調尺寸：高度、內距、字級一律由 semantic-button-system 決定。
-     先前這裡把工具列按鈕縮成 34px／13px，手機上同一頁就出現兩種按鈕高度。 */
+     在這裡縮小按鈕，手機上同一頁就會出現兩種按鈕高度。 */
   .member-actions .semantic-btn {
     width: auto;
     flex: 0 0 auto !important;
@@ -201,8 +201,8 @@
     gap: 0.5rem;
   }
   .source-filter.mobile-open .control {
-    height: 2.125rem;
-    min-height: 2.125rem;
+    height: 2rem;
+    min-height: 2rem;
     padding: 0 0.5rem;
     border-radius: 0.5rem;
     font-size: 0.875rem;

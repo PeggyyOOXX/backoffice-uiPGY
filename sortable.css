@@ -1,0 +1,118 @@
+/* 拖曳排序的回饋。只管「拖的時候看得出什麼」，表格本身的外觀仍由 unified-table-system 決定。 */
+
+/* 把手：拿得起來的東西游標要說「抓」。
+   touch-action: none 讓手指按住把手時瀏覽器不去捲頁面，拖曳才收得到移動；
+   只設在把手上，按在列的其他地方仍然可以正常捲動。 */
+[data-sort-handle] {
+  cursor: grab;
+  touch-action: none;
+}
+.is-sort-dragging,
+.is-sort-dragging [data-sort-handle] {
+  cursor: grabbing;
+  user-select: none;
+}
+
+/* 跟著游標或手指走的小卡。手指會蓋住正在拖的那一列，看不到自己拿著什麼，
+   所以另外帶一張寫著名稱的卡，偏右下 12px，不擋住插入線。 */
+.sortable-ghost {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: var(--z-tooltip);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 15rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px var(--blue), var(--shadow-md);
+  color: var(--text);
+  font-size: 0.875rem;
+  pointer-events: none;
+}
+.sortable-ghost span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sortable-ghost svg {
+  flex: none;
+  color: var(--blue);
+}
+
+/* 1. 拿起的那一列：留在原位、變淡、虛線框——看得出「這一列正被搬走」，
+   又不會消失讓旁邊的列跳上來，插入線的位置才不會在拖的途中一直跑。 */
+.is-sort-source > td {
+  opacity: 0.45;
+  background: var(--surface-hover);
+}
+.is-sort-source > td:first-child {
+  box-shadow: inset 2px 0 0 var(--blue);
+}
+
+/* 2. 插入線：放下去會落在這一列的上緣（before）或下緣（after）。
+   用 inset box-shadow 畫在儲存格裡，不改列高，畫面不會在拖的途中上下跳。
+   左端的圓點讓線在寬表格裡也找得到起點。 */
+.page [data-sort-item].is-drop-before > td {
+  box-shadow: inset 0 2px 0 var(--blue);
+}
+.page [data-sort-item].is-drop-after > td {
+  box-shadow: inset 0 -2px 0 var(--blue);
+}
+/* 固定在右側的操作欄自己有一條左分隔線（box-shadow），兩條要一起畫，線才不會在那一格斷掉 */
+.page [data-sort-item].is-drop-before > td.is-sticky-right {
+  box-shadow: inset 0 2px 0 var(--blue), -1px 0 var(--line);
+}
+.page [data-sort-item].is-drop-after > td.is-sticky-right {
+  box-shadow: inset 0 -2px 0 var(--blue), -1px 0 var(--line);
+}
+[data-sort-item] > td:first-child {
+  position: relative;
+}
+.is-drop-before > td:first-child::before,
+.is-drop-after > td:first-child::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--blue);
+  transform: translateY(-50%);
+}
+.is-drop-before > td:first-child::before {
+  top: 1px;
+}
+.is-drop-after > td:first-child::before {
+  top: calc(100% - 1px);
+}
+
+/* 3. 放下之後：移過去的那一列底色亮一下再淡掉，看得出它落在哪 */
+.is-sort-moved > td {
+  animation: sort-moved 1.2s ease-out;
+}
+@keyframes sort-moved {
+  from {
+    background: var(--blue-tint);
+  }
+  to {
+    background: transparent;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .is-sort-moved > td {
+    animation: none;
+    background: var(--blue-tint);
+  }
+}
+
+/* 方向鍵排序的結果用文字唸出來（「已移到第 2 位，共 3 項」），畫面上不顯示 */
+.sortable-live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}

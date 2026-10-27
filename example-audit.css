@@ -18,7 +18,7 @@
 
 
 
-.risk-link{color:var(--blue);text-decoration:underline;text-underline-offset:0.1875rem;cursor:pointer}
+.risk-link{color:var(--blue);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .risk-link:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
 .risk-secondary{font-size:0.75rem;color:var(--text-muted)}
 /* 「誰在處理」：兩種情況（我自己／別人）用同一種字，差別只在下面有沒有按鈕。 */

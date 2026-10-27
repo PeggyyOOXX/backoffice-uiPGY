@@ -30,8 +30,8 @@ const COLUMNS = [
   { key: 'progress', label: '兌換進度' },
   { key: 'range', label: '兌換日期區間' },
   { key: 'created', label: '建立時間' },
-  // 三顆圖示按鈕：34×3 ＋ 8×2 ＋ 左右內距 = 162px
-  { key: 'actions', label: '操作', width: '162px' },
+  // 三顆圖示按鈕：32×3 ＋ 8×2 ＋ 左右內距 = 156px
+  { key: 'actions', label: '操作', width: '156px' },
 ]
 
 // status 依語意對應標籤型別，不是依狀態碼——正式後台的 formatStatusColor 在不同頁面

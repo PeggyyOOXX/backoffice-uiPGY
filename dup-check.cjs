@@ -23,6 +23,7 @@ const OWNS = {
   'header.js': ['popover', 'header'],
   'form-guide.js': ['form'],
   'search-guide.js': ['searchForm'],
+  'sortable-guide.js': ['sortable'],
   'permission-guide.js': ['permission'],
   'progress-guide.js': ['progress'],
   'tag-guide.js': ['tag'],
@@ -59,6 +60,7 @@ const MARKERS = {
   header: /header-badge|header-popover-panel/,
   form: /form-demo-grid|form-demo-field/,
   searchForm: /data-search-advanced|source-filter-more/,
+  sortable: /data-sort-handle|data-sort-item/,
   permission: /permission-demo-col|permission-demo-actions/,
   message: /bo-message\b|message\.(success|error|warning|info)/,
 }

@@ -1,16 +1,19 @@
 /* 按鈕的尺寸用推算的，不寫死高寬：
-     高 = 文字行高 + 上下內距 ×2 + 框線 ×2
+     高 = 文字行高 + 上下內距 ×2
      寬 = 文字自動寬度 + 左右內距 ×2
    內距是定值，所以不管文字多長、哪個語系、字級被放大，按鈕都是合身的。
-   桌機與手機同一個尺寸：內距不隨斷點改變，所以算出來都是 34px——
-   和圖示按鈕、分頁按鈕、輸入框全部同高。
+   桌機與手機同一個尺寸：內距不隨斷點改變，所以算出來都是 32px——
+   和圖示按鈕、分頁按鈕、輸入框全部同高，也與 Element Plus 預設的 32px 相同。
+
+   框線不佔高度：描邊用 inset box-shadow 畫在元素內側（--btn-ring），
+   高度才會停在 4px 格線上。不得改回佔高度的 border。
 
    高度不另外寫，連 min-height 也沒有：line-height 是明確的 16px，
-   內容盒高度就與字型無關，算出來永遠是 16＋8×2＋1×2 ＝ 34px。
+   內容盒高度就與字型無關，算出來永遠是 16＋8×2 ＝ 32px。
    （只有在 line-height 是 normal 或無單位時，才會因為字型度量而需要一個地板。）
 
    圖示按鈕用的是同一組變數，只是四邊內距相同、圖示尺寸等於 --btn-content，
-   所以它自己長成正方形，而且高度與文字按鈕完全相同——不是各自寫 34px 湊出來的。 */
+   所以它自己長成正方形，而且高度與文字按鈕完全相同——不是各自寫 32px 湊出來的。 */
 :root {
   /* 按鈕裡那塊內容的高度。文字用它當行高，圖示用它當邊長——
      兩者共用同一個值，所以不管這個數字是多少，兩種按鈕都一樣高。
@@ -18,12 +21,11 @@
   --btn-content: 1rem;
   --btn-pad-y: 0.5rem;
   --btn-pad-x: 0.75rem;
-  --btn-border: 1px;
+  /* 描邊的粗細。畫在元素內側（inset box-shadow），不佔高度；屬於框線，寫 px。 */
+  --btn-ring: 1px;
   /* 算出來的高度。按鈕本身不用它（高度是內距撐開的），
-     只有需要「同寬」的方形控制拿它當最小寬度。 */
-  --btn-h: calc(
-    var(--btn-content) + var(--btn-pad-y) * 2 + var(--btn-border) * 2
-  );
+     只有需要「同寬」的方形控制拿它當最小寬度，輸入類控制拿它當高度。 */
+  --btn-h: calc(var(--btn-content) + var(--btn-pad-y) * 2);
 }
 .semantic-btn {
   display: inline-flex;
@@ -31,7 +33,7 @@
   justify-content: center;
   gap: 0.25rem;
   padding: var(--btn-pad-y) var(--btn-pad-x);
-  border: var(--btn-border) solid transparent;
+  border: 0;
   border-radius: 0.5rem;
   color: #fff;
   /* 字級與內容高度是兩回事：14px 的字放在 16px 的行高裡。
@@ -47,10 +49,10 @@
 }
 .semantic-btn:hover:not(:disabled) {
   filter: brightness(0.95);
-  box-shadow: 0 0.25rem 0.6875rem rgba(24, 34, 56, 0.12);
+  box-shadow: var(--shadow-sm);
 }
 .semantic-btn:active:not(:disabled) {
-  transform: translateY(0.0625rem);
+  transform: translateY(1px);
 }
 .semantic-btn:focus-visible {
   outline: 3px solid rgba(40, 127, 152, 0.2);
@@ -95,7 +97,11 @@
 .semantic-btn.outline {
   background: #fff !important;
   color: var(--button-color);
-  border-color: currentColor;
+  box-shadow: inset 0 0 0 var(--btn-ring) currentColor;
+}
+/* hover 的浮起陰影會蓋掉描邊，兩個要一起寫 */
+.semantic-btn.outline:hover:not(:disabled) {
+  box-shadow: inset 0 0 0 var(--btn-ring) currentColor, var(--shadow-sm);
 }
 .btn-search.outline {
   --button-color: #287f98;
@@ -169,7 +175,7 @@
   padding-top: 0.75rem;
   border-top: 1px solid var(--line);
 }
-/* 這三顆是「預設／次要／停用」的示範，尺寸必須與規範一致（桌機 34px、手機 42px）。
+/* 這三顆是「預設／次要／停用」的示範，尺寸必須與規範一致（桌機 32px、手機 42px）。
    先前為了塞進窄卡片把它縮成 30／38px，結果量規範頁量到的是另一組數字。
    卡片放不下就換行（上面已經有 flex-wrap），不縮按鈕。 */
 .guide-rules {

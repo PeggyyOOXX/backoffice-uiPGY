@@ -27,7 +27,7 @@
 
 /* 固定欄（對應 CustomTable 的 fixed="right"）：橫捲時操作欄留在右邊。
    有自訂底色的固定欄必須一併套用整列 hover 的底色，否則整列會斷開。 */
-.page .data-table-grid .is-sticky-right{position:sticky;right:0;z-index:1;background:#fff;box-shadow:-0.0625rem 0 var(--line)}
+.page .data-table-grid .is-sticky-right{position:sticky;right:0;z-index:1;background:#fff;box-shadow:-1px 0 var(--line)}
 .page .data-table-grid thead .is-sticky-right{background:var(--surface-head);z-index:2}
 .page .data-table-grid tbody tr:hover .is-sticky-right{background:var(--surface-row-hover)}
 .page .data-table-grid tfoot .is-sticky-right{background:var(--surface-head)}

@@ -142,7 +142,7 @@ window.renderSearchPage = () => guidePage({
     {
       heading: '五種欄位型別',
       body: `${decisionTable(TYPES, ['要查什麼', 'type', '規則在哪一頁'])}
-        <p class="component-description">欄位本身的外觀、互動與狀態一律由各自的規範頁決定，篩選列不另設樣式：高度 34px、字級在手機維持 16px（iOS Safari 對 16px 以下的輸入欄位會在聚焦時自動放大整頁）。</p>
+        <p class="component-description">欄位本身的外觀、互動與狀態一律由各自的規範頁決定，篩選列不另設樣式：高度 32px、字級在手機維持 16px（iOS Safari 對 16px 以下的輸入欄位會在聚焦時自動放大整頁）。</p>
         <p class="component-description">欄位可以帶前綴或後綴（單位、說明圖示）。說明用 Tooltip 掛在 <code>info</code> 圖示上，<strong>只放補充說明</strong>——必要資訊不能藏在 Tooltip 裡。</p>`,
     },
     {
@@ -165,7 +165,7 @@ window.renderSearchPage = () => guidePage({
     ['欄數 ≤720px', '1（整列收起）'],
     ['欄距', '8px'],
     ['卡片內距', '8px 12px'],
-    ['欄位高度', '34px（手機相同）'],
+    ['欄位高度', '32px（手機相同）'],
     ['欄位字級', '16px（手機不得更小）'],
     ['標籤', '12px / 650 / var(--text-muted)'],
     ['標籤與欄位間距', '4px'],

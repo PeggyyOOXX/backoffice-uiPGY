@@ -121,6 +121,7 @@ const formView = () => `
       <h3 class="example-settings-heading">基本資料</h3>
       <div class="guide-fields">
         ${field('account', '帳號', text('account', 'maxlength="20" autocomplete="off"'), { required: true, hint: '6–20 碼英數字，建立後不可修改' })}
+        ${field('password', '密碼', `<div class="affix-input"><input id="member-password" class="guide-input${errors.password ? ' is-error' : ''}" type="password" value="${esc(draft.password)}" maxlength="20" autocomplete="new-password" data-form-field="password" ${errors.password ? 'aria-invalid="true" aria-describedby="member-password-error"' : ''}><span data-icon="view" data-icon-size="16"></span></div>`, { required: true, hint: '8–20 碼，需含英文與數字' })}
         ${field('name', '姓名', text('name', 'maxlength="30"'), { required: true })}
         ${field('level', '層級', select('level', LEVELS))}
         ${field('email', 'Email', text('email', 'type="email" maxlength="60"'))}
@@ -129,13 +130,6 @@ const formView = () => `
         ${field('tags', '會員標籤', `<select id="member-tags" class="guide-select" multiple data-collapse="2" data-clearable data-form-field="tags">
           ${TAGS.map(v => `<option ${draft.tags.includes(v) ? 'selected' : ''}>${esc(v)}</option>`).join('')}
         </select>`)}
-      </div>
-    </section>
-
-    <section class="card example-settings-card">
-      <h3 class="example-settings-heading">帳號安全</h3>
-      <div class="guide-fields">
-        ${field('password', '密碼', `<div class="affix-input"><input id="member-password" class="guide-input${errors.password ? ' is-error' : ''}" type="password" value="${esc(draft.password)}" maxlength="20" autocomplete="new-password" data-form-field="password" ${errors.password ? 'aria-invalid="true" aria-describedby="member-password-error"' : ''}><span data-icon="view" data-icon-size="16"></span></div>`, { required: true, hint: '8–20 碼，需含英文與數字' })}
       </div>
     </section>
 

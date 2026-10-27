@@ -18,7 +18,7 @@
    3. 外圈 2px 的底色環：就算邊角仍有重疊，圖示也讀得出來是「被壓在下面的另一層」，
       而不是跟角標糊成一團。這是 GitHub／Gmail／Element Plus 都在用的做法。
    4. 相鄰按鈕的間距拉回 8px（.top-actions），三個字元的角標才不會壓到隔壁那顆。
-   上限是 99（見 header.js 的 badgeText）。「99+」在 34px 的按鈕上一定會碰到圖示的
+   上限是 99（見 header.js 的 badgeText）。「99+」在 32px 的按鈕上一定會碰到圖示的
    邊角——GitHub、Gmail、Element Plus 都一樣——真正讓圖示仍然讀得出來的是那圈
    底色環，它把角標與圖示分成兩層。圖示本身是圓框箭頭，被蓋到的是圓弧上緣，
    中間的箭頭不受影響。 */
@@ -34,7 +34,7 @@
   border-radius: 0.5rem;
   background: var(--danger);
   color: #fff;
-  box-shadow: 0 0 0 0.125rem var(--card);
+  box-shadow: 0 0 0 2px var(--card);
   font-size: 0.75rem;
   font-weight: 700;
   line-height: 1;
@@ -54,7 +54,7 @@
 /* --- 身分鈕與分隔線 -----------------------------------------------------
    左邊三顆是動作（去處理、去拿檔案），最右邊這顆是身分（我是誰、用什麼幣別看）。
    四顆都做成白底灰框的方鈕時，最右邊那顆會被讀成「第四個待辦」。
-   尺寸不變（仍是 34 × 34px，與全站同高），只換形狀與配色：
+   尺寸不變（仍是 32 × 32px，與全站同高），只換形狀與配色：
    圓形是全網路公認的「這是人」符號，而整個頁首只有這一顆是圓的。
 
    圓角的例外具名寫在 styles/button-corner-radius.css，不在這裡另設。
@@ -103,7 +103,7 @@
   border: 1px solid var(--line);
   border-radius: 0.5rem;
   background: var(--card);
-  box-shadow: 0 0.5rem 1.5rem rgba(23, 35, 59, 0.14);
+  box-shadow: var(--shadow-md);
   text-align: left;
 }
 .header-popover-panel[hidden] {

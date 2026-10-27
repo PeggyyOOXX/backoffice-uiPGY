@@ -13,7 +13,7 @@
 .nav-item.active {
   color: #123642;
   background: #dff3f5;
-  box-shadow: 0 0.1875rem 0.625rem rgba(2, 19, 27, 0.15);
+  box-shadow: 0 3px 0.5rem rgba(2, 19, 27, 0.15);
   font-weight: 750;
 }
 .nav-item.active .ico {
@@ -25,7 +25,7 @@
 .nav-level-3.active {
   color: #123642;
   background: #dff3f5;
-  box-shadow: 0 0.1875rem 0.625rem rgba(2, 19, 27, 0.15);
+  box-shadow: 0 3px 0.5rem rgba(2, 19, 27, 0.15);
 }
 [data-toggle]::after {
   content: "";

@@ -53,6 +53,15 @@ const layoutDemo = () => `<div class="guide-stage">
   </form>
 </div>`
 
+const COLUMNS = [
+  ['767px 以下', '1 欄', '<code>:span="24"</code>（xs，EP 預設）'],
+  ['768px 起', '2 欄', '<code>:sm="12"</code>'],
+  ['992px 起', '3 欄', '<code>:md="8"</code>'],
+  ['1200px 起', '4 欄', '<code>:lg="6"</code>'],
+  ['1920px 起', '6 欄', '<code>:xl="4"</code>'],
+  ['彈窗內', '2 欄（手機 1 欄）', '彈窗內一律 <code>:span="12"</code>'],
+]
+
 const TIMING = [
   ['欄位失焦（blur）', '<strong>驗這一格</strong>', '正式後台 501 處 el-form-item 的規則全部是 trigger: "blur"。離開欄位才驗，使用者還在打字時不會被紅字追著跑'],
   ['送出時', '<strong>驗整張</strong>', '沒通過就不送出，並把畫面捲到第一個錯誤的欄位'],
@@ -77,8 +86,11 @@ window.renderFormPage = () => guidePage({
       heading: '一張表單的骨架',
       body: `${layoutDemo()}
         <p class="component-description">由上到下三層固定：<strong>分區標題 → 欄位格線 → footer</strong>。分區標題 14px／600，與組合範例的 <code>.example-settings-heading</code> 同一個值——它只是在長表單裡給眼睛一個落點，不要再包一層框，也<strong>不該比卡片標題還重</strong>（正式後台用的是 20px 粗體品牌色，原型統一成與其他卡片小節一致的大小）。</p>
-        <p class="component-description">欄位排版<strong>直接用既有的 <code>.guide-fields</code> / <code>.guide-field</code></strong>，不自己排一套——guide-page.css 的註解本來就寫著這句。格線是 <code>auto-fit</code> 配每欄最小 220px，所以<strong>欄數由容器寬度決定</strong>：窄卡片自動變一欄，寬畫面自動排到四、五欄，不必逐個斷點維護。對應正式後台的 <code>:sm="12" :md="8" :lg="6" :xl="4"</code> 四段，移植時用 el-col 達成同樣的結果。</p>
-        <p class="component-description">需要整行的欄位（備註、說明、上傳）直接佔滿一列，不要讓它跟短欄位擠在同一行——高度不一樣，底線就會對不齊。</p>
+        <p class="component-description">欄位排版<strong>直接用既有的 <code>.guide-fields</code> / <code>.guide-field</code></strong>，不自己排一套——guide-page.css 的註解本來就寫著這句。欄數<strong>照正式後台的 <code>:sm="12" :md="8" :lg="6" :xl="4"</code></strong>，斷點也用 Element Plus 的，移植時直接寫 el-col 就是同一個結果。全站的頁面、卡片、規範頁示範都是這一套，不得在個別頁面改欄數。</p>
+        ${decisionTable(COLUMNS, ['視窗寬度', '每排欄數', '對應 el-col'])}
+        <p class="component-description"><strong>欄寬固定，一列不夠就留空，不平分拉寬。</strong>同一頁的每張卡片因此欄寬都一樣、上下對齊；一張卡片只有一兩個欄位時，它們仍是一欄寬，不會被拉滿整列。先前用 <code>auto-fit</code> 配每欄最小 220px，寬螢幕會排到 7、8 欄（正式後台最多 6 欄），單一欄位還會被拉到整列寬。</p>
+        <p class="component-description"><strong>彈窗固定 2 欄</strong>（手機 1 欄）：彈窗是固定規格寬度，不跟視窗走，照視窗斷點會在 640px 的彈窗裡排出 6 欄。</p>
+        <p class="component-description">需要整行的欄位（備註、說明、上傳）直接佔滿一列，不要讓它跟短欄位擠在同一行——高度不一樣，底線就會對不齊。多行文字（<code>textarea</code>）的欄位自動佔滿；其他要整行的欄位在 <code>.guide-field</code> 加 <code>is-full</code>（對應 el-col <code>:span="24"</code>）。</p>
         <p class="component-description">footer 一律靠右、取消在前、主要操作在後，與彈窗 footer 同一條規則。按鈕沿用語意樣式：取消 <code>btn-neutral</code>、儲存 <code>btn-search</code>。</p>`,
     },
     {
@@ -117,9 +129,12 @@ window.renderFormPage = () => guidePage({
     ['標籤最小高度', '18px（兩行標籤不會把隔壁欄位頂歪）'],
     ['標籤與欄位間距', '4px'],
     ['必填星號', '標籤右側，var(--input-error)'],
-    ['欄位最小寬', '220px（auto-fit，欄數由容器寬度決定）'],
+    ['每排欄數', '1／2／3／4／6（斷點 768／992／1200／1920px，同 el-col）'],
+    ['欄寬', '固定，一列不夠留空，不平分拉寬'],
+    ['彈窗內', '固定 2 欄，手機 1 欄'],
+    ['整行欄位', 'textarea 自動整行；其他加 .is-full'],
     ['欄距', '直 12px／橫 16px'],
-    ['欄位高度', '34px（與全站控制一致）'],
+    ['欄位高度', '32px（與全站控制一致）'],
     ['分區標題', '14px / 600 / var(--text)'],
     ['分區下方間距', '12px'],
     ['錯誤欄位', '.guide-input.is-error'],
@@ -136,6 +151,7 @@ window.renderFormPage = () => guidePage({
     ['訊息要說怎麼改', '寫「密碼至少 8 碼，需含英文與數字」，不要寫「密碼不符合規則」。'],
     ['送出失敗要捲到第一個錯誤', '畫面不動等於沒有回報。有頁籤的表單要先切到錯誤所在的那一頁籤。'],
     ['捲動之外不補 Toast', '錯誤已經在欄位下方，Toast 只是重複，而且會蓋住剛捲到的那一格。'],
+    ['欄數照正式後台，欄寬固定', '視窗 768／992／1200／1920px 起各排 2／3／4／6 欄，彈窗固定 2 欄。一列不夠就留空，不把欄位拉寬；全站不得在個別頁面改欄數。'],
     ['整行的欄位自己佔一列', '備註、說明、上傳跟短欄位擠在同一行時高度不一樣，底線會對不齊。'],
     ['改過才攔截離開', '只是打開看看就被攔一次，使用者下次會無視這個彈窗，真的要救他時也一樣點掉。'],
     ['footer 靠右、取消在前', '與彈窗 footer 同一條規則，整站的確認動作位置一致。'],

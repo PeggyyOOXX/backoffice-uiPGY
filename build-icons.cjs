@@ -135,6 +135,7 @@ const ALLOWLIST = [
   ['sidebar', 'formGuide', 'clipboard-list', '表單'],
   ['sidebar', 'searchForm', 'list-filter', '搜尋篩選列'],
   ['sidebar', 'permission', 'shield-check', '權限控制'],
+  ['sidebar', 'buttonGuide', 'square-mouse-pointer', '按鈕'],
 ]
 
 // --- 抽取 ---

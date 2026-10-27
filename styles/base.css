@@ -12,6 +12,12 @@
   --red: #e85a66;
   --amber: #d98b18;
   --shadow: 0 0.75rem 2rem rgba(21, 35, 63, 0.08);
+  /* 浮起的兩個層級。位移與模糊都在 4px 格線上，元件一律取用，不自己挑數字——
+     先前每個元件各寫一組，模糊半徑有 5／7／11／13／17／75px，同樣是「浮起來」卻深淺不一。
+     sm：按鈕 hover 這類貼著原位的浮起
+     md：氣泡面板、Toast、批量操作列這類蓋在內容上的浮層 */
+  --shadow-sm: 0 0.25rem 0.75rem rgba(28, 98, 120, 0.18);
+  --shadow-md: 0 0.5rem 1.5rem rgba(23, 35, 59, 0.14);
   /* 側欄寬度。.sidebar、.main 的左外距、組合範例的固定列都靠它對齊，
      所以只在這裡定義一次——要為長語系調寬就改這一個值。 */
   --sidebar-w: 15.5rem;
@@ -81,11 +87,10 @@ button {
   display: grid;
   place-items: center;
   font-weight: 800;
-  box-shadow: 0 0.4375rem 1.125rem rgba(79, 124, 255, 0.35);
+  box-shadow: 0 0.5rem 1rem rgba(79, 124, 255, 0.35);
 }
 .brand strong {
   font-size: 1rem;
-  letter-spacing: 0.01875rem;
 }
 .brand small {
   display: block;
@@ -96,7 +101,6 @@ button {
 .nav-label {
   padding: 1.5rem 1.25rem 0.5rem;
   font-size: 0.75rem;
-  letter-spacing: 0.08125rem;
   color: #7485a5;
 }
 .nav {
@@ -125,7 +129,7 @@ button {
 .nav-item.active {
   background: linear-gradient(90deg, #4f7cff, #6b8cff);
   color: #fff;
-  box-shadow: 0 0.375rem 1.125rem rgba(42, 83, 190, 0.35);
+  box-shadow: 0 0.25rem 1rem rgba(42, 83, 190, 0.35);
 }
 /* 側欄圖示現在是 20px 的 SVG（icons.js），不再是文字字元，所以改用 flex 置中
    並把寬度對齊圖示本身；留 font-size 是因為還沒 hydrate 完的空殼仍可能有文字。 */
@@ -229,8 +233,7 @@ button {
 }
 .page-head h1 {
   margin: 0 0 0.25rem;
-  font-size: 1.625rem;
-  letter-spacing: -0.0375rem;
+  font-size: 1.25rem;
 }
 .page-head p {
   margin: 0;
@@ -243,7 +246,7 @@ button {
   border-radius: 0.5rem;
   padding: 0.75rem 1rem;
   font-weight: 700;
-  box-shadow: 0 0.375rem 0.875rem rgba(79, 124, 255, 0.22);
+  box-shadow: 0 0.25rem 0.75rem rgba(79, 124, 255, 0.22);
 }
 .stats {
   display: grid;
@@ -287,7 +290,7 @@ button {
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: 1rem;
-  box-shadow: 0 0.1875rem 0.875rem rgba(21, 35, 63, 0.025);
+  box-shadow: 0 0.25rem 0.75rem rgba(21, 35, 63, 0.025);
 }
 .filters {
   padding: 1rem;
@@ -318,7 +321,7 @@ button {
 }
 .control:focus {
   border-color: var(--blue);
-  box-shadow: 0 0 0 0.1875rem rgba(79, 124, 255, 0.1);
+  box-shadow: 0 0 0 3px rgba(79, 124, 255, 0.1);
 }
 .filter-actions {
   display: flex;
@@ -441,9 +444,9 @@ button {
 /* 數字（與上下頁的箭頭）要在按鈕裡上下左右都置中，所以用 flex 置中，
    不靠 line-height 去湊——湊出來的只有垂直方向，而且一旦高度與行高對不上就會偏。
    這裡不寫 width／height：尺寸由 compact-density-override.css 的
-   內距＋內容高度推算成 34px 見方（與圖示按鈕、排序鈕同高）。
-   先前這裡釘著 31 × 31px，和算出來的 34px 打架：min-width 把寬度拉回 34，
-   height 卻還是 31，內容盒只剩 13px 裝 16px 的行高，數字因此被擠得偏下。 */
+   內距＋內容高度推算成 32px 見方（與圖示按鈕、排序鈕同高）。
+   不得在這裡另外釘寬高：寫死的高度一旦與推算值對不上，內容盒裝不下 16px 的行高，
+   數字就會被擠得偏下。 */
 .page-btn {
   display: inline-flex;
   align-items: center;
@@ -623,7 +626,7 @@ button {
   }
   .page-head .primary:after {
     content: "＋";
-    font-size: 1.375rem;
+    font-size: 1.25rem;
   }
   .stats {
     grid-template-columns: repeat(2, 1fr);

@@ -15,7 +15,7 @@
   transition:border-color .15s,color .15s,background .15s;
 }
 .upload-dropzone:hover,.upload-dropzone.is-dragging{border-color:var(--blue);color:var(--blue);background:var(--blue-tint)}
-.upload-dropzone:focus-visible{outline:none;border-color:var(--blue);box-shadow:0 0 0 0.1875rem rgba(21,150,173,.25)}
+.upload-dropzone:focus-visible{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(21,150,173,.25)}
 .upload-dropzone p{margin:0;font-size:0.75rem}
 .upload-dropzone small{font-size:0.75rem;color:var(--text-faint)}
 

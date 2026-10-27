@@ -69,18 +69,25 @@ const RADIUS = [
   ["8px", "輸入框、下拉、卡片、日期面板"],
 ];
 
+// 浮起的層級，定義在 styles/base.css 的 :root
+const SHADOWS = [
+  ["--shadow-sm", "0 4px 12px", "按鈕 hover 這類貼著原位的浮起"],
+  ["--shadow-md", "0 8px 24px", "氣泡面板、Toast、批量操作列這類蓋在內容上的浮層"],
+];
+
 // 每一類數值要對齊的格線
 const UNIT_RULES = [
   ["字級", "2px 的倍數（偶數），最小 12px", "12 / 14 / 16 / 18 / 20px", "13px、17px、19px"],
   ["間距（padding／margin／gap）", "4px 的倍數", "4 / 8 / 12 / 16 / 20 / 24px", "6px、9px、11px"],
   ["圓角", "4px 的倍數", "4 / 8 / 12 / 16px", "6px、7px、9px"],
   ["定位（top／right／bottom／left）", "4px 的倍數", "4 / 8 / 12px", "7px、9px"],
-  ["寬高", "由內容推算，不強制格線", "34px（16 ＋ 8 × 2 ＋ 框線 1 × 2）", "—"],
+  ["陰影、字距、位移", "4px 的倍數；1–3px 的細線與光圈寫 px", "4 / 8 / 12 / 16 / 24px", "5px、7px、13px、0.3px"],
+  ["寬高", "由內容推算，不強制格線", "32px（16 ＋ 8 × 2，描邊畫在內側）", "—"],
 ];
 
 // 來自正式後台 tailwind.config.ts，數值對齊 Element Plus
 const BREAKPOINTS = [
-  ["xs", "0px", "手機直向", "單欄；輸入高度維持 34px，篩選列字級 16px"],
+  ["xs", "0px", "手機直向", "單欄；輸入高度維持 32px，篩選列字級 16px"],
   ["sm", "768px", "手機橫向、小平板", "兩欄；側欄收成抽屜"],
   ["md", "992px", "平板", "三欄；側欄固定展開"],
   ["lg", "1200px", "筆電", "四欄；表格不再橫向捲動"],
@@ -137,6 +144,14 @@ window.renderTokenPage = () =>
           <tbody>${RADIUS.map(([size, use]) => `<tr><td><code>${remPx(size)}</code></td><td>${use}</td></tr>`).join("")}</tbody>
         </table></div>
         <p class="component-description">按鈕的圓角統一定義在 <code>button-corner-radius</code>，頁面不得另設。其他元件的圓角同樣只用 4px 的倍數。</p>`,
+      },
+      {
+        heading: "陰影",
+        body: `<div class="table-wrap"><table class="token-table-grid">
+          <thead><tr><th>變數</th><th>位移／模糊</th><th>用在哪裡</th></tr></thead>
+          <tbody>${SHADOWS.map(([name, size, use]) => `<tr><td><code>${name}</code></td><td><code>${remPx(size)}</code></td><td>${use}</td></tr>`).join("")}</tbody>
+        </table></div>
+        <p class="component-description">元件要浮起來就取這兩支變數，不自己挑數字。先前每個元件各寫一組，模糊半徑有 5／7／11／13／17／75px，同樣是「浮起來」卻深淺不一。聚焦光圈（<code>0 0 0 3px</code>）與 1px 的內描邊屬於框線，照框線例外寫 px。</p>`,
       },
       {
         heading: "單位與數值格線",

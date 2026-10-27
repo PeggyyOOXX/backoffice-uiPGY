@@ -20,7 +20,7 @@ const sources = Object.fromEntries(files.map(f => [f, strip(fs.readFileSync(f, '
 //
 // 只列「整塊都是文字、而且文字來自字典」的那些。輸入框、按鈕與分頁鈕不在內：
 // 它們的高度是從 --btn-content ＋ 內距推算出來的固定值，那是刻意的對齊基準
-// （AGENTS：全站只有一個 34px），不是沒想過就寫死。
+// （AGENTS：全站只有一個 32px），不是沒想過就寫死。
 // 刻意保留固定高度的例外。每一條都要寫清楚為什麼——寫不出理由就不能放行。
 const HEIGHT_ALLOWED = {
   'styles/mobile-wrapped-static-navigation-and-actions.css|.quick-tabs':

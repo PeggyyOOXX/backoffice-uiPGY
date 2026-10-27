@@ -13,7 +13,7 @@
 .icon-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(9.25rem,1fr));gap:0.5rem}
 .icon-cell{display:flex;flex-direction:column;align-items:center;gap:0.25rem;padding:0.75rem 0.5rem;border:1px solid var(--line);border-radius:0.25rem;background:#fff;cursor:pointer;text-align:center;font:inherit}
 .icon-cell:hover{border-color:var(--blue);background:var(--blue-tint)}
-.icon-cell:focus-visible{outline:none;box-shadow:0 0 0 0.1875rem rgba(21,150,173,.25)}
+.icon-cell:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(21,150,173,.25)}
 .icon-cell-art{display:flex;align-items:center;justify-content:center;height:1.75rem;color:var(--text)}
 .icon-cell code{font-size:0.75rem;color:var(--text);word-break:break-all}
 .icon-cell small{font-size:0.75rem;color:var(--text-muted)}

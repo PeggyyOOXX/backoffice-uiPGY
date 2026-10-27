@@ -11,7 +11,7 @@
   --green: #218b6a;
   --red: #d55766;
   --amber: #b98228;
-  --shadow: 0 1.375rem 3.75rem rgba(24, 34, 56, 0.15);
+  --shadow: 0 1.25rem 3.75rem rgba(24, 34, 56, 0.15);
 }
 html,
 body {
@@ -31,7 +31,7 @@ body {
      另一邊沒跟上——先前這裡寫死 #111827，和側欄的 #111B2B 差一點點。 */
   background: var(--sidebar);
   border-radius: 1.5rem;
-  box-shadow: 0 1.75rem 4.6875rem rgba(23, 31, 47, 0.2);
+  box-shadow: 0 1.75rem 4.75rem rgba(23, 31, 47, 0.2);
   overflow: hidden;
 }
 .sidebar {
@@ -51,7 +51,7 @@ body {
 }
 .brand-mark {
   background: linear-gradient(145deg, #6790ff, #315bd2);
-  box-shadow: 0 0.4375rem 1.125rem rgba(61, 109, 242, 0.28);
+  box-shadow: 0 0.5rem 1rem rgba(61, 109, 242, 0.28);
 }
 .nav-item.active {
   background: linear-gradient(
@@ -59,12 +59,12 @@ body {
     rgba(77, 118, 232, 0.34),
     rgba(77, 118, 232, 0.15)
   );
-  box-shadow: inset 0 0 0 0.0625rem rgba(126, 157, 245, 0.22);
+  box-shadow: inset 0 0 0 1px rgba(126, 157, 245, 0.22);
   color: #fff;
 }
 .nav-item.active:before {
   content: "";
-  width: 0.1875rem;
+  width: 3px;
   height: 1.25rem;
   border-radius: 0.25rem;
   background: #6d93ff;
@@ -93,7 +93,7 @@ body {
   box-shadow: none;
 }
 .topbar-title {
-  font-size: 1.375rem;
+  font-size: 1.125rem;
   color: #182238;
 }
 .page {
@@ -135,7 +135,7 @@ body {
 }
 .primary {
   background: linear-gradient(135deg, #4c79f4, #315ed8);
-  box-shadow: 0 0.4375rem 1.0625rem rgba(61, 109, 242, 0.2);
+  box-shadow: 0 0.5rem 1rem rgba(61, 109, 242, 0.2);
 }
 .count {
   color: #315ed8;
@@ -147,7 +147,7 @@ body {
 }
 .control:focus {
   border-color: #3d6df2;
-  box-shadow: 0 0 0 0.1875rem rgba(61, 109, 242, 0.1);
+  box-shadow: 0 0 0 3px rgba(61, 109, 242, 0.1);
 }
 .page-btn.active {
   background: #3d6df2;

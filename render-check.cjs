@@ -112,6 +112,11 @@ run("nav-guide.js", PAGE + ICON);
 run("header.js", PAGE + ON + ICON);
 run("form-guide.js", PAGE + ICON);
 run("search-guide.js", PAGE + ON + ICON);
+run("sortable.js", ON + ICON, ";window.sortable=sortable;window.reorder=reorder");
+run(
+  "sortable-guide.js",
+  PAGE + ON + ICON + BTN + "const dataTable=window.dataTable,sortable=window.sortable,reorder=window.reorder;",
+);
 run("permission-guide.js", PAGE + ICON);
 run("progress-guide.js", PAGE + ON + ICON);
 run("message-guide.js", PAGE + ON + ICON + MSG + MODAL);
@@ -145,6 +150,7 @@ const PAGES = [
   ["renderHeaderPage", "header-guide", "頁首"],
   ["renderFormPage", "form-guide", "表單"],
   ["renderSearchPage", "search-guide", "搜尋篩選列"],
+  ["renderSortablePage", "sortable-guide", "拖曳排序"],
   ["renderPermissionPage", "permission-guide", "權限控制"],
   ["renderProgressPage", "progress-guide", "進度條"],
   ["renderIconGuide", "icon-guide", "圖示"],
@@ -512,7 +518,7 @@ ok("日期：七個快捷區間與正式後台一致，手機版兩個月上下�
 
 // --- 圖示按鈕與文字按鈕共用同一組變數，不寫死高寬 ---
 //
-// 兩者的高度都是「內容高度 + 上下內距×2 + 框線×2」：文字用 --btn-content 當行高，
+// 兩者的高度都是「內容高度 + 上下內距×2」（描邊畫在內側）：文字用 --btn-content 當行高，
 // 圖示用它當邊長。所以換一個內容高度，兩種按鈕會一起變，而且永遠同高。
 // 也不依裝置改尺寸或間距——先前 @media(pointer:coarse) 連帶把群組間距從 8 改成 12，
 // 在觸控筆電與 DevTools 裝置模式之間切換時整排按鈕會左右跑動。
@@ -567,7 +573,7 @@ ok("圖示按鈕：與文字按鈕共用 --btn-content，換尺寸會一起變�
   assert.deepEqual(offenders, [],
     '只有 semantic-button-system.css 可以決定文字按鈕的高度：\n  ' + offenders.join('\n  '))
 
-  // 尺寸用推算的，不寫死：高 = 行高 + 上下內距×2 + 框線×2，寬 = 文字寬 + 左右內距×2。
+  // 尺寸用推算的，不寫死：高 = 行高 + 上下內距×2（描邊畫在內側），寬 = 文字寬 + 左右內距×2。
   // 手機與桌機的差別只有上下內距一個值。
   const own = fs.readFileSync('styles/semantic-button-system.css', 'utf8')
   const value = name => {
@@ -588,9 +594,12 @@ ok("圖示按鈕：與文字按鈕共用 --btn-content，換尺寸會一起變�
   assert.ok(/line-height:\s*var\(--btn-content\)/.test(rule), '文字按鈕的行高要用 --btn-content，與圖示按鈕同一個值')
   assert.ok(/padding:\s*var\(--btn-pad-y\) var\(--btn-pad-x\)/.test(rule), '按鈕的內距要用變數，上下左右分開')
   assert.ok(!/(?:^|[;\s])(?:height|width|min-width)\s*:/.test(rule), '按鈕不得寫死高或寬：' + rule)
-  // 算出來的值要正好落在與輸入框對齊的 34px，而且不分斷點
-  const derived = pad => px('--btn-content') + pad * 2 + px('--btn-border') * 2
-  assert.equal(derived(px('--btn-pad-y')), 34, '桌機算出來要是 34px（與 34px 的輸入框對齊）')
+  // 算出來的值要正好落在與輸入框對齊的 32px，而且不分斷點
+  const derived = pad => px('--btn-content') + pad * 2
+  assert.equal(derived(px('--btn-pad-y')), 32, '桌機算出來要是 32px（與 32px 的輸入框、Element Plus 預設同高）')
+  // 描邊不得是佔高度的 border：框線畫在內側，高度才會停在 32px
+  assert.ok(/border:\s*0/.test(rule), '按鈕的描邊要用 inset box-shadow（--btn-ring），border 寫 0')
+  assert.ok(!own.includes('--btn-border'), '--btn-border 已改為 --btn-ring（描邊不佔高度），不要再加回來')
   const mobile = own.slice(own.indexOf('@media (max-width: 720px)'))
   assert.ok(
     !mobile.includes('--btn-pad-y') && !/\.semantic-btn\s*\{[^}]*min-height/.test(mobile),
@@ -688,4 +697,26 @@ ok(
     "，引擎／tooltipAttrs／iconButton 三處一致",
 );
 
-console.log("\nPASS: 元件規範頁（render、骨架、分頁、步驟、下拉、選擇控制）");
+// --- 拖曳排序：共用的 reorder 與規範頁的鍵盤排序 ---
+{
+  const list = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
+  // 篩選中只看得到 1、3、4：把 4 插到 1 前面，被篩掉的 2 要留在原位
+  const next = w.reorder(list, ["1", "3", "4"], "4", "1", "before").map((x) => x.id);
+  assert.deepEqual(next, [4, 2, 1, 3], "篩選中排序只調整可見項目，隱藏項目保持位置");
+  assert.deepEqual(w.reorder(list, ["1", "2", "3", "4"], "1", "3", "after").map((x) => x.id), [2, 3, 1, 4]);
+
+  const main = d.querySelector("main");
+  main.innerHTML = w.renderSortablePage();
+  const names = () => [...main.querySelectorAll('[data-sort-group="sortable-demo"]')].map((r) => r.dataset.sortItem);
+  assert.equal(names().length, 5, "互動範例要有五列可排序");
+  assert.ok(main.querySelector('[data-sort-group="sortable-demo"] [data-sort-handle][aria-label]'), "把手要是有 aria-label 的按鈕");
+  main.querySelector('[data-sort-item="hot"] [data-sort-handle]')
+    .dispatchEvent(new w.KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true }));
+  assert.deepEqual(names().slice(0, 2), ["live", "hot"], "方向鍵往下要移一格");
+  assert.equal(d.activeElement?.closest("[data-sort-item]")?.dataset.sortItem, "hot", "移完焦點要留在同一顆把手");
+  assert.ok(main.querySelector(".is-drop-before"), "凍結示範要畫出插入線");
+  assert.ok(main.querySelector(".is-sort-source"), "凍結示範要畫出拿起的來源列");
+  ok("拖曳排序：篩選中只動可見項目、方向鍵一次一格且焦點留在把手、規範頁畫出三種回饋");
+}
+
+console.log("\nPASS: 元件規範頁（render、骨架、分頁、步驟、下拉、選擇控制、拖曳排序）");

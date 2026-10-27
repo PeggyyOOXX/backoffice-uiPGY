@@ -142,7 +142,7 @@ window.renderTagPage = () =>
         heading: "可移除標籤",
         body: `<p class="component-description">多選欄位裡的已選項目。× 是真的按鈕，要能被 Tab 聚焦、要有 aria-label，不能只是一個字元。</p>
         <div class="guide-stage"><div class="tag-row">${removableTag("VIP 1")}${removableTag("VIP 2")}${removableTag("高風險")}${tag("+2", "info")}</div></div>
-        <p class="component-description">同時超過三個就收合成 <code>+N</code>，欄位高度固定 34px 不得被標籤撐高——否則表格每一列高度都不一樣。</p>`,
+        <p class="component-description">同時超過三個就收合成 <code>+N</code>，欄位高度固定 32px 不得被標籤撐高——否則表格每一列高度都不一樣。</p>`,
       },
       { heading: "什麼時候用標籤", body: decisionTable(DECISION) },
       {
@@ -172,7 +172,7 @@ window.renderTagPage = () =>
       ["文字色", "語意色原色"],
       ["移除鈕", "14px 圖示，點擊區 18 × 18px"],
       ["收合門檻", "超過 3 個"],
-      ["欄位高度", "固定 34px，不被標籤撐高"],
+      ["欄位高度", "固定 32px，不被標籤撐高"],
       ["最大寬度", "160px，超過以 … 截斷並掛 Tooltip"],
     ],
     rules: [

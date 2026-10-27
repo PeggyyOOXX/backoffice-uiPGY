@@ -47,8 +47,8 @@
   gap: 0.5rem;
 }
 .icon-btn {
-  width: 2.125rem;
-  height: 2.125rem;
+  width: 2rem;
+  height: 2rem;
   border-radius: 0.5rem;
 }
 .avatar {
@@ -107,7 +107,7 @@
   font-size: 0.75rem;
 }
 .control {
-  height: 2.125rem;
+  height: 2rem;
   padding: 0 0.5rem;
   border-radius: 0.5rem;
 }
@@ -116,7 +116,7 @@
   border-radius: 0.5rem;
 }
 .secondary {
-  height: 2.125rem;
+  height: 2rem;
   padding: 0 0.5rem;
   border-radius: 0.5rem;
 }
@@ -152,17 +152,21 @@
 .pages {
   gap: 0.25rem;
 }
-/* 分頁按鈕與其他方形控制（圖示按鈕、排序鈕）同高，都是 34px；
+/* 分頁按鈕與其他方形控制（圖示按鈕、排序鈕）同高，都是 32px；
    圓角由 button-corner-radius 統一成 4px。先前這裡壓成 28px，
-   規範頁寫的卻是 34 × 34，兩邊對不上。 */
+   規範頁寫的卻是 32 × 32，兩邊對不上。 */
 /* 高度和兩種按鈕一樣用內距撐開；只保留 min-width，
    因為數字寬度不一樣（1 和 10），不給最小寬度那一排會參差不齊。 */
 .page-btn {
   padding: var(--btn-pad-y);
-  min-width: calc(
-    var(--btn-content) + var(--btn-pad-y) * 2 + var(--btn-border) * 2
-  );
+  min-width: var(--btn-h);
   line-height: var(--btn-content);
+  /* 框線畫在內側，不佔高度——與 semantic-btn 同一個做法，才會同為 32px */
+  border: 0;
+  box-shadow: inset 0 0 0 var(--btn-ring) var(--line);
+}
+.page-btn.active {
+  box-shadow: none;
 }
 .chart-grid,
 .split {
@@ -278,10 +282,10 @@
   .stat {
     padding: 0.5rem;
   }
-  /* Input／Select Token 定義 Mobile 高度與 Desktop 同為 34px。
+  /* Input／Select Token 定義 Mobile 高度與 Desktop 同為 32px。
      字級維持 16px：iOS Safari 對 16px 以下的輸入欄位會在聚焦時自動放大整頁。 */
   .control {
-    height: 2.125rem;
+    height: 2rem;
     font-size: 1rem;
   }
   .primary,

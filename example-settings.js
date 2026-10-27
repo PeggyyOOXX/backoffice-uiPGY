@@ -108,7 +108,7 @@ const textField = (key, label, value, maxlength) => `<div class="guide-field">
 const basePanel = () => `
   <section class="card example-settings-card">
     <h3 class="example-settings-heading">基本資料</h3>
-    <p class="example-settings-hint">兩欄都是多選，點選項目加選、再點一次取消；標籤超過兩個收合成 +N，欄位高度維持 34px。</p>
+    <p class="example-settings-hint">兩欄都是多選，點選項目加選、再點一次取消；標籤超過兩個收合成 +N，欄位高度維持 32px。</p>
     <div class="guide-fields">
       ${multiSelect('languages', '其他語系', LANGUAGES, draft.languages)}
       ${multiSelect('countryCodes', '國碼', COUNTRY_CODES, draft.countryCodes)}

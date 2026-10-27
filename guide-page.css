@@ -116,11 +116,52 @@
 
 /* 表單欄位的共用排版。數值與「輸入框 Input」規範頁的 .input-spec label 一致：
    label 獨立一行、12px / 650、下方 3px，控制項在下且撐滿欄寬。
-   各規範頁要放表單就用 .guide-field，不要自己排一套。 */
+   各規範頁要放表單就用 .guide-field，不要自己排一套。
+
+   欄數照正式後台的 el-col :sm="12" :md="8" :lg="6" :xl="4"，斷點也是 EP 的：
+   768 以下 1 欄、768 起 2 欄、992 起 3 欄、1200 起 4 欄、1920 起 6 欄。
+   欄寬固定，一列欄位不夠就留空，不平分拉寬——先前用 auto-fit，
+   寬螢幕會排到 7、8 欄，而且一張卡片只有一個欄位時會被拉滿整列。
+   彈窗是固定規格寬度（640px），不跟視窗走，固定 2 欄、手機 1 欄。
+   不用容器查詢：container-type 會讓容器變成下拉的定位基準，
+   彈窗內不 teleport 的下拉就會被 .bo-modal-body 的捲動裁掉。 */
 .guide-fields {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(13.75rem, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.75rem 1rem;
+}
+@media (min-width: 768px) {
+  .guide-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 992px) {
+  .guide-fields {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1200px) {
+  .guide-fields {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1920px) {
+  .guide-fields {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+.bo-modal .guide-fields {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (max-width: 767px) {
+  .bo-modal .guide-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+/* 整行的欄位（備註、說明這類多行文字）自己佔一列，不跟短欄位擠同一行。 */
+.guide-field:has(> textarea),
+.guide-field.is-full {
+  grid-column: 1 / -1;
 }
 .guide-field {
   display: flex;

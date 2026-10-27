@@ -27,8 +27,8 @@
        就會在沒捲動時把第一個項目蓋掉。
        下內距 40px 是最後一項與側欄底部之間的呼吸空間，不讓選項直接貼底。 */
     padding-bottom: 2.5rem;
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 0.875rem, #000 calc(100% - 4rem), transparent 100%);
-    mask-image: linear-gradient(to bottom, transparent 0, #000 0.875rem, #000 calc(100% - 4rem), transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 0.75rem, #000 calc(100% - 4rem), transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 0.75rem, #000 calc(100% - 4rem), transparent 100%);
   }
   .sidebar .nav::-webkit-scrollbar {
     width: 0;

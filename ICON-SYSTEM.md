@@ -224,7 +224,7 @@ icon('loginRecord', 20)  →  <SvgIcon name="loginRecord" class="size-5" />
 | 20px | 側欄導覽、頁首、狀態標記 |
 | 24px | 空狀態插圖 |
 
-> **注意既有規範衝突**：`icon-button.js` 寫「圖示大小 16px」，但正式後台 `IconBtn.vue` 的 `iconSize` 預設是 `6` → `size-6` → **24px**。落地前要先定一個。建議以 16px 為準（34 × 34 的按鈕裡放 24px 圖示只剩 5px 留白，過擠）。
+> **注意既有規範衝突**：`icon-button.js` 寫「圖示大小 16px」，但正式後台 `IconBtn.vue` 的 `iconSize` 預設是 `6` → `size-6` → **24px**。落地前要先定一個。建議以 16px 為準（32 × 32 的按鈕裡放 24px 圖示只剩 4px 留白，過擠）。
 
 **其餘規則**
 

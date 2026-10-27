@@ -61,9 +61,9 @@ const topbarBottom = gapTop + (brandH - gapTop) // .main 被留白往下推
 assert.equal(topbarBottom, brandBottom, 'topbar 底線與側欄分隔線沒有對齊')
 ok(`兩條線都落在 y = ${brandBottom}px`)
 
-// 壓縮後的 topbar 仍要塞得下最高的控制項（.icon-btn 34px）
+// 壓縮後的 topbar 仍要塞得下最高的控制項（.icon-btn 32px）
 const topbarH = brandH - gapTop
-const TALLEST_CONTROL = 34
+const TALLEST_CONTROL = 32
 assert.ok(topbarH >= TALLEST_CONTROL + 8, `topbar 只有 ${topbarH}px，塞不下 ${TALLEST_CONTROL}px 的 icon-btn`)
 ok(`topbar ${topbarH}px，容得下 ${TALLEST_CONTROL}px 的控制項`)
 
@@ -225,4 +225,29 @@ ok(`表格外觀只有 ${SOURCE} 一個來源，且沒有全域 min-width`)
   ok(`疊放順序 ${LAYERS.length} 層由 token 決定（側欄導覽 ${value('--z-nav')} 蓋過抽屜 ${value('--z-drawer')} 與氣泡 ${value('--z-popover')}），CSS 與 JS 都不寫死數字`)
 }
 
-console.log('\nPASS: Shell 版面對齊（topbar 底線 ＝ 側欄分隔線）＋ 表格外觀單一來源＋疊放順序')
+// --- 表單欄位格線 ---
+// 欄數照正式後台 el-col :sm="12" :md="8" :lg="6" :xl="4"，只在 guide-page.css 定義。
+// 先前用 auto-fit 配最小 220px，寬螢幕排到 7 欄，單一欄位還會被拉滿整列。
+{
+  const guide = fs.readFileSync('guide-page.css', 'utf8')
+  const columnsAt = width => {
+    const block = guide.match(new RegExp(`@media \\(min-width: ${width}px\\) \\{\\s*\\.guide-fields \\{\\s*grid-template-columns: repeat\\((\\d+),`))
+    return block && Number(block[1])
+  }
+  const expected = { 768: 2, 992: 3, 1200: 4, 1920: 6 }
+  for (const [width, cols] of Object.entries(expected)) {
+    assert.equal(columnsAt(width), cols, `.guide-fields 在 ${width}px 起要是 ${cols} 欄（同 el-col）`)
+  }
+  assert.ok(!/\.guide-fields\s*\{[^}]*auto-(fit|fill)/.test(guide), '.guide-fields 不得用 auto-fit／auto-fill：欄數要照 el-col 固定')
+  assert.ok(/\.bo-modal \.guide-fields \{\s*grid-template-columns: repeat\(2,/.test(guide), '彈窗內的 .guide-fields 固定 2 欄')
+  const cssFiles = [
+    ...fs.readdirSync('.').filter(f => f.endsWith('.css') && f !== 'guide-page.css'),
+    ...styleFiles.map(f => `styles/${f}`),
+  ]
+  const overrides = cssFiles.filter(file =>
+    /\.guide-fields[^{,]*\{[^}]*(grid-template-columns|container-type)/.test(fs.readFileSync(file, 'utf8')))
+  assert.deepEqual(overrides, [], '只有 guide-page.css 可以定義表單欄數，以下檔案另寫了：\n  ' + overrides.join('\n  '))
+  ok('表單欄位格線 1／2／3／4／6 欄照 el-col，彈窗 2 欄，只有 guide-page.css 一處定義')
+}
+
+console.log('\nPASS: Shell 版面對齊（topbar 底線 ＝ 側欄分隔線）＋ 表格外觀單一來源＋疊放順序＋表單欄位格線')

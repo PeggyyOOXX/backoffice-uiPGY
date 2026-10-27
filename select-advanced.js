@@ -119,7 +119,7 @@ const panel = (title, description, inner, demo = "") =>
 window.renderSelectAdvanced = () => `<div class="style-guide select-advanced">
   <div class="guide-section-heading">
     <h2>下拉選單 Dropdown</h2>
-    <p class="component-description">所有下拉共用同一個元件，差別只寫在原生 <code>&lt;select&gt;</code> 的屬性上。頁面不自行掛載下拉，也不另訂配色與尺寸；外觀沿用「輸入元件 Input」的 34px、7px 圓角與同一組狀態色。</p>
+    <p class="component-description">所有下拉共用同一個元件，差別只寫在原生 <code>&lt;select&gt;</code> 的屬性上。頁面不自行掛載下拉，也不另訂配色與尺寸；外觀沿用「輸入元件 Input」的 32px、7px 圓角與同一組狀態色。</p>
   </div>
 
   <section class="card select-guide">
@@ -149,7 +149,7 @@ window.renderSelectAdvanced = () => `<div class="style-guide select-advanced">
     </div>
 
     <h3>多選</h3>
-    <p class="component-description">多選一律收合標籤，欄位高度維持 34px 不被標籤撐開；收合後顯示 <strong>+N</strong>，滑鼠移上去列出完整清單。需要限制數量時用 <code>data-max</code>，達到上限後其餘選項自動停用。</p>
+    <p class="component-description">多選一律收合標籤，欄位高度維持 32px 不被標籤撐開；收合後顯示 <strong>+N</strong>，滑鼠移上去列出完整清單。需要限制數量時用 <code>data-max</code>，達到上限後其餘選項自動停用。</p>
     <div class="select-grid">
       ${panel('multiple + data-collapse="2"', "最多顯示 2 個標籤，其餘收合。", field({ label: "會員標籤", multiple: true, attrs: 'data-collapse="2" data-clearable', body: options(TAGS, ["vip", "watch", "new"]), demo: "tags" }), "tags")}
       ${panel("+ data-select-all", "下拉頂端加全選；部分選取時顯示半選狀態。", field({ label: "遊戲商", multiple: true, attrs: 'data-collapse="2" data-select-all data-filterable data-clearable', body: groups(PROVIDERS), demo: "all" }), "all")}
@@ -208,11 +208,11 @@ window.renderSelectAdvanced = () => `<div class="style-guide select-advanced">
   <section class="card token-table select-token">
     <h2>共用規格</h2>
     <div>
-      <span>欄位高度</span><strong>34px</strong>
+      <span>欄位高度</span><strong>32px</strong>
       <span>圓角</span><strong>7px</strong>
       <span>字級／字重</span><strong>14px / 400</strong>
       <span>左右內距</span><strong>9px</strong>
-      <span>選項列高</span><strong>34px</strong>
+      <span>選項列高</span><strong>32px</strong>
       <span>選項圓角</span><strong>5px</strong>
       <span>標籤高度</span><strong>22px</strong>
       <span>標籤圓角</span><strong>4px</strong>
@@ -228,7 +228,7 @@ window.renderSelectAdvanced = () => `<div class="style-guide select-advanced">
     <div class="rule-grid">
       <div><strong>屬性寫在 select 上</strong><p>多選、搜尋、全選、上限都用 data-* 宣告，不在頁面另外掛 Element Plus，也不覆寫下拉的配色與尺寸。</p></div>
       <div><strong>超過十項就能搜尋</strong><p>選項十項以內維持單純下拉；超過加 data-filterable，上百項再加 data-min-filter。</p></div>
-      <div><strong>多選一定收合標籤</strong><p>欄位高度固定 34px，不可被標籤撐高而破壞篩選格線對齊。</p></div>
+      <div><strong>多選一定收合標籤</strong><p>欄位高度固定 32px，不可被標籤撐高而破壞篩選格線對齊。</p></div>
       <div><strong>全選只給多選用</strong><p>單選沒有全選。全選的計數不含停用選項，部分選取要顯示半選狀態。</p></div>
       <div><strong>選項不截斷語意</strong><p>說明型的長選項加 data-wrap 換行；分類用 optgroup，分類標題不可選。</p></div>
       <div><strong>空與錯誤都要有文字</strong><p>讀取中、查無選項、沒有可選項目、驗證錯誤各有固定文案，不可只靠顏色或空白表達。</p></div>

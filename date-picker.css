@@ -6,14 +6,14 @@
 }
 .date-range-host .el-date-editor.bo-date-range {
   width: 100%;
-  height: 2.125rem;
-  min-height: 2.125rem;
+  height: 2rem;
+  min-height: 2rem;
   padding: 0 0.5rem;
   box-sizing: border-box;
-  box-shadow: 0 0 0 0.0625rem var(--line-control) inset;
+  box-shadow: 0 0 0 1px var(--line-control) inset;
 }
 .date-range-host .el-date-editor.bo-date-range.is-active {
-  box-shadow: 0 0 0 0.0625rem var(--blue) inset;
+  box-shadow: 0 0 0 1px var(--blue) inset;
 }
 .date-range-host .bo-date-range .el-range-input {
   min-width: 0;
@@ -57,6 +57,52 @@
 .bo-date-range-popper .el-date-range-picker__time-header > span:not([class]) > .el-icon::after {
   content: "~";
 }
+/* 快捷區間是可以按的，桌機與手機都用規範的次要按鈕（semantic-btn btn-search outline，
+   class 由 date-picker.js 掛上），不然看起來只是一列文字。
+   桌機在左側欄由上往下排，按鈕撐滿側欄寬，排起來是一整齊的直欄。
+
+   側欄寬度由文字決定，不寫死。EP 把側欄寫成 position:absolute、width:110px，
+   日曆再用 margin-left:110px 讓位，整個面板寬 756px——三個數字綁在一起，
+   越南文、高棉文的「上週」「本月」比 110px 長就會撐破。這裡改成一般的左右排：
+   側欄取最長那顆按鈕的寬度，日曆寬 640px，面板寬度跟著加總，不同語系各自長成剛好的寬。
+   640 不是推算值：EP 的 646 是 756 − 110 減出來的，本身也只是它挑的面板寬，
+   這裡取最接近的 16px 整數倍。日曆表格是 width:100% 跟著容器走，
+   少 6px 只是每格窄不到 1px，不影響點選。 */
+.bo-date-range-popper .el-picker-panel__body-wrapper {
+  display: flex;
+}
+.bo-date-range-popper .el-picker-panel__sidebar {
+  position: static;
+  width: auto;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  box-sizing: border-box;
+}
+.bo-date-range-popper .el-picker-panel__sidebar + .el-picker-panel__body {
+  margin-left: 0;
+}
+.bo-date-range-popper .el-picker-panel__body {
+  flex: none;
+  width: 40rem;
+}
+.bo-date-range-popper .el-date-range-picker {
+  width: auto;
+}
+/* EP 的 .el-picker-panel__shortcut 自帶 display:block、width:100%、border:0、
+   28px 行高與左內距，載入順序又排在 shell 樣式之後，會把 semantic-btn 的
+   結構蓋掉。這裡只把結構還給 semantic-btn，顏色仍由共用樣式決定。 */
+.bo-date-range-popper .el-picker-panel__shortcut.semantic-btn {
+  display: inline-flex;
+  width: auto;
+  flex: none;
+  padding: var(--btn-pad-y) var(--btn-pad-x);
+  border: 0;
+  font-size: 0.875rem;
+  line-height: var(--btn-content);
+}
 @media (max-width: 720px) {
   /* 手機上面板改成固定在畫面正中央。
      Element Plus 的 popper 位置是 inline style 算出來的（貼著欄位左緣往下展開），
@@ -74,38 +120,39 @@
     transform: translate(-50%, -50%) !important;
     max-width: calc(100vw - 1rem);
   }
+  /* 面板已經固定在畫面正中央，不再指向欄位，EP 那個會上下翻面的三角箭頭拿掉。 */
+  .bo-date-range-popper .el-popper__arrow {
+    display: none;
+  }
+  /* 固定佔畫面高度 80%：上半部（快捷、月份、時間）自己捲動，
+     「清空／確認」是 footer，不在捲動範圍內，永遠貼在面板底部。
+     dvh 扣掉手機瀏覽器網址列，不支援的瀏覽器退回 vh。 */
   .bo-date-range-popper .el-date-range-picker {
     width: calc(100vw - 1.5rem);
-    max-height: 76vh;
+    height: 80vh;
+    height: 80dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .bo-date-range-popper .el-date-range-picker > .el-picker-panel__body-wrapper {
+    /* 桌機是側欄＋日曆左右排，手機改回上下排 */
+    display: block;
+    flex: 1;
+    min-height: 0;
     overflow-y: auto;
   }
-  /* 快捷區間改成橫向一排，七個放不下就左右捲——不要壓成七個窄欄。 */
+  .bo-date-range-popper .el-date-range-picker > .el-picker-panel__footer {
+    flex: none;
+  }
+  /* 手機的快捷按鈕改成橫排在月份上方，放不下就換行，不縮按鈕。 */
   .bo-date-range-popper .el-picker-panel__sidebar {
     position: static;
     width: 100%;
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 0.25rem;
-    overflow-x: auto;
-    scrollbar-width: none;
+    flex-direction: row;
+    flex-wrap: wrap;
     border-right: 0;
     border-bottom: 1px solid var(--el-border-color-light);
-    padding: 0.5rem;
-    box-sizing: border-box;
-  }
-  .bo-date-range-popper .el-picker-panel__sidebar::-webkit-scrollbar {
-    height: 0;
-  }
-  /* 快捷區間在長語系會變長（高棉文的「本月」有 11 個字元），而這一欄的寬度
-     由 Element Plus 的面板決定，撐不開；截斷後仍看得出是哪一個區間。 */
-  .bo-date-range-popper .el-picker-panel__shortcut {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: auto;
-    flex: none;
-    padding: 0 0.5rem;
-    text-align: center;
-    white-space: nowrap;
   }
   .bo-date-range-popper .el-picker-panel__sidebar + .el-picker-panel__body {
     margin-left: 0;
@@ -123,7 +170,7 @@
     display: block;
     width: 100%;
     float: none;
-    padding: 0.75rem;
+    padding: 0.5rem 0.75rem;
     box-sizing: border-box;
   }
   .bo-date-range-popper .el-date-range-picker__content.is-left {
@@ -135,12 +182,23 @@
     margin-left: 2rem;
     margin-right: 2rem;
   }
+  /* 日期表不拉滿寬度：拉滿時七欄平分 340px 左右，每格之間空太開。
+     改成每格固定 40px、整張置中；格子高 36px，td 不再另加 EP 的上下 4px。 */
   .bo-date-range-popper .el-date-table {
-    width: 100%;
+    width: auto;
+    margin: 0 auto;
   }
-  /* 日期格子放大到摸得到 */
+  .bo-date-range-popper .el-date-table td,
+  .bo-date-range-popper .el-date-table th {
+    width: 2.5rem;
+    padding: 0;
+  }
+  .bo-date-range-popper .el-date-table th {
+    padding: 0.25rem 0;
+  }
   .bo-date-range-popper .el-date-table td .el-date-table-cell {
     height: 2.25rem;
+    padding: 0.25rem 0;
   }
   .bo-date-range-popper .el-date-table td .el-date-table-cell__text {
     width: 1.75rem;
@@ -184,12 +242,14 @@
   padding: 0.5rem 0.75rem;
 }
 /* 日期面板的「清空／確認」是 EP 的按鈕，外觀照抄 semantic-btn，
-   尺寸也用同一組推算（行高＋上下內距＋框線），不再另外寫死 34／42。 */
+   尺寸也用同一組推算（行高＋上下內距），不另外寫死。EP 的 .el-button 自帶
+   height:32px，這裡還原成 auto，讓高度和站上其他按鈕一樣由內距撐開。 */
 .bo-date-range-popper .el-picker-panel__footer .el-button {
   margin: 0;
+  height: auto;
   padding: var(--btn-pad-y) var(--btn-pad-x);
   line-height: var(--btn-content);
-  border: 1px solid transparent;
+  border: 0;
   border-radius: 0.25rem;
   display: inline-flex;
   align-items: center;
@@ -198,7 +258,6 @@
   font-family: inherit;
   font-size: 0.875rem;
   font-weight: 700;
-  line-height: 1;
   white-space: nowrap;
   color: #fff;
   background: var(--blue);
@@ -214,12 +273,12 @@
 }
 .bo-date-range-popper .el-picker-panel__footer .el-button:hover:not(:disabled) {
   filter: brightness(1.06);
-  box-shadow: 0 0.3125rem 0.8125rem rgba(28, 98, 120, 0.18);
+  box-shadow: var(--shadow-sm);
 }
 .bo-date-range-popper
   .el-picker-panel__footer
   .el-button:active:not(:disabled) {
-  transform: translateY(0.0625rem);
+  transform: translateY(1px);
 }
 .bo-date-range-popper .el-picker-panel__footer .el-button:focus-visible {
   outline: 3px solid rgba(40, 127, 152, 0.2);

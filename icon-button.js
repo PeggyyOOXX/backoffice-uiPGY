@@ -1,4 +1,4 @@
-// 移植：el-button + el-tooltip（正式後台為 IconBtn.vue）。34×34、觸控 44×44、圓角 4px 需覆寫 EP 預設。詳見 ELEMENT-PLUS-MAPPING.md
+// 移植：el-button + el-tooltip（正式後台為 IconBtn.vue）。32×32、觸控 44×44、圓角 4px 需覆寫 EP 預設。詳見 ELEMENT-PLUS-MAPPING.md
 import { tooltipAttrs } from './tooltip.js'
 import './icon-button.css'
 import { icon } from './icons.js'
@@ -39,7 +39,7 @@ window.iconButtonGuide = () => `<section class="component-example" id="icon-butt
     ${iconButton({ icon:icon('edit'), label:'編輯', kind:'btn-edit' })}${iconButton({ icon:icon('loginRecord'), label:'登入紀錄', kind:'btn-record' })}${iconButton({ icon:icon('delete'), label:'刪除', kind:'btn-danger' })}
   </div>
   <dl>
-    <div><dt>尺寸</dt><dd>2.125rem(34px) × 2.125rem(34px)，桌機與手機相同；與文字按鈕、分頁按鈕、輸入框同高</dd></div>
+    <div><dt>尺寸</dt><dd>2rem(32px) × 2rem(32px)，桌機與手機相同；與文字按鈕、分頁按鈕、輸入框同高</dd></div>
     <div><dt>圓角</dt><dd>0.25rem(4px)，與一般按鈕相同</dd></div>
     <div><dt>圖示大小</dt><dd>1rem(16px)，stroke-width 2.5</dd></div>
     <div><dt>按鈕間距</dt><dd>0.5rem(8px)</dd></div>

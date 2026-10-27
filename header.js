@@ -168,7 +168,7 @@ window.renderHeaderPage = () => guidePage({
       heading: '六個位置',
       body: `${stripDemo()}
         <p class="component-description">順序固定，由左到右：<strong>下載中心 → 轉點審核 → 存款審核 → 語系 → 站台時區 → 帳號</strong>。左邊兩個會變動、需要被看見，右邊三個是解讀整個畫面的前提，帳號永遠在最右。<strong>不得在中間插入新項目</strong>——位置會動的工具列，使用者每次都要重新找。</p>
-        <p class="component-description">每一顆圖示鈕都是 34 × 34px 的 <code>.icon-btn</code>，圖示 20px，與全站其他按鈕同高。頁首不另設按鈕尺寸。</p>
+        <p class="component-description">每一顆圖示鈕都是 32 × 32px 的 <code>.icon-btn</code>，圖示 20px，與全站其他按鈕同高。頁首不另設按鈕尺寸。</p>
         <p class="component-description"><strong>最右邊的帳號鈕是圓的，前面有一條分隔線。</strong>左邊三顆是<strong>動作</strong>——有待辦就去處理、下載完了去拿檔案；帳號是<strong>身分</strong>，是「我是誰、用什麼幣別看這些數字」。四顆都做成白底灰框的方鈕時，最右邊那顆會被讀成「第四個待辦」，使用者得先點開才知道它不是。圓形是全網路公認的「這是人」符號，不必學也看得懂；分隔線再把兩類東西斷開。<strong>整個頁首只有這一顆是圓的</strong>，所以圓形在這裡等於身分，不會跟別的東西混淆。</p>
         <p class="component-description"><strong>頁首不放搜尋，也不放鈴鐺。</strong>後台沒有跨頁的全域搜尋可搜——每一頁的搜尋條件都不一樣，而且都已經在那一頁的篩選列裡；鈴鐺則是把「待辦」再包一層：點開一張清單、再點一筆才進得去，比直接點角標多兩步。待辦就是待辦，用角標直接帶到那一頁。</p>`,
     },
@@ -181,7 +181,7 @@ window.renderHeaderPage = () => guidePage({
           <div class="header-alert"><button type="button" class="icon-btn" aria-label="待審核轉點">${icon('withdrawal', 20)}</button></div>
         </div>
         <p class="component-description">兩種顏色、一種形狀：<strong>紅色（--danger）是待辦</strong>，有人在等你處理；<strong>橘色（--warning）是進行中</strong>，系統自己會跑完。沒有第三種顏色——角標不是標籤，不承擔狀態分類。</p>
-        <p class="component-description">角標是 <strong>14px 見方、往外推到 -4px、外圈帶 2px 底色環</strong>的一小塊，相鄰按鈕的間距是 8px。那圈環是關鍵：34px 的按鈕上，三個字元的角標一定會碰到圖示的邊角，有了環，圖示才讀得出來是被壓在下面的另一層，而不是跟角標糊成一團——GitHub、Gmail、Element Plus 都是這樣處理。</p>
+        <p class="component-description">角標是 <strong>14px 見方、往外推到 -4px、外圈帶 2px 底色環</strong>的一小塊，相鄰按鈕的間距是 8px。那圈環是關鍵：32px 的按鈕上，三個字元的角標一定會碰到圖示的邊角，有了環，圖示才讀得出來是被壓在下面的另一層，而不是跟角標糊成一團——GitHub、Gmail、Element Plus 都是這樣處理。</p>
         <p class="component-description"><strong>數字超過 99 就顯示 <code>99+</code></strong>。不壓到 9+：待審佇列裡 128 筆與 12 筆要分得出來，那會影響「現在要不要放下手邊的事去處理」。角標蓋住圖示是尺寸與位置的問題，用高度、外推與間距解決，不拿資訊量去換。<strong>數字是 0 就整顆角標不渲染</strong>，不要畫一個 0。</p>
         <p class="component-description">字級<strong>不能再小</strong>：全站字級最小 12px（見「設計 Token → 字級」），那是 9 個語系共用的可讀性下限，角標不是例外。位置也已經推到 4px 格線允許的最外緣——再往外會超出手機 46px 的 topbar 上緣，被視窗裁掉。</p>
         <p class="component-description">點下去<strong>直接到那一頁</strong>，不展開清單。清單要再點一次才進得去，而且那一頁本來就有完整的篩選與排序，氣泡做不出第二套。數字由輪詢或推播更新，不需要使用者重新整理。</p>
@@ -202,7 +202,7 @@ window.renderHeaderPage = () => guidePage({
           <span class="header-divider" aria-hidden="true"></span>
           <button type="button" class="icon-btn is-identity" aria-hidden="true" tabindex="-1">${icon('user', 20)}</button>
         </div>
-        <p class="component-description">觸發器本身是 <code>.icon-btn.is-identity</code>：同樣 34 × 34px，但<strong>圓形、<code>--blue</code> 實心填色、無框線、白色圖示</strong>，hover 轉 <code>--blue-ink</code>。底色試過的另外兩個方向都不對：<code>--blue-tint</code> 在白色 topbar 上只有 1.1:1，整顆被背景吃掉；<code>--sidebar</code> 看得見但在一條白底的列上太重，整個頁首的視覺重心會被拉到最右邊那一個點上。<code>--blue</code> 落在中間，白字對比 3.0:1，過 WCAG 非文字元素的 3:1 下限，而且它是品牌色，用在「我」身上讀起來是歸屬而不是警示。這是<strong>全站唯一一個不吃 4px 圓角的按鈕</strong>，例外寫在 <code>styles/button-corner-radius.css</code> 裡並具名——不得把它當成「頁首可以自己決定圓角」的先例，其餘五個位置仍是 4px。</p>`,
+        <p class="component-description">觸發器本身是 <code>.icon-btn.is-identity</code>：同樣 32 × 32px，但<strong>圓形、<code>--blue</code> 實心填色、無框線、白色圖示</strong>，hover 轉 <code>--blue-ink</code>。底色試過的另外兩個方向都不對：<code>--blue-tint</code> 在白色 topbar 上只有 1.1:1，整顆被背景吃掉；<code>--sidebar</code> 看得見但在一條白底的列上太重，整個頁首的視覺重心會被拉到最右邊那一個點上。<code>--blue</code> 落在中間，白字對比 3.0:1，過 WCAG 非文字元素的 3:1 下限，而且它是品牌色，用在「我」身上讀起來是歸屬而不是警示。這是<strong>全站唯一一個不吃 4px 圓角的按鈕</strong>，例外寫在 <code>styles/button-corner-radius.css</code> 裡並具名——不得把它當成「頁首可以自己決定圓角」的先例，其餘五個位置仍是 4px。</p>`,
     },
     {
       heading: '下載中心',
@@ -221,8 +221,8 @@ window.renderHeaderPage = () => guidePage({
     ['頁首高度', '52px（桌機）／46px（手機）'],
     ['左右內距', '28px（桌機）／12px（手機）'],
     ['項目間距', '8px'],
-    ['圖示鈕', '34 × 34px，圖示 20px'],
-    ['身分鈕', '34 × 34px 圓形，--blue 底／白色圖示，無框'],
+    ['圖示鈕', '32 × 32px，圖示 20px'],
+    ['身分鈕', '32 × 32px 圓形，--blue 底／白色圖示，無框'],
     ['身分鈕 Hover', '--blue-ink'],
     ['分隔線', '1px var(--line)，高 20px，左右各 4px'],
     ['角標尺寸', '14px 見方（單一數字為圓形），圓角 8px'],
@@ -251,6 +251,6 @@ window.renderHeaderPage = () => guidePage({
     ['帳號選單只放身分與兩顆按鈕', '偏好、主題、時區都屬於設定頁。觸發器用 user 圖示，不是拼出來的頭像。'],
     ['身分鈕是圓的，動作鈕是方的', '左邊三顆是動作，帳號是身分。全長得一樣時，最右邊那顆會被讀成第四個待辦。整個頁首只有這一顆是圓的。'],
     ['圓角例外只有這一條', '身分鈕不吃 4px 圓角，例外具名寫在 styles/button-corner-radius.css。不得拿它當「頁首可以自己決定圓角」的先例。'],
-    ['不得為頁首另設按鈕尺寸', '圖示鈕沿用全站的 34px，圖示 20px，與輸入框、分頁、表格操作鈕同高。身分鈕只換形狀與配色，尺寸不變。'],
+    ['不得為頁首另設按鈕尺寸', '圖示鈕沿用全站的 32px，圖示 20px，與輸入框、分頁、表格操作鈕同高。身分鈕只換形狀與配色，尺寸不變。'],
   ],
 })

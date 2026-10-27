@@ -15,6 +15,7 @@ import { message } from './message.js'
 import { prepareModal } from './modal-system.js'
 import { icon } from './icons.js'
 import { on, onMatch } from './delegate.js'
+import { sortable, reorder } from './sortable.js'
 import './example-page.css'
 import './example-mixed.css'
 
@@ -249,8 +250,8 @@ const promotionPanel = () => `<section class="card example-settings-card">
     name: 'promotion',
     columns: PROMO_COLUMNS(),
     rows: visiblePromotions().map(row => ({
-      rowAttrs: `data-promotion-row="${row.id}"${sorting ? ' draggable="true"' : ''}`,
-      drag: iconButton({ icon: icon('drag', 16), label: `拖曳排序：${row.title}；也可按上下方向鍵`, kind: 'btn-neutral', outline: true, attrs: `data-promotion-drag="${row.id}"` }),
+      rowAttrs: `data-promotion-row="${row.id}"${sorting ? ` data-sort-group="promotions" data-sort-item="${row.id}" data-sort-label="${esc(row.title)}"` : ''}`,
+      drag: iconButton({ icon: icon('drag', 16), label: `拖曳排序：${row.title}；也可按上下方向鍵`, kind: 'btn-neutral', outline: true, attrs: `data-promotion-drag="${row.id}" data-sort-handle` }),
       title: `<button type="button" class="example-mixed-link" data-promotion-snapshot="${row.id}" aria-haspopup="dialog">${esc(row.title)}</button>`,
       type: esc(row.type),
       start: `<span class="example-nowrap">${esc(row.start)}</span>`,
@@ -504,51 +505,13 @@ onMatch('click', '[data-promotion-snapshot]', (event, button) => {
   dialog.showModal()
 }, { owner: 'example-mixed' })
 
-// --- 拖曳排序：只在排序模式下作用，順序改了也要按儲存才算數 ---
-let dragId = null
-
-const moveRow = (from, to) => {
-  const visible = visiblePromotions()
-  const fromIndex = visible.findIndex(row => row.id === from)
-  const toIndex = visible.findIndex(row => row.id === to)
-  if (fromIndex < 0 || toIndex < 0 || fromIndex === toIndex) return false
-  const ids = new Set(visible.map(row => row.id))
-  visible.splice(toIndex, 0, visible.splice(fromIndex, 1)[0])
-  let index = 0
-  for (let i = 0; i < promotions.length; i++) if (ids.has(promotions[i].id)) promotions[i] = visible[index++]
-  return true
-}
-
-on('dragstart', event => {
-  const row = event.target?.closest?.('[data-promotion-row]')
-  if (!sorting || !row) return
-  dragId = Number(row.dataset.promotionRow)
-  event.dataTransfer.effectAllowed = 'move'
-}, { owner: 'example-mixed' })
-
-on('dragover', event => {
-  if (!sorting || dragId == null) return
-  if (!event.target?.closest?.('[data-promotion-row]')) return
-  event.preventDefault()
-}, { owner: 'example-mixed' })
-
-on('drop', event => {
-  const row = event.target?.closest?.('[data-promotion-row]')
-  if (!sorting || dragId == null || !row) return
-  event.preventDefault()
-  if (moveRow(dragId, Number(row.dataset.promotionRow))) redraw()
-  dragId = null
-}, { owner: 'example-mixed' })
-
-// 鍵盤也要能排序：拖曳是滑鼠才有的操作，只有把手能聚焦還不夠
-onMatch('keydown', '[data-promotion-drag]', (event, handle) => {
-  if (!sorting || (event.key !== 'ArrowUp' && event.key !== 'ArrowDown')) return
-  event.preventDefault()
-  const id = Number(handle.dataset.promotionDrag)
-  const visible = visiblePromotions()
-  const index = visible.findIndex(row => row.id === id)
-  const target = visible[index + (event.key === 'ArrowUp' ? -1 : 1)]
-  if (!target || !moveRow(id, target.id)) return
-  redraw()
-  document.querySelector(`[data-promotion-drag="${id}"]`)?.focus()
-}, { owner: 'example-mixed' })
+// --- 拖曳排序：行為與回饋在共用的 sortable.js（「拖曳排序 Sortable」規範頁）。
+// 這裡只管資料：只在排序模式下作用，篩選中只調整看得到的項目，順序改了也要按儲存才算數。
+sortable('promotions', {
+  enabled: () => sorting,
+  onReorder(fromId, toId, place) {
+    const visible = visiblePromotions().map(row => String(row.id))
+    promotions = reorder(promotions, visible, fromId, toId, place)
+    redraw()
+  },
+})

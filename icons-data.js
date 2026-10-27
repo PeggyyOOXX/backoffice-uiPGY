@@ -1,6 +1,6 @@
 // 由 build-icons.cjs 產生，請勿手改。來源：Lucide 1.6.0 (ISC)
 //
-// 這份清單就是本專案的圖示許可清單。Lucide 有 1940 個圖示，這裡只收 92 個；
+// 這份清單就是本專案的圖示許可清單。Lucide 有 1940 個圖示，這裡只收 93 個；
 // 要用新的先加進 build-icons.cjs 的 ALLOWLIST 再重跑，不要在頁面上自己拼 svg。
 //
 // 名稱沿用正式後台 SvgIcon 的 camelCase：icon('edit') ↔ <SvgIcon name="edit" />
@@ -672,5 +672,12 @@ export const ICONS = [
     "file": "shield-check",
     "label": "權限控制",
     "body": "<path d=\"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z\"/><path d=\"m9 12 2 2 4-4\"/>"
+  },
+  {
+    "group": "sidebar",
+    "name": "buttonGuide",
+    "file": "square-mouse-pointer",
+    "label": "按鈕",
+    "body": "<path d=\"M12.034 12.681a.498.498 0 0 1 .647-.647l9 3.5a.5.5 0 0 1-.033.943l-3.444 1.068a1 1 0 0 0-.66.66l-1.067 3.443a.5.5 0 0 1-.943.033z\"/><path d=\"M21 11V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h6\"/>"
   }
 ]

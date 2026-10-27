@@ -120,10 +120,11 @@ run(
   "example-member.js",
   FILTER + TABLE + MSG + ON + ICON + BTN + DL,
 );
+run("sortable.js", ON + ICON, ";window.sortable=sortable;window.reorder=reorder");
 run(
   "example-mixed.js",
   TABLE + TAG + MODAL + MSG + ON + ICON + BTN +
-    "const tabs=window.tabs,tabPanels=window.tabPanels,choiceCard=window.choiceCard;",
+    "const tabs=window.tabs,tabPanels=window.tabPanels,choiceCard=window.choiceCard,sortable=window.sortable,reorder=window.reorder;",
 );
 
 const ok = (label) => console.log("  ✓ " + label);

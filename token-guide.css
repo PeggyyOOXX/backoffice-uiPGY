@@ -21,7 +21,7 @@
 /* 12 欄格線示意：欄數與間距就是規範本身 */
 .token-grid-demo{display:grid;grid-template-columns:repeat(12,1fr);gap:1rem}
 .token-grid-demo+.token-grid-demo{margin-top:0.75rem}
-.token-grid-demo>span{display:flex;align-items:center;justify-content:center;height:2.125rem;border-radius:0.25rem;background:var(--blue-tint);color:var(--blue-ink);font-size:0.75rem}
+.token-grid-demo>span{display:flex;align-items:center;justify-content:center;height:2rem;border-radius:0.25rem;background:var(--blue-tint);color:var(--blue-ink);font-size:0.75rem}
 .token-grid-demo>.span-3{grid-column:span 3}
 .token-grid-demo>.span-4{grid-column:span 4}
 .token-grid-demo>.span-6{grid-column:span 6}

@@ -35,11 +35,11 @@
 button.status-field {
   cursor: pointer;
   text-decoration: underline;
-  text-underline-offset: 0.1875rem;
+  text-underline-offset: 3px;
 }
 button.status-field:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 0.125rem currentColor;
+  box-shadow: 0 0 0 2px currentColor;
   border-radius: 2px;
 }
 .status-field.is-readonly {
