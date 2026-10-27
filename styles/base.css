@@ -26,6 +26,12 @@
   --z-nav-backdrop: 60; /* 側欄抽屜的遮罩 */
   --z-nav: 70;          /* 側欄導覽抽屜——全站導覽，蓋過上面全部 */
   --z-tooltip: 80;      /* 附著在哪一層就要在那一層之上，所以數值最大 */
+  /* Element Plus 的 popper（下拉選單、日期面板）。它不吃上面那組數值——EP 自己
+     會從這個起點往上遞增，所以它必須整段高於我們自繪的覆蓋層，也要高於 Toast
+     沒有 Popover API 時退回的 2000。彈窗內的 popper 另外用 appendTo 掛進
+     <dialog>，否則會被 top layer 蓋住。值由 select.js 與 date-picker.js 讀這個變數，
+     兩支檔案不各寫一個數字。 */
+  --z-ep-popper: 3000;
 }
 * {
   box-sizing: border-box;

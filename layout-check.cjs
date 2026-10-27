@@ -177,7 +177,7 @@ ok(`表格外觀只有 ${SOURCE} 一個來源，且沒有全域 min-width`)
     ...fs.readdirSync('styles').map(f => 'styles/' + f),
   ]
   const base = fs.readFileSync('styles/base.css', 'utf8')
-  const LAYERS = ['--z-sticky', '--z-fixed', '--z-popover', '--z-drawer', '--z-nav-backdrop', '--z-nav', '--z-tooltip']
+  const LAYERS = ['--z-sticky', '--z-fixed', '--z-popover', '--z-drawer', '--z-nav-backdrop', '--z-nav', '--z-tooltip', '--z-ep-popper']
   const value = name => {
     const match = base.match(new RegExp(`${name}:\\s*(\\d+)`))
     assert.ok(match, `styles/base.css 缺少 ${name}`)
@@ -207,7 +207,22 @@ ok(`表格外觀只有 ${SOURCE} 一個來源，且沒有全域 min-width`)
     })
   }
   assert.deepEqual(literals, [], '覆蓋層的 z-index 要用 --z-* 變數，不要自己挑數字：\n  ' + literals.join('\n  '))
-  ok(`疊放順序 ${LAYERS.length} 層由 token 決定（側欄導覽 ${value('--z-nav')} 蓋過抽屜 ${value('--z-drawer')} 與氣泡 ${value('--z-popover')}）`)
+  // JS 這邊也一樣：Element Plus 的 popper 層級要讀 --z-ep-popper，不要在模組裡各寫
+  // 一個數字——先前 select.js 與 date-picker.js 各寫了一次 3000，改一個就會漏另一個。
+  const jsLiterals = []
+  for (const file of fs.readdirSync('.').filter(f => f.endsWith('.js'))) {
+    for (const match of fs.readFileSync(file, 'utf8').matchAll(/zIndex\s*:\s*(\d+)/g)) {
+      jsLiterals.push(`${file} 寫死 zIndex: ${match[1]}`)
+    }
+  }
+  assert.deepEqual(jsLiterals, [], 'JS 裡的 zIndex 要讀 --z-ep-popper：\n  ' + jsLiterals.join('\n  '))
+  for (const file of ['select.js', 'date-picker.js']) {
+    assert.ok(
+      fs.readFileSync(file, 'utf8').includes('--z-ep-popper'),
+      `${file} 要從 --z-ep-popper 取 Element Plus 的 popper 層級`,
+    )
+  }
+  ok(`疊放順序 ${LAYERS.length} 層由 token 決定（側欄導覽 ${value('--z-nav')} 蓋過抽屜 ${value('--z-drawer')} 與氣泡 ${value('--z-popover')}），CSS 與 JS 都不寫死數字`)
 }
 
 console.log('\nPASS: Shell 版面對齊（topbar 底線 ＝ 側欄分隔線）＋ 表格外觀單一來源＋疊放順序')

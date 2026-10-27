@@ -249,16 +249,21 @@ window.renderTokenPage = () =>
             ['<code>--z-nav-backdrop</code> 60', '側欄抽屜的遮罩', '手機'],
             ['<code>--z-nav</code> 70', '側欄導覽抽屜', '全站導覽，要蓋過上面全部'],
             ['<code>--z-tooltip</code> 80', 'Tooltip', '附著在哪一層就要在那一層之上，所以數值最大'],
+            ['<code>--z-ep-popper</code> 3000', 'Element Plus 的 popper', '下拉選單、日期面板。EP 會從這個起點往上遞增，所以整段高於自繪的覆蓋層；select.js 與 date-picker.js 都讀這個變數'],
           ],
           ['變數', '哪一層', '誰在用'],
         )}
-        <p class="component-description">再往上是兩個不吃 z-index 的東西：<strong>Toast</strong> 走 Popover API（不支援時退回 2000），<strong>彈窗</strong>是原生 <code>&lt;dialog&gt;.showModal()</code> 的 top layer——它在所有 z-index 之上，這也是彈窗不需要編號的原因。</p>
+        <p class="component-description">再往上是兩個不吃 z-index 的東西：<strong>Toast</strong> 走 Popover API（不支援時退回 2000），<strong>彈窗</strong>是原生 <code>&lt;dialog&gt;.showModal()</code> 的 top layer——它在所有 z-index 之上，這也是彈窗不需要編號的原因。彈窗內的 EP popper 會被 top layer 蓋住，所以日期元件在彈窗裡改用 <code>appendTo</code> 掛進那個 <code>&lt;dialog&gt;</code>。</p>
+        <p class="component-description">完整順序（由下而上）：<strong>元件內部 1–3 → sticky 20 → fixed 30 → popover 40 → drawer 50 → nav 60/70 → tooltip 80 → EP popper 3000 → Toast（popover，退路 2000）→ 彈窗（top layer）</strong>。</p>
         <div class="guide-pair">
           <div class="is-bad"><h4>${icon('cancelCircle')}先前的三個問題</h4><p>側欄抽屜與頁首氣泡面板都是 40，誰在上面只能靠 DOM 順序決定；右側詳情抽屜是 50，打開選單時反而蓋在導覽上面；Tooltip 是 60，蓋過所有東西。十支檔案各寫各的數字，沒有任何地方記得住完整順序。</p></div>
           <div class="is-good"><h4>${icon('checkCircle')}現在</h4><p>七個變數、一個地方定義。要插進新的一層就在這張表上找位置，用 <code>calc(var(--z-X) - 1)</code> 掛在既有那一層底下，不要發明 35 或 45 這種中間值。</p></div>
         </div>
         <p class="component-description"><strong>Tooltip 不是一層，它是附著物。</strong>所以它的數值最大——不管掛在內容、頁首還是抽屜上都要浮在那一層之上。它在任何 <code>pointerdown</code>、捲動、Esc 時就關閉，不會留在畫面上擋住剛打開的東西。</p>
-        <p class="component-description">另外一個不明顯的陷阱：<strong>flex 項目的 <code>z-index</code> 即使 <code>position</code> 是 <code>static</code> 也會生效</strong>。Tooltip 規範頁那個示範用的靜態標籤改成 <code>position: static</code> 之後仍帶著 <code>.bo-tooltip</code> 的 z-index，自己開了一個堆疊脈絡，於是蓋到手機的側欄抽屜上面——把 <code>position</code> 改掉時記得一起把 <code>z-index</code> 歸 <code>auto</code>。</p>`,
+        <h4>兩個會讓 z-index 失效的陷阱</h4>
+        <p class="component-description"><strong>一、祖先開了堆疊脈絡，裡面的數字就出不去。</strong>桌機的 <code>.topbar</code> 有 <code>backdrop-filter</code>，它本身就是一個堆疊脈絡（z-index 20）——裡面的下載中心與帳號面板不管寫 40 還是 4000，對 topbar 以外的東西都只有 20 的效力。<code>transform</code>、<code>filter</code>、<code>opacity</code> 小於 1、<code>will-change</code>、<code>contain</code> 都會造成同一件事。<strong>面板「層級明明比較高卻被蓋住」時，先往上找是哪個祖先把它關起來了</strong>，不要在面板上再加一個更大的數字。</p>
+        <p class="component-description">同一個性質也會影響 <code>position: fixed</code>：有 <code>backdrop-filter</code> 或 <code>transform</code> 的祖先會變成它的包含區塊，<code>fixed</code> 就不再相對於視窗。手機的 topbar 因此把 <code>backdrop-filter</code> 關掉（<code>none !important</code>），下載中心的面板才固定得到畫面中央。</p>
+        <p class="component-description"><strong>二、flex 項目的 <code>z-index</code> 即使 <code>position</code> 是 <code>static</code> 也會生效</strong>。Tooltip 規範頁那個示範用的靜態標籤改成 <code>position: static</code> 之後仍帶著 <code>.bo-tooltip</code> 的 z-index，自己開了一個堆疊脈絡，於是蓋到手機的側欄抽屜上面——把 <code>position</code> 改掉時記得一起把 <code>z-index</code> 歸 <code>auto</code>。</p>`,
       },
     ],
     tokens: [
@@ -280,7 +285,7 @@ window.renderTokenPage = () =>
       ["斷點", "768 / 992 / 1200 / 1920"],
       ["斷點來源", "正式後台 tailwind.config.ts"],
       ["側欄寬度", "var(--sidebar-w) 15.5rem"],
-      ["疊放層數", "7（--z-sticky 20 → --z-tooltip 80）"],
+      ["疊放層數", "8（--z-sticky 20 → --z-ep-popper 3000）"],
       ["彈窗", "原生 dialog top layer，不吃 z-index"],
       ["語系數", "9（全部為 LTR）"],
       ["最長字長倍數", "約 8 倍（高棉文）"],

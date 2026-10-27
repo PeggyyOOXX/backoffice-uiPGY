@@ -4,6 +4,12 @@ import zhTw from 'element-plus/es/locale/lang/zh-tw.mjs'
 import 'element-plus/es/components/select/style/css'
 import './select.css'
 
+// EP 的 popper 層級讀自同一張疊放順序表（styles/base.css 的 --z-ep-popper），
+// 不在這裡自己寫一個數字。詳見「設計 Token → 疊放順序」。
+const epZIndex = () =>
+  Number(getComputedStyle(document.documentElement).getPropertyValue('--z-ep-popper')) || 3000
+
+
 // One shared Select. Every variant is declared on the native <select>, so pages keep
 // writing plain markup and never mount Element Plus themselves:
 //   multiple                 多選
@@ -125,7 +131,7 @@ function mountSelects() {
     select.hidden = true
 
     const app = createApp({
-      render: () => h(ElConfigProvider, { locale: zhTw, zIndex: 3000 }, {
+      render: () => h(ElConfigProvider, { locale: zhTw, zIndex: epZIndex() }, {
         default: () => h(ElSelect, {
           modelValue: value.value,
           'onUpdate:modelValue': write,

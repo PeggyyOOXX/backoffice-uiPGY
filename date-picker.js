@@ -4,6 +4,12 @@ import zhTw from 'element-plus/es/locale/lang/zh-tw.mjs'
 import 'element-plus/es/components/date-picker/style/css'
 import './date-picker.css'
 
+// EP 的 popper 層級讀自同一張疊放順序表（styles/base.css 的 --z-ep-popper），
+// 不在這裡自己寫一個數字。詳見「設計 Token → 疊放順序」。
+const epZIndex = () =>
+  Number(getComputedStyle(document.documentElement).getPropertyValue('--z-ep-popper')) || 3000
+
+
 const mounted = new Map()
 const initial = () => [new Date(2026, 8, 15, 0, 0, 0), new Date(2026, 8, 15, 23, 59, 59)]
 const pad = n => String(n).padStart(2, '0')
@@ -62,7 +68,7 @@ function mountPickers() {
       host.dataset.end = next?.[1] ? serialize(next[1]) : ''
       host.title = next?.length ? `${serialize(next[0])} ～ ${serialize(next[1])}` : ''
     }
-    const app = createApp({ render: () => h(ElConfigProvider, { locale: zhTw, zIndex: 3000 }, {
+    const app = createApp({ render: () => h(ElConfigProvider, { locale: zhTw, zIndex: epZIndex() }, {
       default: () => h(ElDatePicker, {
         modelValue: value.value, 'onUpdate:modelValue': update,
         appendTo: modal || undefined, type: 'datetimerange', format: host.dataset.dateFormat || 'YYYY/MM/DD',
