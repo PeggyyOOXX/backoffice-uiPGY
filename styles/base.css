@@ -79,16 +79,6 @@ button {
   padding: 0 1.25rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
-.brand-mark {
-  width: 2.125rem;
-  height: 2.125rem;
-  border-radius: 0.75rem;
-  background: linear-gradient(145deg, #7a9cff, #4168e7);
-  display: grid;
-  place-items: center;
-  font-weight: 800;
-  box-shadow: 0 0.5rem 1rem rgba(79, 124, 255, 0.35);
-}
 .brand strong {
   font-size: 1rem;
 }
@@ -97,11 +87,6 @@ button {
   color: #9dadca;
   font-size: 0.75rem;
   margin-top: 2px;
-}
-.nav-label {
-  padding: 1.5rem 1.25rem 0.5rem;
-  font-size: 0.75rem;
-  color: #7485a5;
 }
 .nav {
   padding: 0 0.75rem;
@@ -142,32 +127,6 @@ button {
   flex: none;
   font-size: 1rem;
 }
-.chev {
-  margin-left: auto;
-  opacity: 0.55;
-}
-.profile-mini {
-  margin: auto 0.75rem 1rem;
-  padding: 0.75rem;
-  background: rgba(255, 255, 255, 0.07);
-  border-radius: 0.75rem;
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-.avatar {
-  width: 2.125rem;
-  height: 2.125rem;
-  border-radius: 50%;
-  background: #dbe4ff;
-  color: #3459c7;
-  display: grid;
-  place-items: center;
-  font-weight: 800;
-}
-.profile-mini small {
-  color: #8fa0bf;
-}
 .main {
   margin-left: var(--sidebar-w);
   min-width: 0;
@@ -185,15 +144,8 @@ button {
   padding: 0 1.75rem;
   gap: 1rem;
 }
-.menu-btn {
-  display: none;
-}
 .topbar-title {
   font-weight: 700;
-}
-.crumb {
-  color: var(--text-muted);
-  font-size: 0.75rem;
 }
 .top-actions {
   margin-left: auto;
@@ -204,11 +156,27 @@ button {
 .icon-btn {
   width: 2.375rem;
   height: 2.375rem;
+  /* 圖示要靠 flex 置中，不能交給 <button> 的預設排版：SVG 是 inline 元素，
+     會坐在文字基線上，下方還留一截行距的空白，整顆看起來就是往下偏一點點。
+     方鈕在白底上看不太出來，圓形的身分鈕一偏就很明顯。
+     padding 一併歸零——瀏覽器預設的 1px 6px 讓 20px 的圖示在 30px 的內容區溢出，
+     雖然 justify-content 會把它對稱推回來，但那是「剛好對稱」，不是置中。 */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
   border: 1px solid var(--line);
   background: white;
   border-radius: 0.5rem;
   color: var(--sidebar);
   position: relative;
+}
+/* 頁首最左邊的漢堡只在手機出現（桌機的側欄收合開關在側欄自己的右緣）。
+   這條 display 必須寫在 .icon-btn 後面——同樣是單一 class 的選擇器，權重一樣，
+   誰在後面誰贏；寫在前面會被 .icon-btn 的 inline-flex 蓋掉，漢堡就會在桌機
+   冒出來（實際踩過一次）。 */
+.menu-btn {
+  display: none;
 }
 .language {
   border: 0;
@@ -225,20 +193,6 @@ button {
   max-width: 105rem;
   margin: auto;
 }
-.page-head {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  margin-bottom: 1.25rem;
-}
-.page-head h1 {
-  margin: 0 0 0.25rem;
-  font-size: 1.25rem;
-}
-.page-head p {
-  margin: 0;
-  color: var(--text-muted);
-}
 .primary {
   border: 0;
   background: var(--blue);
@@ -248,66 +202,11 @@ button {
   font-weight: 700;
   box-shadow: 0 0.25rem 0.75rem rgba(79, 124, 255, 0.22);
 }
-.stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.75rem;
-  margin-bottom: 1rem;
-}
-.stat {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 0.75rem;
-  padding: 1rem 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-.stat-icon {
-  width: 2.625rem;
-  height: 2.625rem;
-  border-radius: 0.75rem;
-  background: var(--blue-tint);
-  display: grid;
-  place-items: center;
-  font-size: 1.125rem;
-}
-.stat-label {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  margin-bottom: 0.25rem;
-}
-.stat-value {
-  font-size: 1.25rem;
-  font-weight: 800;
-}
-.delta {
-  font-size: 0.75rem;
-  color: var(--green);
-  margin-left: 0.25rem;
-}
 .card {
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: 1rem;
   box-shadow: 0 0.25rem 0.75rem rgba(21, 35, 63, 0.025);
-}
-.filters {
-  padding: 1rem;
-  margin-bottom: 1rem;
-}
-.filter-row {
-  display: grid;
-  grid-template-columns: 1.25fr 1fr 1fr 1.25fr auto;
-  gap: 0.5rem;
-  align-items: end;
-}
-.field label {
-  display: block;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--text-subtle);
-  margin-bottom: 0.5rem;
 }
 .control {
   width: 100%;
@@ -336,59 +235,8 @@ button {
   color: var(--text);
   font-weight: 650;
 }
-.mobile-filter {
-  display: none;
-}
-.table-card {
-  overflow: hidden;
-}
-.table-toolbar {
-  padding: 1rem 1rem;
-  border-bottom: 1px solid var(--line);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.table-toolbar h2 {
-  font-size: 1rem;
-  margin: 0;
-}
-.count {
-  background: var(--blue-tint);
-  color: #4369d7;
-  padding: 0.25rem 0.5rem;
-  border-radius: 1.25rem;
-  font-size: 0.75rem;
-  font-weight: 700;
-}
-.toolbar-right {
-  margin-left: auto;
-  display: flex;
-  gap: 0.5rem;
-}
 .table-wrap {
   overflow: auto;
-}
-/* 表格的外觀全部在 styles/unified-table-system.css，這裡不要再定義一份。
-   先前這裡也有一組 .page th / .page td，與那個檔案同權重、只是 import 比較早，
-   結果畫面上看到的是兩個檔案逐屬性混出來的樣子（內距來自後者、td 的 nowrap
-   來自前者），兩邊都不是完整的規範。 */
-.user {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.user .avatar {
-  width: 2.25rem;
-  height: 2.25rem;
-  font-size: 0.75rem;
-}
-.user strong {
-  display: block;
-  font-size: 0.75rem;
-}
-.user small {
-  color: var(--text-muted);
 }
 .badge {
   display: inline-flex;
@@ -418,24 +266,6 @@ button {
   color: var(--amber);
   background: #fff5df;
 }
-.level {
-  font-weight: 700;
-  color: #4e6bc2;
-}
-.action {
-  border: 0;
-  background: transparent;
-  color: var(--blue);
-  font-weight: 700;
-  padding: 0.25rem;
-}
-.pagination {
-  padding: 1rem 1rem;
-  display: flex;
-  align-items: center;
-  color: var(--text-muted);
-  font-size: 0.75rem;
-}
 .pages {
   margin-left: auto;
   display: flex;
@@ -459,9 +289,6 @@ button {
   background: var(--blue);
   color: white;
   border-color: var(--blue);
-}
-.mobile-list {
-  display: none;
 }
 .overlay {
   position: fixed;
@@ -521,10 +348,6 @@ button {
   padding-bottom: 1.25rem;
   border-bottom: 1px solid var(--line);
 }
-.person-hero .avatar {
-  width: 3.25rem;
-  height: 3.25rem;
-}
 .detail-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -540,14 +363,6 @@ button {
 .detail strong {
   font-size: 0.75rem;
 }
-.risk-box {
-  background: #fff6f6;
-  border: 1px solid #ffdcdc;
-  border-radius: 0.75rem;
-  padding: 0.75rem;
-  margin-top: 1.25rem;
-  color: #a83d47;
-}
 .drawer-foot {
   margin-top: auto;
   padding: 1rem 1.25rem;
@@ -559,12 +374,6 @@ button {
   flex: 1;
 }
 @media (max-width: 1100px) {
-  .stats {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .filter-row {
-    grid-template-columns: repeat(2, 1fr);
-  }
   .filter-actions {
     grid-column: span 2;
     justify-content: flex-end;
@@ -599,7 +408,8 @@ button {
     padding: 0 0.75rem;
   }
   .menu-btn {
-    display: block;
+    /* inline-flex 而不是 block：圖示的置中靠 .icon-btn 那組 flex，改回 block 就偏了 */
+    display: inline-flex;
   }
   .topbar-title,
   .language,
@@ -608,122 +418,6 @@ button {
   }
   .page {
     padding: 1rem 0.75rem 2rem;
-  }
-  .page-head {
-    align-items: center;
-  }
-  .page-head h1 {
-    font-size: 1.25rem;
-  }
-  .page-head p {
-    font-size: 0.75rem;
-  }
-  .page-head .primary {
-    font-size: 0;
-    width: 2.5rem;
-    height: 2.5rem;
-    padding: 0;
-  }
-  .page-head .primary:after {
-    content: "＋";
-    font-size: 1.25rem;
-  }
-  .stats {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.5rem;
-  }
-  .stat {
-    padding: 0.75rem;
-    gap: 0.5rem;
-  }
-  .stat-icon {
-    width: 2.125rem;
-    height: 2.125rem;
-  }
-  .stat-value {
-    font-size: 1rem;
-  }
-  .delta {
-    display: none;
-  }
-  .filters {
-    display: none;
-  }
-  .mobile-filter {
-    display: flex;
-    margin-bottom: 0.75rem;
-    gap: 0.5rem;
-  }
-  .mobile-filter .secondary {
-    flex: 1;
-    text-align: left;
-  }
-  .mobile-filter .primary {
-    width: 2.625rem;
-    padding: 0;
-  }
-  .table-card {
-    display: none;
-  }
-  .mobile-list {
-    display: block;
-  }
-  .mobile-card {
-    background: #fff;
-    border: 1px solid var(--line);
-    border-radius: 0.75rem;
-    padding: 1rem;
-    margin-bottom: 0.5rem;
-  }
-  .mobile-card-top {
-    display: flex;
-    align-items: center;
-  }
-  .mobile-card .badge {
-    margin-left: auto;
-  }
-  .mobile-meta {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
-    margin-top: 1rem;
-    padding-top: 0.75rem;
-    border-top: 1px solid var(--line);
-  }
-  .mobile-meta label {
-    display: block;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    margin-bottom: 0.25rem;
-  }
-  .mobile-card-bottom {
-    display: flex;
-    align-items: center;
-    margin-top: 0.75rem;
-  }
-  .mobile-card-bottom .action {
-    margin-left: auto;
-  }
-  .filter-sheet {
-    position: absolute;
-    inset: auto 0 0;
-    width: 100%;
-    height: auto;
-    max-height: 88vh;
-    border-radius: 1.25rem 1.25rem 0 0;
-    transform: translateY(100%);
-  }
-  .open .filter-sheet {
-    transform: none;
-  }
-  .filter-sheet .filter-row {
-    display: block;
-  }
-  .filter-sheet .field {
-    margin-bottom: 0.75rem;
-  }
-  .filter-sheet .filter-actions {
-    display: flex;
   }
   .detail-grid {
     grid-template-columns: 1fr 1fr;

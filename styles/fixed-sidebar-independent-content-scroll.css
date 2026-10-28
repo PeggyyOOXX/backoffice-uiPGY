@@ -24,6 +24,21 @@
     overflow-y: auto;
     overflow-x: hidden;
   }
+
+  /* 收合側欄時寬度要滑過去而不是跳過去。收合本身的規則在
+     styles/collapsible-sidebar.css（排在 index.css 最後，才蓋得過各主題檔）。 */
+  .sidebar,
+  .main {
+    transition:
+      width 0.2s ease,
+      margin 0.2s ease;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sidebar,
+    .main {
+      transition: none;
+    }
+  }
 }
 
 /* ---- 側欄捲動提示（桌機側欄與手機抽屜共用） ----

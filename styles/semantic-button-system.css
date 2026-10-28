@@ -127,14 +127,6 @@
 .btn-neutral.outline {
   --button-color: #667085;
 }
-/* 「新增」不另外給寬度：寬度就是文字寬度加左右內距。
-   先前釘在 74px，換成「新增會員」四個字就被擠，英文版更明顯。 */
-.row-actions button.btn-edit {
-  background: #5069c8 !important;
-}
-.row-actions button.btn-record {
-  background: #7658b5 !important;
-}
 .button-guide-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(13.125rem, 1fr));

@@ -49,6 +49,7 @@
 | `header.js` 帳號選單 | `el-popover` | `Header.vue` 的 `account-popper` | 已在用，面板寬度與六個欄位照規範頁；不得再加第三顆按鈕 |
 | `form-guide.js` | `el-form` / `el-form-item` | 59 個 view 已在用 | 已符合：label-position="top"、require-asterisk-position="right"、rules 的 trigger 一律 blur。**缺的是送出失敗後的處理**——全站 0 處 `scrollToField`，要補上「捲到第一個錯誤並聚焦」 |
 | `search-guide.js` | `SearchForm.vue`（內部用 el-form ＋ el-input/el-select/el-date-picker） | **65 / 72 個 view** | 設定驅動，概念沿用。三處要改：搜尋與重設改成帶文字的語意按鈕、按鈕固定在格線最後一欄靠右（重設在前、搜尋在後，不再因為有沒有進階條件而置中）、進階收合鈕要有文字並自成一列 |
+| `.guide-fields` 格線 | `el-row` / `el-col` | 全站的 `:gutter` 與 `:sm/:md/:lg/:xl` | 原型把欄數收成一條 CSS 格線（手機 1／768 起 2／992 起 3／1200 起 4／1920 起 6，gutter 16），表單欄位與 `dashboard.vue` 的八張統計卡都吃同一份。移植時 `:gutter` 統一成 16（目前有 10／20／16 三種），`el-col` 一律 `:sm="12" :md="8" :lg="6" :xl="4"`；統計卡的 `:span="6"` 要改成同一組，否則手機會擠成四欄 |
 | `sortable.js` | 無（EP 沒有拖曳排序），用 `vue-draggable-plus` | `sortSetting/index.vue` | 只從把手開始拖（`handle`）。SortableJS 預設會即時把佔位列移到新位置；要沿用原型的「插入線＋來源列留在原位」，在 `onMove` 裡標記目標列的 `is-drop-before／after` 並回傳 false，放下時再改資料。方向鍵排序與 aria-live 播報要自己補 |
 | `permission-guide.js` | 不是 EP 元件，對應 `usePermission.ts` | 61 個檔案已在用 | `v-if` 141 處與 `:disabled` 161 處混用且無判準。統一成「動作沒了就不渲染，資料沒了就停用」 |
 | `header.js` 待辦角標 | `el-badge` 或自繪 | `Header.vue` 的絕對定位 `<div>`（自繪） | 數字來自 `/api/v0/notifications`，WebSocket 推播更新。EP 的 `el-badge` 預設 `is-fixed` 位置與規範的 `-2px` 不同，要覆寫；`:max="99"` 與規範的 99+ 一致 |

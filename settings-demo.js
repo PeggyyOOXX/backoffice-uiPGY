@@ -5,6 +5,7 @@
 // 所以這裡只剩開站要做的事。檔名維持不變：index.html 的 <script> 與 nav-check 都認它。
 import './filter-toggle.js'
 import './sidebar-fade.js'
+import './sidebar-collapse.js'
 import './longtext.js'
 import './example-audit.js'
 import './switch-layout-guide.js'
@@ -46,6 +47,7 @@ import './example-form.js'
 import './example-permission.js'
 import './example-mixed.js'
 import './example-member.js'
+import './example-dashboard.js'
 import './modal-system.js'
 
 // topbar 是靜態 HTML，三個由模組產生的位置在載入後補上。

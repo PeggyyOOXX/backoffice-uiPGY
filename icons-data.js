@@ -1,6 +1,6 @@
 // 由 build-icons.cjs 產生，請勿手改。來源：Lucide 1.6.0 (ISC)
 //
-// 這份清單就是本專案的圖示許可清單。Lucide 有 1940 個圖示，這裡只收 93 個；
+// 這份清單就是本專案的圖示許可清單。Lucide 有 1940 個圖示，這裡只收 94 個；
 // 要用新的先加進 build-icons.cjs 的 ALLOWLIST 再重跑，不要在頁面上自己拼 svg。
 //
 // 名稱沿用正式後台 SvgIcon 的 camelCase：icon('edit') ↔ <SvgIcon name="edit" />
@@ -231,6 +231,13 @@ export const ICONS = [
     "file": "menu",
     "label": "選單",
     "body": "<path d=\"M4 5h16\"/><path d=\"M4 12h16\"/><path d=\"M4 19h16\"/>"
+  },
+  {
+    "group": "nav",
+    "name": "panelLeft",
+    "file": "panel-left",
+    "label": "收合側欄",
+    "body": "<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"/><path d=\"M9 3v18\"/>"
   },
   {
     "group": "nav",

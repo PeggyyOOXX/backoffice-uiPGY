@@ -54,7 +54,7 @@ run("message.js", ON + ICON, ";window.message=message");
 const MSG = "const message=window.message;";
 run("modal-system.js", ON, ";window.prepareModal=prepareModal");
 const MODAL = "const prepareModal=window.prepareModal;";
-run("states.js", "", ";window.emptyRow=emptyRow;window.emptyState=emptyState");
+run("states.js", "", ";window.emptyRow=emptyRow;window.emptyState=emptyState;window.loadingWrap=loadingWrap");
 run(
   "data-table.js",
   ICON + "const emptyRow=window.emptyRow;",
@@ -125,6 +125,10 @@ run(
   "example-mixed.js",
   TABLE + TAG + MODAL + MSG + ON + ICON + BTN +
     "const tabs=window.tabs,tabPanels=window.tabPanels,choiceCard=window.choiceCard,sortable=window.sortable,reorder=window.reorder;",
+);
+run(
+  "example-dashboard.js",
+  FILTER + MSG + ON + ICON + "const loadingWrap=window.loadingWrap;",
 );
 
 const ok = (label) => console.log("  ✓ " + label);
@@ -266,6 +270,45 @@ assert.ok(
   "已作廢的那筆不該還能再作廢",
 );
 ok("列表頁：作廢先確認再執行，完成後停用該列的作廢鈕");
+
+// 新增與編輯共用同一個彈窗（正式後台的 openEditDialog() 不帶 id 就是新增）。
+// 兩個入口各做一份表單的話，欄位遲早會對不起來，所以這裡驗「同一個表單、三處差異」。
+{
+  const total = () => Number(q(".pagination-total").textContent.replace(/\D/g, ""));
+  const before = total();
+  click(q("[data-gift-add]"));
+  const addDialog = q("dialog[open]");
+  assert.ok(addDialog, "新增禮物卡要開彈窗，不能只跳一則 Toast");
+  assert.equal(addDialog.querySelector("header h2").textContent.trim(), "新增禮物卡");
+  assert.ok(addDialog.querySelector(".guide-fields"), "彈窗表單要套共用的欄位格線");
+  const code = addDialog.querySelector("#gift-form-code");
+  assert.ok(!code.readOnly, "新增時兌換代碼要能填——唯讀是編輯才有的限制");
+  assert.ok(
+    addDialog.querySelector('label[for="gift-form-name"] .required-mark'),
+    "必填欄位要在標籤右側加紅色星號",
+  );
+  assert.ok(addDialog.querySelector("[data-date-range]"),
+    "彈窗內的日期也要掛共用日期元件，不得自己做一個");
+  addDialog.querySelector("#gift-form-name").value = "測試新增禮物卡";
+  code.value = "test2026";
+  addDialog.querySelector("#gift-form-face").value = "250";
+  addDialog
+    .querySelector("form")
+    .dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true }));
+  assert.equal(total(), before + 1, "確認新增之後總筆數要多一筆");
+  assert.ok(bodyRows()[0].innerHTML.includes("測試新增禮物卡"), "新的那一筆要排在最前面");
+  assert.ok(bodyRows()[0].innerHTML.includes("TEST2026"), "兌換代碼要轉成大寫");
+  ok("列表頁：新增與編輯共用同一個彈窗，新增後回第一頁並出現在列表最前面");
+
+  // 編輯同一個彈窗：標題與兌換代碼的限制要跟著換
+  click(bodyRows()[0].querySelector("[data-gift-edit]"));
+  const editDialog = q("dialog[open]");
+  assert.equal(editDialog.querySelector("header h2").textContent.trim(), "編輯禮物卡");
+  assert.ok(editDialog.querySelector("#gift-form-code").readOnly,
+    "編輯時兌換代碼不可修改");
+  editDialog.querySelector("[data-example-close]").click();
+  ok("列表頁：同一個彈窗換成編輯時，標題與兌換代碼的限制跟著換");
+}
 
 // 改每頁筆數要跳回第 1 頁
 const size = q("[data-table-size]");
@@ -980,6 +1023,127 @@ ok("手機：四個有篩選列的頁面都用同一個共用開關，開得起�
   }
 }
 
-console.log(
-  "\nPASS: 組合範例（搜尋／列表／設定／批量／報表／表單頁／混合：共用表格與分頁、固定欄、操作欄置中、手機卡片、抽屜、守衛、合計、匯出任務、行內錯誤、表格即表單、拖曳排序、手機篩選列開關）",
-);
+// --- 儀表板（統計卡型）---
+//
+// 這一頁沒有表格，能錯的地方全在「版面是不是跟全站同一套」與「數字寫對沒有」。
+// 查詢用的是 setTimeout，所以這一段是非同步的。
+const dashboardChecks = async () => {
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  host().innerHTML = w.renderExampleDashboard();
+
+  // 八張卡、順序與正式後台 dashboard.vue 的 el-col 一字不差
+  const LABELS = [
+    "今日總有效投注額", "今日存款玩家數", "今日總存款金額", "今日首存玩家數",
+    "今日總輸贏", "總玩家數", "今日註冊玩家數", "本月遊戲總輸贏",
+  ];
+  assert.deepEqual(
+    qa(".example-dashboard-page .example-kpi-title").map((el) => el.textContent.trim()),
+    LABELS,
+    "八張統計卡的名稱與順序要照 dashboard.vue",
+  );
+  ok("儀表板：八張統計卡與 dashboard.vue 同名同序");
+
+  // 格線只有一個來源：套 .guide-fields，頁面自己的 css 不得再宣告欄數或高度
+  assert.ok(
+    q(".example-dashboard-page .guide-fields.example-kpi-grid"),
+    "統計卡要套共用的 .guide-fields 格線，不自己排一套",
+  );
+  {
+    const css = fs.readFileSync("example-dashboard.css", "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+    assert.ok(!/grid-template-columns/.test(css),
+      "example-dashboard.css 不該自己宣告欄數，格線只在 guide-page.css 的 .guide-fields 定義");
+    assert.ok(!/(^|[\s;{])height\s*:/.test(css),
+      "統計卡不得寫死高度，交給標題與數字撐開");
+    assert.ok(!/#[0-9a-fA-F]{3,8}\b/.test(css),
+      "example-dashboard.css 不得寫死色碼，正負色取 --danger／--success");
+  }
+  ok("儀表板：格線套 .guide-fields，卡片不寫死高度、不寫死色碼");
+
+  // 數值呈現：金額千分位加固定兩位小數，人數千分位不帶小數
+  {
+    const values = qa(".example-dashboard-page .example-kpi-value").map((el) => el.textContent.trim());
+    const amounts = [0, 2, 4, 7].map((i) => values[i]);
+    const counts = [1, 3, 5, 6].map((i) => values[i]);
+    for (const text of amounts) {
+      assert.match(text, /^-?\$\d{1,3}(,\d{3})*\.\d{2}$/, `金額要千分位加兩位小數，目前是 ${text}`);
+    }
+    for (const text of counts) {
+      assert.match(text, /^\d{1,3}(,\d{3})*$/, `筆數要千分位且不帶小數，目前是 ${text}`);
+    }
+    ok("儀表板：金額千分位加兩位小數、筆數不帶小數");
+
+    // 正負色只掛在兩張輸贏卡上，而且跟著數字的正負走；其餘六張一律一般文字色
+    const cards = qa(".example-dashboard-page .example-kpi-value");
+    cards.forEach((el, index) => {
+      const negative = el.textContent.trim().startsWith("-");
+      const signed = index === 4 || index === 7;
+      assert.equal(
+        el.classList.contains("is-negative"), signed && negative,
+        `${LABELS[index]} 的負數色掛錯了`,
+      );
+      assert.equal(
+        el.classList.contains("is-positive"), signed && !negative,
+        `${LABELS[index]} 的正數色掛錯了`,
+      );
+    });
+    ok("儀表板：正負色只跟著輸贏走，其餘六張用一般文字色");
+  }
+
+  // 篩選列：只有一格條件也照同一套版面，手機有共用開關，重設在前、搜尋在後
+  {
+    assert.ok(q('[data-filter-toggle="dashboard-search-panel"]'),
+      "儀表板的篩選列在手機上要有共用的 filterToggle 開關");
+    const actions = qa(".example-dashboard-page .source-filter-actions button")
+      .map((b) => b.textContent.trim());
+    assert.deepEqual(actions, ["重設", "搜尋"], "重設在前、搜尋在後");
+    // 卡片上方不放任何說明或狀態文字：工具列之後直接就是卡片
+    const cardsHost = q("[data-dashboard-cards]");
+    assert.ok(cardsHost.previousElementSibling.classList.contains("example-toolbar"),
+      "工具列與統計卡之間不得插一行狀態文字");
+    ok("儀表板：篩選列照共用版面，卡片上方沒有狀態文字");
+  }
+
+  // 換站台：按下搜尋才查；查詢期間舊數字留在原地變淡，不換成骨架
+  {
+    const before = q(".example-dashboard-page .example-kpi-value").textContent.trim();
+    const select = q('.example-dashboard-page [name="branch"]');
+    select.value = "VIP CLUB";
+    assert.equal(
+      q(".example-dashboard-page .example-kpi-value").textContent.trim(), before,
+      "改了下拉還沒按搜尋就重查了（不做邊打邊查）",
+    );
+    q(".example-dashboard-page [data-dashboard-filter]")
+      .dispatchEvent(new w.Event("submit", { bubbles: true, cancelable: true }));
+    assert.ok(q("[data-dashboard-cards] .bo-veil"), "重新查詢要蓋遮罩");
+    assert.equal(qa("[data-dashboard-cards] .example-kpi").length, 8,
+      "已經有資料時不得把舊數字換成骨架");
+    assert.ok(!q("[data-dashboard-cards] .bo-skeleton"), "已經有資料時不得出現骨架");
+
+    await sleep(600);
+    assert.ok(!q("[data-dashboard-cards] .bo-veil"), "查完要把遮罩收掉");
+    assert.notEqual(
+      q(".example-dashboard-page .example-kpi-value").textContent.trim(), before,
+      "換了站台之後數字要跟著換",
+    );
+    ok("儀表板：按搜尋才查，查詢期間舊數字留在原地變淡");
+  }
+
+  // 重設＝回到預設站台再查一次，不是把條件清空
+  {
+    click(q("[data-dashboard-reset]"));
+    assert.equal(q('.example-dashboard-page [name="branch"]').value, "101 BEST",
+      "重設要回到預設站台，不是留一個空的下拉");
+    await sleep(600);
+    ok("儀表板：重設回到預設站台並自動查一次");
+  }
+};
+
+dashboardChecks().then(() => {
+  console.log(
+    "\nPASS: 組合範例（搜尋／列表／設定／批量／報表／表單頁／混合／儀表板：共用表格與分頁、固定欄、操作欄置中、手機卡片、抽屜、守衛、合計、匯出任務、行內錯誤、表格即表單、拖曳排序、統計卡格線、手機篩選列開關）",
+  );
+}).catch((error) => {
+  console.error(error);
+  process.exit(1);
+});

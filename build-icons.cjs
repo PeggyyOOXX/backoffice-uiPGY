@@ -53,6 +53,10 @@ const ALLOWLIST = [
   ['nav', 'prevStep', 'arrow-left', '上一步'],
   ['nav', 'nextStep', 'arrow-right', '下一步'],
   ['nav', 'menu', 'menu', '選單'],
+  // 側欄的收合開關。這是跨產品的既定圖示：VS Code 的 Toggle Primary Side Bar、
+  // Notion、shadcn/ui 的 SidebarTrigger 用的都是 Lucide 的 panel-left。
+  // 不用箭頭——左上角的箭頭會被讀成「回到上一頁」。
+  ['nav', 'panelLeft', 'panel-left', '收合側欄'],
   ['nav', 'home', 'house', '首頁'],
   ['nav', 'external', 'arrow-up-right', '另開視窗'],
 

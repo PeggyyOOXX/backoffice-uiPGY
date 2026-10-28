@@ -11,3 +11,9 @@
 /* 圖示與文字並排時的固定間距。按鈕、側欄、狀態列共用，不在各自的 CSS 重寫。 */
 .semantic-btn .icon,.primary .icon,.secondary .icon,.action .icon,.page-btn .icon{margin-right:0.25rem}
 .semantic-btn.icon-action .icon,.icon-btn .icon,.page-btn.is-icon-only .icon{margin-right:0}
+
+/* 純圖示按鈕裡，icons.js 的空殼（<span data-icon>）也要是 flex。
+   按鈕本身置中的是這個空殼，空殼裡的 <svg> 仍然是行內元素，會吃到上面那條
+   vertical-align 與繼承的行高，於是在空殼內部再製造一次往下的偏移——
+   方鈕看不太出來，圓形的身分鈕一偏就很明顯。 */
+.icon-btn [data-icon],.semantic-btn.icon-action [data-icon],.page-btn.is-icon-only [data-icon]{display:flex}

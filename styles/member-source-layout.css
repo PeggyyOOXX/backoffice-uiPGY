@@ -46,18 +46,6 @@
 .member-mobile-only {
   display: none;
 }
-.member-card-head {
-  display: flex;
-  align-items: center;
-}
-.member-card-head small {
-  display: block;
-  color: var(--text-muted);
-  margin-top: 0.25rem;
-}
-.member-card-head .status-control {
-  margin-left: auto;
-}
 .login-record-list {
   margin-top: 0.75rem;
 }
@@ -102,15 +90,6 @@
   .member-mobile-only {
     display: block;
     order: 1;
-  }
-  .member-card-head {
-    gap: 0.5rem;
-  }
-  .member-card-head strong {
-    font-size: 0.875rem;
-  }
-  .member-mobile-only .mobile-card {
-    background: #fff;
   }
   /* 標籤在桌機表格裡置中（跟著操作欄那一套），在手機卡片裡是一般欄位，
      要和同一格的 dt／dd 一樣靠左起排。

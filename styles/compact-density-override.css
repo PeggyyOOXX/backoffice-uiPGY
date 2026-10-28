@@ -5,17 +5,8 @@
   padding: 0 1rem;
   gap: 0.5rem;
 }
-.brand-mark {
-  width: 1.875rem;
-  height: 1.875rem;
-  border-radius: 0.5rem;
-  font-size: 0.75rem;
-}
 .brand strong {
   font-size: 0.875rem;
-}
-.nav-label {
-  padding: 1rem 1rem 0.25rem;
 }
 .nav {
   padding: 0 0.5rem;
@@ -25,11 +16,6 @@
   padding: 0.25rem 0.5rem;
   gap: 0.5rem;
   margin: 2px 0;
-  border-radius: 0.5rem;
-}
-.profile-mini {
-  margin: auto 0.5rem 0.5rem;
-  padding: 0.5rem;
   border-radius: 0.5rem;
 }
 .topbar {
@@ -51,60 +37,12 @@
   height: 2rem;
   border-radius: 0.5rem;
 }
-.avatar {
-  width: 2rem;
-  height: 2rem;
-}
 .page {
   min-height: calc(100vh - 4.5rem);
   padding: 0.75rem 0.75rem 1.5rem;
 }
-.page-head {
-  min-height: 4.75rem;
-  margin-bottom: 0.5rem;
-  padding: 0.75rem 0.75rem;
-  border-radius: 0.5rem;
-}
-.page-head h1 {
-  font-size: 1.25rem;
-  margin-bottom: 0.25rem;
-}
-.page-head p {
-  font-size: 0.75rem;
-}
-.stats {
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-.stat {
-  padding: 0.5rem 0.75rem;
-  gap: 0.5rem;
-  border-radius: 0.5rem;
-}
-.stat-icon {
-  width: 2.125rem;
-  height: 2.125rem;
-  border-radius: 0.5rem;
-}
-.stat-label {
-  margin-bottom: 2px;
-}
-.stat-value {
-  font-size: 1.125rem;
-}
 .card {
   border-radius: 0.5rem;
-}
-.filters {
-  padding: 0.75rem;
-  margin-bottom: 0.5rem;
-}
-.filter-row {
-  gap: 0.5rem;
-}
-.field label {
-  margin-bottom: 0.25rem;
-  font-size: 0.75rem;
 }
 .control {
   height: 2rem;
@@ -123,31 +61,8 @@
 .filter-actions {
   gap: 0.25rem;
 }
-.table-toolbar {
-  padding: 0.5rem 0.75rem;
-  gap: 0.5rem;
-}
-.table-toolbar h2 {
-  font-size: 0.875rem;
-}
-/* 表格的密度跟其他外觀一起放在 unified-table-system.css。
-   這裡原本有一組一模一樣的 padding／font-size，值相同、import 更早，
-   純粹是重複——留著只會讓人以為表格樣式可以在這裡調。 */
-.user {
-  gap: 0.5rem;
-}
-.user .avatar {
-  width: 2rem;
-  height: 2rem;
-}
 .badge {
   padding: 0.25rem 0.5rem;
-}
-.action {
-  padding: 0.25rem;
-}
-.pagination {
-  padding: 0.5rem 0.75rem;
 }
 .pages {
   gap: 0.25rem;
@@ -168,80 +83,6 @@
 .page-btn.active {
   box-shadow: none;
 }
-.chart-grid,
-.split {
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-.chart-card,
-.mini-card {
-  padding: 0.75rem;
-}
-.section-title {
-  margin-bottom: 0.5rem;
-}
-.bars {
-  height: 11.875rem;
-  gap: 0.5rem;
-  padding-top: 0.5rem;
-}
-.activity {
-  gap: 0.5rem;
-  padding: 0.5rem 0;
-}
-.activity-icon {
-  width: 1.875rem;
-  height: 1.875rem;
-  border-radius: 0.5rem;
-}
-.review-row {
-  padding: 0.5rem 0.75rem;
-  gap: 0.5rem;
-}
-.campaign-grid {
-  gap: 0.5rem;
-}
-.campaign {
-  padding: 0.75rem;
-  min-height: 9.375rem;
-}
-.campaign h3 {
-  margin: 0.5rem 0 0.25rem;
-}
-.campaign p {
-  line-height: 1.4;
-}
-.campaign .progress {
-  margin-top: auto;
-}
-.setting-layout {
-  grid-template-columns: 11.875rem 1fr;
-  gap: 0.5rem;
-}
-.setting-nav {
-  padding: 0.5rem;
-}
-.setting-nav div {
-  padding: 0.5rem 0.5rem;
-  margin: 1px;
-  border-radius: 0.5rem;
-}
-.setting-form {
-  padding: 0.75rem;
-}
-.setting-section {
-  padding-bottom: 0.75rem;
-  margin-bottom: 0.75rem;
-}
-.setting-section p {
-  margin-bottom: 0.5rem;
-}
-.form-grid {
-  gap: 0.5rem;
-}
-.setting-line {
-  padding: 0.5rem 0;
-}
 .detail-grid {
   gap: 0.75rem 0.5rem;
   margin-top: 0.75rem;
@@ -251,10 +92,6 @@
 }
 .drawer-foot {
   padding: 0.5rem 1rem;
-}
-.risk-box {
-  padding: 0.5rem;
-  margin-top: 0.75rem;
 }
 @media (max-width: 720px) {
   .topbar {
@@ -272,16 +109,6 @@
     min-height: calc(100vh - 3.5rem);
     padding: 0.5rem 0.5rem 1.25rem;
   }
-  .page-head {
-    padding: 0.75rem;
-    margin-bottom: 0.5rem;
-  }
-  .stats {
-    gap: 0.5rem;
-  }
-  .stat {
-    padding: 0.5rem;
-  }
   /* Input／Select Token 定義 Mobile 高度與 Desktop 同為 32px。
      字級維持 16px：iOS Safari 對 16px 以下的輸入欄位會在聚焦時自動放大整頁。 */
   .control {
@@ -291,30 +118,5 @@
   .primary,
   .secondary {
     min-height: 2.625rem;
-  }
-  .mobile-filter {
-    margin-bottom: 0.5rem;
-  }
-  .mobile-card {
-    padding: 0.75rem;
-    margin-bottom: 0.5rem;
-    border-radius: 0.5rem;
-  }
-  .mobile-meta {
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-    padding-top: 0.5rem;
-  }
-  .mobile-card-bottom {
-    margin-top: 0.5rem;
-  }
-  .campaign-grid,
-  .chart-grid,
-  .split,
-  .setting-layout {
-    gap: 0.5rem;
-  }
-  .campaign {
-    min-height: 8.625rem;
   }
 }

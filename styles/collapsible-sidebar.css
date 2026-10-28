@@ -1,0 +1,199 @@
+/* 收合側欄（只有桌機有；手機的側欄本來就是抽屜，開關是頁首的漢堡）。
+   排在 index.css 最後，因為收合狀態要蓋過前面所有宣告 .sidebar 與 .nav-item 的檔案。
+
+   開關在**側欄底部**，與 Ant Design 的 Layout.Sider 同一個位置：在側欄裡，
+   所以不碰內容區的頁首；在最底下，所以不跟導覽搶視線。而且**它帶文字**——
+   先前試過側欄右緣那種只有 hover 才顯形的細條（Linear 與 shadcn/ui 的做法），
+   結論是沒有人會知道側欄可以收。低調靠的是「位置在底部、顏色比導覽淡」，
+   不是把控制項藏起來。
+
+   收合後側欄變成 72px 的圖示軌，與正式後台 Side.vue 的 w-[72px] 同一個值。 */
+
+/* ---- 底部的收合開關 ----------------------------------------------------
+   它掛的是 .nav-item，配色、hover、圓角、內距全部沿用導覽項目，這裡一個色碼都不加。
+   「比導覽淡一階」用 opacity 做：它不是導覽，不該和項目搶同一個亮度；
+   hover 時回到 1，告訴人它按得下去。 */
+/* 它掛的是 .nav-item 只為了繼承側欄的字色，尺寸與互動全部另訂。
+   演進：一整列（圖示＋文字＋快捷鍵標示）→ 32 × 32 純圖示 → 現在的 24 × 24。
+   每一步都是在減「面積」而不是減「亮度」——224 × 36 的色塊壓再淡都還是一個區塊。
+
+   **24 × 24 是全站唯一比 32 小的控制項，是具名例外。**
+   理由：它不是對資料的操作，不與任何輸入框對齊，而且另有 Ctrl / Cmd + B 這條
+   快車道；24 × 24 仍踩在 WCAG 2.5.8 AA 的下限上。不得把這個尺寸帶到任何
+   其他按鈕——站上先前有四種按鈕高度，就是從「這裡小一點」開始的。 */
+.nav-collapse {
+  flex: none;
+  width: 1.5rem;
+  min-height: 1.5rem;
+  /* 貼著側欄的左下角，只留 4px */
+  margin: 0 0.25rem 0.25rem;
+  padding: 0;
+  justify-content: center;
+  border: 0;
+  border-radius: 0.25rem;
+  /* 平時 30% 看得出那裡有東西，但不佔視覺份量。滑鼠進到側欄（或鍵盤 Tab 到它）
+     才稍微浮出來——Notion 的側欄控制項就是這樣，平時不在，游標靠近才出現。
+     hover 的範圍是**整個側欄**而不是那顆按鈕本身，所以不必「先找到它才看得到它」。 */
+  opacity: 0.3;
+  transition: opacity 0.18s;
+}
+.nav-collapse .ico {
+  width: 1rem;
+  height: 1rem;
+}
+/* **hover 不變亮、不加底色。** .nav-item 的 hover 會換成白字加一層白底，那是導覽
+   項目的回饋；這一顆的目的是盡量不存在，回饋交給游標與 Tooltip 就夠了。
+   顏色三態都鎖在同一支 token，只有透明度在動。 */
+.nav-collapse,
+.nav-collapse:hover,
+.nav-collapse:focus-visible {
+  background: transparent;
+  color: var(--text-faint);
+}
+.sidebar:hover .nav-collapse {
+  opacity: 0.45;
+}
+.nav-collapse:hover,
+.nav-collapse:focus-visible {
+  opacity: 0.7;
+}
+.nav-collapse:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: -2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-collapse {
+    transition: none;
+  }
+}
+
+@media (max-width: 720px) {
+  /* 手機的側欄是抽屜，沒有收合這件事；而且圖示軌靠 Tooltip 辨識，觸控沒有 hover。 */
+  .nav-collapse {
+    display: none;
+  }
+}
+
+/* ---- 收合後的圖示軌 ---------------------------------------------------- */
+@media (min-width: 721px) {
+  .app.is-nav-collapsed {
+    --sidebar-w: 4.5rem;
+  }
+
+  /* 文字用 font-size: 0 收掉，不用 display: none：項目本身還在，
+     圖示、作用中底色、連接尖角與鍵盤焦點全部照舊，只是沒有文字寬度可佔。 */
+  .app.is-nav-collapsed .nav-item {
+    font-size: 0;
+    gap: 0;
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* 收合之後第二、三層在軌上看不到，所以**第一層要代替它的子項顯示作用中**：
+     人在「第三層」那一頁時，軌上要有一個地方告訴他現在在哪裡，而那個地方只剩
+     第一層的圖示。作用中的樣子與其他項目完全一樣（.active 由 sidebar-collapse.js
+     在收合時掛上、展開時拿掉），不另外發明一個記號——先前用一顆 4px 的點標
+     「這裡有子選單」，那顆點既不說明現在在哪一頁，也和站上任何語彙對不上。
+
+     面板開著的時候那顆圖示也要看得出是它開的，沿用側欄自己的 hover 底色。 */
+  .app.is-nav-collapsed .nav-tree.is-flyout-open > .nav-item[data-toggle]:not(.active) {
+    background: var(--surface-hover);
+    color: var(--sidebar);
+  }
+
+  /* 第二、三層沒有圖示，留在軌上只會是一排空白列；它們改走飛出面板。 */
+  .app.is-nav-collapsed .nav-children,
+  .app.is-nav-collapsed .nav-subchildren {
+    display: none;
+  }
+
+  /* 收合之後這顆是唯一的回頭路，不能和展開時一樣淡到幾乎看不見；
+     軌只有 72px，按鈕也改成置中，不再靠左下角。 */
+  .app.is-nav-collapsed .nav-collapse {
+    width: auto;
+    margin-left: 0;
+    margin-right: 0;
+    opacity: 0.5;
+  }
+  .app.is-nav-collapsed .sidebar:hover .nav-collapse {
+    opacity: 0.7;
+  }
+
+  /* logo 縮進軌寬內並置中。正式後台在收合時換成一張小 logo（logo-demo-small.png），
+     原型只有一張，先等比縮；.brand 的高度不動，那是全站的對齊基準。 */
+  .app.is-nav-collapsed .brand {
+    justify-content: center;
+    padding: 0 0.5rem;
+  }
+  .app.is-nav-collapsed .brand-logo {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 100%;
+    object-position: center;
+  }
+}
+
+/* ---- 飛出子選單 ---------------------------------------------------------
+   收合之後第一層只剩一個圖示，底下兩層本來就點不到了。做法與 Element Plus 的
+   el-menu 收合時一樣：子選單變成一個浮出來的面板。
+
+   **面板一定要搬到 <body>**，不能只用 position: fixed 留在側欄裡：
+   .sidebar .nav 身上有 mask-image（捲動提示的上下緣淡出），而 mask 會把**所有**
+   後代裁進 .nav 自己的盒子——fixed 逃得出捲動，逃不出遮罩，面板會整個被切掉，
+   畫面上的表現就是「點了沒反應」。EP 的 teleported 預設把第一層的 popper 送到
+   body，為的就是這件事。sidebar-collapse.js 因此把真正的 .nav-children 節點
+   搬進 .nav-flyout（關閉時再搬回去），搬的是節點本身，事件與狀態都跟著走。 */
+.nav-flyout {
+  position: fixed;
+  top: var(--flyout-top, 0);
+  left: var(--flyout-left, 0);
+  z-index: var(--z-popover);
+  min-width: 11rem;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+  background: var(--sidebar);
+  box-shadow: var(--shadow-md);
+}
+.nav-flyout[hidden] {
+  display: none;
+}
+/* .nav-children 在側欄裡預設是 display: none，靠父層 .nav-tree 的 .is-open 才打開；
+   搬到面板之後那個父層不在了，所以這裡要明確打開——少了這一條，面板會是一個空盒子，
+   看起來還是「點了沒反應」。第三層那一層不用補，它自己的 .is-open 仍然有效，
+   面板裡點第二層一樣收得起來。 */
+.nav-flyout > .nav-children {
+  display: block;
+}
+/* 面板裡的項目本來就掛著 .nav-item，配色與 hover 沿用側欄那一份，這裡只改縮排——
+   側欄那組 32／48px 的縮排是配 248px 的寬度，搬進 176px 的面板會把文字擠到右邊。 */
+.nav-flyout .nav-item {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  font-size: 0.75rem;
+}
+.nav-flyout .nav-subchildren .nav-item {
+  padding-left: 1.5rem;
+}
+/* 連接線連的是側欄的縮排，面板裡沒有那個縮排可連 */
+.nav-flyout .hierarchy-mark {
+  display: none;
+}
+/* 作用中的項目在側欄裡是**滿版**的：width: calc(100% + 16px) 配左右各 -8px 的
+   外推、方角、再加一個咬進內容區的白色尖角。那是為了讓它從側欄的一邊延伸到另一邊。
+   搬進 176px 的面板之後這一套全錯——色塊會超出面板的圓角邊界，尖角則指向一片空白。
+   面板裡的作用中項目回到一般的盒子：不外推、有圓角、不畫尖角。 */
+.nav-flyout .nav-item.active,
+.nav-flyout .nav-level-3.active {
+  width: auto;
+  margin-left: 0;
+  margin-right: 0;
+  border-radius: 0.5rem;
+  /* 側欄的作用中項目會放大到 16px，在 176px 的面板裡會讓整列跟著長高，
+     面板每開一次高度都不一樣。面板內一律維持 12px。 */
+  font-size: 0.75rem;
+}
+.nav-flyout .nav-item.active::after {
+  display: none;
+}

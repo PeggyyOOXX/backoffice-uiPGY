@@ -60,10 +60,6 @@
 .sidebar {
   background: linear-gradient(180deg, #0d1b25 0%, #122a35 100%);
 }
-.brand-mark {
-  background: linear-gradient(145deg, #55aabd, #23768c);
-  box-shadow: 0 0.5rem 1rem rgba(40, 127, 152, 0.27);
-}
 .nav-item.active {
   background: linear-gradient(
     90deg,
@@ -75,49 +71,17 @@
 .nav-item.active:before {
   background: #64b8c5;
 }
-.stat-icon {
-  color: #23768c;
-  background: #e8f4f5;
-}
 .primary {
   background: linear-gradient(135deg, #3d96aa, #23768c);
   box-shadow: 0 0.5rem 1rem rgba(40, 127, 152, 0.2);
-}
-.count {
-  color: #23768c;
-  background: #e8f4f5;
-}
-.level,
-.action {
-  color: #287f98;
 }
 .control:focus {
   border-color: #287f98;
   box-shadow: 0 0 0 3px rgba(40, 127, 152, 0.11);
 }
-.page-btn.active,
-.row-actions button {
+.page-btn.active {
   background: #287f98;
   border-color: #287f98;
-}
-.bar {
-  background: linear-gradient(#61aebe, #287f98);
-}
-.donut {
-  background: conic-gradient(
-    #287f98 0 46%,
-    #4e8cb2 46% 73%,
-    #58a692 73% 89%,
-    #e1e9e9 89%
-  );
-}
-.progress i,
-.switch {
-  background: #287f98;
-}
-.setting-nav .on {
-  background: #e8f4f5;
-  color: #23768c;
 }
 ::-webkit-scrollbar-thumb {
   background: #8fb9c2;

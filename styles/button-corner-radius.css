@@ -2,13 +2,10 @@
 .semantic-btn,
 .primary,
 .secondary,
-.action,
 .icon-btn,
 .close,
 .quick-tabs button,
-.page-btn,
-.member-data-card .page-btn,
-.row-actions button {
+.page-btn {
   border-radius: 0.25rem;
 }
 

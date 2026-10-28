@@ -75,6 +75,8 @@
 .icon-btn.is-identity:hover {
   background: var(--blue-ink);
 }
+/* 頁首不放側欄的收合開關：那是導覽的事，不該佔內容區的頁首。
+   開關做在側欄自己的右緣（.nav-rail），樣式在 styles/collapsible-sidebar.css。 */
 /* 把「動作」與「身分」兩類東西斷開。高度取圖示的 20px，不是整顆按鈕的高度——
    分隔線要比它隔開的東西矮，才不會自己變成一個框。 */
 .header-divider {

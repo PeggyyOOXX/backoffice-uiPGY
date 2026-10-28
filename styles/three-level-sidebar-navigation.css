@@ -1,5 +1,4 @@
 @media (max-width: 720px) {
-  .chev,
   [data-toggle]::after {
     display: none !important;
   }
@@ -23,7 +22,9 @@
   font-size: 0.75rem;
 }
 .nav-level-3 {
-  height: 2.125rem;
+  /* min-height 而不是 height：導覽文字不得截斷，9 個語系裡同一個項目最長差 8 倍，
+     寫死高度的第二行會直接溢出蓋到下一個項目。 */
+  min-height: 2.125rem;
   padding-left: 3rem;
   color: #8ea5b2;
   font-size: 0.75rem;

@@ -49,10 +49,6 @@ body {
   padding: 0 1.25rem;
   border-bottom-color: rgba(255, 255, 255, 0.06);
 }
-.brand-mark {
-  background: linear-gradient(145deg, #6790ff, #315bd2);
-  box-shadow: 0 0.5rem 1rem rgba(61, 109, 242, 0.28);
-}
 .nav-item.active {
   background: linear-gradient(
     90deg,
@@ -106,44 +102,15 @@ body {
   border-radius: 0;
   box-shadow: none;
 }
-.page-head {
-  align-items: center;
-  min-height: 7rem;
-  margin-bottom: 1.25rem;
-  padding: 1.25rem 1.5rem;
-  border: 1px solid var(--line);
-  border-radius: 0.75rem;
-  background: #fff;
-}
-.page-head h1 {
-  font-size: 1.25rem;
-  margin-bottom: 0.5rem;
-}
-.card,
-.stat {
+.card {
   border-color: var(--line);
   border-radius: 0.75rem;
   background: #fff;
   box-shadow: none;
 }
-.stat {
-  background: #fff;
-}
-.stat-icon {
-  color: #315ed8;
-  background: #edf2ff;
-}
 .primary {
   background: linear-gradient(135deg, #4c79f4, #315ed8);
   box-shadow: 0 0.5rem 1rem rgba(61, 109, 242, 0.2);
-}
-.count {
-  color: #315ed8;
-  background: #edf2ff;
-}
-.level,
-.action {
-  color: #3d6df2;
 }
 .control:focus {
   border-color: #3d6df2;
@@ -152,27 +119,6 @@ body {
 .page-btn.active {
   background: #3d6df2;
   border-color: #3d6df2;
-}
-.bar {
-  background: linear-gradient(#7397fa, #3d6df2);
-}
-.donut {
-  background: conic-gradient(
-    #3d6df2 0 46%,
-    #6d8fe5 46% 73%,
-    #55a6bd 73% 89%,
-    #e5e9f0 89%
-  );
-}
-.progress i {
-  background: #3d6df2;
-}
-.setting-nav .on {
-  background: #edf2ff;
-  color: #315ed8;
-}
-.switch {
-  background: #3d6df2;
 }
 ::-webkit-scrollbar-thumb {
   background: #9eafe0;
@@ -241,20 +187,6 @@ body {
     padding: 0.75rem 0.5rem 1.75rem;
     background: #f5f7fb;
   }
-  .page-head {
-    min-height: auto;
-    margin-bottom: 0.75rem;
-    padding: 1rem;
-    border-radius: 0.75rem;
-  }
-}
-
-/* --- 從 warm-card-theme.css 與 teal-full-shell-theme.css 搬過來 ---
-   那兩支是更早的佈景層，整支 165 條宣告裡只剩下面這 8 條還沒被後面的檔案蓋掉
-   （存活率 4% 與 6%），其餘全是死碼。把活的搬到這裡、刪掉那兩支檔案：
-   位置往後移不影響結果，因為這幾條的後面本來就沒有人再宣告同一個鍵。 */
-.profile-mini {
-  background: rgba(255, 255, 255, 0.08);
 }
 .sidebar {
   overflow: hidden;

@@ -1,0 +1,36 @@
+/* 組合範例（統計卡型）。共用版面在 example-page.css，這裡只放統計卡多出來的東西：
+   卡片內距、格線欄數、按鈕配色都不在這支裡，它們各自只有一個來源。 */
+
+/* 卡片高度由內容撐開，不寫 height——正式後台釘在 122px，
+   同一個標題在 9 個語系裡最多差 3 倍長，第二、三行會直接溢出。 */
+.example-kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.example-kpi-title {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+/* 等寬數字：八張卡片排成一列時，位數對得齊才看得出哪一個比較大。 */
+.example-kpi-value {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+/* 正負色取語意色，不另外調一支紅綠——這裡的紅跟刪除鈕、錯誤訊息是同一個意思。 */
+.example-kpi-value.is-negative {
+  color: var(--danger);
+}
+
+.example-kpi-value.is-positive {
+  color: var(--success);
+}

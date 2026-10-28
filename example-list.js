@@ -206,7 +206,7 @@ window.renderExampleList = () => `<section class="example-page example-list-page
       <li><strong>標籤</strong>：狀態欄依<strong>語意</strong>對應型別（啟用 success／暫停 warning／作廢 danger），不是依狀態碼</li>
       <li><strong>進度條</strong>：兌換進度用中性色，不自動變色——越多人兌換不代表越危險</li>
       <li><strong>圖示按鈕</strong>：同一列三顆，各自有 aria-label 與 Tooltip；已作廢的那筆停用刪除鈕</li>
-      <li><strong>彈窗</strong>：作廢是不可逆操作，先開確認彈窗；編輯則進表單彈窗</li>
+      <li><strong>彈窗</strong>：作廢是不可逆操作，先開確認彈窗；<strong>新增與編輯是同一個表單彈窗</strong>（照正式後台的 <code>openEditDialog()</code>，不帶 id 就是新增），差別只有標題、兌換代碼能不能改、送出後是加一筆還是改一筆</li>
       <li><strong>訊息提示</strong>：操作結果用 Toast，文案帶受詞（「已作廢 新春紅包」而不是「成功」）</li>
       <li><strong>載入與空狀態</strong>：篩選不到時表格內顯示無資料，工具列不動</li>
     </ul>
@@ -298,39 +298,96 @@ onMatch('click', '[data-gift-void]', (event, button) => {
   dialog.showModal()
 }, { owner: 'example-list' })
 
-onMatch('click', '[data-gift-edit]', (event, button) => {
-  const card = findCard(button.dataset.giftEdit)
-  if (!card) return
+// 新增與編輯是同一個彈窗，與正式後台一致——giftCardManagement 的 openEditDialog()
+// 不帶 id 就是新增，帶了就是檢視／編輯。差別只有三處：標題、兌換代碼能不能改、
+// 送出之後是加一筆還是改一筆。兩個入口各做一份表單，欄位遲早會對不起來。
+const giftDialog = (card, trigger) => {
+  const isNew = !card
+  const num = n => Number(n).toLocaleString('en-US')
   const dialog = document.createElement('dialog')
   dialog.innerHTML = `<form>
-    <header><h2>編輯禮物卡</h2></header>
+    <header><h2>${isNew ? '新增禮物卡' : '編輯禮物卡'}</h2></header>
     <div class="bo-modal-body">
       <div class="guide-fields">
-        <div class="guide-field"><label for="gift-edit-name">活動名稱</label><input id="gift-edit-name" class="guide-input" value="${esc(card[1])}" required maxlength="40"></div>
-        <div class="guide-field"><label for="gift-edit-code">兌換代碼</label><input id="gift-edit-code" class="guide-input" value="${esc(card[2])}" readonly><small>已發出的代碼不可修改</small></div>
-        <div class="guide-field"><label for="gift-edit-face">面額</label><div class="affix-input"><span>$</span><input id="gift-edit-face" class="guide-input amount-input" value="${card[3].toLocaleString()}" inputmode="decimal"></div></div>
+        <div class="guide-field">
+          <label for="gift-form-name">活動名稱<span class="required-mark" aria-hidden="true"> *</span></label>
+          <input id="gift-form-name" class="guide-input" value="${isNew ? '' : esc(card[1])}" required maxlength="40">
+        </div>
+        <div class="guide-field">
+          <label for="gift-form-code">兌換代碼${isNew ? '<span class="required-mark" aria-hidden="true"> *</span>' : ''}</label>
+          ${isNew
+            ? '<input id="gift-form-code" class="guide-input" required maxlength="20" placeholder="英數字，建立後不可修改">'
+            : `<input id="gift-form-code" class="guide-input" value="${esc(card[2])}" readonly><small>已發出的代碼不可修改</small>`}
+        </div>
+        <div class="guide-field">
+          <label for="gift-form-face">面額</label>
+          <div class="affix-input"><span>$</span><input id="gift-form-face" class="guide-input amount-input" value="${isNew ? '' : num(card[3])}" inputmode="decimal"></div>
+        </div>
+        ${isNew ? `<div class="guide-field">
+          <label for="gift-form-count">生成數量</label>
+          <input id="gift-form-count" class="guide-input amount-input" value="1,000" inputmode="numeric">
+        </div>
+        <div class="guide-field is-full">
+          <label id="gift-form-range-label">兌換日期區間</label>
+          <div class="date-range-host" data-date-range data-empty="true" aria-labelledby="gift-form-range-label"></div>
+        </div>` : ''}
       </div>
     </div>
     <footer>
       <button type="button" class="semantic-btn btn-neutral" data-example-close>取消</button>
-      <button type="submit" class="semantic-btn btn-search">儲存</button>
+      <button type="submit" class="semantic-btn btn-search">${isNew ? '確認新增' : '儲存'}</button>
     </footer>
   </form>`
   prepareModal(dialog)
+  const field = id => dialog.querySelector('#' + id)
+  const digits = input => Number(String(input?.value ?? '').replace(/[^\d.]/g, ''))
   dialog.querySelector('[data-example-close]').onclick = () => dialog.close()
   dialog.querySelector('form').onsubmit = submit => {
     submit.preventDefault()
-    card[1] = dialog.querySelector('#gift-edit-name').value.trim() || card[1]
-    card[3] = Number(dialog.querySelector('#gift-edit-face').value.replace(/[^\d.]/g, '')) || card[3]
-    redraw()
-    message.success(`已更新「${card[1]}」`)
+    if (isNew) {
+      // 兌換日期區間直接讀共用日期元件寫回 host 的 data-start／data-end，
+      // 不在這裡另外做一個日期欄位。
+      const host = dialog.querySelector('[data-date-range]')
+      const range = host?.dataset.start && host?.dataset.end
+        ? `${host.dataset.start.slice(0, 10)} ～ ${host.dataset.end.slice(0, 10)}`
+        : '未設定'
+      const name = field('gift-form-name').value.trim()
+      const serial = String(CARDS.length + 1).padStart(3, '0')
+      const now = new Date()
+      const pad = n => String(n).padStart(2, '0')
+      CARDS.unshift([
+        `GC-${now.getFullYear()}${serial}`,
+        name,
+        field('gift-form-code').value.trim().toUpperCase(),
+        digits(field('gift-form-face')) || 0,
+        digits(field('gift-form-count')) || 1,
+        'enabled',
+        0,
+        range,
+        `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`,
+      ])
+      // 新增完回第一頁，否則新的那一筆排在最前面、使用者卻還停在第三頁
+      STATE.page = 1
+      redraw()
+      message.success(`已新增「${name}」`)
+    } else {
+      card[1] = field('gift-form-name').value.trim() || card[1]
+      card[3] = digits(field('gift-form-face')) || card[3]
+      redraw()
+      message.success(`已更新「${card[1]}」`)
+    }
     dialog.close()
   }
-  dialog.addEventListener('close', () => { dialog.remove(); button.focus() }, { once: true })
+  dialog.addEventListener('close', () => { dialog.remove(); trigger?.focus() }, { once: true })
   document.body.append(dialog)
   dialog.showModal()
+}
+
+onMatch('click', '[data-gift-edit]', (event, button) => {
+  const card = findCard(button.dataset.giftEdit)
+  if (card) giftDialog(card, button)
 }, { owner: 'example-list' })
 
-onMatch('click', '[data-gift-add]', () => message.info('新增禮物卡的表單在下一版設計'), { owner: 'example-list' })
+onMatch('click', '[data-gift-add]', (event, button) => giftDialog(null, button), { owner: 'example-list' })
 onMatch('click', '[data-gift-export]', () => message.success(`已開始匯出 ${visible().length} 筆禮物卡`), { owner: 'example-list' })
 onMatch('click', '[data-gift-refresh]', () => { redraw(); message.success('列表已刷新') }, { owner: 'example-list' })

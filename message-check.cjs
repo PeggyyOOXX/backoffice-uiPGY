@@ -215,9 +215,12 @@ async function run() {
   // --- 舊的 toast 實作要已經移除 ---
   const html = fs.readFileSync('index.html', 'utf8')
   assert.ok(!html.includes('id="toast"'), 'index.html 仍有舊的 #toast 容器')
-  assert.ok(html.includes('window.message?.info'), 'toast() 未轉接到共用系統')
+  // 舊頁搬進模組後，index.html 連轉接用的 toast() 都不該再留著：
+  // 它一度只是把呼叫轉給 window.message，現在已經沒有呼叫點，
+  // 留著只會讓下一個人以為 shell 還有自己的一套訊息。
+  assert.ok(!/\btoast\s*=\s*\(/.test(html), 'index.html 仍自己定義 toast()，訊息一律走 message.js')
   assert.ok(!fs.readFileSync('styles/base.css', 'utf8').includes('.toast'), 'base.css 仍有舊 toast 樣式')
-  ok('舊的 toast 實作已移除，呼叫點轉接到共用系統')
+  ok('shell 已無自己的 toast 實作，訊息一律走 message.js')
 
   console.log('\nPASS: 訊息提示（型別、轉義、合併、上限、live region、生命週期、fallback、規範頁）')
 }
