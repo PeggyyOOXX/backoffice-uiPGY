@@ -5,8 +5,13 @@
 :root {
   --card: #ffffff;
   --bg: #dfe3e8;
-  --sidebar: #111b2b;
-  --sidebar-deep: #172d3a;
+  /* 側欄：底色左右漸層、作用中項目上下漸層。--sidebar 是漸層的起點，也是 Tooltip、
+     收合後的飛出面板與作用中文字的顏色——它們都是「從側欄長出來的東西」。
+     .app 外框用 --sidebar-end，與側欄右緣接成同一片，內容區上緣的留白才看不出接縫。 */
+  --sidebar: #2a2220;
+  --sidebar-end: #50403a;
+  --nav-active-from: #d2ae7e;
+  --nav-active-to: #785330;
   --blue: #1596ad;
   --blue-tint: #e7f7fa;
   --text: #17282e;
@@ -58,7 +63,10 @@
   --amber: var(--warning);
 }
 .sidebar {
-  background: linear-gradient(180deg, #0d1b25 0%, #122a35 100%);
+  background: linear-gradient(90deg, var(--sidebar) 0%, var(--sidebar-end) 100%);
+}
+.app {
+  background: var(--sidebar-end);
 }
 .nav-item.active {
   background: linear-gradient(

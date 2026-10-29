@@ -3,15 +3,17 @@
     display: none !important;
   }
 }
+/* 作用中項目：上下漸層、深色字。文字用 --sidebar 而不是白字——漸層上端是淺金，
+   白字在那裡讀不出來；文字落在漸層中段，深字對比約 4.4:1。 */
 .nav-item.active,
 .nav-level-3.active {
   color: var(--sidebar);
   font-weight: 400;
-  background: linear-gradient(90deg, #73aaff 0%, #b6bff6 100%);
+  background: linear-gradient(var(--nav-active-from) 0%, var(--nav-active-to) 100%);
 }
 .nav-item.active .ico {
   color: var(--sidebar);
 }
 .nav-item.active:hover {
-  background: linear-gradient(90deg, #73aaff 0%, #b6bff6 100%);
+  background: linear-gradient(var(--nav-active-from) 0%, var(--nav-active-to) 100%);
 }
