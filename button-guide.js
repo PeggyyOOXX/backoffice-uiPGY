@@ -135,7 +135,7 @@ window.renderButtonPage = () =>
         </div>
         <p class="component-description">例外只有一種：<strong>純圖示按鈕</strong>。它沒有文字寬度可以推算，所以是 32 × 32px 的正方形；分頁按鈕與表頭排序鈕同理，都與輸入框同高。</p>
       </section>
-      ${iconButtonSection()}<section class="card token-table"><h2>Button Token</h2><div><span>高度</span><strong>行高＋上下內距×2 ＝ 32px（桌機與手機相同，描邊畫在內側）</strong><span>寬度</span><strong>文字寬＋左右內距×2，不設固定值</strong><span>圓角</span><strong>4px</strong><span>上下內距</span><strong>8px</strong><span>左右內距</span><strong>12px</strong><span>字級／字重／行高</span><strong>14px / 700 / 16px</strong><span>圖示按鈕</span><strong>32 × 32px</strong><span>按鈕間距</span><strong>8px</strong><span>Focus ring</span><strong>3px</strong></div></section>`,
+      ${iconButtonSection()}<section class="card token-table"><h2>Button Token</h2><div><span>高度</span><strong>行高＋上下內距×2 ＝ 32px（桌機與手機相同，描邊畫在內側）</strong><span>寬度</span><strong>文字寬＋左右內距×2，不設固定值</strong><span>圓角</span><strong>4px</strong><span>上下內距</span><strong>8px</strong><span>左右內距</span><strong>12px</strong><span>字級／字重／行高</span><strong>14px / 700 / 16px</strong><span>圖示按鈕</span><strong>32 × 32px</strong><span>底色</span><strong>上下漸層：上緣 --button-color、下緣深一階</strong><span>深一階</span><strong>--btn-shade 75%（＝ --blue → --blue-ink 的比例）</strong><span>按鈕間距</span><strong>8px</strong><span>Focus ring</span><strong>3px</strong></div></section>`,
     rules: [
       [
         "尺寸用推算的，不寫死",
@@ -152,6 +152,10 @@ window.renderButtonPage = () =>
       [
         "語意色不得自創",
         "全站只用已定義的語意色；遇到可讀性問題先移除局部覆寫，不要用新配色修補。",
+      ],
+      [
+        "底色是算出來的，一顆按鈕只宣告一個顏色",
+        "每個語意只寫 --button-color（最終配色在 strict-semantic-token-mapping.css），上下漸層由 semantic-button-system.css 的公式算：上緣本色、下緣 color-mix 深一階。全站只有那一條 background，所以八顆按鈕的漸層一定一致；要調深淺改 --btn-shade 一個值，不得在任何頁面補一個自己的漸層。outline 拿同一支變數當文字與描邊色，兩種變體不會各走各的。",
       ],
       [
         "圓角一律 4px",

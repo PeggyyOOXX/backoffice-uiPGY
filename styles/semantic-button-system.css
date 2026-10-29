@@ -14,6 +14,13 @@
 
    圖示按鈕用的是同一組變數，只是四邊內距相同、圖示尺寸等於 --btn-content，
    所以它自己長成正方形，而且高度與文字按鈕完全相同——不是各自寫 32px 湊出來的。 */
+/* --btn-shade 註冊成 <percentage>：color-mix() 的比例欄位只吃真正的百分比，
+   未註冊的自訂屬性是一串未定型的 token，代入後整條宣告可能被丟掉。 */
+@property --btn-shade {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 75%;
+}
 :root {
   /* 按鈕裡那塊內容的高度。文字用它當行高，圖示用它當邊長——
      兩者共用同一個值，所以不管這個數字是多少，兩種按鈕都一樣高。
@@ -26,7 +33,16 @@
   /* 算出來的高度。按鈕本身不用它（高度是內距撐開的），
      只有需要「同寬」的方形控制拿它當最小寬度，輸入類控制拿它當高度。 */
   --btn-h: calc(var(--btn-content) + var(--btn-pad-y) * 2);
+  /* 漸層下緣要「深一階」。75% 不是隨手挑的，是站上既有的一階：
+     --blue #1596AD → --blue-ink #10707F，三個通道都落在原值的 73–76%。
+     整站只有這一個數字在控制所有按鈕的漸層深度，要調深淺改這裡。 */
+  --btn-shade: 75%;
 }
+/* 八個語意色各自只宣告 --button-color 一個值（最終配色在
+   strict-semantic-token-mapping.css），底色由這裡的公式統一算出來：
+   上緣是本色，下緣深一階，由上往下。整站只有這一條 background，
+   所以八顆按鈕的漸層一定一致，也不會有人在某一頁補一個自己的漸層。
+   實心與 outline 共用同一支 --button-color：outline 拿它當文字與描邊色。 */
 .semantic-btn {
   display: inline-flex;
   align-items: center;
@@ -35,6 +51,15 @@
   padding: var(--btn-pad-y) var(--btn-pad-x);
   border: 0;
   border-radius: 0.5rem;
+  /* 底色與漸層分開寫，不是一條 background 簡寫：萬一瀏覽器不吃 color-mix，
+     background-image 整條被丟掉，background-color 還在，按鈕會退回原本的實色，
+     而不是變成一顆白底白字的空殼。 */
+  background-color: var(--button-color);
+  background-image: linear-gradient(
+    180deg,
+    var(--button-color) 0%,
+    color-mix(in srgb, var(--button-color) var(--btn-shade), #000) 100%
+  );
   color: #fff;
   /* 字級與內容高度是兩回事：14px 的字放在 16px 的行高裡。
      真正決定按鈕高度的是行高，不是字級。 */
@@ -62,37 +87,32 @@
   opacity: 0.42;
   cursor: not-allowed;
 }
+/* 這八個值是底線，實際生效的是 strict-semantic-token-mapping.css 的那一組；
+   留著是為了讓這支檔案單獨看也畫得出按鈕。一顆按鈕只宣告 --button-color，
+   不再各自寫 background——背景只有上面那一條公式在算。 */
 .btn-search {
-  background: #287f98;
-  border-color: #287f98;
+  --button-color: #287f98;
 }
 .btn-add {
-  background: #238864;
-  border-color: #238864;
+  --button-color: #238864;
 }
 .btn-edit {
-  background: #5069c8 !important;
-  border-color: #5069c8 !important;
+  --button-color: #5069c8;
 }
 .btn-record {
-  background: #7658b5 !important;
-  border-color: #7658b5 !important;
+  --button-color: #7658b5;
 }
 .btn-export {
-  background: #287ebc;
-  border-color: #287ebc;
+  --button-color: #287ebc;
 }
 .btn-warning {
-  background: #b97922;
-  border-color: #b97922;
+  --button-color: #b97922;
 }
 .btn-danger {
-  background: #c94f5e;
-  border-color: #c94f5e;
+  --button-color: #c94f5e;
 }
 .btn-neutral {
-  background: #667085;
-  border-color: #667085;
+  --button-color: #667085;
 }
 .semantic-btn.outline {
   background: #fff !important;
@@ -102,30 +122,6 @@
 /* hover 的浮起陰影會蓋掉描邊，兩個要一起寫 */
 .semantic-btn.outline:hover:not(:disabled) {
   box-shadow: inset 0 0 0 var(--btn-ring) currentColor, var(--shadow-sm);
-}
-.btn-search.outline {
-  --button-color: #287f98;
-}
-.btn-add.outline {
-  --button-color: #238864;
-}
-.btn-edit.outline {
-  --button-color: #5069c8;
-}
-.btn-record.outline {
-  --button-color: #7658b5;
-}
-.btn-export.outline {
-  --button-color: #287ebc;
-}
-.btn-warning.outline {
-  --button-color: #b97922;
-}
-.btn-danger.outline {
-  --button-color: #c94f5e;
-}
-.btn-neutral.outline {
-  --button-color: #667085;
 }
 .button-guide-grid {
   display: grid;

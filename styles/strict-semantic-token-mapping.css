@@ -3,62 +3,37 @@
    high-contrast-semantic-palette（24 條剩 9 條）、再到這裡——要知道一顆按鈕是什麼顏色
    得照 import 順序讀三支檔案。那兩支已刪除，活著的宣告都搬到下面。
    這裡的色碼就是「設計 Token → 語意色」公告的那八色，是它們的來源，所以寫色碼不寫變數。 */
+/* 每一顆只宣告 --button-color 一個值。實心的底色是 semantic-button-system.css
+   的漸層公式用它算出來的（上緣本色、下緣深一階），outline 拿它當文字與描邊色，
+   所以兩種變體不會各走各的。
+   `.btn-x.outline` 與 `.btn-x` 是同一個元素，變數寫在基底就夠，
+   先前那八條 `.btn-x.outline { --button-color }` 是重複的，已移除。
+   `!important` 也一起拿掉——它當初是為了壓過前面兩支已刪除的配色檔，
+   現在全站只有這裡宣告顏色，沒有東西要壓。 */
 .btn-add {
-  background: #8354bc !important;
-  border-color: #8354bc !important;
-}
-.btn-export {
-  background: #12b157 !important;
-  border-color: #12b157 !important;
-}
-.btn-edit {
-  background: #4169c9 !important;
-  border-color: #4169c9 !important;
-}
-.btn-neutral {
-  background: #a3a3a3 !important;
-  border-color: #a3a3a3 !important;
-}
-.btn-danger {
-  background: #dc2626 !important;
-  border-color: #dc2626 !important;
-}
-.btn-add.outline {
   --button-color: #8354bc;
 }
-.btn-export.outline {
+.btn-export {
   --button-color: #12b157;
 }
-.btn-edit.outline {
+.btn-edit {
   --button-color: #4169c9;
 }
-.btn-neutral.outline {
+.btn-neutral {
   --button-color: #a3a3a3;
 }
-.btn-danger.outline {
+.btn-danger {
   --button-color: #dc2626;
 }
 
 /* 以下三組原本在 high-contrast-semantic-palette.css */
 .btn-search {
-  background: #1596ad !important;
-  border-color: #1596ad !important;
-}
-.btn-record {
-  background: #6d8aae !important;
-  border-color: #6d8aae !important;
-}
-.btn-warning {
-  background: #f59e0b !important;
-  border-color: #f59e0b !important;
-}
-.btn-search.outline {
   --button-color: #1596ad;
 }
-.btn-record.outline {
+.btn-record {
   --button-color: #6d8aae;
 }
-.btn-warning.outline {
+.btn-warning {
   --button-color: #f59e0b;
 }
 

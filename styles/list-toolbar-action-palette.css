@@ -21,27 +21,9 @@
 .member-actions .semantic-btn {
   min-width: auto;
 }
-.btn-add {
-  background: #4f6bed !important;
-  border-color: #4f6bed !important;
-}
-.btn-export {
-  background: var(--success) !important;
-  border-color: var(--success) !important;
-}
-.btn-edit {
-  background: #4169c9 !important;
-  border-color: #4169c9 !important;
-}
-.btn-add.outline {
-  --button-color: #4f6bed;
-}
-.btn-export.outline {
-  --button-color: var(--success);
-}
-.btn-edit.outline {
-  --button-color: #4169c9;
-}
+/* 這裡原本還宣告了 .btn-add／.btn-export／.btn-edit 的底色，三條都是死碼——
+   strict-semantic-token-mapping.css 排在後面，同樣帶 !important，三顆的顏色
+   從來都是那一支說了算。八個語意色只有那一支，這裡只留工具列的版面。 */
 @media (max-width: 720px) {
   .member-actions {
     overflow-x: auto;

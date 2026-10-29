@@ -138,14 +138,16 @@ async function run() {
     [...kindMatch[1].matchAll(/(\w+):\s*'(btn-[\w-]+)'/g)].map(x => [x[1], x[2]])
   )
 
-  // 語意色的最終值要依 styles/index.css 的層疊順序算，不能只看單一檔案
+  // 語意色的最終值要依 styles/index.css 的層疊順序算，不能只看單一檔案。
+  // 按鈕的底色改成由 --button-color 配漸層公式算出來之後，比的就是這支變數——
+  // 實心按鈕的上緣就是它，outline 的文字與描邊也是它。
   const cssOrder = [...fs.readFileSync('styles/index.css', 'utf8').matchAll(/@import '\.\/([^']+)'/g)].map(x => x[1])
   const buttonColour = {}
   for (const file of cssOrder) {
     const text = fs.readFileSync('styles/' + file, 'utf8')
     for (const rule of text.matchAll(/([^{}]*\.btn-[a-z]+[^{}]*)\{([^}]*)\}/g)) {
       if (rule[1].includes('.outline')) continue
-      const bg = rule[2].match(/background:\s*(#[0-9a-fA-F]{6})/)
+      const bg = rule[2].match(/--button-color:\s*(#[0-9a-fA-F]{6})/)
       if (!bg) continue
       for (const cls of rule[1].match(/\.btn-[a-z]+/g) || []) buttonColour[cls.slice(1)] = bg[1].toUpperCase()
     }
