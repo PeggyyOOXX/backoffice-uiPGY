@@ -266,4 +266,35 @@ ok(`表格外觀只有 ${SOURCE} 一個來源，且沒有全域 min-width`)
   ok('側欄淡出只在那一側還有內容時才畫，桌機側欄與手機抽屜共用')
 }
 
-console.log('\nPASS: Shell 版面對齊（topbar 底線 ＝ 側欄分隔線）＋ 表格外觀單一來源＋疊放順序＋表單欄位格線＋側欄淡出')
+// --- 連接尖角與展開箭頭共用同一個 ::after，順序不能反 ---
+//
+// 側欄有兩個東西畫在 .nav-item 的 ::after 上：
+//   連接尖角  .nav-item.active::after              （0,2,1）
+//   展開箭頭  [data-toggle].expanded::after        （0,2,1）
+// 權重一樣，所以比的是層疊順序。一個項目同時是 [data-toggle] 又是 .active
+// （收合後代替子項顯示作用中的第一層）時，排在後面的那一條會贏——箭頭的
+// transform: rotate(45deg) 一旦贏過尖角的 translateY(-50%)，尖角就會歪掉。
+// 這裡驗的是「尖角的 transform 宣告在箭頭之後」，不是哪個檔案叫什麼名字。
+{
+  const order = [...fs.readFileSync('styles/index.css', 'utf8')
+    .matchAll(/@import '\.\/([^']+)'/g)].map(m => 'styles/' + m[1])
+  const declares = (file, selector, property) => {
+    const src = fs.readFileSync(file, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '')
+    const rule = new RegExp(selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*\\{([^}]*)\\}')
+    const match = src.match(rule)
+    return !!match && new RegExp('(^|[\\s;])' + property + '\\s*:').test(match[1])
+  }
+  // 生效的是最後一次宣告，所以兩邊都取 last
+  const lastIndex = test => order.reduce((found, file, i) => (test(file) ? i : found), -1)
+  const arrow = lastIndex(f => declares(f, '[data-toggle].expanded::after', 'transform'))
+  const wedge = lastIndex(f => declares(f, '.nav-item.active::after', 'transform'))
+  assert.notEqual(arrow, -1, '找不到展開箭頭的 transform')
+  assert.notEqual(wedge, -1,
+    '沒有任何檔案替連接尖角重寫 transform——展開箭頭會把它轉 45 度（.nav-item.active::after）')
+  assert.ok(wedge > arrow,
+    `連接尖角的 transform（${order[wedge]}）要排在展開箭頭（${order[arrow]}）之後，` +
+    '兩條權重相同，比的是順序')
+  ok('連接尖角的 transform 排在展開箭頭之後，兩者共用 ::after 也不會轉歪')
+}
+
+console.log('\nPASS: Shell 版面對齊（topbar 底線 ＝ 側欄分隔線）＋ 表格外觀單一來源＋疊放順序＋表單欄位格線＋側欄淡出＋連接尖角')

@@ -24,6 +24,18 @@
     #1aa2ba 100%
   );
 }
+/* 連接尖角貼齊側欄右緣：.nav 的右內距是 8px，作用中項目再往右外推 8px，
+   所以 right: 0 的尖角右緣正好落在側欄邊上。
+
+   transform 也必須在這裡重寫一次。尖角與「可展開」的箭頭共用同一個 ::after：
+   箭頭是 sidebar-selection-variant-two.css 的 [data-toggle].expanded::after，
+   它的 transform 是 translateY(-35%) rotate(45deg)，權重與 .nav-item.active::after
+   一樣都是 (0,2,1)，而那支檔案排在 active-nav-connector.css 後面——同權重比順序，
+   箭頭贏，尖角就被轉了 45 度又往上挪。一個既是 [data-toggle] 又是 .active 的項目
+   （收合後代替子項顯示作用中的第一層）因此會長出一個歪掉的尖角。
+   這條把它轉回來；順便關掉箭頭的 transition，尖角不需要跟著轉場。 */
 .nav-item.active::after {
   right: 0;
+  transform: translateY(-50%);
+  transition: none;
 }
