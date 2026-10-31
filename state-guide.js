@@ -119,7 +119,7 @@ window.renderStateGuide = () => `<div class="style-guide state-guide-page">
       <span>骨架列間距</span><strong>8px</strong>
       <span>遮罩底色</span><strong>rgba(255,255,255,.6)</strong>
       <span>舊資料透明度</span><strong>0.45</strong>
-      <span>Spinner</span><strong>18px / 2px / #1596AD</strong>
+      <span>Spinner</span><strong>18px / 2px / #927039</strong>
     </div>
   </section>
 

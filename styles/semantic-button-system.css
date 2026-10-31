@@ -5,7 +5,7 @@
    桌機與手機同一個尺寸：內距不隨斷點改變，所以算出來都是 32px——
    和圖示按鈕、分頁按鈕、輸入框全部同高，也與 Element Plus 預設的 32px 相同。
 
-   框線不佔高度：描邊用 inset box-shadow 畫在元素內側（--btn-ring），
+   框線不佔高度：描邊是 ::after 畫在元素內側的 1px 漸層框（--btn-ring），
    高度才會停在 4px 格線上。不得改回佔高度的 border。
 
    高度不另外寫，連 min-height 也沒有：line-height 是明確的 16px，
@@ -14,13 +14,6 @@
 
    圖示按鈕用的是同一組變數，只是四邊內距相同、圖示尺寸等於 --btn-content，
    所以它自己長成正方形，而且高度與文字按鈕完全相同——不是各自寫 32px 湊出來的。 */
-/* --btn-shade 註冊成 <percentage>：color-mix() 的比例欄位只吃真正的百分比，
-   未註冊的自訂屬性是一串未定型的 token，代入後整條宣告可能被丟掉。 */
-@property --btn-shade {
-  syntax: "<percentage>";
-  inherits: true;
-  initial-value: 75%;
-}
 :root {
   /* 按鈕裡那塊內容的高度。文字用它當行高，圖示用它當邊長——
      兩者共用同一個值，所以不管這個數字是多少，兩種按鈕都一樣高。
@@ -33,65 +26,143 @@
   /* 算出來的高度。按鈕本身不用它（高度是內距撐開的），
      只有需要「同寬」的方形控制拿它當最小寬度，輸入類控制拿它當高度。 */
   --btn-h: calc(var(--btn-content) + var(--btn-pad-y) * 2);
-  /* 漸層下緣要「深一階」。75% 不是隨手挑的，是站上既有的一階：
-     --blue #1596AD → --blue-ink #10707F，三個通道都落在原值的 73–76%。
-     整站只有這一個數字在控制所有按鈕的漸層深度，要調深淺改這裡。 */
-  --btn-shade: 75%;
 }
-/* 八個語意色各自只宣告 --button-color 一個值（最終配色在
-   strict-semantic-token-mapping.css），底色由這裡的公式統一算出來：
-   上緣是本色，下緣深一階，由上往下。整站只有這一條 background，
-   所以八顆按鈕的漸層一定一致，也不會有人在某一頁補一個自己的漸層。
-   實心與 outline 共用同一支 --button-color：outline 拿它當文字與描邊色。 */
+/* 按鈕外觀：本色由上往下從亮到深、底部透出淺色內光、上半部一片下緣呈弧形並往下淡出的
+   鏡面高光、1px 漸層框、帶本色的落影。每個語意色只宣告 --button-color（最終配色在 strict-semantic-token-mapping.css），
+   其餘顏色都由它以 color-mix 推出來，八顆按鈕的質感因此一致：
+     --btn-face-top  表面上緣，本色 78% ＋ 白
+     --btn-face-low  表面下緣，本色 80% ＋ 黑
+     --btn-glow      底部內光，本色 45% ＋ 白
+     --btn-edge-top  框線上緣，本色 70% ＋ 黑
+     --btn-edge      框線下緣，本色 58% ＋ 黑
+     --btn-ink       次要按鈕的文字，本色 78% ＋ 黑
+     --btn-soft      次要按鈕的框線上緣，本色 40% ＋ 白
+   畫法分三層：
+     background  底部內光＋本色由上往下的漸層
+     ::before    弧形鏡面高光，往下淡到透明、模糊 1px，和底色之間沒有切線
+     ::after     1px 漸層框，畫在元素內側（--btn-ring），不佔高度
+   兩個偽元素都在 isolation 建立的堆疊脈絡裡用 z-index: -1，疊在底色之上、文字之下。
+   全站只有這一套，不得在任何頁面補背景、陰影或高光。 */
 .semantic-btn {
+  --btn-face-top: color-mix(in srgb, var(--button-color) 78%, #fff);
+  --btn-face-low: color-mix(in srgb, var(--button-color) 80%, #000);
+  --btn-glow: color-mix(in srgb, var(--button-color) 45%, #fff);
+  --btn-edge-top: color-mix(in srgb, var(--button-color) 70%, #000);
+  --btn-edge: color-mix(in srgb, var(--button-color) 58%, #000);
+  --btn-ink: color-mix(in srgb, var(--button-color) 78%, #000);
+  --btn-soft: color-mix(in srgb, var(--button-color) 40%, #fff);
+  --btn-highlight: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.7) 0%,
+    rgba(255, 255, 255, 0.28) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  --btn-frame: linear-gradient(180deg, var(--btn-edge-top), var(--btn-edge));
+  /* 陰影三態：靜止、hover（上浮 1px、本色陰影拉長）、按下（陰影收進內側、下沉 1px） */
+  --btn-shadow:
+    inset 0 -2px 0.25rem rgba(255, 255, 255, 0.25),
+    0 0.25rem 0.5rem -2px color-mix(in srgb, var(--button-color) 55%, transparent),
+    0 1px 2px rgba(0, 0, 0, 0.2);
+  --btn-shadow-hover:
+    inset 0 -2px 0.25rem rgba(255, 255, 255, 0.3),
+    0 0.5rem 0.75rem -2px color-mix(in srgb, var(--button-color) 60%, transparent),
+    0 1px 2px rgba(0, 0, 0, 0.2);
+  --btn-shadow-active:
+    inset 0 2px 0.25rem rgba(0, 0, 0, 0.25),
+    0 1px 2px color-mix(in srgb, var(--button-color) 40%, transparent);
+  position: relative;
+  isolation: isolate;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.25rem;
   padding: var(--btn-pad-y) var(--btn-pad-x);
   border: 0;
-  border-radius: 0.5rem;
-  /* 底色與漸層分開寫，不是一條 background 簡寫：萬一瀏覽器不吃 color-mix，
-     background-image 整條被丟掉，background-color 還在，按鈕會退回原本的實色，
-     而不是變成一顆白底白字的空殼。 */
+  /* 底色與漸層分開寫：瀏覽器不支援 color-mix 時，background-image 整條失效，
+     background-color 仍在，按鈕退回實色而不是白底白字。 */
   background-color: var(--button-color);
-  background-image: linear-gradient(
-    180deg,
-    var(--button-color) 0%,
-    color-mix(in srgb, var(--button-color) var(--btn-shade), #000) 100%
-  );
+  background-image:
+    radial-gradient(90% 60% at 50% 120%, var(--btn-glow) 0%, transparent 70%),
+    linear-gradient(180deg, var(--btn-face-top) 0%, var(--button-color) 55%, var(--btn-face-low) 100%);
+  box-shadow: var(--btn-shadow);
   color: #fff;
-  /* 字級與內容高度是兩回事：14px 的字放在 16px 的行高裡。
-     真正決定按鈕高度的是行高，不是字級。 */
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.38);
+  /* 字級與內容高度是兩回事：14px 的字放在 16px 的行高裡，高度由行高決定。 */
   font-size: 0.875rem;
   font-weight: 700;
   line-height: var(--btn-content);
   white-space: nowrap;
   transition:
     filter 0.16s,
-    transform 0.16s,
+    transform 0.12s,
     box-shadow 0.16s;
 }
+/* 鏡面高光：四周留邊、下緣呈弧形 */
+.semantic-btn::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 0.25rem;
+  right: 0.25rem;
+  height: 54%;
+  z-index: -1;
+  border-radius: 2px 2px 50% 50% / 2px 2px 100% 100%;
+  background: var(--btn-highlight);
+  filter: blur(1px);
+  pointer-events: none;
+}
+/* 漸層框：遮罩只留下 --btn-ring 寬的一圈 */
+.semantic-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  padding: var(--btn-ring);
+  border-radius: inherit;
+  background: var(--btn-frame);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  pointer-events: none;
+}
 .semantic-btn:hover:not(:disabled) {
-  filter: brightness(0.95);
-  box-shadow: var(--shadow-sm);
+  filter: brightness(1.07) saturate(1.05);
+  box-shadow: var(--btn-shadow-hover);
+  transform: translateY(-1px);
 }
 .semantic-btn:active:not(:disabled) {
+  filter: brightness(0.96);
+  box-shadow: var(--btn-shadow-active);
   transform: translateY(1px);
 }
 .semantic-btn:focus-visible {
-  outline: 3px solid rgba(40, 127, 152, 0.2);
+  outline: 3px solid color-mix(in srgb, var(--button-color) 35%, transparent);
   outline-offset: 2px;
 }
 .semantic-btn:disabled {
-  opacity: 0.42;
+  filter: grayscale(0.5) brightness(1.1);
+  opacity: 0.5;
+  box-shadow: none;
   cursor: not-allowed;
+}
+@media (prefers-reduced-motion: reduce) {
+  .semantic-btn {
+    transition: none;
+  }
+  .semantic-btn:hover:not(:disabled),
+  .semantic-btn:active:not(:disabled) {
+    transform: none;
+  }
 }
 /* 這八個值是底線，實際生效的是 strict-semantic-token-mapping.css 的那一組；
    留著是為了讓這支檔案單獨看也畫得出按鈕。一顆按鈕只宣告 --button-color，
    不再各自寫 background——背景只有上面那一條公式在算。 */
 .btn-search {
-  --button-color: #287f98;
+  --button-color: var(--brand);
 }
 .btn-add {
   --button-color: #238864;
@@ -114,14 +185,33 @@
 .btn-neutral {
   --button-color: #667085;
 }
+/* 次要（outline）：白底透一點本色、深一階的本色文字，沿用同一套高光、框與陰影三態 */
 .semantic-btn.outline {
-  background: #fff !important;
-  color: var(--button-color);
-  box-shadow: inset 0 0 0 var(--btn-ring) currentColor;
-}
-/* hover 的浮起陰影會蓋掉描邊，兩個要一起寫 */
-.semantic-btn.outline:hover:not(:disabled) {
-  box-shadow: inset 0 0 0 var(--btn-ring) currentColor, var(--shadow-sm);
+  --btn-highlight: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  --btn-frame: linear-gradient(180deg, var(--btn-soft), color-mix(in srgb, var(--button-color) 70%, #fff));
+  --btn-shadow:
+    0 0.25rem 0.5rem -2px color-mix(in srgb, var(--button-color) 30%, transparent),
+    0 1px 2px rgba(0, 0, 0, 0.1);
+  --btn-shadow-hover:
+    0 0.5rem 0.75rem -2px color-mix(in srgb, var(--button-color) 35%, transparent),
+    0 1px 2px rgba(0, 0, 0, 0.1);
+  --btn-shadow-active: inset 0 2px 0.25rem color-mix(in srgb, var(--button-color) 25%, transparent);
+  background-color: #fff;
+  background-image:
+    radial-gradient(90% 60% at 50% 120%, color-mix(in srgb, var(--button-color) 18%, #fff) 0%, transparent 70%),
+    linear-gradient(
+      180deg,
+      #fff 0%,
+      color-mix(in srgb, var(--button-color) 8%, #fff) 55%,
+      color-mix(in srgb, var(--button-color) 20%, #fff) 100%
+    );
+  color: var(--btn-ink);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 .button-guide-grid {
   display: grid;
@@ -180,7 +270,7 @@
 }
 .rule-grid > div {
   padding-left: 0.5rem;
-  border-left: 3px solid var(--blue);
+  border-left: 3px solid var(--brand);
 }
 .rule-grid p {
   margin: 0.25rem 0 0;
@@ -240,7 +330,7 @@
 .button-formula code {
   display: block;
   font-size: 0.75rem;
-  color: #1596ad;
+  color: var(--brand);
 }
 .button-formula span {
   display: block;
@@ -263,8 +353,8 @@
 }
 /* 算出來的那一格是結論，底色標出來 */
 .button-formula .is-result {
-  background: #f1fafb;
-  border-color: #b9e3ea;
+  background: var(--brand-tint);
+  border-color: var(--brand-line);
 }
 /* 四顆只差文字長度的按鈕，刻意換行以免在窄螢幕被擠 */
 .button-width-demo {
@@ -296,7 +386,7 @@
   margin: 0 0 0.5rem;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #1596ad;
+  color: var(--brand);
 }
 .button-size-demo h5 em {
   font-style: normal;

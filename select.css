@@ -1,30 +1,32 @@
-.bo-select-host{width:100%;min-width:0;--el-color-primary:var(--blue);--el-border-radius-base:0.5rem;--el-font-size-base:0.875rem}
-.bo-select-host .el-select__wrapper{min-height:2rem;padding:0 0.5rem;border-radius:0.5rem;box-shadow:0 0 0 1px var(--line-control) inset;font-size:0.875rem;font-weight:400}
-.bo-select-host .el-select__wrapper.is-focused{box-shadow:0 0 0 1px var(--blue) inset,0 0 0 3px rgba(21,150,173,.1)}
+.bo-select-host{width:100%;min-width:0;--el-color-primary:var(--brand);--el-border-radius-base:0.25rem;--el-font-size-base:0.875rem}
+/* 欄位外觀與原生輸入框相同（input-component-standard.css 的凹槽變數）：EP 的欄位沒有 border，框線用 --input-ring 畫 */
+.bo-select-host .el-select__wrapper{min-height:2rem;padding:0 0.5rem;border-radius:0.25rem;background-color:var(--input-bg);box-shadow:var(--input-ring),var(--input-shadow);font-size:0.875rem;font-weight:400;transition:box-shadow .16s,background-color .16s}
+.bo-select-host .el-select__wrapper:hover:not(.is-focused):not(.is-disabled){box-shadow:var(--input-ring-hover),var(--input-shadow)}
+.bo-select-host .el-select__wrapper.is-focused{background-color:var(--card);box-shadow:inset 0 0 0 1px var(--input-focus),var(--input-shadow-focus)}
+.bo-select-host .el-select__wrapper.is-disabled{background-color:var(--input-disabled-bg);box-shadow:inset 0 0 0 1px var(--input-disabled-line)}
 .bo-select-host .el-select__selected-item{color:var(--text)}
 .bo-select-host .el-select__placeholder.is-transparent{color:var(--text-faint)}
-.bo-select-popper{--el-color-primary:var(--blue);border-radius:0.5rem!important;border-color:var(--line-control)!important;box-shadow:0 0 0.75rem rgba(21,35,63,.1)!important}
+.bo-select-popper{--el-color-primary:var(--brand);border-radius:0.5rem!important;border-color:var(--line-control)!important;box-shadow:0 0 0.75rem rgba(21,35,63,.1)!important}
 .bo-select-popper .el-select-dropdown__list{padding:0.25rem}
-.bo-select-popper .el-select-dropdown__item{height:2rem;line-height:2rem;padding:0 0.5rem;border-radius:0.25rem;font-size:0.875rem;color:var(--sidebar)}
-.bo-select-popper .el-select-dropdown__item.is-hovering,.bo-select-popper .el-select-dropdown__item.is-selected{background:var(--blue-tint);color:var(--blue);font-weight:400}
+.bo-select-popper .el-select-dropdown__item{height:2rem;line-height:2rem;padding:0 0.5rem;border-radius:0.25rem;font-size:0.875rem;color:var(--text)}
+.bo-select-popper .el-select-dropdown__item.is-hovering,.bo-select-popper .el-select-dropdown__item.is-selected{background:var(--brand-tint);color:var(--brand);font-weight:400}
 .bo-select-status{width:5.375rem;display:inline-block}
 .bo-select-status .el-select__wrapper{min-height:1.75rem}
 .member-card-head .bo-select-status{margin-left:auto}
 .bo-select-page-size{width:9.75rem;flex:none}
 /* 只調高度，框線沿用一般下拉的灰階（var(--line-control)）。
-   這裡原本是 var(--blue)，但主色在這套系統裡代表「聚焦中」——.is-focused 就是這個色，
+   這裡原本是 var(--brand)，但主色在這套系統裡代表「聚焦中」——.is-focused 就是這個色，
    常駐著色會讓人以為這個下拉被選取了。要強調的是旁邊的頁碼，不是每頁筆數。 */
 .bo-select-page-size .el-select__wrapper{min-height:2rem}
 .page select[hidden],.bo-modal select[hidden]{display:none!important}
 
 /* Multi-select tags: same 32px field height, tags sit inside without pushing it taller. */
 .bo-select-host .el-select__selection{gap:0.25rem}
-.bo-select-host .el-tag{height:1.375rem;padding:0 0.25rem;border-radius:0.25rem;background:var(--blue-tint);border-color:var(--blue-line);color:var(--blue-ink);font-size:0.75rem;font-weight:400}
-.bo-select-host .el-tag .el-tag__close{color:var(--blue-ink)}
-.bo-select-host .el-tag .el-tag__close:hover{background:var(--blue);color:#fff}
+.bo-select-host .el-tag{height:1.375rem;padding:0 0.25rem;border-radius:0.25rem;background:var(--brand-tint);border-color:var(--brand-line);color:var(--brand-ink);font-size:0.75rem;font-weight:400}
+.bo-select-host .el-tag .el-tag__close{color:var(--brand-ink)}
+.bo-select-host .el-tag .el-tag__close:hover{background:var(--brand);color:#fff}
 .bo-select-host .el-select__input{font-size:0.875rem}
-.bo-select-host.is-error .el-select__wrapper{box-shadow:0 0 0 1px var(--danger) inset}
-.bo-select-host.is-error .el-select__wrapper.is-focused{box-shadow:0 0 0 1px var(--danger) inset,0 0 0 3px rgba(220,38,38,.1)}
+.bo-select-host.is-error .el-select__wrapper,.bo-select-host.is-error .el-select__wrapper.is-focused{box-shadow:inset 0 0 0 1px var(--input-error),var(--input-shadow-error)}
 
 /* Dropdown header: select-all and the minimum-length hint. */
 .bo-select-popper .el-select-dropdown__header{padding:0.25rem 0.5rem;border-bottom:1px solid var(--line-faint)}

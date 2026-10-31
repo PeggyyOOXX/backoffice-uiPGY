@@ -7,7 +7,7 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--blue);
+  color: var(--brand);
   font: inherit;
   text-align: left;
   text-decoration: underline;
@@ -17,11 +17,11 @@
 }
 
 .example-member-link:hover {
-  color: var(--blue-ink);
+  color: var(--brand-ink);
 }
 
 .example-member-link:focus-visible {
-  outline: 2px solid var(--blue);
+  outline: 2px solid var(--brand);
   outline-offset: 3px;
   border-radius: 2px;
 }

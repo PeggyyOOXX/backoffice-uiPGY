@@ -19,7 +19,7 @@ const TOKENS = [
   ['列底線', '1px #EDF0F4'],
   ['直分隔線', '表頭 1px var(--line-strong)，內容 1px #EDF0F4'],
   ['每列最後一格', '不畫右側分隔線'],
-  ['整列 hover', '#F1F8FA'],
+  ['整列 hover', '#FBF8F2'],
   ['合計列', '底色同表頭 var(--surface-head)'],
 ]
 const RULES = [

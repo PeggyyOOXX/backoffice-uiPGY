@@ -206,13 +206,13 @@ ok("列表頁：包住表格的卡片有內距，分頁列不會貼邊");
     /\.pagination-size\s+\.bo-select-page-size\s*\{[^}]*width/.test(css),
     "要給 .bo-select-host 寬度，不是只給已經隱藏的原生 select",
   );
-  // 主色 #1596ad 在這套系統裡代表「聚焦中」。常駐框線用它，使用者會讀成已選取。
+  // 主色 #927039 在這套系統裡代表「聚焦中」。常駐框線用它，使用者會讀成已選取。
   const selectCss = fs.readFileSync("select.css", "utf8");
   for (const [, body] of selectCss.matchAll(
     /\.bo-select-page-size[^{]*\{([^}]*)\}/g,
   )) {
     assert.ok(
-      !/#1596ad/i.test(body),
+      !/#927039/i.test(body),
       `每頁筆數下拉的常駐樣式不該用主色：${body.trim()}`,
     );
   }

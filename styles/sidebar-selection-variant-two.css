@@ -11,20 +11,20 @@
   padding-top: 0.75rem;
 }
 .nav-item.active {
-  color: #123642;
-  background: #dff3f5;
+  color: var(--brand-ink);
+  background: var(--brand-tint);
   box-shadow: 0 3px 0.5rem rgba(2, 19, 27, 0.15);
   font-weight: 750;
 }
 .nav-item.active .ico {
-  color: #147e91;
+  color: var(--brand);
 }
 .nav-item.active:hover {
-  background: #e8f8f9;
+  background: var(--brand-tint);
 }
 .nav-level-3.active {
-  color: #123642;
-  background: #dff3f5;
+  color: var(--brand-ink);
+  background: var(--brand-tint);
   box-shadow: 0 3px 0.5rem rgba(2, 19, 27, 0.15);
 }
 [data-toggle]::after {

@@ -18,25 +18,25 @@
 
 
 
-.risk-link{color:var(--blue);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
-.risk-link:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+.risk-link{color:var(--brand);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.risk-link:focus-visible{outline:2px solid var(--brand);outline-offset:3px}
 .risk-secondary{font-size:0.75rem;color:var(--text-muted)}
 /* 「誰在處理」：兩種情況（我自己／別人）用同一種字，差別只在下面有沒有按鈕。 */
 .risk-operator{display:block;text-align:left;font-size:0.75rem;color:var(--text-muted)}
 .risk-operator:has(+.risk-actions){margin-bottom:0.25rem}
 .page .data-table-grid .risk-actions{justify-content:center}
 .page .data-table-grid .risk-operator{text-align:center}
-.risk-level{display:inline-block;width:0.625rem;height:0.625rem;border-radius:50%;margin-right:0.25rem;background:var(--blue)}
+.risk-level{display:inline-block;width:0.625rem;height:0.625rem;border-radius:50%;margin-right:0.25rem;background:var(--brand)}
 .risk-level-2{background:#436ded}.risk-level-3{background:#9763c8}
 
 
 dialog.bo-modal.risk-wide-dialog{width:min(62.5rem,calc(100vw - 2rem))}
 .risk-confirm-note{text-align:center;font-size:0.875rem;margin:0 0 1rem}
-.risk-detail-section{margin-bottom:1.5rem}.risk-detail-section h3{color:var(--blue);font-size:0.875rem;margin:0 0 0.75rem}
+.risk-detail-section{margin-bottom:1.5rem}.risk-detail-section h3{color:var(--brand);font-size:0.875rem;margin:0 0 0.75rem}
 .risk-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border:1px solid var(--line);border-radius:0.5rem;overflow:hidden;margin:0}
 .risk-detail-grid>div{padding:0.75rem 1rem;border-bottom:1px solid var(--line);min-width:0}
 .risk-detail-grid dt{font-size:0.75rem;color:var(--text-muted)}.risk-detail-grid dd{margin:0.5rem 0 0;font-size:0.875rem;overflow-wrap:anywhere;line-height:1.6}
-.risk-actual{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem;margin-bottom:1.5rem;border:1px solid var(--line);border-radius:0.5rem;color:var(--blue);background:var(--blue-tint)}
+.risk-actual{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem;margin-bottom:1.5rem;border:1px solid var(--line);border-radius:0.5rem;color:var(--brand);background:var(--brand-tint)}
 .risk-actual strong{font-size:1.25rem}
 .risk-review-notes{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.risk-review-notes label{font-size:0.75rem;min-width:0}.risk-review-notes textarea{display:block;margin-top:0.5rem;resize:vertical;min-height:5.5rem}
 .risk-note-count{display:block;text-align:right;color:var(--text-muted);font-size:0.75rem;margin-top:0.25rem}
@@ -46,7 +46,7 @@ dialog.bo-modal.risk-wide-dialog{width:min(62.5rem,calc(100vw - 2rem))}
 .risk-audit-time{display:block;margin-top:0.25rem;font-size:0.75rem;color:var(--text-muted)}
 .risk-audit-entry>header .badge{margin-left:auto;flex:none}
 .risk-audit-entry .risk-detail-grid{border:0;border-radius:0}
-.risk-audit-deduction{display:flex;align-items:center;justify-content:space-between;gap:0.75rem;margin:0;padding:0.75rem 1rem;color:var(--blue)}
+.risk-audit-deduction{display:flex;align-items:center;justify-content:space-between;gap:0.75rem;margin:0;padding:0.75rem 1rem;color:var(--brand)}
 .risk-audit-deduction strong{font-size:1rem}
 /* 手機卡片。版面與配色由共用的 dataCards() 決定，這裡只留這一頁多出來的東西。
    先前這一段還掛著 .member-card-head／.mobile-meta／.mobile-card-bottom 三組選擇器，

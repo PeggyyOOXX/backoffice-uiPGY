@@ -174,8 +174,8 @@
     width: 0.4375rem;
     height: 0.4375rem;
     margin-right: 0.25rem;
-    border-right: 1.5px solid var(--blue);
-    border-bottom: 1.5px solid var(--blue);
+    border-right: 1.5px solid var(--brand);
+    border-bottom: 1.5px solid var(--brand);
     transform: rotate(45deg);
     transition: transform 0.2s ease;
   }
@@ -204,7 +204,6 @@
     height: 2rem;
     min-height: 2rem;
     padding: 0 0.5rem;
-    border-radius: 0.5rem;
     font-size: 0.875rem;
   }
   .source-filter.mobile-open .source-filter-actions {
@@ -224,8 +223,8 @@
     display: inline-flex;
     margin-left: auto;
     background: #fff !important;
-    color: var(--blue) !important;
-    border: 1px solid var(--blue) !important;
+    color: var(--brand) !important;
+    border: 1px solid var(--brand) !important;
     box-shadow: none !important;
   }
   .member-actions.show-mobile-more .mobile-secondary-action {

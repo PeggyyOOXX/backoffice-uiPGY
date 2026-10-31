@@ -1,6 +1,6 @@
 /* Shared Tabs. Single source for every tablist: 樣式規範、設定頁、複雜設定、
    彈窗內的語言頁籤與工作區頁籤都用這組，個別頁面不得再自訂頁籤配色與高度。 */
-.bo-tabs{--tab-on:var(--blue);--tab-off:var(--text-muted);--tab-line:var(--line-control);min-width:0;margin-bottom:0.5rem}
+.bo-tabs{--tab-on:var(--brand);--tab-off:var(--text-muted);--tab-line:var(--line-control);min-width:0;margin-bottom:0.5rem}
 
 /* The rail clips the scroller and carries the edge shadows that say "more tabs". */
 .bo-tabs-rail{position:relative;min-width:0}
@@ -16,7 +16,7 @@
 .bo-tab:focus-visible{outline:2px solid var(--tab-on);outline-offset:-3px}
 .bo-tab:disabled{color:var(--text-faint);cursor:not-allowed}
 .bo-tab-count{font-style:normal;font-size:0.75rem;font-weight:600;line-height:1;padding:0.25rem 0.25rem;border-radius:0.5rem;background:var(--line-faint);color:var(--text-muted)}
-.bo-tab.is-active .bo-tab-count{background:var(--blue-tint);color:var(--tab-on)}
+.bo-tab.is-active .bo-tab-count{background:var(--brand-tint);color:var(--tab-on)}
 
 /* 底線型：頁面層級分類，預設。 */
 .bo-tabs-line .bo-tabs-scroll{gap:1rem;border-bottom:1px solid var(--tab-line)}
@@ -31,7 +31,7 @@
 .bo-tabs-card .bo-tabs-rail{border-bottom:1px solid var(--tab-line)}
 .bo-tabs-card .bo-tabs-scroll{gap:0.25rem;align-items:stretch;margin-bottom:-1px}
 .bo-tabs-card .bo-tab{min-height:2.3125rem;padding:0 1rem;border:1px solid var(--tab-line);border-radius:0.25rem 0.25rem 0 0;background:var(--surface-hover)}
-.bo-tabs-card .bo-tab:hover:not(:disabled):not(.is-active){background:var(--line-control);color:var(--sidebar)}
+.bo-tabs-card .bo-tab:hover:not(:disabled):not(.is-active){background:var(--line-control);color:var(--text)}
 .bo-tabs-card .bo-tab.is-active{background:#fff;color:var(--tab-on);font-weight:700;border-color:var(--tab-on);border-bottom-color:#fff;position:relative;z-index:1}
 .bo-tabs-card .bo-tab:disabled{background:var(--surface)}
 

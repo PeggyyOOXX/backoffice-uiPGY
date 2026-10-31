@@ -44,18 +44,18 @@
 }
 .nav-item.active {
   color: #fff;
-  background: rgba(73, 157, 175, 0.16);
+  background: color-mix(in srgb, var(--brand) 16%, transparent);
   border: 0;
-  box-shadow: inset 3px 0 0 #55b4c3;
+  box-shadow: inset 3px 0 0 var(--brand);
   font-weight: 700;
 }
 .nav-item.active::before {
   display: none !important;
 }
 .nav-item.active:hover {
-  background: rgba(73, 157, 175, 0.2);
+  background: color-mix(in srgb, var(--brand) 20%, transparent);
 }
 .nav-level-3.active {
-  background: rgba(73, 157, 175, 0.13);
-  box-shadow: inset 3px 0 0 #55b4c3;
+  background: color-mix(in srgb, var(--brand) 13%, transparent);
+  box-shadow: inset 3px 0 0 var(--brand);
 }

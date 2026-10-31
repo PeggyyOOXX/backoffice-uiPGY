@@ -1,7 +1,7 @@
 /* Radio and Checkbox: one row per option, control first, label right after it. */
 .choice-control{display:inline-flex;align-items:flex-start;gap:0.5rem;min-width:0;font-size:0.875rem;font-weight:400;line-height:1.6;cursor:pointer}
-.choice-control input{flex:none;width:1rem;height:1rem;margin:0.25rem 0 0;accent-color:var(--blue);cursor:pointer}
-.choice-control input:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.choice-control input{flex:none;width:1rem;height:1rem;margin:0.25rem 0 0;accent-color:var(--brand);cursor:pointer}
+.choice-control input:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
 .choice-control input:disabled{cursor:not-allowed}
 .choice-control:has(input:disabled){color:var(--text-faint);cursor:not-allowed}
 .choice-control>span{min-width:0;overflow-wrap:anywhere}
@@ -15,10 +15,10 @@
 .choice-group>legend{padding:0;margin-bottom:0.5rem;font-size:0.75rem;font-weight:600}
 .choice-group[aria-invalid=true] .choice-control input{outline:2px solid var(--danger);outline-offset:2px}
 .choice-card{display:flex;align-items:flex-start;gap:0.5rem;min-width:0;padding:0.5rem;border:1px solid var(--line-control);border-radius:0.5rem;cursor:pointer}
-.choice-card:has(input:checked),.choice-card.is-selected{background:var(--blue-tint);border-color:var(--blue)}
+.choice-card:has(input:checked),.choice-card.is-selected{background:var(--brand-tint);border-color:var(--brand)}
 .choice-card:has(input:disabled){background:var(--surface);color:var(--text-faint);cursor:not-allowed}
-.choice-card input{flex:none;width:1rem;height:1rem;margin:0.25rem 0 0;accent-color:var(--blue);cursor:inherit}
-.choice-card input:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.choice-card input{flex:none;width:1rem;height:1rem;margin:0.25rem 0 0;accent-color:var(--brand);cursor:inherit}
+.choice-card input:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
 .choice-card>span{min-width:0}
 .choice-card strong{display:block;font-size:0.875rem;font-weight:600;line-height:1.5;overflow-wrap:anywhere}
 .choice-card small{display:block;margin-top:0.25rem;font-size:0.75rem;line-height:1.6;color:var(--text-muted);overflow-wrap:anywhere}

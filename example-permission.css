@@ -43,7 +43,7 @@
 }
 
 .permission-toggle:focus-visible {
-  outline: 2px solid var(--blue);
+  outline: 2px solid var(--brand);
   outline-offset: 2px;
   border-radius: 2px;
 }

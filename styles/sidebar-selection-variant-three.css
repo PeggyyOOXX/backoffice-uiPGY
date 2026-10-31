@@ -8,8 +8,8 @@
   background: linear-gradient(
     90deg,
     #416fd5 0%,
-    #2589b4 52%,
-    var(--blue) 100%
+    var(--brand) 52%,
+    var(--brand) 100%
   );
   box-shadow: none;
 }
@@ -20,8 +20,8 @@
   background: linear-gradient(
     90deg,
     #4777df 0%,
-    #2b93be 52%,
-    #1aa2ba 100%
+    var(--brand) 52%,
+    var(--brand) 100%
   );
 }
 /* 連接尖角貼齊側欄右緣：.nav 的右內距是 8px，作用中項目再往右外推 8px，

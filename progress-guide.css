@@ -18,7 +18,7 @@
 .bo-progress-fill {
   height: 100%;
   border-radius: 0.25rem;
-  background: var(--blue);
+  background: var(--brand);
   transition: width 0.3s;
 }
 .bo-progress-text {
@@ -41,7 +41,7 @@
   background: var(--danger);
 }
 .bo-progress.is-info .bo-progress-fill {
-  background: var(--blue);
+  background: var(--brand);
 }
 
 /* --- 規範頁排版 --- */

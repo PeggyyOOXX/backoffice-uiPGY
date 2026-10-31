@@ -19,7 +19,7 @@ const STEPS = [
     fields: [
       { type: 'text', label: '站台名稱', value: 'DEMO03' },
       { type: 'text', label: '站台網域', value: 'demo03.example.com' },
-      { type: 'text', label: '前台主色', value: '#1596AD' },
+      { type: 'text', label: '前台主色', value: '#927039' },
       { type: 'text', label: '後台主色', value: '#273457' },
       { type: 'note', label: '上傳 Logo', text: '由「圖片上傳 Upload」元件處理' },
     ],
@@ -127,8 +127,8 @@ window.renderStepsPage = () => guidePage({
       heading: '三種狀態',
       body: `<p class="component-description">已完成顯示勾號而不是數字——數字只代表位置，勾號代表結果。這一點正式後台的 <code>StepLine.vue</code> 已經做對了（<code>activeStep &gt; index + 1</code> 時換成 check 圖示）。</p>
         <table class="steps-state-table"><thead><tr><th>狀態</th><th>標記</th><th>顏色</th></tr></thead><tbody>
-          <tr><td>已完成</td><td>勾號</td><td>主題綠底、白色勾號</td></tr>
-          <tr><td>目前</td><td>數字</td><td>主題綠底、白字、字重 700</td></tr>
+          <tr><td>已完成</td><td>勾號</td><td>品牌色底、白色勾號</td></tr>
+          <tr><td>目前</td><td>數字</td><td>品牌色底、白字、字重 700</td></tr>
           <tr><td>未完成</td><td>數字</td><td>淺灰底、灰字</td></tr>
         </tbody></table>`,
     },
@@ -147,8 +147,8 @@ window.renderStepsPage = () => guidePage({
     ['步驟間距', '16px'],
     ['標題', '12px / 600'],
     ['說明', '12px / #718096'],
-    ['目前步驟', '主題綠 #1596AD'],
-    ['已完成', '主題綠底 ＋ 白色勾號'],
+    ['目前步驟', '品牌色 #927039'],
+    ['已完成', '品牌色底 ＋ 白色勾號'],
     ['未完成', '#EDF1F5 底 / #718096 字'],
     ['正式後台步數', '開站 3 步、新增代理 2 步'],
     ['手機排列', '改為直向'],

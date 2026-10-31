@@ -1,10 +1,28 @@
+/* 輸入框外觀：米白底、上深下淺的 1px 框，內側上緣一道陰影、外側下緣一條白光，像刻進卡片的凹槽。
+   顏色 Token 在 blue-teal-palette-override.css 的 :root（--input-bg、--input-line…）；
+   這裡組成陰影，原生欄位、共用下拉（select.css）與日期欄位（date-picker.css）都引用同一組。
+     --input-ring          用 inset box-shadow 畫的框（Element Plus 的欄位沒有 border）
+     --input-shadow        靜止：內側上緣陰影＋外側下緣白光
+     --input-shadow-focus  focus：內陰影減淡＋3px 淺杏光圈
+     --input-shadow-error  錯誤：紅色內陰影＋3px 紅色光圈 */
 :root {
   --input-placeholder: var(--text-faint);
   --input-text: var(--text);
-  --input-border: #d7e0e4;
-  --input-focus: var(--blue);
   --input-error: var(--danger);
-  --input-disabled-bg: #f2f4f6;
+  --input-ring:
+    inset 0 1px 0 var(--input-line-top),
+    inset 0 -1px 0 var(--input-line-bottom),
+    inset 0 0 0 1px var(--input-line);
+  --input-ring-hover: inset 0 0 0 1px var(--input-line-hover);
+  --input-shadow:
+    inset 0 2px 0.25rem color-mix(in srgb, var(--surface-inverse) 9%, transparent),
+    0 1px 0 rgba(255, 255, 255, 0.9);
+  --input-shadow-focus:
+    inset 0 1px 2px color-mix(in srgb, var(--surface-inverse) 6%, transparent),
+    0 0 0 3px color-mix(in srgb, var(--nav-active-to) 32%, transparent);
+  --input-shadow-error:
+    inset 0 2px 0.25rem color-mix(in srgb, var(--danger) 8%, transparent),
+    0 0 0 3px color-mix(in srgb, var(--danger) 10%, transparent);
 }
 input::placeholder,
 textarea::placeholder,
@@ -65,9 +83,6 @@ textarea::placeholder,
   width: 100%;
   height: 2rem;
   padding: 0 0.5rem;
-  border: 1px solid var(--input-border);
-  border-radius: 0.5rem;
-  background: #fff;
   color: var(--input-text);
   font:
     400 0.875rem/1.4 Inter,
@@ -76,27 +91,53 @@ textarea::placeholder,
     sans-serif;
   outline: none;
 }
-.guide-input:hover:not(:disabled):not(:read-only) {
-  border-color: #aebdc3;
+/* 原生欄位共用的凹槽外觀：表單欄位、篩選列、原生下拉、帶前後綴的欄位外框 */
+.guide-input,
+.control,
+select.guide-select,
+.affix-input {
+  border: 1px solid var(--input-line);
+  border-top-color: var(--input-line-top);
+  border-bottom-color: var(--input-line-bottom);
+  border-radius: 0.25rem;
+  background-color: var(--input-bg);
+  box-shadow: var(--input-shadow);
+  transition:
+    border-color 0.16s,
+    box-shadow 0.16s,
+    background-color 0.16s;
+}
+:is(.guide-input, .control, select.guide-select):hover:not(:disabled):not([readonly]):not(:focus),
+.affix-input:hover:not(:focus-within) {
+  border-color: var(--input-line-hover);
 }
 .guide-input:focus,
-.guide-input.demo-focus {
+.guide-input.demo-focus,
+.control:focus,
+select.guide-select:focus,
+.affix-input:focus-within {
   border-color: var(--input-focus);
-  box-shadow: 0 0 0 3px rgba(21, 150, 173, 0.12);
+  background-color: var(--card);
+  box-shadow: var(--input-shadow-focus);
 }
-.guide-input:disabled {
-  background: var(--input-disabled-bg);
-  border-color: #e2e6e9;
+.guide-input.is-error,
+.control.is-error,
+.affix-input:has(.is-error) {
+  border-color: var(--input-error);
+  box-shadow: var(--input-shadow-error);
+}
+:is(.guide-input, .control, select.guide-select):disabled {
+  border-color: var(--input-disabled-line);
+  background-color: var(--input-disabled-bg);
+  box-shadow: none;
   color: var(--text-faint);
   cursor: not-allowed;
 }
-.guide-input:read-only {
-  background: #f8fafb;
-  color: #53616a;
-}
-.guide-input.is-error {
-  border-color: var(--input-error);
-  box-shadow: 0 0 0 3px rgba(223, 82, 97, 0.1);
+:is(input, textarea):is(.guide-input, .control)[readonly] {
+  border-color: var(--input-disabled-line);
+  background-color: var(--input-readonly-bg);
+  box-shadow: none;
+  color: var(--text-subtle);
 }
 .input-spec small.error-text {
   min-height: 0;
@@ -135,9 +176,6 @@ textarea::placeholder,
 .affix-input {
   display: flex;
   align-items: center;
-  border: 1px solid var(--input-border);
-  border-radius: 0.5rem;
-  background: #fff;
   overflow: hidden;
 }
 .affix-input .guide-input {
@@ -210,7 +248,6 @@ textarea::placeholder,
   .guide-input {
     height: 2rem;
     padding: 0 0.5rem;
-    border-radius: 0.5rem;
     font-size: 0.875rem;
   }
   .token-table > div {
@@ -220,9 +257,9 @@ textarea::placeholder,
 .guide-select {
   appearance: none;
   padding-right: 1.75rem;
-  background: #fff
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23627087' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E")
-    no-repeat right 0.5rem center;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23627087' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
   background-size: 0.625rem 0.375rem;
 }
 .guide-select-wrap {
@@ -251,8 +288,8 @@ textarea::placeholder,
 }
 .guide-select-option:hover,
 .guide-select-option.is-selected {
-  background: var(--blue-tint);
-  color: var(--blue);
+  background: var(--brand-tint);
+  color: var(--brand);
 }
 /* 收合標籤是唯一該截斷的那一類：它在固定高度的欄位裡，而選項文字長度不可控。
    完整內容由下拉打開後看得到，所以截斷不會讓資訊消失。 */
@@ -262,8 +299,8 @@ textarea::placeholder,
   max-width: 100%;
   padding: 0.25rem 0.25rem;
   border-radius: 0.25rem;
-  background: var(--blue-tint);
-  color: var(--blue);
+  background: var(--brand-tint);
+  color: var(--brand);
   font-size: 0.75rem;
   white-space: nowrap;
 }

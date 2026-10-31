@@ -47,7 +47,7 @@ const GRID_ALLOWED = [
 // 色碼的例外。每一條都要寫清楚為什麼它不該是 token——「分類色階」與「插圖的淡階」
 // 不是介面色，硬塞進調色盤只會讓那份清單變成雜物櫃。要加新條目先問得出理由。
 const COLOUR_ALLOWED = [
-  { file: 'example-audit.css', hex: '#436ded', why: '會員層級 LV2 的分類色，與 LV1（--blue）、LV3 組成一組三色色階，不是介面色' },
+  { file: 'example-audit.css', hex: '#436ded', why: '會員層級 LV2 的分類色，與 LV1（--brand）、LV3 組成一組三色色階，不是介面色' },
   { file: 'example-audit.css', hex: '#9763c8', why: '會員層級 LV3 的分類色，同上' },
   { file: 'states.css', hex: '#e59aa4', why: '錯誤狀態插圖的淡紅，是 --danger 的插圖階；它只出現在空狀態圖示上，不當介面色用' },
 ]
@@ -113,7 +113,7 @@ assert.deepEqual(
 )
 ok(`${files.length - Object.keys(DEFINERS).length} 個元件樣式檔都用 token，沒有寫死色碼`)
 
-// var(--blue)55 這種「變數後面接兩碼透明度」不是合法 CSS，瀏覽器會整條宣告丟掉，
+// var(--brand)55 這種「變數後面接兩碼透明度」不是合法 CSS，瀏覽器會整條宣告丟掉，
 // 畫面上什麼都不出現（開關的鍵盤聚焦外框就曾因此消失）。要半透明用 color-mix()。
 {
   const bad = []

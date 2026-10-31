@@ -416,7 +416,7 @@ const switchCss = fs.readFileSync("styles/input-standard-page.css", "utf8");
   );
 }
 assert.ok(
-  switchCss.includes(".standard-switch:disabled{cursor:not-allowed;background:#e4f4f7") &&
+  switchCss.includes(".standard-switch:disabled{cursor:not-allowed;background:#f1e9db") &&
     switchCss.includes(".standard-switch[aria-checked=\"false\"]:disabled{background:#f1f3f6"),
   "停用的開關要用淡底加內描邊，開與關各自一組",
 );
@@ -598,7 +598,7 @@ ok("圖示按鈕：與文字按鈕共用 --btn-content，換尺寸會一起變�
   const derived = pad => px('--btn-content') + pad * 2
   assert.equal(derived(px('--btn-pad-y')), 32, '桌機算出來要是 32px（與 32px 的輸入框、Element Plus 預設同高）')
   // 描邊不得是佔高度的 border：框線畫在內側，高度才會停在 32px
-  assert.ok(/border:\s*0/.test(rule), '按鈕的描邊要用 inset box-shadow（--btn-ring），border 寫 0')
+  assert.ok(/border:\s*0/.test(rule), '按鈕的描邊畫在內側（::after 的 --btn-ring 漸層框），border 寫 0')
   assert.ok(!own.includes('--btn-border'), '--btn-border 已改為 --btn-ring（描邊不佔高度），不要再加回來')
   const mobile = own.slice(own.indexOf('@media (max-width: 720px)'))
   assert.ok(
@@ -612,7 +612,7 @@ ok(`按鈕尺寸用推算的：全站 ${derived(px('--btn-pad-y'))}px，不分�
 // 標籤與 Toast 曾經各自發明一套（#1F7A5C、#B23340 之類），跟按鈕頁對不起來；
 // 同一個「成功」在三個地方是三種綠，使用者學不會顏色的意思。
 const PALETTE = [
-  "#1596AD",
+  "#927039",
   "#8354BC",
   "#4169C9",
   "#6d8aae",
@@ -623,7 +623,7 @@ const PALETTE = [
 ];
 // 狀態色現在有變數（--success／--warning／--danger／--neutral），指向的就是上面那組
 // 色碼。用變數比寫色碼更不可能跑掉，所以兩種寫法都收；寫死的仍然要落在調色盤上。
-const STATE_VARS = ["--success", "--warning", "--danger", "--neutral", "--blue", "--blue-ink"];
+const STATE_VARS = ["--success", "--warning", "--danger", "--neutral", "--brand", "--brand-ink"];
 const SEMANTIC_SOURCES = [
   // \s* 讓它容忍 prettier 把宣告排成多行
   ['tag-guide.css', /\.bo-tag\.is-[\w-]+\s*\{\s*color:\s*(#[0-9A-Fa-f]{6}|var\(--[\w-]+\))/g],

@@ -9,7 +9,7 @@
 .page .bulk-pick-col input[type="checkbox"] {
   width: 1rem;
   height: 1rem;
-  accent-color: var(--blue);
+  accent-color: var(--brand);
   cursor: pointer;
 }
 
@@ -67,8 +67,8 @@
 }
 
 .bulk-menu button:hover:not(:disabled) {
-  background: var(--blue-tint);
-  color: var(--blue);
+  background: var(--brand-tint);
+  color: var(--brand);
 }
 
 .bulk-menu button:disabled {
@@ -77,7 +77,7 @@
 }
 
 .bulk-menu button:focus-visible {
-  outline: 2px solid var(--blue);
+  outline: 2px solid var(--brand);
   outline-offset: -2px;
 }
 

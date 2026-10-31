@@ -61,7 +61,7 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--blue);
+  color: var(--brand);
   font: inherit;
   text-align: left;
   text-decoration: underline;
@@ -71,11 +71,11 @@
 }
 
 .example-mixed-link:hover {
-  color: var(--blue-ink);
+  color: var(--brand-ink);
 }
 
 .example-mixed-link:focus-visible {
-  outline: 2px solid var(--blue);
+  outline: 2px solid var(--brand);
   outline-offset: 3px;
   border-radius: 2px;
 }
@@ -107,7 +107,7 @@ dialog.bo-modal.example-mixed-snapshot {
   margin: 1.25rem 0 0.75rem;
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--blue);
+  color: var(--brand);
 }
 
 .example-mixed-empty-copy {

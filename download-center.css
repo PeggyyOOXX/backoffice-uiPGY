@@ -14,7 +14,7 @@
 }
 .download-panel[hidden]{display:none}
 .download-panel-head{display:flex;align-items:center;justify-content:space-between;gap:0.75rem;margin-bottom:0.75rem}
-.download-panel-head>strong{font-size:0.75rem;font-weight:600;color:var(--sidebar)}
+.download-panel-head>strong{font-size:0.75rem;font-weight:600;color:var(--text)}
 .download-list{
   display:flex;flex-direction:column;gap:0.75rem;
   max-height:25rem;overflow-y:auto;

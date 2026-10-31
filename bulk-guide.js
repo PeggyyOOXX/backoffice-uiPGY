@@ -121,7 +121,7 @@ window.renderBulkGuide = () => guidePage({
   ],
   tokens: [
     ['勾選欄寬度', '44px'],
-    ['勾選框', '16px / accent-color #1596ad'],
+    ['勾選框', '16px / accent-color #927039'],
     ['表頭入口', '16px 圖示按鈕（外框、中性色）'],
     ['選單最小寬度', '192px'],
     ['選單位置', '表頭下方 4px，靠右對齊'],

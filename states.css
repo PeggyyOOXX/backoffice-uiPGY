@@ -21,7 +21,7 @@
 .bo-loading{position:relative;min-width:0}
 .bo-loading.is-loading>:not(.bo-veil){opacity:.45;pointer-events:none}
 .bo-veil{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:0.5rem;background:rgba(255,255,255,.6);font-size:0.75rem;color:var(--text-subtle);z-index:2}
-.bo-spinner{width:1.125rem;height:1.125rem;border:2px solid var(--blue-line);border-top-color:var(--blue);border-radius:50%;animation:bo-spin .7s linear infinite}
+.bo-spinner{width:1.125rem;height:1.125rem;border:2px solid var(--brand-line);border-top-color:var(--brand);border-radius:50%;animation:bo-spin .7s linear infinite}
 @keyframes bo-spin{to{transform:rotate(360deg)}}
 
 @media(prefers-reduced-motion:reduce){

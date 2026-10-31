@@ -17,8 +17,8 @@
 
 /* 橫向捲動：欄位多到塞不下時，捲動容器本身可聚焦，鍵盤才捲得動。
    caption 只給報讀器，視覺上隱藏。 */
-.data-table-scroll{overflow:auto;scrollbar-width:thin;scrollbar-color:var(--blue-line) var(--surface)}
-.data-table-scroll:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+.data-table-scroll{overflow:auto;scrollbar-width:thin;scrollbar-color:var(--brand-line) var(--surface)}
+.data-table-scroll:focus-visible{outline:2px solid var(--brand);outline-offset:-2px}
 .page .data-table-grid caption{position:absolute;width:0.0625rem;height:0.0625rem;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
 /* 分組表頭：欄位多到要分群時的上一層表頭，底色與欄名列相同，只多一條直向分隔線。 */

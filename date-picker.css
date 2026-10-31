@@ -1,8 +1,8 @@
 .date-range-host {
   min-width: 0;
   width: 100%;
-  --el-color-primary: var(--blue);
-  --el-border-radius-base: 0.5rem;
+  --el-color-primary: var(--brand);
+  --el-border-radius-base: 0.25rem;
 }
 .date-range-host .el-date-editor.bo-date-range {
   width: 100%;
@@ -10,10 +10,24 @@
   min-height: 2rem;
   padding: 0 0.5rem;
   box-sizing: border-box;
-  box-shadow: 0 0 0 1px var(--line-control) inset;
+  /* 欄位外觀與原生輸入框相同（input-component-standard.css 的凹槽變數） */
+  border-radius: 0.25rem;
+  background-color: var(--input-bg);
+  box-shadow: var(--input-ring), var(--input-shadow);
+  transition:
+    box-shadow 0.16s,
+    background-color 0.16s;
+}
+.date-range-host .el-date-editor.bo-date-range:hover:not(.is-active):not(.is-disabled) {
+  box-shadow: var(--input-ring-hover), var(--input-shadow);
 }
 .date-range-host .el-date-editor.bo-date-range.is-active {
-  box-shadow: 0 0 0 1px var(--blue) inset;
+  background-color: var(--card);
+  box-shadow: inset 0 0 0 1px var(--input-focus), var(--input-shadow-focus);
+}
+.date-range-host .el-date-editor.bo-date-range.is-disabled {
+  background-color: var(--input-disabled-bg);
+  box-shadow: inset 0 0 0 1px var(--input-disabled-line);
 }
 .date-range-host .bo-date-range .el-range-input {
   min-width: 0;
@@ -37,7 +51,7 @@
   margin-left: 2px;
 }
 .bo-date-range-popper {
-  --el-color-primary: var(--blue);
+  --el-color-primary: var(--brand);
 }
 /* 兩段日期中間的分隔符號改成 ~，與欄位本身的 range-separator 一致。
    Element Plus 放的是 ArrowRight 圖示（一個沒有 class 的 span 包著 .el-icon），
@@ -260,8 +274,8 @@
   font-weight: 700;
   white-space: nowrap;
   color: #fff;
-  background: var(--blue);
-  border-color: var(--blue);
+  background: var(--brand);
+  border-color: var(--brand);
   transition:
     filter 0.16s,
     transform 0.16s,
@@ -281,7 +295,7 @@
   transform: translateY(1px);
 }
 .bo-date-range-popper .el-picker-panel__footer .el-button:focus-visible {
-  outline: 3px solid rgba(40, 127, 152, 0.2);
+  outline: 3px solid color-mix(in srgb, var(--brand) 20%, transparent);
   outline-offset: 2px;
 }
 .bo-date-range-popper .el-picker-panel__footer .el-button:disabled {

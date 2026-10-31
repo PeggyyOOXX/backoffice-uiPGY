@@ -28,7 +28,7 @@
 
 /* 以下三組原本在 high-contrast-semantic-palette.css */
 .btn-search {
-  --button-color: #1596ad;
+  --button-color: #927039;
 }
 .btn-record {
   --button-color: #6d8aae;
@@ -37,11 +37,7 @@
   --button-color: #f59e0b;
 }
 
-/* 以下兩組原本在 bright-semantic-button-palette.css */
-.semantic-btn:hover:not(:disabled) {
-  filter: brightness(1.06);
-  box-shadow: var(--shadow-sm);
-}
+/* 按鈕的 hover、按下與停用都在 semantic-button-system.css，這裡只放顏色 */
 .button-spec-top code {
   background: #f1f6f7;
   color: #536b72;

@@ -55,8 +55,8 @@
 | `header.js` 待辦角標 | `el-badge` 或自繪 | `Header.vue` 的絕對定位 `<div>`（自繪） | 數字來自 `/api/v0/notifications`，WebSocket 推播更新。EP 的 `el-badge` 預設 `is-fixed` 位置與規範的 `-2px` 不同，要覆寫；`:max="99"` 與規範的 99+ 一致 |
 | `tooltip.js` | `el-tooltip` | `IconBtn.vue`、`TruncateTooltip.vue` | `data-tooltip-placement` → `placement`；自動翻面 EP 內建 |
 | `icon-button.js` | `el-button` + `el-tooltip` | `IconBtn.vue` | 尺寸 32×32（觸控 44×44）、圓角 4px 要覆寫 EP 預設 |
-| `choice-controls.js` | `el-radio` / `el-checkbox` + `-group` | 全站已在用 | 16×16、`accent-color #1596AD`、間距 8px 要覆寫；部分選取用 `indeterminate` |
-| `table-sort.js` | `el-table-column` `sortable` + `@sort-change` | `CustomTable.vue` | EP 預設也是雙箭頭三態循環，**顏色與尺寸要覆寫**成規範的灰／主題綠 |
+| `choice-controls.js` | `el-radio` / `el-checkbox` + `-group` | 全站已在用 | 16×16、`accent-color #927039`、間距 8px 要覆寫；部分選取用 `indeterminate` |
+| `table-sort.js` | `el-table-column` `sortable` + `@sort-change` | `CustomTable.vue` | EP 預設也是雙箭頭三態循環，**顏色與尺寸要覆寫**成規範的灰／品牌色 |
 | `unified-table-system` | `el-table` | `CustomTable.vue` | 表頭底色、字色、內距、框線全部改在 `_element-ui.scss` |
 | 開關排列 Switch | `el-switch` | `CustomSwitch.vue` | 42×24px 要覆寫 EP 預設尺寸；文案字重 400 |
 | 表格＋分頁 | `el-table` + `el-pagination` | `CustomTable.vue` + `Pagination.vue` | **原型合成一個元件** `dataTable()`：53 個用到分頁的 view，53 個都搭配 CustomTable，分頁從未單獨出現。正式後台可考慮把 Pagination 收進 CustomTable，頁面就不必各自兜。每頁筆數 10／20／50／100 兩邊一致 |
@@ -79,7 +79,7 @@
 | 邊緣漸層提示、自動捲到目前頁籤 | **EP 沒有**，需自行加 |
 | 計數標記 | 用 `#label` slot 放名稱＋計數 `<span>` |
 
-**卡片型作用中樣式要覆寫。** 規範是：未選取 `#F1F4F8` 底 `#DCE2EB` 框，作用中白底、整圈 `#1596AD` 外框、字重 700、下框線改白讓底線在它下方斷開。EP `type="card"` 的預設不是這樣，`.el-tabs__item.is-active` 要整組覆寫。
+**卡片型作用中樣式要覆寫。** 規範是：未選取 `#F1F4F8` 底 `#DCE2EB` 框，作用中白底、整圈 `#927039` 外框、字重 700、下框線改白讓底線在它下方斷開。EP `type="card"` 的預設不是這樣，`.el-tabs__item.is-active` 要整組覆寫。
 
 ---
 
@@ -101,7 +101,7 @@
 1. **先調 `--el-*` 變數**，能用變數解決的不要寫選擇器。`_element-ui.scss` 的 `:root` 已經在做這件事。
 2. **變數不夠才寫選擇器**，統一寫在 `_element-ui.scss`，不要散到 view。
 3. **避免 `!important`**。該檔目前有 26 處，多數是局部覆寫打架造成的；新增覆寫前先確認是不是變數沒設好。
-4. **尺寸類覆寫集中管理**：按鈕 32px／圓角 4px、輸入 32px／圓角 7px、開關 42×24、圖示按鈕 32×32（觸控 44×44）、頁籤 36px。這些在原型的各「共用規格」表都有完整數值。
+4. **尺寸類覆寫集中管理**：按鈕 32px／圓角 4px、輸入 32px／圓角 4px（凹槽外觀，見 Input 規範）、開關 42×24、圖示按鈕 32×32（觸控 44×44）、頁籤 36px。這些在原型的各「共用規格」表都有完整數值。
 
 ### 圖示來源的例外
 

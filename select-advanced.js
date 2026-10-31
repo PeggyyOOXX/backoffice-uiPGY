@@ -209,16 +209,17 @@ window.renderSelectAdvanced = () => `<div class="style-guide select-advanced">
     <h2>共用規格</h2>
     <div>
       <span>欄位高度</span><strong>32px</strong>
-      <span>圓角</span><strong>7px</strong>
+      <span>圓角</span><strong>4px</strong>
       <span>字級／字重</span><strong>14px / 400</strong>
-      <span>左右內距</span><strong>9px</strong>
+      <span>左右內距</span><strong>8px</strong>
+      <span>欄位外觀</span><strong>與輸入框相同的凹槽（--input-ring、--input-shadow）</strong>
       <span>選項列高</span><strong>32px</strong>
       <span>選項圓角</span><strong>5px</strong>
       <span>標籤高度</span><strong>22px</strong>
       <span>標籤圓角</span><strong>4px</strong>
-      <span>選中／hover 底色</span><strong>#E7F7FA</strong>
-      <span>選中文字色</span><strong>#1596AD</strong>
-      <span>Focus ring</span><strong>3px rgba(21,150,173,.1)</strong>
+      <span>選中／hover 底色</span><strong>#F8F3EA</strong>
+      <span>選中文字色</span><strong>#927039</strong>
+      <span>Focus</span><strong>白底、金棕框 --input-focus、3px 淺杏光圈</strong>
       <span>錯誤邊框</span><strong>#DC2626</strong>
     </div>
   </section>

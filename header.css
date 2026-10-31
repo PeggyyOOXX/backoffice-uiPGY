@@ -59,21 +59,21 @@
 
    圓角的例外具名寫在 styles/button-corner-radius.css，不在這裡另設。
 
-   底色用品牌色 --blue 實心，試過的另外兩個方向都不對：
-   - --blue-tint（淺底）在白色 topbar 上只有 1.1:1，整顆被背景吃掉，
+   底色用品牌色 --brand 實心，試過的另外兩個方向都不對：
+   - --brand-tint（淺底）在白色 topbar 上只有 1.1:1，整顆被背景吃掉，
      遠看只剩一個孤零零的人形圖示，比原本的白底灰框還弱。
-   - --sidebar（側欄的深棕黑）看得見，但在一條白底的列上太重，整個頁首的視覺重心
+   - --sidebar（側欄的深藍黑）看得見，但在一條白底的列上太重，整個頁首的視覺重心
      會被拉到最右邊那一個點上。
-   --blue 落在中間：白字對比 3.0:1，過 WCAG 非文字元素的 3:1 下限，
+   --brand 落在中間：白字對比 3.0:1，過 WCAG 非文字元素的 3:1 下限，
    而且它是全站的品牌色，用在「我」身上讀起來是歸屬，不是警示。
-   hover 往深走到 --blue-ink，與其他品牌色控制一致。 */
+   hover 往深走到 --brand-ink，與其他品牌色控制一致。 */
 .icon-btn.is-identity {
   border-color: transparent;
-  background: var(--blue);
+  background: var(--brand);
   color: #fff;
 }
 .icon-btn.is-identity:hover {
-  background: var(--blue-ink);
+  background: var(--brand-ink);
 }
 /* 頁首不放側欄的收合開關：那是導覽的事，不該佔內容區的頁首。
    開關做在側欄自己的右緣（.nav-rail），樣式在 styles/collapsible-sidebar.css。 */
@@ -116,7 +116,7 @@
   margin-bottom: 0.5rem;
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--sidebar);
+  color: var(--text);
 }
 .header-popover-panel dl {
   display: flex;
@@ -231,8 +231,8 @@
   height: 1rem;
   margin-right: 0.25rem;
   border-radius: 0.5rem;
-  background: var(--blue-tint);
-  color: var(--blue-ink);
+  background: var(--brand-tint);
+  color: var(--brand-ink);
   font-size: 0.75rem;
   font-weight: 700;
 }

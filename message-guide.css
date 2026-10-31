@@ -50,7 +50,7 @@
   border-left-color: var(--success);
 }
 .message-type-grid > div.is-info {
-  border-left-color: var(--blue);
+  border-left-color: var(--brand);
 }
 .message-type-grid > div.is-warning {
   border-left-color: var(--warning);
@@ -64,13 +64,13 @@
   gap: 0.5rem;
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--sidebar);
+  color: var(--text);
 }
 .message-type-card.is-success h4 {
   color: var(--success);
 }
 .message-type-card.is-info h4 {
-  color: var(--blue);
+  color: var(--brand);
 }
 .message-type-card.is-warning h4 {
   color: var(--warning);
@@ -126,7 +126,7 @@
   gap: 0.25rem;
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--sidebar);
+  color: var(--text);
 }
 .message-copy-compare > .is-bad {
   border-color: rgba(220, 38, 38, 0.3);
@@ -178,7 +178,7 @@
   padding: 1px 0.25rem;
   border-radius: 0.25rem;
   background: var(--surface-hover);
-  color: var(--blue-ink);
+  color: var(--brand-ink);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 .message-token {
@@ -221,10 +221,10 @@
   border-color: rgba(245, 158, 11, 0.3);
 }
 .bo-alert.is-info {
-  color: var(--blue);
+  color: var(--brand);
   background:
-    linear-gradient(rgba(21, 150, 173, 0.07), rgba(21, 150, 173, 0.07)), #fff;
-  border-color: rgba(21, 150, 173, 0.3);
+    linear-gradient(color-mix(in srgb, var(--brand) 7%, transparent), color-mix(in srgb, var(--brand) 7%, transparent)), #fff;
+  border-color: color-mix(in srgb, var(--brand) 30%, transparent);
 }
 .bo-alert.is-danger {
   color: var(--danger);

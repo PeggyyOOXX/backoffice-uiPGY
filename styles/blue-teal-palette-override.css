@@ -5,15 +5,26 @@
 :root {
   --card: #ffffff;
   --bg: #dfe3e8;
-  /* 側欄：底色左右漸層、作用中項目上下漸層。--sidebar 是漸層的起點，也是 Tooltip、
-     收合後的飛出面板與作用中文字的顏色——它們都是「從側欄長出來的東西」。
-     .app 外框用 --sidebar-end，與側欄右緣接成同一片，內容區上緣的留白才看不出接縫。 */
-  --sidebar: #2a2220;
-  --sidebar-end: #50403a;
-  --nav-active-from: #d2ae7e;
-  --nav-active-to: #785330;
-  --blue: #1596ad;
-  --blue-tint: #e7f7fa;
+  /* 側欄：底色左右漸層、作用中項目上下漸層。
+     站長後台與代理後台只差側欄底色這一組：--sidebar／--sidebar-end 是「目前角色」的別名，
+     預設指向站長，:root[data-role="agent"] 改指向代理（網址加 ?role=agent，見 role.js）。
+     角色色只用在側欄本身：側欄漸層、作用中項目的文字、收合後的飛出面板、.app 外框（--sidebar-end，
+     與側欄右緣接成一片）。作用中項目的淺杏、品牌色與其他顏色兩個角色共用。 */
+  --sidebar-owner: #0f1427;
+  --sidebar-owner-end: #46517b;
+  --sidebar-agent: #1f0e17;
+  --sidebar-agent-end: #66304a;
+  --sidebar: var(--sidebar-owner);
+  --sidebar-end: var(--sidebar-owner-end);
+  /* 深色浮層：Tooltip 底、輸入框內陰影的色調。跟角色無關，兩個後台一樣。 */
+  --surface-inverse: #0f1427;
+  --nav-active-from: #fef7e8;
+  --nav-active-to: #eac09e;
+  /* 品牌色：金棕（介於古金與古銅金之間），站長與代理兩個角色共用。它從側欄作用中的淺杏壓深而來，
+     所以配深藍、酒紅兩種側欄都成立；和七個語意色都不同色相。白字對比 4.7:1。
+     代表「主要操作／選中／目前位置」：搜尋按鈕、頁籤作用中、開關開、勾選、分頁目前頁、下拉選中、連結、排序方向。 */
+  --brand: #927039;
+  --brand-tint: #f8f3ea;
   --text: #17282e;
   /* 文字四級。先前只定義 --text 與 --text-muted，但站上實際用了十種灰——說明文字、
      欄名、佔位字各自寫死一個相近的色碼（光是 #718096 就被寫死 71 次，和 --text-muted
@@ -32,6 +43,18 @@
   /* 控制項的框線：輸入框、下拉、日期欄位、選項卡片。比 --line 深一點點，因為
      它要畫出「這裡可以輸入」的邊界，而不只是分隔兩塊內容。站上原本寫死 21 次。 */
   --line-control: #dce2eb;
+  /* 輸入框（輸入、下拉、日期、金額區間、多行文字）：米白底，框線上深下淺，內側上緣一道陰影、
+     外側下緣一條白光，像刻進卡片裡的凹槽。focus 轉白底、金棕框、外圍淺杏光圈。
+     畫法在 input-component-standard.css，下拉與日期欄位引用同一組變數。 */
+  --input-bg: #fbf9f5;
+  --input-line: #d6cfc2;
+  --input-line-top: #c6bdac;
+  --input-line-bottom: #e6dfd2;
+  --input-line-hover: #b8ad99;
+  --input-focus: #c99a6e;
+  --input-disabled-bg: #f2efe9;
+  --input-disabled-line: #e3ddd2;
+  --input-readonly-bg: #f7f4ee;
   /* 表頭與合計列的底色。它比白色列重一階才看得出是表頭；表頭文字直接用
      --text-subtle，在這個底色上有 6.4:1，比原本專用的 #56637A（5.17:1）更好，
      也少一支只有表格在用的色。 */
@@ -40,15 +63,15 @@
      --surface-hover 是 hover 底，--surface-head 最重。 */
   --surface: #f7f8fb;
   --surface-hover: #f1f4f8;
-  /* 品牌色深階：連結、強調文字。--blue 當文字用在白底上只有 3.1:1，過不了 AA。 */
-  --blue-ink: #10707f;
-  /* 品牌色淺框線：捲軸拉桿、下拉的選取邊、狀態插圖。比 --blue-tint 重、比 --blue 輕，
+  /* 品牌色深階：連結、強調文字。--brand 當文字在白底上 4.7:1，深階 7.0:1，小字與長段落用深階。 */
+  --brand-ink: #6e542b;
+  /* 品牌色淺框線：捲軸拉桿、下拉的選取邊、狀態插圖。比 --brand-tint 重、比 --brand 輕，
      用在「要看得出是品牌色，但不能搶走內容」的線條上。 */
-  --blue-line: #b9e3ea;
+  --brand-line: #d9cdba;
   /* 表格整列 hover 的底色。它與 --surface-hover（中性灰）不同：表格的 hover 帶品牌
      色相，因為整列反白時要和「選取」讀起來是同一個系統。AGENTS.md 本來就寫了
      這個值，只是一直沒有名字。 */
-  --surface-row-hover: #f1f8fa;
+  --surface-row-hover: #fbf8f2;
   /* 狀態色。先前站上有兩套並存：base.css 的 --green/--red/--amber，以及語意色的
      btn-export／btn-danger／btn-warning——同一個「成功」是兩個不同的綠，而元件要用
      時兩套都沒有變數，只好寫死色碼（光是 #DC2626 就被寫死 19 次）。
@@ -62,6 +85,10 @@
   --red: var(--danger);
   --amber: var(--warning);
 }
+:root[data-role="agent"] {
+  --sidebar: var(--sidebar-agent);
+  --sidebar-end: var(--sidebar-agent-end);
+}
 .sidebar {
   background: linear-gradient(90deg, var(--sidebar) 0%, var(--sidebar-end) 100%);
 }
@@ -71,26 +98,26 @@
 .nav-item.active {
   background: linear-gradient(
     90deg,
-    rgba(43, 137, 157, 0.38),
-    rgba(43, 137, 157, 0.16)
+    color-mix(in srgb, var(--brand) 38%, transparent),
+    color-mix(in srgb, var(--brand) 16%, transparent)
   );
-  box-shadow: inset 0 0 0 1px rgba(103, 180, 194, 0.23);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--brand) 23%, transparent);
 }
 .nav-item.active:before {
-  background: #64b8c5;
+  background: var(--brand-line);
 }
 .primary {
-  background: linear-gradient(135deg, #3d96aa, #23768c);
-  box-shadow: 0 0.5rem 1rem rgba(40, 127, 152, 0.2);
+  background: linear-gradient(135deg, var(--brand), var(--brand-ink));
+  box-shadow: 0 0.5rem 1rem color-mix(in srgb, var(--brand) 20%, transparent);
 }
 .control:focus {
-  border-color: #287f98;
-  box-shadow: 0 0 0 3px rgba(40, 127, 152, 0.11);
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 11%, transparent);
 }
 .page-btn.active {
-  background: #287f98;
-  border-color: #287f98;
+  background: var(--brand);
+  border-color: var(--brand);
 }
 ::-webkit-scrollbar-thumb {
-  background: #8fb9c2;
+  background: var(--brand-line);
 }

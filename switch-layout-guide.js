@@ -11,9 +11,9 @@ const LABELS = ['開放會員轉點', '自動刷新', '會員完成身分驗證�
 // 先分得出能不能按，再由旋鈕位置看出開或關。配色全部在 styles/input-standard-page.css，
 // 這裡只負責把狀態排出來，不在頁面自己定義顏色。
 const STATES = [
-  ['開啟・可操作', true, false, '主題色 #1596AD 實心，旋鈕在右、帶陰影。可點擊、可聚焦，切換後立即生效。'],
+  ['開啟・可操作', true, false, '主題色 #927039 實心，旋鈕在右、帶陰影。可點擊、可聚焦，切換後立即生效。'],
   ['關閉・可操作', false, false, '中性灰 #718087 實心，旋鈕在左。用深灰不用淺灰，否則與右邊的停用狀態分不出來。'],
-  ['開啟・停用', true, true, '淡主題底 #E4F4F7 加 #A9D8E1 描邊，旋鈕仍在右。值還是「開」，只是現在不能改。'],
+  ['開啟・停用', true, true, '淡主題底 #F1E9DB 加 #D5C6AE 描邊，旋鈕仍在右。值還是「開」，只是現在不能改。'],
   ['關閉・停用', false, true, '淡灰底 #F1F3F6 加 #D4DBE4 描邊，旋鈕在左。空心外觀代表不可操作，不是「關得比較淡」。'],
 ]
 
@@ -33,7 +33,7 @@ const stateBody = () => `<h3>狀態</h3>
   <div class="switch-state-grid">${STATES.map(stateCell).join('')}</div>
   <h4 class="switch-state-sub">互動狀態</h4>
   <div class="switch-state-grid">
-    <div class="switch-state"><span class="switch-state-control">${demoSwitch({ on: true, label: 'Hover 示意' })}</span><div><strong>Hover</strong><small>可操作時顏色加深一階（開 #117E91／關 #5C6878），停用的不會變色——滑過去就知道按不按得動。</small></div></div>
+    <div class="switch-state"><span class="switch-state-control">${demoSwitch({ on: true, label: 'Hover 示意' })}</span><div><strong>Hover</strong><small>可操作時顏色加深一階（開 #7C5F30／關 #5C6878），停用的不會變色——滑過去就知道按不按得動。</small></div></div>
     <div class="switch-state"><span class="switch-state-control">${demoSwitch({ on: false, label: 'Focus 示意', cls: 'is-focus' })}</span><div><strong>Focus（鍵盤）</strong><small>3px 主題色外框、offset 3px。Tab 聚焦後用 Enter 或空白鍵切換；這顆是固定顯示的示意。</small></div></div>
   </div>`
 
@@ -42,7 +42,7 @@ const stateBody = () => `<h3>狀態</h3>
 export const switchBody = () => `<p class="component-description">開關代表一個會立即生效的設定，尺寸固定 42 × 24px，開啟為主題色、關閉為中性灰，旁邊不放「確定」按鈕。</p>
 ${stateBody()}
 <h3>排列</h3>
-<p class="component-description">Switch 在前、文案在後，每項設定獨立一列，不與下拉並排。列寬隨容器延伸，不設固定寬度。</p><div class="switch-layout-panel" lang="zh-Hant">${LABELS.map((label, index) => `<div class="switch-layout-row"><button type="button" id="switch-guide-control-${index}" class="standard-switch" role="switch" aria-checked="${index !== 1}" aria-labelledby="switch-guide-label-${index}" data-switch-layout-demo></button><label id="switch-guide-label-${index}" for="switch-guide-control-${index}">${label}</label></div>`).join('')}</div><p class="component-description switch-layout-note">沿用 standard-switch：42 × 24px，開啟為主題綠，關閉為中性灰。文案使用一般字重 400，不加粗。開關與文案間隔 16px，垂直置中、上下對齊；文案向右延伸，超過可用空間才換行，換行後對齊文案起點。可點擊開關或文案切換，也可使用 Tab 聚焦、Enter 或空白鍵操作。</p>`
+<p class="component-description">Switch 在前、文案在後，每項設定獨立一列，不與下拉並排。列寬隨容器延伸，不設固定寬度。</p><div class="switch-layout-panel" lang="zh-Hant">${LABELS.map((label, index) => `<div class="switch-layout-row"><button type="button" id="switch-guide-control-${index}" class="standard-switch" role="switch" aria-checked="${index !== 1}" aria-labelledby="switch-guide-label-${index}" data-switch-layout-demo></button><label id="switch-guide-label-${index}" for="switch-guide-control-${index}">${label}</label></div>`).join('')}</div><p class="component-description switch-layout-note">沿用 standard-switch：42 × 24px，開啟為品牌色，關閉為中性灰。文案使用一般字重 400，不加粗。開關與文案間隔 16px，垂直置中、上下對齊；文案向右延伸，超過可用空間才換行，換行後對齊文案起點。可點擊開關或文案切換，也可使用 Tab 聚焦、Enter 或空白鍵操作。</p>`
 
 window.switchLayoutGuide = () => `<section class="component-example" id="switch-layout-guide"><h2>開關排列 Switch</h2><div class="card switch-layout-guide">${switchBody()}</div></section>`
 
