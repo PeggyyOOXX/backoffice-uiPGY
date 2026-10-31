@@ -59,21 +59,16 @@
 
    圓角的例外具名寫在 styles/button-corner-radius.css，不在這裡另設。
 
-   底色用品牌色 --brand 實心，試過的另外兩個方向都不對：
-   - --brand-tint（淺底）在白色 topbar 上只有 1.1:1，整顆被背景吃掉，
-     遠看只剩一個孤零零的人形圖示，比原本的白底灰框還弱。
-   - --sidebar（側欄的深藍黑）看得見，但在一條白底的列上太重，整個頁首的視覺重心
-     會被拉到最右邊那一個點上。
-   --brand 落在中間：白字對比 3.0:1，過 WCAG 非文字元素的 3:1 下限，
-   而且它是全站的品牌色，用在「我」身上讀起來是歸屬，不是警示。
-   hover 往深走到 --brand-ink，與其他品牌色控制一致。 */
+   底色用目前角色的側欄漸層淺端 --sidebar-end（站長 --sidebar-owner-end、代理 --sidebar-agent-end），
+   跟著角色換色：使用者一眼看得出自己登入的是哪一個後台。hover 加深到同一角色的 --sidebar。
+   白字對比在兩個角色上都超過 8:1。不得用 --brand-tint，在白色 topbar 上只有 1.1:1，整顆被背景吃掉。 */
 .icon-btn.is-identity {
   border-color: transparent;
-  background: var(--brand);
+  background: var(--sidebar-end);
   color: #fff;
 }
 .icon-btn.is-identity:hover {
-  background: var(--brand-ink);
+  background: var(--sidebar);
 }
 /* 頁首不放側欄的收合開關：那是導覽的事，不該佔內容區的頁首。
    開關做在側欄自己的右緣（.nav-rail），樣式在 styles/collapsible-sidebar.css。 */

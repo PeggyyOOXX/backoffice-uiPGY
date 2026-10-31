@@ -14,7 +14,7 @@
 - 關閉、取消、返回、刷新、重設使用 `semantic-btn btn-neutral`，配色及互動狀態由共用樣式決定。
 - 不得為個別頁面或彈窗新增或覆寫按鈕背景色、文字色、邊框色、hover、focus、disabled 等視覺樣式。不得自行創造規範外的按鈕配色。
 - 遇到按鈕可讀性問題，先檢查並移除局部覆寫，恢復既有規範；不要用新的自訂配色修補。
-- 列表工具列的操作按鈕群組一律從左側開始依序排列（justify-content: flex-start），不得把新增與排序拆到左右兩端。表格內的操作欄則置中（比照組合範例－搜尋的操作欄），處理人文字一併置中；手機卡片內的操作靠右（data-table.css 的 .data-card-actions）。彈窗 footer 一律靠右排列。
+- 列表工具列的操作按鈕群組一律從左側開始依序排列（justify-content: flex-start），不得把新增與排序拆到左右兩端。工具列放在表格卡外、緊貼表格上方：**篩選卡 → 工具列 16px，工具列 → 表格 8px**（距離比 2:1，讓工具列和它操作的表格讀成同一組），工具列本身不帶內距、按鈕與卡片左緣對齊，**不畫分隔線**——分組靠距離表達。間距只在 example-page.css 的 `.example-toolbar` 定義；工具列在卡片裡時（組合範例－混合）直接給 8px 下邊距。表格內的操作欄則置中（比照組合範例－搜尋的操作欄），處理人文字一併置中；手機卡片內的操作靠右（data-table.css 的 .data-card-actions）。彈窗 footer 一律靠右排列。
 - 優惠活動的列表操作範例放在「組合範例－混合」的「優惠活動」頁籤，不另建活動類型列表或分頁。
 
 - 全站彈窗統一使用 modal-system.js 的 prepareModal 與 modal-system.css，以活動內容快照為基準：標題左側綠線、右上角 X、獨立捲動內容、固定 footer。彈窗按鈕靠右，取消在前、主要操作在後。
@@ -25,7 +25,7 @@
 - 「組合範例－混合」點擊「排序」後持續顯示拖曳把手，不設收合按鈕。切換開關、分類及狀態頁籤不可退出排序；儲存或取消變更才退出。篩選中排序只调整可見項目的相對次序，隱藏項目保持位置。
 - 拖曳排序一律用 sortable.js 的 `sortable(group, { onReorder, enabled })` 與 `reorder()`：列標 `data-sort-group`／`data-sort-item`、把手標 `data-sort-handle`，頁面只在 onReorder 裡改資料並重畫，不得自己處理 dragstart／drop 或另畫回饋樣式。回饋固定三種（sortable.css）：拿起的列留在原位變淡、目標列上緣或下緣一條 2px 主題色插入線（左端 8px 圓點，放了不會動的位置不畫）、放下後那一列淺底亮一下再淡掉。只從把手開始拖，用 Pointer Events 實作（不用只認滑鼠的 HTML5 拖曳，手機才拖得動）：把手 touch-action: none、拖曳時有跟著手指的名稱小卡、拖到可視範圍上下緣自動捲動。把手是圖示按鈕，上下方向鍵一次移一格並以 aria-live 播報名次。完整規範在「拖曳排序 Sortable」頁。
 - Switch 依「樣式規範 → 開關排列 Switch」：每項設定獨立一列，standard-switch 在左、文案緊接在右，間距 16px，不與下拉並排。不得固定整列或文案寬度；開關維持 42 × 24px、上下對齊並垂直置中，文案向右延伸，超出容器才換行且對齊文案起點。沿用共用開關配色及互動狀態，不得在個別頁面縮放或另設尺寸（先前分站設定的 .is-sm 把開關縮成 0.85 倍，已移除）。
-- 開關的「關閉」與「停用」必須分得出來：可操作的兩種狀態是實心（開 #927039、關 #718087，旋鈕帶陰影），停用的兩種是淡底加 inset 描邊的空心（開 #F1E9DB／#D5C6AE，關 #F1F3F6／#D4DBE4，旋鈕平貼）。不得用 opacity 把關閉調淡當停用——兩個灰只差亮度，看的人分不出按不按得動。配色只在 styles/input-standard-page.css 一處定義，四種狀態與 Hover／Focus 的示範都在「選擇控制」頁，改動後跑 node render-check.cjs。停用的開關要掛 Tooltip 說明原因，data-tooltip 放在外層容器上。
+- 開關的「關閉」與「停用」必須分得出來：可操作的兩種狀態是實心（開 #927039、關 #718087），軌道上緣疊一層暗部漸層加內陰影，旋鈕是拉絲金屬圓鈕——關為銀色、開為香檳金（取自 --nav-active-from／--nav-active-to），帶落影，停用的兩種是淡底加 inset 描邊的空心（開 #F1E9DB／#D5C6AE，關 #F1F3F6／#D4DBE4，旋鈕平貼）。不得用 opacity 把關閉調淡當停用——兩個灰只差亮度，看的人分不出按不按得動。配色只在 styles/input-standard-page.css 一處定義，四種狀態與 Hover／Focus 的示範都在「選擇控制」頁，改動後跑 node render-check.cjs。停用的開關要掛 Tooltip 說明原因，data-tooltip 放在外層容器上。
 - Switch 旁的文案一律使用一般字重（font-weight: 400），不得使用粗體。
 - 表頭排序一律使用 table-sort.js／table-sort.css 的 table-sort-control，欄名置於按鈕外。未排序為灰色雙箭頭，升／降冪以品牌色標示方向，依序循環未排序→升冪→降冪→未排序；th 使用 aria-sort。不得套用一般 semantic-btn 描邊按鈕。
 
@@ -51,7 +51,7 @@
 - 表格加直向分隔線：th 右側 1px var(--line-strong)（#C6D1DB，比 --line 深一階——--line 是畫在白底上的，放到 #E9EDF4 的表頭上看不出界線），td 右側 1px #EDF0F4，每列最後一格不加。整列 hover 底色 #FBF8F2；有自訂底色的固定欄（如審核頁的 risk-fixed）必須一併套用 hover 底色，否則整列會斷開。
 
 - 下拉選單一律使用 select.js 的共用 Select 與 select.css：頁面只寫原生 `<select>`，變化以屬性宣告（`multiple`、`data-collapse`、`data-max`、`data-select-all`、`data-filterable`、`data-min-filter`、`data-clearable`、`data-loading`、`data-wrap`、`<optgroup>`）。不得在頁面自行掛載 Element Plus 下拉，也不得覆寫下拉的尺寸、圓角、配色與選項列高。
-- 選項超過十項要可搜尋（data-filterable）；上百項再加 data-min-filter，未達字數前維持完整清單並於下拉頂端說明還差幾個字。多選一律收合標籤（data-collapse），欄位高度固定 32px 不得被標籤撐高。全選只用於多選，計數不含停用選項，部分選取顯示半選狀態。說明型長選項加 data-wrap 換行，分類用 optgroup 且分類標題不可選。
+- 選項超過十項要可搜尋（data-filterable）；上百項再加 data-min-filter，未達字數前維持完整清單並於下拉頂端說明還差幾個字。多選一律收合標籤（data-collapse），欄位高度固定 32px 不得被標籤撐高。已選標籤是 `--brand-line` 實底、`--brand-ink` 字、無框線（`--brand-tint` 和輸入框的米白底幾乎同色，會被吃掉）。全選只用於多選，計數不含停用選項，部分選取顯示半選狀態。說明型長選項加 data-wrap 換行，分類用 optgroup 且分類標題不可選。
 
 - 頁籤一律使用 tabs.js 的共用 Tabs 與 tabs.css：`tabs({id,label,items,active,variant,mobile,controls})` 產生 tablist，面板用 `tabPanels()` 或以 `controls` 指向頁面自己重畫的單一面板。切換由元件處理，頁面只接 `tab-change`；需要攔截時接可取消的 `tab-before-change`。不得在個別頁面另寫頁籤樣式或自行處理方向鍵。
 - 變化只有三種：`line` 頁面層級（預設）、`card` 內容區塊次層、`workspace` 工作區頁籤。同層級不得混用 line 與 card，一頁最多兩層頁籤。標籤文字只放名稱，數量用計數標記；無檢視權限的分頁不渲染，停用只用於暫時不可用。
@@ -81,7 +81,7 @@
 - 進階搜尋條件預設收合，**只要有任何一個進階條件有值就自動展開**——收合狀態下仍然生效的條件等於隱形的篩選，查不到資料時看不出原因。收合鈕要有文字（展開／收合進階條件）並**自成一列放在篩選卡底部靠左**，不得塞進右下角的按鈕群組（那一格只有六分之一欄寬，三顆會溢出），也不得做成絕對定位在右上角的圓形箭頭。收起來用 `hidden` 屬性而不是只把視覺藏掉——報讀器與 Tab 鍵也要跟著看不到，否則焦點會跑進一個看不見的欄位。按下搜尋才查，不做邊打邊查；重設是回到預設值而不是清空，而且重設後自動查一次。需要盯即時變化的頁面可加自動刷新開關（預設關閉、15 秒、顯示倒數、彈窗開著時暫停、離開頁面清計時器）。
 - 日期的快捷區間就是正式後台那七個：今天、昨天、前天、本週、上週、本月、上月，順序一樣，不自行增減。手機版兩個月份面板改成上下排列（EP 預設並排且 body 有 min-width，手機會把左邊那個月切掉一半），而且整個面板固定在畫面正中央——EP 的 popper 位置是 inline style 算出來的，貼著欄位展開會被手機版 `overflow-x: hidden` 整塊裁掉。起訖之間一律用 `~`，欄位的 `range-separator` 與面板內的分隔符號必須是同一個字元；不得保留 EP 預設的 ArrowRight，箭頭讀起來像「往後跳一頁」，但那兩格是同一個區間的兩端。
 - 側欄的捲動不畫捲軸：`.sidebar .nav` 用 `scrollbar-width: none` 與 `::-webkit-scrollbar{width:0}`，捲動提示改成上下緣的漸層淡出（mask-image），而且只在那一側還有內容時才畫：捲到底下緣不淡出、在最上面上緣不淡出，由 sidebar-fade.js 依捲動位置掛 .can-scroll-up／.can-scroll-down，桌機側欄與手機抽屜共用同一套。側欄只有 248px，系統捲軸要吃掉 12–17px，而且正好落在作用中項目與內容區之間，把連接尖角切斷。不得為了「看得到能捲」把捲軸加回來。
-- 站長後台與代理後台內容相同，**只差側欄底色**。側欄底是 `--sidebar` → `--sidebar-end` 的**左右**漸層，這兩支是「目前角色」的別名：站長 `--sidebar-owner` #0F1427 → `--sidebar-owner-end` #46517B，代理 `--sidebar-agent` #1F0E17 → `--sidebar-agent-end` #66304A，由 `<html data-role>` 切換（原型用網址 `?role=agent`，role.js）。角色色只用在側欄本身：側欄漸層、作用中項目的文字、收合後的飛出面板、`.app` 外框（`--sidebar-end`，與側欄右緣接成一片）。作用中項目是 `--nav-active-from` #FEF7E8 → `--nav-active-to` #EAC09E 的**上下**漸層、深字（`--sidebar`，不是白字——淺色底配白字讀不出來），兩個角色共用。Tooltip 底與輸入框內陰影用固定的 `--surface-inverse`，一般文字用 `--text`，**不得引用 `--sidebar`**——它會隨角色變色。品牌色與其他顏色兩個角色共用，選品牌色時要同時搭配兩組側欄。定義在 styles/blue-teal-palette-override.css 的 :root，不得在任何檔案寫死這幾個色碼。
+- 站長後台與代理後台內容相同，**只差側欄底色**。側欄底是 `--sidebar` → `--sidebar-end` 的**左右**漸層，這兩支是「目前角色」的別名：站長 `--sidebar-owner` #0F1427 → `--sidebar-owner-end` #46517B，代理 `--sidebar-agent` #1F0E17 → `--sidebar-agent-end` #66304A，由 `<html data-role>` 切換（原型用網址 `?role=agent`，role.js）。角色色只用在側欄本身與頁首帳號鈕：側欄漸層、作用中項目的文字、收合後的飛出面板、`.app` 外框（`--sidebar-end`，與側欄右緣接成一片）、頁首的身分鈕（`--sidebar-end`，hover `--sidebar`）。作用中項目是 `--nav-active-from` #FEF7E8 → `--nav-active-to` #EAC09E 的**上下**漸層、深字（`--sidebar`，不是白字——淺色底配白字讀不出來），兩個角色共用。Tooltip 底與輸入框內陰影用固定的 `--surface-inverse`，一般文字用 `--text`，**不得引用 `--sidebar`**——它會隨角色變色。品牌色與其他顏色兩個角色共用，選品牌色時要同時搭配兩組側欄。定義在 styles/blue-teal-palette-override.css 的 :root，不得在任何檔案寫死這幾個色碼。
 - 作用中項目與內容區的連接尖角（active-nav-connector）的 `right` 必須等於 `.nav` 的右內距（目前 12px），尖角右緣才會正好落在側欄右緣、和內容接起來。改 `.nav` 的內距時要一起改。
 - 列表工具列沒有「批次處理」這顆：正式後台沒有這個功能（只有批次審核）。按鈕頁的工具列組合與會員列表都已移除。
 - 上方 topbar 與工作區頁籤列固定在捲動容器頂端（sticky，topbar top:0／頁籤列 top 等於 topbar 高度，手機 46px），內容從兩者下方通過。不得讓它們隨內容捲走。桌機 topbar 的高度與頁籤列的偏移共用 styles/sticky-topbar-and-workspace-tabs.css 的 --topbar-h，只在那一處定義，不得在別的檔案另寫 .topbar 高度或 .quick-tabs 的 top。側欄 logo 區（.brand）的高度固定為 --brand-h（64px），在所有寬度下都一樣，且帶 min-height／max-height／flex: none／overflow: hidden——不論下方導覽有多少項目、logo 圖片換成什麼尺寸，這一塊的高度都不得改變。--brand-h、--main-gap-top 與 .brand 的高度都不可放進 @media 內。topbar 高度不是等於 --brand-h，而是 calc(--brand-h - --main-gap-top)，因為 .main 有上緣留白會把 topbar 整個往下推；扣掉之後 topbar 底線才會與側欄 logo 下方的分隔線接成同一條水平線。改動後跑 node layout-check.cjs 驗證。
@@ -93,10 +93,11 @@
 - 帳號選單是唯讀氣泡，六個欄位照 `/api/v0/profile` 的順序：帳號、姓名（上方自成一區）、IP、幣別、上次登入時間、E-mail；底部只有「變更密碼」（btn-edit）與「登出」（btn-neutral），靠右。偏好、主題、時區切換都屬於設定頁，不得加進來。觸發器用 `user` 圖示，不是用姓名縮寫拼出來的頭像——後台沒有大頭貼欄位，拼一個出來只會讓人以為可以換。
 - 站台時區是**唯讀文字**（12px、--text-muted），不是可切換的下拉。它是站台設定而不是個人偏好；做成可切換，每個人看到的報表數字就不一樣，對帳時沒有人說得準誰是對的。正式後台那個可切換的時區下拉已被註解掉，就是這個原因。
 - 頁首不得另設按鈕尺寸：圖示鈕沿用全站唯一的 32 × 32px、圖示 20px，桌機與手機都一樣。頁首規範在 header.js 的「頁首 Header」頁，元件與規範頁同一支檔案；改動後跑 node render-check.cjs 與 node nav-check.cjs。
-- 頁首最右邊的帳號鈕是**身分**，不是動作，要和左邊三顆待辦鈕看得出區別：32 × 32px 不變，但改成圓形、`--brand` 實心填色、無框線、白色圖示（hover `--brand-ink`）。底色不得用 `--brand-tint`（在白色 topbar 上只有 1.1:1，整顆被背景吃掉），也不得用 `--sidebar`（看得見但太重，整個頁首的視覺重心會被拉到最右邊那一個點上），而且前面加一條 1px `--line`、高 20px 的分隔線把兩類東西斷開。四顆都做成白底灰框的方鈕時，最右邊那顆會被讀成「第四個待辦」，使用者得先點開才知道它不是。**整個站上只有這一顆是圓的**，所以圓形在這裡等於身分。樣式只在 header.css 的 `.icon-btn.is-identity` 定義，圓角例外在 styles/button-corner-radius.css，兩處都不得再複製一份。
+- 頁首最右邊的帳號鈕是**身分**，不是動作，要和左邊三顆待辦鈕看得出區別：32 × 32px 不變，但改成圓形、`--sidebar-end` 實心填色（隨角色：站長 `--sidebar-owner-end`、代理 `--sidebar-agent-end`，和側欄同色，一眼看得出登入的是哪個後台）、無框線、白色圖示（hover `--sidebar`）。底色不得用 `--brand-tint`（在白色 topbar 上只有 1.1:1，整顆被背景吃掉），而且前面加一條 1px `--line`、高 20px 的分隔線把兩類東西斷開。四顆都做成白底灰框的方鈕時，最右邊那顆會被讀成「第四個待辦」，使用者得先點開才知道它不是。**整個站上只有這一顆是圓的**，所以圓形在這裡等於身分。樣式只在 header.css 的 `.icon-btn.is-identity` 定義，圓角例外在 styles/button-corner-radius.css，兩處都不得再複製一份。
 
 - 側欄只有兩種頁：**元件規範**（一元件一頁，講這個元件長什麼樣）與**組合範例**（一頁一條真實動線，講元件兜起來怎麼動）。沒有第三種「頁面示範」——先前的搜尋結果頁面／設定相關頁面／審核操作／複雜設定都已改寫成組合範例，因為它們各自帶一套私有樣式，而規範的參照物不能自己不照規範寫。新增頁面前先決定它屬於哪一種。
 - 組合範例一律照正式後台的某一個 view 做，並在檔頭寫明是哪一支（例如 `membersManagement/index.vue`）；不得發明一個正式後台沒有的頁面。每一頁的結尾都要有「這一頁用到哪些規範」那張卡，列出它示範了哪幾條。
+- 組合範例的區塊卡（表格卡 `.example-card`、篩選卡 `.example-filter`、設定卡 `.example-settings-card`）一律是**漸層金框＋內光暈**：2px 斜向（160deg）漸層框，`--brand-line` → `--nav-active-to`（20%）→ `--brand-line`（40%）→ `--nav-active-from`（60%）→ `--nav-active-to`（80%）→ `--brand-line`；框內 1px 白色細線，再往內一層 1rem 的淡金柔光（`--nav-active-to` 40%）；圓角 8px、沒有外陰影。只在 example-page.css 定義，篩選卡一律要帶 `example-filter`。頁尾的 `.example-note` 不套，維持一般卡片。
 - 組合範例的版面一律是 `.example-page` ＋ `guide-section-heading` ＋ 內容 ＋ `example-note`，共用部分在 example-page.css；頁面自己的 css 只放這一頁多出來的東西，不得再定義一次卡片、表單欄位、表格或分頁。
 - 表格一律用 data-table.js 的 `dataTable()`，包含分頁、空狀態、合計列（`foot`）、分組表頭（`groups`）、橫向捲動（`scroll`）與固定欄（欄位的 `sticky: 'right'`）。頁面不得自己兜一套分頁或自己畫 thead/tfoot——站上先前有兩套分頁（舊的 .pagination 與元件的 .data-table-pagination），已統一成後者。
 - 匯出一律呼叫 download-center.js 的 `requestExport()`：正式後台 14 個 view 的匯出是建立下載任務、由頁首的下載中心每 3 秒輪詢，完成才拿得到檔案。按下匯出的當下不得回報「已匯出」，頁面也不得自己做下載 UI。

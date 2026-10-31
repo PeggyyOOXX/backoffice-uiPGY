@@ -299,8 +299,9 @@ select.guide-select:focus,
   max-width: 100%;
   padding: 0.25rem 0.25rem;
   border-radius: 0.25rem;
-  background: var(--brand-tint);
-  color: var(--brand);
+  /* 與共用下拉的已選標籤相同：--brand-line 實底、--brand-ink 字 */
+  background: var(--brand-line);
+  color: var(--brand-ink);
   font-size: 0.75rem;
   white-space: nowrap;
 }

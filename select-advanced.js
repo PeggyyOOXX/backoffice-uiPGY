@@ -217,6 +217,7 @@ window.renderSelectAdvanced = () => `<div class="style-guide select-advanced">
       <span>選項圓角</span><strong>5px</strong>
       <span>標籤高度</span><strong>22px</strong>
       <span>標籤圓角</span><strong>4px</strong>
+      <span>已選標籤</span><strong>--brand-line #D9CDBA 實底、--brand-ink #6E542B 字</strong>
       <span>選中／hover 底色</span><strong>#F8F3EA</strong>
       <span>選中文字色</span><strong>#927039</strong>
       <span>Focus</span><strong>白底、金棕框 --input-focus、3px 淺杏光圈</strong>

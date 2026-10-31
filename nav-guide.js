@@ -143,7 +143,7 @@ window.renderNavPage = () => guidePage({
   ],
   rules: [
     ['兩個角色只差側欄底色', '站長與代理後台的內容相同，差別只在 --sidebar／--sidebar-end（由 html 的 data-role 切換）。作用中項目的淺杏、品牌色與其他顏色兩個角色共用。'],
-    ['--sidebar 只給側欄用', '它會隨角色變色，只能用在側欄漸層、作用中文字、飛出面板與 .app 外框。Tooltip 用 --surface-inverse，一般文字用 --text，不得引用 --sidebar。定義在 blue-teal-palette-override.css 的 :root，不得寫死色碼。'],
+    ['--sidebar 只給側欄用', '它會隨角色變色，只能用在側欄漸層、作用中文字、飛出面板、.app 外框與頁首的身分鈕。Tooltip 用 --surface-inverse，一般文字用 --text，不得引用 --sidebar。定義在 blue-teal-palette-override.css 的 :root，不得寫死色碼。'],
     ['無權限的項目不渲染', '不是變灰——看得到卻點不了只會讓人一直問為什麼。權限過濾在側欄就做完。'],
     ['側欄最多三層', '第四層代表功能分類有問題，應該拆成兩個第一層。'],
     ['麵包屑只補側欄標不到的層', '只有兩層（區 → 頁）時不要放麵包屑，那只是重複側欄。'],

@@ -47,8 +47,9 @@
   margin-bottom: 0.75rem;
 }
 
+/* 這一頁的工具列在卡片裡，直接給工具列 → 表格的 8px */
 .example-mixed-page .example-toolbar {
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .example-mixed-sort-hint {

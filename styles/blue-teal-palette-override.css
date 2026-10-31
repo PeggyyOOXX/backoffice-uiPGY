@@ -8,8 +8,8 @@
   /* 側欄：底色左右漸層、作用中項目上下漸層。
      站長後台與代理後台只差側欄底色這一組：--sidebar／--sidebar-end 是「目前角色」的別名，
      預設指向站長，:root[data-role="agent"] 改指向代理（網址加 ?role=agent，見 role.js）。
-     角色色只用在側欄本身：側欄漸層、作用中項目的文字、收合後的飛出面板、.app 外框（--sidebar-end，
-     與側欄右緣接成一片）。作用中項目的淺杏、品牌色與其他顏色兩個角色共用。 */
+     角色色只用在側欄本身與頁首身分鈕：側欄漸層、作用中項目的文字、收合後的飛出面板、.app 外框（--sidebar-end，
+     與側欄右緣接成一片）、頁首身分鈕（--sidebar-end，hover --sidebar）。作用中項目的淺杏、品牌色與其他顏色兩個角色共用。 */
   --sidebar-owner: #0f1427;
   --sidebar-owner-end: #46517b;
   --sidebar-agent: #1f0e17;

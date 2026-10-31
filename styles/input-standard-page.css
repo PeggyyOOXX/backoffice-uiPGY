@@ -76,6 +76,20 @@
   border: 0;
   border-radius: 1.25rem;
   background: var(--brand);
+  position: relative;
+  isolation: isolate;
+}
+/* 軌道的光影：一層疊在底色上的暗部漸層（上緣深、往下淡出）加內陰影，軌道看起來是凹進去的。
+   底色仍由下面幾條 background 決定（開／關／hover），這一層只負責光影，所以不論哪個狀態都一致。 */
+.standard-switch:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.14), rgba(0, 0, 0, 0));
+  box-shadow: inset 0 1px 0.25rem rgba(0, 0, 0, 0.35);
+  pointer-events: none;
 }
 .standard-switch{cursor:pointer;flex:none}
 /* 關閉是實心的中性灰（與 --text-muted 同一支色），不是淺灰。先前關閉是 #C5CDD7、停用只加 opacity:.45，
@@ -86,22 +100,50 @@
 .standard-switch:not(:disabled):hover{background:#7c5f30}
 .standard-switch[aria-checked="false"]:not(:disabled):hover{background:#5c6878}
 .standard-switch:focus-visible,.standard-switch.is-focus{outline:3px solid color-mix(in srgb,var(--brand) 33%,transparent);outline-offset:3px}
+/* 旋鈕是拉絲金屬：圓錐漸層的亮暗交錯做出金屬反光，外加落影與一圈白色內緣。
+   關閉時是銀色（白與中性灰），開啟時是香檳金（側欄作用中的 --nav-active-from／--nav-active-to），
+   色階全部取自既有 token。 */
 .standard-switch:after {
   content: "";
   display: block;
+  position: relative;
   width: 1.125rem;
   height: 1.125rem;
   margin-left: auto;
   border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 1px 2px rgba(17, 27, 43, 0.25);
+  background: conic-gradient(
+    from 210deg,
+    #fff,
+    var(--line-strong),
+    #fff,
+    color-mix(in srgb, var(--line-strong) 70%, var(--text-faint)),
+    var(--surface),
+    var(--line-strong),
+    #fff
+  );
+  box-shadow:
+    0 1px 0.25rem rgba(0, 0, 0, 0.4),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+}
+.standard-switch:not([aria-checked="false"]):not(:disabled):after {
+  background: conic-gradient(
+    from 210deg,
+    var(--nav-active-from),
+    var(--nav-active-to),
+    #fff,
+    color-mix(in srgb, var(--nav-active-to) 82%, var(--brand)),
+    var(--nav-active-from),
+    var(--nav-active-to),
+    var(--nav-active-from)
+  );
 }
 /* 停用不調整透明度，改成「淡底＋描邊」的空心外觀：可操作的兩種狀態都是實心、旋鈕帶陰影，
    停用的兩種都是空心、旋鈕平貼。先一眼分出能不能按，再由旋鈕位置與色相看出開或關。
    描邊用 inset box-shadow 畫在元素內側，才不會把 42 × 24px 撐大。 */
 .standard-switch:disabled{cursor:not-allowed;background:#f1e9db;box-shadow:inset 0 0 0 1px #d5c6ae}
 .standard-switch[aria-checked="false"]:disabled{background:#f1f3f6;box-shadow:inset 0 0 0 1px #d4dbe4}
-.standard-switch:disabled:after{box-shadow:inset 0 0 0 1px #dde3ea}
+.standard-switch:disabled:after{background:#fff;box-shadow:inset 0 0 0 1px #dde3ea}
+.standard-switch:disabled:before{display:none}
 .standard-upload {
   display: grid;
   place-items: center;

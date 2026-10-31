@@ -57,24 +57,24 @@ window.renderChoiceGuide = () =>
     slug: "choice",
     title: "選擇控制 Selection",
     intro:
-      "從有限選項中選一個或多個。三者的視覺差異很小，但語意完全不同——挑錯元件會讓使用者誤判設定有沒有生效，所以先看決策表再看規格。",
+      "從有限選項中選一個或多個。三者的視覺差異很小，但語意完全不同——挑錯元件會讓使用者誤判設定有沒有生效，選用前請看「先決定用哪一個」的決策表。",
     sections: [
+      { heading: "開關 Switch", body: switchBody() },
       {
         heading: "先決定用哪一個",
         body: `<p class="component-description">判準是<strong>「改了之後要不要再按儲存」</strong>與<strong>「選項互不互斥」</strong>這兩題，不是哪個比較好看。</p>${decisionTable(DECISION)}`,
       },
-      { heading: "開關 Switch", body: switchBody() },
       { heading: "Radio 與 Checkbox", body: choiceBody() },
     ],
     tokens: [
       ["Switch 尺寸", "42 × 24px"],
       ["Switch 與文案間距", "16px"],
-      ["Switch 開啟／關閉", "#927039／#718087，都是實心"],
+      ["Switch 開啟／關閉", "#927039／#718087，都是實心；軌道上緣一層暗部漸層加內陰影，看起來凹進去"],
       ["Switch Hover", "#7C5F30／#5C6878"],
       ["Switch 停用・開", "底 #F1E9DB，內描邊 #D5C6AE"],
       ["Switch 停用・關", "底 #F1F3F6，內描邊 #D4DBE4"],
       ["Switch Focus", "3px #92703955，offset 3px"],
-      ["Switch 旋鈕", "18px 白圓，可操作帶 0 1px 2px 陰影"],
+      ["Switch 旋鈕", "18px 拉絲金屬圓鈕（圓錐漸層）：關為銀色（白＋--line-strong），開為香檳金（--nav-active-from／--nav-active-to）；可操作帶 0 1px 4px 落影與白色內緣，停用為白色平貼"],
       ["控制尺寸", "16 × 16px"],
       ["選取色", "#927039（accent-color）"],
       ["控制與文案間距", "8px"],

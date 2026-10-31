@@ -18,9 +18,42 @@
   margin: 0;
 }
 
-/* 列表工具列固定在表格外，位置不隨表格狀態改變（載入與空狀態的規範） */
+/* 組合範例的區塊卡（篩選卡、表格卡、設定卡）：2px 斜向漸層金框，兩端與 40% 處是淺框色 --brand-line，
+   20%／80% 是淺杏 --nav-active-to、60% 是米白 --nav-active-from，像光在金邊上流動；
+   框內一條白色細線把金框與內容隔開，再往內一層淡金柔光（--nav-active-to 40%），沒有外陰影。
+   頁尾的「這一頁用到哪些規範」（.example-note）不套，維持一般卡片。 */
+.example-card,
+.example-filter,
+.example-settings-card {
+  border: 2px solid transparent;
+  border-radius: 0.5rem;
+  background:
+    linear-gradient(var(--card), var(--card)) padding-box,
+    linear-gradient(
+        160deg,
+        var(--brand-line),
+        var(--nav-active-to) 20%,
+        var(--brand-line) 40%,
+        var(--nav-active-from) 60%,
+        var(--nav-active-to) 80%,
+        var(--brand-line)
+      )
+      border-box;
+  box-shadow:
+    inset 0 0 0 1px #fff,
+    inset 0 0 1rem color-mix(in srgb, var(--nav-active-to) 40%, transparent);
+}
+
+/* 列表工具列固定在表格外，位置不隨表格狀態改變（載入與空狀態的規範）。
+   工具列的操作都是針對下方的表格，所以它要靠近表格、遠離篩選卡：
+   篩選卡 → 工具列 16px（.example-page 的區塊間距），工具列 → 表格 8px，距離比 2:1，
+   一眼看得出「工具列＋表格」是一組。工具列本身不帶內距，按鈕與卡片左緣對齊。 */
 .example-toolbar {
   margin: 0;
+  padding: 0;
+}
+.example-page > .example-toolbar {
+  margin-bottom: -0.5rem;
 }
 
 /* 組合範例的卡片內距只有這一個值：8px，就是「設計 Token → 間距」裡的卡片內距。

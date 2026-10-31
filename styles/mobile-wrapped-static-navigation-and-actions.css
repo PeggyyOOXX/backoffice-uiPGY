@@ -137,8 +137,6 @@
     padding: 0.25rem 0.5rem;
     gap: 0.25rem;
     background: #fff;
-    border-bottom: 1px solid var(--line);
-    border-radius: 0.5rem 0.5rem 0 0;
     box-shadow: none;
   }
   /* 只調排列，不調尺寸：高度、內距、字級一律由 semantic-button-system 決定。

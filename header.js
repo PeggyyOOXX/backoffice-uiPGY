@@ -202,7 +202,7 @@ window.renderHeaderPage = () => guidePage({
           <span class="header-divider" aria-hidden="true"></span>
           <button type="button" class="icon-btn is-identity" aria-hidden="true" tabindex="-1">${icon('user', 20)}</button>
         </div>
-        <p class="component-description">觸發器本身是 <code>.icon-btn.is-identity</code>：同樣 32 × 32px，但<strong>圓形、<code>--brand</code> 實心填色、無框線、白色圖示</strong>，hover 轉 <code>--brand-ink</code>。底色試過的另外兩個方向都不對：<code>--brand-tint</code> 在白色 topbar 上只有 1.1:1，整顆被背景吃掉；<code>--sidebar</code> 看得見但在一條白底的列上太重，整個頁首的視覺重心會被拉到最右邊那一個點上。<code>--brand</code> 落在中間，白字對比 3.0:1，過 WCAG 非文字元素的 3:1 下限，而且它是品牌色，用在「我」身上讀起來是歸屬而不是警示。這是<strong>全站唯一一個不吃 4px 圓角的按鈕</strong>，例外寫在 <code>styles/button-corner-radius.css</code> 裡並具名——不得把它當成「頁首可以自己決定圓角」的先例，其餘五個位置仍是 4px。</p>`,
+        <p class="component-description">觸發器本身是 <code>.icon-btn.is-identity</code>：同樣 32 × 32px，但<strong>圓形、<code>--sidebar-end</code> 實心填色、無框線、白色圖示</strong>，hover 轉 <code>--sidebar</code>。底色跟著角色換：站長後台是 <code>--sidebar-owner-end</code>、代理後台是 <code>--sidebar-agent-end</code>，和側欄同一個顏色，使用者一眼看得出自己登入的是哪一個後台；白字對比在兩個角色上都超過 8:1。不得用 <code>--brand-tint</code>，在白色 topbar 上只有 1.1:1，整顆被背景吃掉。這是<strong>全站唯一一個不吃 4px 圓角的按鈕</strong>，例外寫在 <code>styles/button-corner-radius.css</code> 裡並具名——不得把它當成「頁首可以自己決定圓角」的先例，其餘五個位置仍是 4px。</p>`,
     },
     {
       heading: '下載中心',
@@ -222,8 +222,8 @@ window.renderHeaderPage = () => guidePage({
     ['左右內距', '28px（桌機）／12px（手機）'],
     ['項目間距', '8px'],
     ['圖示鈕', '32 × 32px，圖示 20px'],
-    ['身分鈕', '32 × 32px 圓形，--brand 底／白色圖示，無框'],
-    ['身分鈕 Hover', '--brand-ink'],
+    ['身分鈕', '32 × 32px 圓形，--sidebar-end 底（隨角色：站長 --sidebar-owner-end、代理 --sidebar-agent-end）／白色圖示，無框'],
+    ['身分鈕 Hover', '--sidebar（同一角色的漸層深端）'],
     ['分隔線', '1px var(--line)，高 20px，左右各 4px'],
     ['角標尺寸', '14px 見方（單一數字為圓形），圓角 8px'],
     ['角標位置', 'top: -4px / right: -4px'],

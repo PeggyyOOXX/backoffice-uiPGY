@@ -22,7 +22,8 @@
 
 /* Multi-select tags: same 32px field height, tags sit inside without pushing it taller. */
 .bo-select-host .el-select__selection{gap:0.25rem}
-.bo-select-host .el-tag{height:1.375rem;padding:0 0.25rem;border-radius:0.25rem;background:var(--brand-tint);border-color:var(--brand-line);color:var(--brand-ink);font-size:0.75rem;font-weight:400}
+/* 已選標籤用 --brand-line 實底、--brand-ink 字（4.5:1）。--brand-tint 和輸入框的米白底 --input-bg 幾乎同色，會被吃掉。 */
+.bo-select-host .el-tag{height:1.375rem;padding:0 0.25rem;border-radius:0.25rem;background:var(--brand-line);border-color:transparent;color:var(--brand-ink);font-size:0.75rem;font-weight:400}
 .bo-select-host .el-tag .el-tag__close{color:var(--brand-ink)}
 .bo-select-host .el-tag .el-tag__close:hover{background:var(--brand);color:#fff}
 .bo-select-host .el-select__input{font-size:0.875rem}

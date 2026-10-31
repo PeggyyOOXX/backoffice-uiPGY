@@ -13,7 +13,7 @@
 .nav-item.active {
   color: var(--brand-ink);
   background: var(--brand-tint);
-  box-shadow: 0 3px 0.5rem rgba(2, 19, 27, 0.15);
+  box-shadow: 0 3px 0.5rem color-mix(in srgb, var(--surface-inverse) 15%, transparent);
   font-weight: 750;
 }
 .nav-item.active .ico {
@@ -25,7 +25,7 @@
 .nav-level-3.active {
   color: var(--brand-ink);
   background: var(--brand-tint);
-  box-shadow: 0 3px 0.5rem rgba(2, 19, 27, 0.15);
+  box-shadow: 0 3px 0.5rem color-mix(in srgb, var(--surface-inverse) 15%, transparent);
 }
 [data-toggle]::after {
   content: "";

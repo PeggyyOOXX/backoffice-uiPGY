@@ -15,7 +15,7 @@
      先前每個元件各寫一組，模糊半徑有 5／7／11／13／17／75px，同樣是「浮起來」卻深淺不一。
      sm：按鈕 hover 這類貼著原位的浮起
      md：氣泡面板、Toast、批量操作列這類蓋在內容上的浮層 */
-  --shadow-sm: 0 0.25rem 0.75rem rgba(28, 98, 120, 0.18);
+  --shadow-sm: 0 0.25rem 0.75rem color-mix(in srgb, var(--surface-inverse) 18%, transparent);
   --shadow-md: 0 0.5rem 1.5rem rgba(23, 35, 59, 0.14);
   /* 側欄寬度。.sidebar、.main 的左外距、組合範例的固定列都靠它對齊，
      所以只在這裡定義一次——要為長語系調寬就改這一個值。 */

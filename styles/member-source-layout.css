@@ -17,7 +17,6 @@
    這條 min-width:36px 是舊的純圖示版留下來的，現在兩顆都有文字。 */
 .member-actions {
   padding: 0.5rem 0.5rem;
-  border-bottom: 1px solid var(--line);
 }
 .tag-dots {
   display: flex;

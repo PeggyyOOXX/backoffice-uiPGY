@@ -53,7 +53,7 @@ function filtered() {
 const input = (key, label, placeholder='', extra='') => `<div class="filter-field"><label for="risk-filter-${key}">${label}</label><input id="risk-filter-${key}" class="control" name="${key}" value="${esc(draft[key])}" placeholder="${esc(placeholder)}" ${extra}></div>`
 const select = (key, label, options) => `<div class="filter-field"><label for="risk-filter-${key}">${label}</label><select id="risk-filter-${key}" class="control guide-select" name="${key}" aria-label="${label}">${options.map(value=>`<option ${draft[key]===value?'selected':''}>${esc(value)}</option>`).join('')}</select></div>`
 function searchMarkup() {
-  return `${filterToggle('risk-search-panel')}<form id="risk-search-panel" class="source-filter card risk-search" data-risk-search><p class="component-description risk-search-note">※可查詢 60 天內紀錄</p>
+  return `${filterToggle('risk-search-panel')}<form id="risk-search-panel" class="source-filter card example-filter risk-search" data-risk-search><p class="component-description risk-search-note">※可查詢 60 天內紀錄</p>
     <div class="source-filter-grid">
       ${select('branch','平台名稱',['101 BEST','DEMO03'])}
       <div class="filter-field filter-span-2"><label id="risk-date-label">申請時間</label><div class="date-range-host" data-date-range data-past-year="true" data-start="${esc(draft.start)}" data-end="${esc(draft.end)}" ${!draft.start?'data-empty="true"':''} aria-labelledby="risk-date-label"></div></div>
