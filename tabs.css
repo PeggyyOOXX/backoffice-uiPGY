@@ -1,6 +1,11 @@
 /* Shared Tabs. Single source for every tablist: 樣式規範、設定頁、複雜設定、
    彈窗內的語言頁籤與工作區頁籤都用這組，個別頁面不得再自訂頁籤配色與高度。 */
 .bo-tabs{--tab-on:var(--brand);--tab-off:var(--text-muted);--tab-line:var(--line-control);min-width:0;margin-bottom:0.5rem}
+/* 頁籤列上方要留白：它幾乎都接在別的東西下面（標題、說明、一排欄位），
+   貼著上一個區塊會被讀成同一塊。間距取版面格線的 16px。
+   第一個子元素不加——卡片或頁面開頭的頁籤，位置由容器的內距決定，
+   再補 margin 會變成兩段留白相加。 */
+.bo-tabs:not(:first-child){margin-top:1rem}
 
 /* The rail clips the scroller and carries the edge shadows that say "more tabs". */
 .bo-tabs-rail{position:relative;min-width:0}

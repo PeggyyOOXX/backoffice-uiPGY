@@ -92,13 +92,16 @@
   pointer-events: none;
 }
 .standard-switch{cursor:pointer;flex:none}
-/* 關閉是實心的中性灰（與 --text-muted 同一支色），不是淺灰。先前關閉是 #C5CDD7、停用只加 opacity:.45，
-   兩者算出來只差一點亮度，「關閉」與「停用」看起來一樣，使用者分不出這顆能不能按。 */
-.standard-switch[aria-checked="false"]{background:var(--text-muted)}
+/* 關閉是實心的 --line-strong。這是整組 token 裡「還能再淺」的最後一階：
+   再往下的 --line-control (#DCE2EB) 會撞到停用的描邊 #D4DBE4，--line 之後則接近停用的底色。
+   跟停用分得開靠的是「實心 vs 空心」，不是「深 vs 淺」：停用是淡底加 inset 描邊、旋鈕平貼，
+   關閉是整片實色、旋鈕帶陰影，兩者一眼就不一樣。先前關閉是 #C5CDD7、停用只加 opacity:.45，
+   那才會分不出來——差別只有亮度的時候才需要靠深灰拉開。 */
+.standard-switch[aria-checked="false"]{background:var(--line-strong)}
 .standard-switch[aria-checked="false"]:after{margin-left:0}
 /* 可操作的兩種狀態都有 hover：顏色加深一階，停用的不會變，滑過去就知道按不按得動。 */
 .standard-switch:not(:disabled):hover{background:#7c5f30}
-.standard-switch[aria-checked="false"]:not(:disabled):hover{background:#5c6878}
+.standard-switch[aria-checked="false"]:not(:disabled):hover{background:color-mix(in srgb,var(--line-strong) 82%,#000)}
 .standard-switch:focus-visible,.standard-switch.is-focus{outline:3px solid color-mix(in srgb,var(--brand) 33%,transparent);outline-offset:3px}
 /* 旋鈕是拉絲金屬：圓錐漸層的亮暗交錯做出金屬反光，外加落影與一圈白色內緣。
    關閉時是銀色（白與中性灰），開啟時是香檳金（側欄作用中的 --nav-active-from／--nav-active-to），

@@ -28,7 +28,7 @@ const ALLOWLIST = [
   ['action', 'close', 'x', '關閉'],
   ['action', 'search', 'search', '搜尋'],
   ['action', 'refresh', 'refresh-cw', '刷新'],
-  ['action', 'reset', 'rotate-ccw', '重設'],
+  ['action', 'reset', 'rotate-ccw', '重置'],
   ['action', 'download', 'download', '匯出'],
   ['action', 'upload', 'upload', '上傳'],
   ['action', 'sort', 'arrow-up-down', '排序'],

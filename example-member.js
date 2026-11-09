@@ -289,7 +289,7 @@ const filters = () => `${filterToggle('member-search-panel')}
         </div>
       </div>
       <div class="source-filter-actions">
-        <button type="button" class="semantic-btn btn-neutral" data-member-reset>${icon('reset')}重設</button>
+        <button type="button" class="semantic-btn btn-neutral" data-member-reset>${icon('reset')}重置</button>
         <button type="submit" class="semantic-btn btn-search">${icon('search')}搜尋</button>
       </div>
     </div>
@@ -389,7 +389,7 @@ onMatch('click', '[data-member-reset]', () => {
   window.resetDateRanges?.(form)
   const host = document.querySelector('[data-member-root]')
   if (host) host.outerHTML = window.renderExampleMember()
-  message.info('已重設搜尋條件')
+  message.info('已重置搜尋條件')
 }, { owner: 'example-member' })
 
 // 手機：篩選列由共用的 filterToggle 收合，次要操作收進「更多」

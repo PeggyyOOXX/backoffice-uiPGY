@@ -244,8 +244,11 @@ ok(`表格外觀只有 ${SOURCE} 一個來源，且沒有全域 min-width`)
     ...fs.readdirSync('.').filter(f => f.endsWith('.css') && f !== 'guide-page.css'),
     ...styleFiles.map(f => `styles/${f}`),
   ]
+  // 規則的說明常會提到它要擋的選擇器（例如 upload-guide.css 的註解就寫著「與 .guide-fields 同一套」），
+  // 比對前先把註解剝掉，驗的才是真正生效的那幾行。
+  const code = file => fs.readFileSync(file, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '')
   const overrides = cssFiles.filter(file =>
-    /\.guide-fields[^{,]*\{[^}]*(grid-template-columns|container-type)/.test(fs.readFileSync(file, 'utf8')))
+    /\.guide-fields[^{,]*\{[^}]*(grid-template-columns|container-type)/.test(code(file)))
   assert.deepEqual(overrides, [], '只有 guide-page.css 可以定義表單欄數，以下檔案另寫了：\n  ' + overrides.join('\n  '))
   ok('表單欄位格線 1／2／3／4／6 欄照 el-col，彈窗 2 欄，只有 guide-page.css 一處定義')
 }

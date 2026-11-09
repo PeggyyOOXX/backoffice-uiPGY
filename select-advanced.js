@@ -187,7 +187,7 @@ window.renderSelectAdvanced = () => `<div class="style-guide select-advanced">
 
   <section class="card select-guide">
     <h3>用在篩選列</h3>
-    <p class="component-description">實際組合：沿用既有的 <code>source-filter</code> 篩選格線、<code>filter-field</code> 欄位與 <code>semantic-btn</code> 按鈕，下拉只是換上需要的屬性。按鈕群組靠左，重設在前、搜尋在後。</p>
+    <p class="component-description">實際組合：沿用既有的 <code>source-filter</code> 篩選格線、<code>filter-field</code> 欄位與 <code>semantic-btn</code> 按鈕，下拉只是換上需要的屬性。按鈕群組靠左，重置在前、搜尋在後。</p>
     <div class="source-filter card select-filter-demo">
       <div class="source-filter-grid">
         <div class="filter-field"><label>平台名稱</label><select class="control"><option>101 BEST</option><option>Demo Platform</option></select></div>
@@ -197,7 +197,7 @@ window.renderSelectAdvanced = () => `<div class="style-guide select-advanced">
         <div class="filter-field"><label>會員狀態</label><select class="control" aria-label="會員狀態">${options(STATUS)}</select></div>
         <div class="filter-field"><label class="continuation-label">日期區間</label><div class="date-range-host" data-date-range></div></div>
         <div class="source-filter-actions">
-          <button type="button" class="semantic-btn btn-neutral" data-select-demo-action="reset">${icon("reset")}重設</button>
+          <button type="button" class="semantic-btn btn-neutral" data-select-demo-action="reset">${icon("reset")}重置</button>
           <button type="button" class="semantic-btn btn-search" data-select-demo-action="search">${icon("search")}搜尋</button>
         </div>
       </div>

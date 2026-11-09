@@ -129,7 +129,7 @@ const filters = () => `${filterToggle('gift-search-panel')}
       <div class="date-range-host" data-date-range data-empty="true" aria-labelledby="gift-date-label"></div>
     </div>
     <div class="source-filter-actions">
-      <button type="button" class="semantic-btn btn-neutral" data-gift-reset>${icon('reset')}重設</button>
+      <button type="button" class="semantic-btn btn-neutral" data-gift-reset>${icon('reset')}重置</button>
       <button type="submit" class="semantic-btn btn-search">${icon('search')}搜尋</button>
     </div>
   </div>

@@ -1,10 +1,23 @@
+/* 篩選列的桌機格線：6 欄，條件由左到右、滿了就換行。
+   重置與搜尋排在所有條件之後、自成一列、靠右並貼齊底線。
+
+   兩件事要一起寫，少一個就會壞：
+   1) grid-column: 1 / -1 —— 整列橫跨。不能寫「指定第 6 欄、排數自動」：自動排版會把它塞進
+      第一個第 6 格還空著的排，也就是第 1 排，6 個條件的篩選列會被擠成 5 個加一個落單的。
+   2) grid-row: auto —— strict-four-column-filter-grid.css 的底線是
+      grid-row: 1 / span 3 !important，不歸成 auto 的話按鈕會橫跨前三排、壓在條件上面。
+
+   先前這裡寫死 grid-row: 2。兩排以內看起來正確（按鈕自成一排、靠右貼底），但正式後台有
+   8 支頁面的條件超過兩排——會員列表 15 格、提款紀錄 18 格——按鈕就卡在整列條件的中間，
+   而它是對整列條件的動作，必須在最後。寫死第 2 排還會佔走那一排的第 6 格，把一個條件擠到
+   下一排，結果「幾個條件 → 幾排」跟正式後台對不起來。 */
 @media (min-width: 1181px) {
   .source-filter-grid {
     grid-template-columns: repeat(6, minmax(0, 1fr));
   }
   .source-filter-actions {
-    grid-column: 6 !important;
-    grid-row: 2 !important;
+    grid-column: 1 / -1 !important;
+    grid-row: auto !important;
     align-self: end;
     justify-self: end;
   }

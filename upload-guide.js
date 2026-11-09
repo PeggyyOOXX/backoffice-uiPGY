@@ -15,18 +15,27 @@ const SLOTS = [
   ['活動內頁 · H5', '750 × 320', 500],
 ]
 
+const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
+
 /**
  * 上傳欄位：尺寸與容量規則直接寫在標題列，上傳前就擋得住錯誤。
- * 其他頁面要放上傳欄位就用這個，不要自己拼一份拖放區。
- * @param attrs 給拖放區的額外屬性，頁面用它接自己的事件
+ * 其他頁面要放上傳欄位就用這個，不要自己拼一份拖放區——站上先前有兩份，
+ * 內容編輯那一頁自己寫了一個 .content-image-stage，樣式與這裡不一樣。
+ * @param attrs   給拖放區的額外屬性，頁面用它接自己的事件
+ * @param preview 已上傳時傳 { url, name }：拖放區改放預覽圖，整塊仍可點、可再拖一張進來換
+ * @param actions 預覽下方的操作鈕（替換／移除），由使用端決定放哪幾顆
  */
-export const uploadSlot = ({ label, size, maxKB, attrs = '' }) => `<div class="upload-slot">
-  <div class="upload-slot-head"><strong>${label}</strong><small>${size}px · 最大 ${maxKB}KB</small></div>
-  <div class="upload-dropzone" role="button" tabindex="0" aria-label="上傳 ${label}" ${attrs}>
-    ${icon('upload', 24)}
-    <p>點擊或拖曳圖片到這裡</p>
-    <small>JPG／PNG／WebP</small>
+export const uploadSlot = ({ label, size, maxKB, attrs = '', preview = null, actions = '' }) => `<div class="upload-slot">
+  <div class="upload-slot-head"><strong>${esc(label)}</strong><small>${esc(size)}px · 最大 ${maxKB}KB</small></div>
+  <div class="upload-dropzone${preview ? ' has-preview' : ''}" role="button" tabindex="0" aria-label="上傳 ${esc(label)}" ${attrs}>
+    ${preview
+      ? `<img class="upload-preview" src="${preview.url}" alt="${esc(label)}預覽">`
+      : `<span class="upload-icon-seat">${icon('upload', 24)}</span>
+         <p>點擊或拖曳圖片到這裡</p>
+         <small>JPG／PNG／WebP</small>`}
   </div>
+  ${preview ? `<p class="upload-file-name">${esc(preview.name)}</p>` : ''}
+  ${actions ? `<div class="upload-slot-actions">${actions}</div>` : ''}
 </div>`
 
 const slot = ([label, size, maxKB], index) => uploadSlot({ label, size, maxKB, attrs: `data-upload-demo="${index}"` })
@@ -76,11 +85,12 @@ window.renderUploadPage = () => guidePage({
   ],
   tokens: [
     ['拖放區最小高度', '130px'],
-    ['框線', '1px 虛線 #CDD8E0'],
+    ['框線・預設', '1px 實線 --input-line（#D6CFC2）'],
+    ['框線・hover／拖曳中', '1px 虛線 --brand（#927039）——虛線只在它真的成為投放目標時出現'],
     ['圓角', '4px'],
-    ['底色', '#F7F9FB'],
-    ['拖曳中', '框線與圖示轉品牌色'],
-    ['圖示', '24px'],
+    ['底色', '--input-bg（#FBF9F5）＋ inset 0 2px 8px 的上緣暗部，與 Switch 軌道同一套凹槽'],
+    ['拖曳中', '框線轉虛線與品牌色、底色轉 --brand-tint，圖示圓座的描邊一起轉金'],
+    ['圖示', '24px，坐在 40px 的凹陷圓座（--card 底 ＋ inset 描邊與暗部）'],
     ['說明文字', '12px / #718096'],
     ['預覽', 'object-fit: contain，不裁切'],
     ['預覽最大高度', '160px'],

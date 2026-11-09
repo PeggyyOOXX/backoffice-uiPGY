@@ -1,0 +1,62 @@
+/* 活動內容編輯彈窗。只放這個彈窗多出來的東西——表單欄位、上傳欄位、頁籤、按鈕
+   全部是共用元件，這裡不再定義一次。 */
+.promo-content-title{display:grid;gap:0.5rem;max-width:23.75rem;margin-top:1rem;font-size:0.75rem}
+.promo-content-heading{margin:1.5rem 0 0.75rem;font-size:0.875rem;font-weight:600;color:var(--text)}
+.promo-content-richtext{border-radius:0.25rem;overflow:hidden}
+
+/* ── CKEditor 接上專案 token ──
+   CKEditor 5 的 Lark 主題所有顏色與尺寸都走 --ck-* 變數，所以不必改套件、
+   也不必覆寫它的 class，只要在容器上重新宣告這些變數就會跟著走。
+   這是唯一能讓它和站上其他元件長得像同一套系統的做法；移植到正式後台時
+   把這一段搬過去即可，CkEditor.vue 不用動。
+
+   對齊的是輸入框那一套：框線 --input-line、圓角 4px、聚焦 --input-focus 加光圈、
+   工具列底色 --surface、按鈕 hover --surface-hover、作用中 --brand-tint 配 --brand。 */
+.promo-content-richtext{
+  --ck-border-radius:0.25rem;
+  --ck-color-base-border:var(--input-line);
+  --ck-color-base-background:var(--card);
+  --ck-color-base-foreground:var(--surface);
+  --ck-color-base-text:var(--text);
+  --ck-color-text:var(--text);
+  --ck-color-toolbar-background:var(--surface);
+  --ck-color-toolbar-border:var(--input-line);
+  --ck-color-button-default-hover-background:var(--surface-hover);
+  --ck-color-button-default-active-background:var(--surface-hover);
+  --ck-color-button-on-background:var(--brand-tint);
+  --ck-color-button-on-hover-background:var(--brand-tint);
+  --ck-color-button-on-color:var(--brand-ink);
+  --ck-color-focus-border:var(--input-focus);
+  --ck-color-focus-outer-shadow:color-mix(in srgb,var(--brand) 20%,transparent);
+  --ck-color-dropdown-panel-background:var(--card);
+  --ck-color-dropdown-panel-border:var(--input-line);
+  --ck-color-panel-background:var(--card);
+  --ck-color-panel-border:var(--input-line);
+  --ck-color-list-background:var(--card);
+  --ck-color-list-button-hover-background:var(--surface-hover);
+  --ck-color-list-button-on-background:var(--brand);
+  --ck-color-list-button-on-text:#fff;
+  --ck-color-link-default:var(--brand-ink);
+  --ck-focus-ring:1px solid var(--input-focus);
+}
+/* 編輯區的高度交給內容撐開，只給一個地板，不寫死 height——
+   九個語系的內文長度差很多，寫死高度短的留白、長的要捲兩層。 */
+.promo-content-richtext .ck-editor__editable{min-height:12.5rem}
+.promo-content-richtext .ck.ck-editor__main > .ck-editor__editable{
+  border-color:var(--input-line);
+  border-bottom-left-radius:0.25rem;
+  border-bottom-right-radius:0.25rem;
+}
+.promo-content-richtext .ck.ck-toolbar{
+  border-top-left-radius:0.25rem;
+  border-top-right-radius:0.25rem;
+}
+/* 內文裡的字級與行高照站上的正文，不用 CKEditor 預設的 16px／1.5 */
+.promo-content-richtext .ck-content{font-size:0.875rem;line-height:1.8}
+.promo-content-richtext .ck-content h2{font-size:1.125rem}
+.promo-content-richtext .ck-content h3{font-size:1rem}
+.promo-content-richtext .ck-content h4{font-size:0.875rem}
+
+@media(max-width:720px){
+  .promo-content-title{max-width:none}
+}

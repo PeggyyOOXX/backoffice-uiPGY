@@ -1,6 +1,10 @@
 /* Shared modal shell. Content controls use the existing guide-input and semantic-btn systems. */
 dialog.bo-modal.bo-modal{position:fixed;inset:50% auto auto 50%;margin:0;width:min(40rem,calc(100vw - 2rem));height:auto;max-height:calc(100dvh - 2rem);padding:0;border:1px solid var(--line-control);border-radius:0.75rem;background:#fff;color:var(--text,#15233f);box-shadow:0 1rem 3.5rem #15233f33;overflow:hidden;opacity:1;pointer-events:auto;transform:translate(-50%,-50%)}
 dialog.bo-modal:not([open]){display:none!important}dialog.bo-modal[open]{display:flex;flex-direction:column}dialog.bo-modal::backdrop{background:rgba(12,23,44,.56)}
+/* 寬版：內容有第二個維度（語系頁籤）又帶富文字編輯器時用，寬度照正式後台
+   promotionActivity 的 noticeWidth="848px"。全站只有兩種彈窗寬度，要再開第三種
+   之前先問「它跟活動編輯一樣，是語系 × 多圖 × 富文字三者都有嗎」。 */
+dialog.bo-modal.bo-modal.is-wide{width:min(53rem,calc(100vw - 2rem))}
 .bo-modal .bo-modal-frame{position:static;display:flex;flex-direction:column;width:100%;height:auto;flex:0 1 auto;min-height:0;max-height:inherit;margin:0;border-radius:inherit;overflow:hidden;transform:none}
 .bo-modal .bo-modal-header{display:flex;align-items:center;justify-content:space-between;flex:none;gap:1rem;height:auto;padding:1rem 1.25rem;border-radius:0.75rem 0.75rem 0 0;background:#fff;border-bottom:1px solid var(--line-faint)}
 .bo-modal .bo-modal-header h2{margin:0;padding-left:0.5rem;border-left:3px solid var(--brand);font-size:1rem;line-height:1.375rem;color:var(--text,#15233f)}

@@ -255,52 +255,32 @@
   gap: 0.25rem;
   padding: 0.5rem 0.75rem;
 }
-/* 日期面板的「清空／確認」是 EP 的按鈕，外觀照抄 semantic-btn，
-   尺寸也用同一組推算（行高＋上下內距），不另外寫死。EP 的 .el-button 自帶
-   height:32px，這裡還原成 auto，讓高度和站上其他按鈕一樣由內距撐開。 */
-.bo-date-range-popper .el-picker-panel__footer .el-button {
-  margin: 0;
+/* 「清空／確認」是 Element Plus 自己的 .el-button。掛上 semantic-btn 之後還是會被
+   EP 的 .el-button／.el-button--small／.el-button.is-text 蓋掉結構與底色——EP 的樣式
+   由模組載入，順序排在 shell 樣式之後。這裡只把 EP 那幾項關掉，不重新配色：
+   出現的全是 styles/semantic-button-system.css 的變數，漸層、鏡面高光、漸層框與陰影
+   三態仍然來自那一支，改按鈕外觀只要改那裡，這一段不用跟著動。
+   圓角同理，取自 styles/button-corner-radius.css。 */
+.bo-date-range-popper .el-picker-panel__footer .el-button.semantic-btn,
+.bo-date-range-popper .el-picker-panel__footer .el-button.semantic-btn:hover,
+.bo-date-range-popper .el-picker-panel__footer .el-button.semantic-btn:active,
+.bo-date-range-popper .el-picker-panel__footer .el-button.semantic-btn.is-disabled,
+.bo-date-range-popper .el-picker-panel__footer .el-button.semantic-btn.is-disabled:hover {
   height: auto;
+  margin: 0;
   padding: var(--btn-pad-y) var(--btn-pad-x);
-  line-height: var(--btn-content);
   border: 0;
-  border-radius: 0.25rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-  font-family: inherit;
+  background-color: var(--button-color);
+  background-image: var(--btn-face);
+  color: var(--btn-text);
   font-size: 0.875rem;
   font-weight: 700;
-  white-space: nowrap;
-  color: #fff;
-  background: var(--brand);
-  border-color: var(--brand);
-  transition:
-    filter 0.16s,
-    transform 0.16s,
-    box-shadow 0.16s;
+  line-height: var(--btn-content);
 }
-.bo-date-range-popper .el-picker-panel__footer .el-button.is-text {
-  background: var(--neutral);
-  border-color: var(--neutral);
-}
-.bo-date-range-popper .el-picker-panel__footer .el-button:hover:not(:disabled) {
-  filter: brightness(1.06);
-  box-shadow: var(--shadow-sm);
-}
-.bo-date-range-popper
-  .el-picker-panel__footer
-  .el-button:active:not(:disabled) {
-  transform: translateY(1px);
-}
-.bo-date-range-popper .el-picker-panel__footer .el-button:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--brand) 20%, transparent);
+/* EP 的聚焦框是 2px 實線，與站上其他按鈕的光圈不同，一併換回共用的那一個 */
+.bo-date-range-popper .el-picker-panel__footer .el-button.semantic-btn:focus-visible {
+  outline: var(--btn-outline);
   outline-offset: 2px;
-}
-.bo-date-range-popper .el-picker-panel__footer .el-button:disabled {
-  opacity: 0.42;
-  cursor: not-allowed;
 }
 .date-picker-guide {
   padding: 1rem;

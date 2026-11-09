@@ -12,7 +12,7 @@ const LABELS = ['開放會員轉點', '自動刷新', '會員完成身分驗證�
 // 這裡只負責把狀態排出來，不在頁面自己定義顏色。
 const STATES = [
   ['開啟・可操作', true, false, '品牌色 #927039 實心，香檳金旋鈕在右、帶陰影。可點擊、可聚焦，切換後立即生效。'],
-  ['關閉・可操作', false, false, '中性灰 #718087 實心，銀色旋鈕在左。用深灰不用淺灰，否則與右邊的停用狀態分不出來。'],
+  ['關閉・可操作', false, false, '淺灰 #C6D1DB 實心，銀色旋鈕在左。與右邊的停用分得開靠的是實心對空心，不是深對淺。'],
   ['開啟・停用', true, true, '淡主題底 #F1E9DB 加 #D5C6AE 描邊，旋鈕仍在右。值還是「開」，只是現在不能改。'],
   ['關閉・停用', false, true, '淡灰底 #F1F3F6 加 #D4DBE4 描邊，旋鈕在左。空心外觀代表不可操作，不是「關得比較淡」。'],
 ]
@@ -33,7 +33,7 @@ const stateBody = () => `<h3>狀態</h3>
   <div class="switch-state-grid">${STATES.map(stateCell).join('')}</div>
   <h4 class="switch-state-sub">互動狀態</h4>
   <div class="switch-state-grid">
-    <div class="switch-state"><span class="switch-state-control">${demoSwitch({ on: true, label: 'Hover 示意' })}</span><div><strong>Hover</strong><small>可操作時顏色加深一階（開 #7C5F30／關 #5C6878），停用的不會變色——滑過去就知道按不按得動。</small></div></div>
+    <div class="switch-state"><span class="switch-state-control">${demoSwitch({ on: true, label: 'Hover 示意' })}</span><div><strong>Hover</strong><small>可操作時顏色加深一階（開 #7C5F30／關 #A2ABB4），停用的不會變色——滑過去就知道按不按得動。</small></div></div>
     <div class="switch-state"><span class="switch-state-control">${demoSwitch({ on: false, label: 'Focus 示意', cls: 'is-focus' })}</span><div><strong>Focus（鍵盤）</strong><small>3px 主題色外框、offset 3px。Tab 聚焦後用 Enter 或空白鍵切換；這顆是固定顯示的示意。</small></div></div>
   </div>`
 

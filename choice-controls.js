@@ -49,7 +49,8 @@ export const choiceBody = () => `
   <small class="error-text" id="choice-guide-error">請選擇代理層級</small>
   <dl>
     <div><dt>控制尺寸</dt><dd>1rem(16px) × 1rem(16px)</dd></div>
-    <div><dt>選取色</dt><dd>#927039（accent-color）</dd></div>
+    <div><dt>未選取</dt><dd>--input-bg 凹槽，內描邊 --input-line，上緣暗部 inset 0 1px 3px</dd></div>
+    <div><dt>已選取</dt><dd>品牌色由深到亮的漸層（#927039 ±），白色記號</dd></div>
     <div><dt>文案</dt><dd>0.875rem(14px)／400，不加粗</dd></div>
     <div><dt>控制與文案間距</dt><dd>0.5rem(8px)</dd></div>
     <div><dt>選項間距</dt><dd>直排 0.75rem(12px)，橫排 0.75rem(12px) × 1.5rem(24px)</dd></div>

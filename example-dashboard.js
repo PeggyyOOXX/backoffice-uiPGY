@@ -82,7 +82,7 @@ const cards = () => loadingWrap(
   { loading: STATE.loading, text: '更新中' },
 )
 
-// 篩選列只有一格（站台），但該有的還是要有：標籤在欄位上方、重設在前搜尋在後、
+// 篩選列只有一格（站台），但該有的還是要有：標籤在欄位上方、重置在前搜尋在後、
 // 兩顆都是帶文字的語意按鈕並固定在格線最後一欄。
 // 正式後台這一頁是 isSearchBtn: false 配 onChange 直接查，原型照站上的規範走：
 // 按下搜尋才查，不做邊打邊查。
@@ -96,7 +96,7 @@ const filters = () => `${filterToggle('dashboard-search-panel')}
       </select>
     </div>
     <div class="source-filter-actions">
-      <button type="button" class="semantic-btn btn-neutral" data-dashboard-reset>${icon('reset')}重設</button>
+      <button type="button" class="semantic-btn btn-neutral" data-dashboard-reset>${icon('reset')}重置</button>
       <button type="submit" class="semantic-btn btn-search">${icon('search')}搜尋</button>
     </div>
   </div>
@@ -121,10 +121,10 @@ window.renderExampleDashboard = () => `<section class="example-page example-dash
       <li><strong>版面格線</strong>：八張卡片直接套 <code>.guide-fields</code>（手機 1 欄、768 起 2 欄、992 起 3 欄、1200 起 4 欄、1920 起 6 欄），這一頁不自己宣告欄數也不改欄寬</li>
       <li><strong>非必要不寫死寬高</strong>：卡片高度由標題與數字撐開。正式後台釘在 122px，換成長一點的語系（「今日總有效投注額」在 bn-bd 是三行）第三行會溢出</li>
       <li><strong>數值呈現</strong>：千分位、<code>tabular-nums</code>、金額固定兩位小數；<strong>負數 <code>--danger</code>、正數 <code>--success</code>、零用一般文字色</strong>，而且這組配色是站台層級的，不跟著個人設定走</li>
-      <li><strong>搜尋篩選列</strong>：只有一格條件也照同一套版面——標籤在欄位上方、重設在前搜尋在後、按下搜尋才查；重設是回到預設站台並自動查一次，不是清空</li>
+      <li><strong>搜尋篩選列</strong>：只有一格條件也照同一套版面——標籤在欄位上方、重置在前搜尋在後、按下搜尋才查；重置是回到預設站台並自動查一次，不是清空</li>
       <li><strong>載入與空狀態</strong>：重新整理時舊數字留在原地變淡（遮罩），不換成骨架；遮罩期間底下的操作停用</li>
       <li><strong>訊息提示</strong>：更新完成用 Toast 並帶受詞（「已更新 101 BEST 的儀表板」），不在卡片上方留一行狀態文字</li>
-      <li><strong>按鈕</strong>：重設／搜尋／重新整理都是共用語意樣式，高度與輸入框同為 32px</li>
+      <li><strong>按鈕</strong>：重置／搜尋／重新整理都是共用語意樣式，高度與輸入框同為 32px</li>
       <li><strong>手機</strong>：篩選列收起來，入口是共用的 <code>filterToggle()</code>；卡片自動變成一欄，欄位一個都不少</li>
     </ul>
   </section>
@@ -156,7 +156,7 @@ onMatch('submit', '[data-dashboard-filter]', (event, form) => {
   query(() => message.success(`已更新 ${STATE.branch} 的儀表板`))
 }, { owner: 'example-dashboard' })
 
-// 重設＝回到預設值再查一次，不是把條件清空留一張空白的篩選列。
+// 重置＝回到預設值再查一次，不是把條件清空留一張空白的篩選列。
 onMatch('click', '[data-dashboard-reset]', () => {
   STATE.branch = DEFAULT_BRANCH
   const form = document.querySelector('[data-dashboard-filter]')
@@ -165,7 +165,7 @@ onMatch('click', '[data-dashboard-reset]', () => {
     select.value = DEFAULT_BRANCH
     select.dispatchEvent(new Event('change', { bubbles: true }))
   }
-  query(() => message.info(`已重設為 ${DEFAULT_BRANCH}`))
+  query(() => message.info(`已重置為 ${DEFAULT_BRANCH}`))
 }, { owner: 'example-dashboard' })
 
 onMatch('click', '[data-dashboard-refresh]', () => {

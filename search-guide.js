@@ -2,19 +2,20 @@
 // 詳見 ELEMENT-PLUS-MAPPING.md
 //
 // 它不是「一張表單」而是「一列查詢條件」：送出不會改資料，只會換一份結果；
-// 所以它的規則跟表單不一樣——不必擋著不讓走、重設是常態操作、而且會被反覆使用。
+// 所以它的規則跟表單不一樣——不必擋著不讓走、重置是常態操作、而且會被反覆使用。
 //
 // 示範**直接套用組合範例－搜尋那一套 class**（.source-filter / .source-filter-grid /
 // .filter-field / .control），不是另外抄一份。理由同 nav-guide.js 的側欄示範：
 // 規範頁的參照物自己不照規範寫，比沒有示範更糟。先前這一頁用 .search-demo-* 自己
 // 畫了一組 200px 欄位，連下拉與日期都是用 div 假造的——那正是 dup-check 要擋的事。
 //
-// 正式後台有三處是原型改掉的，頁面上都有標明：搜尋與重設改成帶文字的語意按鈕、
-// 收合鈕要有文字且自成一列、按鈕順序與位置固定（重設在前、搜尋在後、靠右）。
+// 正式後台有三處是原型改掉的，頁面上都有標明：搜尋與重置改成帶文字的語意按鈕、
+// 收合鈕要有文字且自成一列、按鈕順序與位置固定（重置在前、搜尋在後、靠右）。
 import { guidePage, decisionTable } from './guide-page.js'
 import { icon } from './icons.js'
 import { onMatch } from './delegate.js'
 import './guide-page.css'
+import { demoSection } from './search-demos.js'
 import './search-guide.css'
 
 // 欄位照組合範例－搜尋的順序與型別做，只是把後三個標成進階條件，
@@ -75,7 +76,7 @@ const barDemo = () => `<form class="source-filter card example-filter" data-sear
     ${basicFields()}
     ${advancedFields()}
     <div class="source-filter-actions">
-      <button type="button" class="semantic-btn btn-neutral">${icon('reset')}重設</button>
+      <button type="button" class="semantic-btn btn-neutral">${icon('reset')}重置</button>
       <button type="submit" class="semantic-btn btn-search">${icon('search')}搜尋</button>
     </div>
   </div>
@@ -124,17 +125,28 @@ window.renderSearchPage = () => guidePage({
         <p class="component-description">標籤在欄位上方，12px／650／<code>--text-muted</code>，與「表單 Form」同一條規則。<strong>不得為了排整齊把標籤藏起來只留 placeholder</strong>：placeholder 在填了值之後就消失，使用者回頭看不出這一格是什麼條件。</p>`,
     },
     {
-      heading: '按鈕：重設、搜尋，位置固定',
+      heading: '正式後台實際有多長',
+      body: '<p class="component-description">'
+        + '66 支用 SearchForm 的 view 裡，欄位數中位數是 <strong>5</strong>、平均 5.1、最少 1、最多 17；'
+        + '在 6 欄格線下 <strong>38 支一排</strong>、10 支兩排、7 支三排、沒有四排——<strong>七成的頁面一排就放得下</strong>。'
+        + '而且 66 支裡<strong>只有 1 支</strong>用了進階收合。下面五個示範各對應一支真實的 view，'
+        + '欄位、型別與順序照它的 searchFormConfig 抄，可以直接拿去對帳。</p>'
+        + demoSection(),
+    },
+    {
+      heading: '按鈕：重置、搜尋，位置固定',
       body: `<div class="guide-pair">
-          <div class="is-bad"><h4>${icon('cancelCircle')}不要</h4><p>搜尋與重設只放一個圖示（放大鏡、迴轉箭頭），而且<strong>位置會跑</strong>——正式後台沒有進階條件時按鈕接在欄位後面，有進階條件時變成整列置中。同一個後台裡同一顆按鈕出現在兩個地方。</p></div>
-          <div class="is-good"><h4>${icon('checkCircle')}要</h4><p>帶文字的語意按鈕，<strong>重設（<code>btn-neutral</code>）在前、搜尋（<code>btn-search</code>）在後</strong>，固定在格線最後一欄、靠右對齊並貼齊欄位底線。次要在前、主要在後，與彈窗 footer 同一條規則。</p></div>
+          <div class="is-bad"><h4>${icon('cancelCircle')}不要</h4><p>搜尋與重置只放一個圖示（放大鏡、迴轉箭頭），而且<strong>位置會跑</strong>——正式後台沒有進階條件時按鈕接在欄位後面，有進階條件時變成整列置中。同一個後台裡同一顆按鈕出現在兩個地方。</p></div>
+          <div class="is-good"><h4>${icon('checkCircle')}要</h4><p>帶文字的語意按鈕，<strong>重置（<code>btn-neutral</code>）在前、搜尋（<code>btn-search</code>）在後</strong>，固定在格線最後一欄、靠右對齊並貼齊欄位底線。次要在前、主要在後，與彈窗 footer 同一條規則。</p></div>
         </div>
         <p class="component-description"><strong>這兩條是原型改掉的。</strong>純圖示只適合表格操作欄那種「同一列重複出現、靠位置就認得出來」的場合；篩選列的搜尋是整頁最重要的一次操作，不該讓人去猜放大鏡是「搜尋」還是「展開更多條件」。按鈕位置則是直接的不一致，沒有理由保留。</p>
         <p class="component-description">匯出、新增之類的動作<strong>不放在篩選列</strong>，放在表格外的列表工具列——它們操作的是「結果」，不是「條件」。</p>`,
     },
     {
       heading: '基本條件與進階條件',
-      body: `${decisionTable(PLACEMENT, ['這個條件', '放哪裡', '為什麼'])}
+      body: `<p class="component-description"><strong>先問要不要收。</strong>門檻是<strong>佔格數超過 12（6 欄 × 2 排）才設進階區</strong>，以下就全部攤開。66 支用 SearchForm 的 view 裡只有 7 支超過兩排，其餘都不需要收合——而正式後台實際上只有 1 支用了 <code>isAdvanced</code>。收合不是預設行為，是長到讓列表被推出畫面時才用的手段。</p>
+        <p class="component-description"><strong>要收的話，收哪些。</strong>留下「找得到那一筆」的條件（站台、查詢期間、狀態、UID／帳號、上層代理、搜尋欄位），收起「找到之後才用來縮小範圍」的條件（金額區間、IP、設備指紋、次要分類）。這條線就是 <code>playerReport</code> 的分法：5 個基本是誰／在哪／什麼時候，8 個進階全是金額上下限。<strong>不得把身分或期間這類必要條件收起來</strong>——那會讓人連第一筆都查不到。</p>
+        ${decisionTable(PLACEMENT, ['這個條件', '放哪裡', '為什麼'])}
         <p class="component-description">收合鈕<strong>要有文字</strong>（「展開進階條件」／「收合進階條件」）並<strong>自成一列</strong>放在篩選卡底部靠左，不要塞進右下角的按鈕群組——它是對整張篩選卡的操作，不是一個查詢動作，而且那一格只有六分之一欄寬，三顆按鈕擠進去會溢出。正式後台把它做成一顆絕對定位在右上角的圓形箭頭，那顆箭頭不說自己會展開什麼，還會跟右上角其他東西搶位置。</p>
         <p class="component-description">收起來時用 <code>hidden</code> 屬性，不是只把視覺藏掉——報讀器與 Tab 鍵也要跟著看不到，否則焦點會跑進一個看不見的欄位。</p>
         <p class="component-description"><strong>有值就自動展開。</strong>使用者設了進階條件、換頁回來卻看到收合的篩選列，會以為條件被清掉了；反之，收合狀態下仍然生效的條件等於隱形的篩選，查不到資料時完全看不出原因。</p>`,
@@ -146,9 +158,9 @@ window.renderSearchPage = () => guidePage({
         <p class="component-description">欄位可以帶前綴或後綴（單位、說明圖示）。說明用 Tooltip 掛在 <code>info</code> 圖示上，<strong>只放補充說明</strong>——必要資訊不能藏在 Tooltip 裡。</p>`,
     },
     {
-      heading: '送出、重設與自動刷新',
+      heading: '送出、重置與自動刷新',
       body: `<p class="component-description"><strong>按下搜尋才查，不做邊打邊查。</strong>條件通常不只一個，邊打邊查會在使用者還沒設完第二個條件時就先送出一次請求，而且列表會在輸入過程中不斷跳動。送出前先驗證（例如查詢區間超過上限），沒過就不送。</p>
-        <p class="component-description"><strong>重設是回到預設值，不是清空。</strong>有預設值的欄位（狀態＝全部、區間＝本月）要回到預設，不是變成空白；重設後要自動查一次，不要讓使用者再按一次搜尋。</p>
+        <p class="component-description"><strong>重置是回到預設值，不是清空。</strong>有預設值的欄位（狀態＝全部、區間＝本月）要回到預設，不是變成空白；重置後要自動查一次，不要讓使用者再按一次搜尋。</p>
         <p class="component-description">需要盯即時變化的頁面（審核、待辦）可以加<strong>自動刷新開關</strong>：預設關閉，開啟後每 15 秒重查一次並顯示倒數秒數。離開頁面要清掉計時器；有彈窗開著時暫停——資料在使用者讀的時候被抽換是最糟的。開關沿用共用 Switch，不另設尺寸。</p>`,
     },
     {
@@ -170,7 +182,7 @@ window.renderSearchPage = () => guidePage({
     ['標籤', '12px / 650 / var(--text-muted)'],
     ['標籤與欄位間距', '4px'],
     ['按鈕位置', '格線最後一欄，靠右並貼齊欄位底線'],
-    ['按鈕順序', '重設在前、搜尋在後'],
+    ['按鈕順序', '重置在前、搜尋在後'],
     ['收合鈕', '自成一列，靠左，含文字'],
     ['進階區預設', '收合（hidden）；有值則自動展開'],
     ['自動刷新間隔', '15 秒'],
@@ -179,13 +191,13 @@ window.renderSearchPage = () => guidePage({
     ['頁面只宣告 config，不自己兜版面', '65 個 view 共用同一支元件，版面一旦各寫各的就再也收不回來。'],
     ['示範要用真的那一套 class', '規範頁的參照物自己不照規範寫，比沒有示範更糟；也不得用 div 假造下拉與日期。'],
     ['標籤不得省略只留 placeholder', 'placeholder 填了值就消失，使用者回頭看不出這一格是什麼條件。'],
-    ['搜尋與重設要有文字', '篩選列的搜尋是整頁最重要的一次操作，不該讓人猜放大鏡是搜尋還是展開更多條件。'],
-    ['重設在前、搜尋在後、靠右', '次要在前、主要在後，與彈窗 footer 同一條規則；位置不隨有沒有進階條件而改變。'],
+    ['搜尋與重置要有文字', '篩選列的搜尋是整頁最重要的一次操作，不該讓人猜放大鏡是搜尋還是展開更多條件。'],
+    ['重置在前、搜尋在後、靠右', '次要在前、主要在後，與彈窗 footer 同一條規則；位置不隨有沒有進階條件而改變。'],
     ['收合鈕自成一列且有文字', '它是對整張篩選卡的操作，不是查詢動作；右下角那一格只有六分之一欄寬，塞三顆會溢出。'],
     ['收合用 hidden，不只是視覺藏起來', '報讀器與 Tab 鍵也要跟著看不到，否則焦點會跑進一個看不見的欄位。'],
     ['匯出不放篩選列', '匯出操作的是結果不是條件，放表格外的列表工具列。'],
     ['按下搜尋才查', '邊打邊查會在條件還沒設完時就送出請求，而且列表會在輸入過程中不斷跳動。'],
-    ['重設是回到預設值', '有預設值的欄位要回到預設而不是空白，重設後自動查一次。'],
+    ['重置是回到預設值', '有預設值的欄位要回到預設而不是空白，重置後自動查一次。'],
     ['進階條件有值就自動展開', '收合狀態下仍生效的條件等於隱形的篩選，查不到資料時看不出原因。'],
     ['自動刷新預設關閉', '開啟後顯示倒數；彈窗開著時暫停，離開頁面清掉計時器。'],
     ['手機一定要有入口', '720px 以下整列收起，用共用的 filterToggle()，不得各頁自己寫一份。'],

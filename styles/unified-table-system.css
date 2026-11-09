@@ -22,7 +22,7 @@
 .page th,
 .bo-modal th {
   padding: 0.5rem 0.75rem;
-  background: var(--surface-head);
+  background: linear-gradient(180deg, var(--surface-hover) 0%, var(--line-control) 100%);
   color: var(--text-subtle);
   font-size: 0.75rem;
   line-height: 1.25;
@@ -37,15 +37,29 @@
 .bo-modal td {
   padding: 0.5rem 0.75rem;
   text-align: center;
-  border-bottom: 1px solid var(--line-faint);
+  border-bottom: 1px solid var(--line-strong);
 }
+/* 表頭的欄與欄之間畫 1px var(--line-strong)，與內容的框線同一支色——
+   交錯漸層負責讓相鄰兩格的明暗相反，分隔線負責把界線畫死，兩者一起用：
+   只有漸層時，淺色欄與淺色欄相鄰的那幾處（分組表頭跨欄之後會發生）界線會糊掉。
+   下方那條同色的 border-bottom 分的是表頭與內容，不是欄與欄。
+
+   漸層的兩條硬規則，改這裡之前先讀：
+     1) 一律垂直漸層。橫向漸層會讓相鄰兩格在交界處接成一片，反而更難分。
+     2) 最淺的一端不得用 #fff。表格上方通常就是白色卡片，白色起點等於沒有上緣，
+        整排表頭會從上面被背景吃掉。最淺只到 --surface-hover。
+   色階全部取自既有的藍灰 token，這裡不新增顏色。 */
 .page th,
 .bo-modal th {
   border-right: 1px solid var(--line-strong);
 }
+.page thead th:nth-child(even),
+.bo-modal thead th:nth-child(even) {
+  background: linear-gradient(180deg, var(--line-control) 0%, var(--surface-hover) 100%);
+}
 .page td,
 .bo-modal td {
-  border-right: 1px solid var(--line-faint);
+  border-right: 1px solid var(--line-strong);
 }
 .page tr > *:last-child,
 .bo-modal tr > *:last-child {

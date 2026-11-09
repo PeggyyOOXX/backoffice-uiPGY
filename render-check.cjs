@@ -111,7 +111,8 @@ run("token-guide.js", PAGE + ICON);
 run("nav-guide.js", PAGE + ICON);
 run("header.js", PAGE + ON + ICON);
 run("form-guide.js", PAGE + ICON);
-run("search-guide.js", PAGE + ON + ICON);
+run("search-demos.js", ICON, ";window.demoSection=demoSection");
+run("search-guide.js", PAGE + ON + ICON + "const demoSection=window.demoSection;");
 run("sortable.js", ON + ICON, ";window.sortable=sortable;window.reorder=reorder");
 run(
   "sortable-guide.js",
@@ -216,6 +217,36 @@ assert.equal(
 assert.ok(d.querySelector(".data-table-grid"), "表格頁缺少表格");
 assert.ok(d.querySelector(".table-sort-control"), "表格頁缺少表頭排序");
 ok("表格頁：表格＋分頁＋表頭排序同頁，換頁與改每頁筆數會跳回第 1 頁");
+
+// 表頭的反向交錯漸層。兩條硬規則各有踩過的坑，所以分開驗：
+//   橫向漸層會讓相鄰兩格在交界處接成一片；
+//   最淺端用 #fff 時，表格上方的白色卡片會把整排表頭的上緣吃掉。
+// 另外固定欄的表頭不得另給平塗底色，否則橫捲時那一格會跳出交錯的節奏。
+{
+  const css = fs.readFileSync("styles/unified-table-system.css", "utf8")
+    .replace(/\/\*[\s\S]*?\*\//g, "");
+  const odd = css.match(/\.page th,\s*\.bo-modal th \{([^}]*)\}/);
+  assert.ok(odd && /background: linear-gradient\(180deg/.test(odd[1]),
+    "表頭要用垂直漸層（180deg）");
+  const even = css.match(/\.page thead th:nth-child\(even\),\s*\.bo-modal thead th:nth-child\(even\) \{([^}]*)\}/);
+  assert.ok(even && /background: linear-gradient\(180deg/.test(even[1]),
+    "偶數欄要有自己的反向漸層，欄與欄才分得開");
+  // 反向：奇數欄的頭尾色，在偶數欄要對調
+  const stops = t => [...t.matchAll(/var\((--[a-z-]+)\)/g)].map(m => m[1]);
+  assert.deepEqual(stops(odd[1]).slice(0, 2).reverse(), stops(even[1]).slice(0, 2),
+    "偶數欄要是奇數欄的反向（頭尾對調），不是另外挑一組色");
+  assert.ok(!/linear-gradient\((?!180deg)/.test(css),
+    "表頭一律垂直漸層：橫向或斜向會讓相鄰兩格在交界處接成一片");
+  assert.ok(!/linear-gradient\(180deg,\s*#fff/.test(css),
+    "漸層最淺的一端不得用 #fff——表格上方通常是白色卡片，上緣會被吃掉");
+  assert.ok(/\.page th,\s*\.bo-modal th \{[^}]*border-right: 1px solid var\(--line-strong\)/.test(css),
+    "表頭的垂直分隔線要與內容的框線同一支色（--line-strong）");
+
+  const dt = fs.readFileSync("data-table.css", "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+  assert.ok(!/thead \.is-sticky-right\{[^}]*background:/.test(dt),
+    "固定欄的表頭不得另給平塗底色，否則橫捲時那一格會跳出交錯的節奏");
+}
+ok("表頭：反向交錯漸層（垂直、最淺不用白）、分隔線與內容同色、固定欄不蓋掉漸層");
 
 // 沒有資料時走的是「載入與空狀態」的區塊，不是表格自己畫的一行純文字。
 // 這條分支在規範頁上永遠不會執行（示範資料是寫死的），只能單獨叫一次。
@@ -371,6 +402,79 @@ assert.ok(
 assert.ok(d.querySelector(".choice-card"), "選擇控制頁缺少選項卡片");
 ok("選擇控制：決策表 ＋ Switch／Radio／Checkbox／選項卡片同頁");
 
+// Radio／Checkbox 的凹槽外觀：與 Switch 的軌道同一套（內凹、上緣暗部、1px 內描邊），
+// 選取是品牌色漸層。畫的必須仍然是原生 <input>——appearance:none 只是換外觀，
+// 鍵盤、報讀器、indeterminate 與 label 關聯都還在；改用 <span> 或圖片就全丟了。
+// 配色只在 choice-controls.css 一處，所以這裡驗的是那一支。
+{
+  // 註解裡常會提到這些規則要擋的寫法（例如說明為什麼不再用 accent-color），
+  // 比對前先把註解剝掉，驗的才是真正生效的那幾行。
+  const css = fs.readFileSync("choice-controls.css", "utf8")
+    .replace(/\/\*[\s\S]*?\*\//g, "");
+  assert.ok(
+    /\.choice-control input,\s*\.choice-card input\{[^}]*appearance:none/.test(css),
+    "Radio／Checkbox 要用 appearance:none 自繪，Radio 與 Checkbox 共用同一組表面",
+  );
+  assert.ok(
+    !/accent-colors*:/.test(css),
+    "凹槽外觀不再靠 accent-color，殘留的宣告會在不同瀏覽器畫出另一種樣子",
+  );
+  assert.ok(
+    /\.choice-control input,\s*\.choice-card input\{[^}]*background:var\(--input-bg\)[^}]*inset 0 1px 0\.1875rem/.test(css),
+    "未選取要是 --input-bg 的凹槽，帶上緣 inset 暗部（與 Switch 軌道同一套）",
+  );
+  assert.ok(
+    /input:checked[^{]*\{background:linear-gradient\(180deg,color-mix\(in srgb,var\(--brand\)/.test(css),
+    "已選取要用品牌色由深到亮的漸層",
+  );
+  assert.ok(
+    /input:disabled[^{]*\{background:var\(--input-disabled-bg\)/.test(css) &&
+      /input:disabled:checked[^{]*\{background:var\(--brand-tint\)/.test(css),
+    "停用要是淡底加描邊的空心，開與關各自一組——與開關同一條判準",
+  );
+  assert.ok(
+    !/<svg|&#x2713|\u2713/.test(css),
+    "記號要用 CSS 邊框畫，不得塞 SVG 或文字字元",
+  );
+  // CSS 的 :indeterminate 不只配對半選的 checkbox——一整組 radio 都沒選時，
+  // 那一組每一顆 radio 也會配對到它。漏了 [type=checkbox] 的話，任何沒有預設值的
+  // radio 群組都會整排被畫成已選取（錯誤狀態的示範就是這樣整排變實心的）。
+  assert.ok(
+    !/input:indeterminate/.test(css),
+    ":indeterminate 一律要連 [type=checkbox] 一起寫，否則沒選的 radio 群組會整排變成已選取",
+  );
+}
+ok("Radio／Checkbox：凹槽外觀、原生 input、停用為空心、記號用 CSS 邊框、:indeterminate 只對 checkbox");
+
+// 拖放區是凹槽，框線分兩段：預設實線（它只是一個欄位），hover／拖曳中才轉虛線加品牌色
+//（虛線是「可以丟東西」的訊號，只在真的成為投放目標時出現）。
+// 先前兩段都是虛線，平常就一直在喊「丟我」。
+{
+  const css = fs.readFileSync("upload-guide.css", "utf8")
+    .replace(/\/\*[\s\S]*?\*\//g, "");
+  const base = css.match(/\.upload-dropzone\{([^}]*)\}/);
+  assert.ok(base, "找不到 .upload-dropzone 的樣式");
+  assert.ok(
+    /border:1px solid var\(--input-line\)/.test(base[1]),
+    "拖放區預設要是 1px 實線 --input-line，不是虛線",
+  );
+  assert.ok(
+    /background:var\(--input-bg\)/.test(base[1]) && /box-shadow:inset 0 2px/.test(base[1]),
+    "拖放區要是 --input-bg 的凹槽，帶上緣 inset 暗部（與 Switch 軌道同一套）",
+  );
+  const hover = css.match(/\.upload-dropzone:hover,\.upload-dropzone\.is-dragging\{([^}]*)\}/);
+  assert.ok(hover, "找不到拖放區的 hover／拖曳中樣式");
+  assert.ok(
+    /border-style:dashed/.test(hover[1]) && /border-color:var\(--brand\)/.test(hover[1]),
+    "hover／拖曳中才轉虛線並換品牌色——兩者要一起，單換顏色不夠明顯，單換線型少了色彩回饋",
+  );
+  assert.ok(
+    /\.upload-icon-seat\{[^}]*box-shadow:inset/.test(css),
+    "圖示要坐在凹陷的圓座裡，與旋鈕、勾選框同一種做法",
+  );
+}
+ok("圖片上傳：凹槽拖放區、預設實線／拖曳轉虛線、圖示坐在凹陷圓座");
+
 // 開關的四種狀態要同時在頁上：可操作的開與關、停用的開與關。
 // 「關閉」與「停用」先前只差一層 opacity，兩個灰看起來一樣，分不出按不按得動，
 // 所以這四格與它們的配色差異是規範的一部分，不是示範多畫的。
@@ -393,7 +497,7 @@ assert.ok(
 const switchCss = fs.readFileSync("styles/input-standard-page.css", "utf8");
 // 關閉是實心中性灰、停用是淡底加內描邊，三條都要在——先前停用只加 opacity:.45，
 // 算出來和可操作的關閉是同一個灰，使用者分不出這顆按不按得動。
-// 關閉用的中性灰現在走 token（--text-muted）。驗的是「畫面上是哪個顏色」而不是寫法，
+// 關閉用的淺灰現在走 token（--line-strong）。驗的是「畫面上是哪個顏色」而不是寫法，
 // 所以把變數解析回色碼再比對——用變數比寫色碼更不容易走鐘，但值仍然要是那一個。
 {
   const tokenHome = fs.readFileSync("styles/blue-teal-palette-override.css", "utf8");
@@ -411,8 +515,8 @@ const switchCss = fs.readFileSync("styles/input-standard-page.css", "utf8");
   assert.ok(off, "找不到關閉狀態的開關配色");
   assert.equal(
     resolveVar(off[1]),
-    "#718087",
-    "關閉的開關要用實心中性灰 #718087（--text-muted）",
+    "#c6d1db",
+    "關閉的開關要用實心淺灰 #c6d1db（--line-strong）",
   );
 }
 assert.ok(
@@ -565,7 +669,11 @@ ok("圖示按鈕：與文字按鈕共用 --btn-content，換尺寸會一起變�
     for (const match of css.matchAll(/([^{}]*\.semantic-btn[^{}]*)\{([^}]*)\}/g)) {
       const selector = match[1].trim()
       if (selector.includes('icon-action')) continue
-      if (/(?:^|[;\s])(?:min-)?height\s*:/.test(match[2])) {
+      // height: auto 不是第二個高度來源，是把第三方元件自帶的高度拿掉：
+      // 日期面板的「清空／確認」是 Element Plus 的 .el-button，自帶 24／32px 的高度，
+      // 關掉之後高度才回到上下內距撐開的那一個值。要擋的是寫死的數值。
+      const heights = [...match[2].matchAll(/(?:^|[;\s])(?:min-)?height\s*:\s*([^;}]+)/g)]
+      if (heights.some(h => h[1].trim() !== 'auto')) {
         offenders.push(`${file} → ${selector}`)
       }
     }

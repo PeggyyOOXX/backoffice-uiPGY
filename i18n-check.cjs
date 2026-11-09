@@ -91,7 +91,6 @@ const NOWRAP_ALLOWED = {
   'tabs.css|.bo-tab': '同按鈕：頁籤文字不截斷，一列放不下改用 scroll 或 select 變化',
   'tag-guide.css|.bo-tag': '狀態名截斷就認不出來了；標籤本來就該是短詞，長了讓它自己變寬',
   'bulk-actions.css|.bulk-menu button': '選單項目是動作名稱，截斷會讓兩個動作看起來一樣；選單寬度由內容決定',
-  'date-picker.css|.bo-date-range-popper .el-picker-panel__footer .el-button': '面板的確認／取消是按鈕，同上',
   'data-table.css|.page .data-table-grid .data-table-foot-label': '合計列的標籤欄，短詞且整列只有一個',
   'example-list.css|.example-progress-cell > span': '進度數字，不翻譯',
   'example-list.css|.example-nowrap': '表格內的短欄位（代號、幣別），不翻譯',

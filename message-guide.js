@@ -210,7 +210,7 @@ onMatch('click', '[data-message-repeat]', () => {
 
 onMatch('click', '[data-message-flood]', () => {
   const texts = ['已停用會員 MB-009821', '已啟用會員 MB-009774', '已調整等級 VIP 3', '已加上標籤「高風險」',
-    '已移除標籤「觀察中」', '已重設登入密碼', '已寄出通知信']
+    '已移除標籤「觀察中」', '已重置登入密碼', '已寄出通知信']
   texts.forEach((text, i) => setTimeout(() => message.success(text), i * 140))
 }, { owner: 'message-guide' })
 

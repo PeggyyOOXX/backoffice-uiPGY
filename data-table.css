@@ -22,13 +22,34 @@
 .page .data-table-grid caption{position:absolute;width:0.0625rem;height:0.0625rem;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
 /* 分組表頭：欄位多到要分群時的上一層表頭，底色與欄名列相同，只多一條直向分隔線。 */
+/* 分組表頭這一列是例外，兩件事跟一般表頭相反：
+   ① 保留垂直分隔線——它分的是「群組」，不是欄；少了線就看不出一個群組從哪裡到哪裡。
+   ② 不跟著交錯——每一格跨的欄數不同，照 nth-child 交錯會變成與下方欄位對不上的隨機深淺，
+      所以整列統一用奇數欄那一款漸層。 */
 .page .data-table-grid .data-table-groups th{border-right:1px solid var(--line-strong);color:var(--text)}
+.page .data-table-grid .data-table-groups th:nth-child(even){background:linear-gradient(180deg,var(--surface-hover) 0%,var(--line-control) 100%)}
 .page .data-table-grid .data-table-groups th:last-child{border-right:0}
 
 /* 固定欄（對應 CustomTable 的 fixed="right"）：橫捲時操作欄留在右邊。
    有自訂底色的固定欄必須一併套用整列 hover 的底色，否則整列會斷開。 */
-.page .data-table-grid .is-sticky-right{position:sticky;right:0;z-index:1;background:#fff;box-shadow:-1px 0 var(--line)}
-.page .data-table-grid thead .is-sticky-right{background:var(--surface-head);z-index:2}
+/* 固定欄的底色只給 tbody。thead 不給——要讓 th 自己的交錯漸層露出來，
+   否則橫捲時固定欄那一格會變成一塊平塗，跳出整排的交錯節奏。
+   th 的漸層本來就是不透明的，不需要再墊一層白。 */
+/* 固定欄的左緣要看得出「內容是從底下滑過去的」，所以是兩層：
+     inset 1px 0 0 var(--line-strong)  —— 貼在固定欄內側的一條實線，就是分界本身
+     -0.25rem 0 0.5rem -0.25rem ...    —— 往左擴散的投影，告訴人這一欄浮在上面
+
+   先前只有 -1px 0 var(--line)：--line 是 #E1E9E9（畫在白底上的淺線），1px 又沒有擴散，
+   在橫捲的表上完全看不到——於是被蓋住的那一欄（風控審核的「異動」）數字被切一半，
+   卻看不出是被壓住的，讀起來像資料壞掉。
+
+   分界線用 --line-strong 而不是 --line：固定欄蓋住的是資料，背後可能是任何底色，
+   淺一階的線在深一點的列上就消失了。 */
+.page .data-table-grid .is-sticky-right{position:sticky;right:0;z-index:1;box-shadow:inset 1px 0 0 var(--line-faint),-0.25rem 0 0.5rem -0.25rem rgba(21,35,63,.22)}
+.page .data-table-grid tbody .is-sticky-right{background:#fff}
+/* 固定欄的表頭不另外給底色：th 自己的交錯漸層就是不透明的，蓋一層平塗 --surface-head
+   會讓橫捲時固定欄那一格跳出交錯的節奏。只留 z-index。 */
+.page .data-table-grid thead .is-sticky-right{z-index:2}
 .page .data-table-grid tbody tr:hover .is-sticky-right{background:var(--surface-row-hover)}
 .page .data-table-grid tfoot .is-sticky-right{background:var(--surface-head)}
 

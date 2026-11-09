@@ -39,9 +39,19 @@ const strip = s => s.replace(/\/\*[\s\S]*?\*\//g, m => m.replace(/[^\n]/g, ' '))
 const fontOk = px => Number.isInteger(px) && px >= 12 && px % 2 === 0
 const GRID = /^(padding|margin|gap|row-gap|column-gap|border-radius|top|right|bottom|left|inset)(-|$)/
 
-// 格線的唯一例外：開關旋鈕的左右內距是推算值 (24 − 18) ÷ 2 = 3px，不是間距選擇。
+// 格線的例外只有一種：在一個 16／24px 的小框裡「把圖形擺正」算出來的位置，
+// 它跟「這兩個元件要隔多遠」不是同一件事——格線管的是後者。
+// 每一條都要寫出算式，寫不出來就表示它其實是間距，要回到 4px 上。
 const GRID_ALLOWED = [
   { file: 'styles/input-standard-page.css', value: 0.1875, why: '開關旋鈕的置中推算值 (24−18)÷2' },
+  // 勾選框 16px，記號是 CSS 邊框畫的，位置由記號自己的尺寸反推：
+  //   打勾 4 × 8px 轉 45 度後外接方塊約 8.5px，置中起點 (16−8.5)÷2 ≈ 5px（left）、上緣留 2px；
+  //   半選那條橫線 10px 寬，(16−10)÷2 = 3px（left）、壓在垂直中線 7px（top）；
+  //   圓鈕中心的實心圓 inset 5px（16−5×2 = 6px 的圓）。
+  { file: 'choice-controls.css', value: 0.3125, why: '勾選記號的置中推算值（打勾起點、圓鈕 inset）' },
+  { file: 'choice-controls.css', value: 0.125, why: '打勾在 16px 框內的上緣留白 (16−8.5−5)' },
+  { file: 'choice-controls.css', value: 0.1875, why: '半選橫線的置中推算值 (16−10)÷2' },
+  { file: 'choice-controls.css', value: 0.4375, why: '半選橫線壓在 16px 框的垂直中線' },
 ]
 
 // 色碼的例外。每一條都要寫清楚為什麼它不該是 token——「分類色階」與「插圖的淡階」

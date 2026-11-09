@@ -93,7 +93,7 @@ window.renderSortablePage = () => guidePage({
       heading: '互動範例',
       body: `<p class="component-description">按住左側把手拖到別列上：游標在目標列<strong>上半部</strong>就插在它前面，<strong>下半部</strong>就插在它後面。把手聚焦後也可以按上下方向鍵，一次移一格。</p>
         <div class="sortable-demo-bar">
-          <button type="button" class="semantic-btn btn-neutral" data-sortable-reset>${icon('reset')}重設順序</button>
+          <button type="button" class="semantic-btn btn-neutral" data-sortable-reset>${icon('reset')}重置順序</button>
         </div>
         <div data-sortable-demo>${liveTable()}</div>`,
     },

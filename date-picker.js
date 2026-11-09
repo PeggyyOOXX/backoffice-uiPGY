@@ -50,13 +50,20 @@ const shortcuts = [
 // 快捷區間用規範的次要按鈕，桌機與手機一樣，不然看不出可以點。
 // EP 的快捷鈕沒有 class 參數可傳，只能在面板插進 DOM 後補上。
 const SHORTCUT_BTN = ['semantic-btn', 'btn-search', 'outline']
-function styleShortcuts() {
+// 面板底部的「清空／確認」也是 EP 自己的按鈕，同樣沒有 class 參數可傳，只能補在 DOM 上。
+// 清空＝把已選的條件拿掉，照規範是中性鈕（btn-neutral）；確認是這個面板的主要操作，
+// 與彈窗 footer 的主要按鈕同一顆（btn-search）。外觀全部來自共用樣式，不在這裡配色。
+function stylePanelButtons() {
   document.querySelectorAll('.bo-date-range-popper .el-picker-panel__shortcut').forEach(btn => {
     btn.classList.add(...SHORTCUT_BTN)
   })
+  document.querySelectorAll('.bo-date-range-popper .el-picker-panel__footer .el-button').forEach(btn => {
+    // EP 的清空是 text 按鈕、確認是 plain 按鈕，用這個分辨哪一顆是哪一顆。
+    btn.classList.add('semantic-btn', btn.classList.contains('is-text') ? 'btn-neutral' : 'btn-search')
+  })
 }
 function mountPickers() {
-  styleShortcuts()
+  stylePanelButtons()
   for (const [host, entry] of mounted) {
     if (!host.isConnected) { entry.app.unmount(); mounted.delete(host) }
   }

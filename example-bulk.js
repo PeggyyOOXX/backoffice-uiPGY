@@ -147,7 +147,7 @@ const filters = () => `${filterToggle('game-search-panel')}
       </select>
     </div>
     <div class="source-filter-actions">
-      <button type="button" class="semantic-btn btn-neutral" data-game-reset>${icon('reset')}重設</button>
+      <button type="button" class="semantic-btn btn-neutral" data-game-reset>${icon('reset')}重置</button>
       <button type="submit" class="semantic-btn btn-search">${icon('search')}搜尋</button>
     </div>
   </div>

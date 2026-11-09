@@ -63,7 +63,7 @@ function searchMarkup() {
       ${input('order','轉點 ID','請輸入轉點 ID','maxlength="100"')}
       <div class="filter-field filter-span-2 amount-range-field"><label for="risk-min">轉點金額</label><div class="amount-range-control"><input id="risk-min" class="control amount" name="min" type="number" min="0" step="0.01" value="${esc(draft.min)}" placeholder="最低" aria-label="最低轉點金額"><span>～</span><input class="control amount" name="max" type="number" min="0" step="0.01" value="${esc(draft.max)}" placeholder="最高" aria-label="最高轉點金額"></div></div>
       ${input('account','轉點帳號','請輸入帳號／地址')}${input('ip','IP 地址','請輸入 IP 地址')}${input('device','設備指紋','請輸入設備指紋')}
-      <div class="source-filter-actions">${action(`${icon('reset')}重設`,'btn-neutral','reset')}<button type="submit" class="semantic-btn btn-search">${icon('search')}搜尋</button></div>
+      <div class="source-filter-actions">${action(`${icon('reset')}重置`,'btn-neutral','reset')}<button type="submit" class="semantic-btn btn-search">${icon('search')}搜尋</button></div>
     </div>
     <p class="error-text" data-risk-search-error role="alert"></p>
     <div class="guide-switch-row risk-refresh-row"><button id="risk-refresh-label-control" type="button" class="standard-switch" role="switch" aria-labelledby="risk-refresh-label" aria-checked="${autoRefresh}" data-risk-action="auto"></button><div><label for="risk-refresh-label-control" id="risk-refresh-label">自動刷新</label><span class="risk-refresh-count" data-risk-countdown ${!autoRefresh?'hidden':''}>${countdown} 秒後刷新</span></div></div>

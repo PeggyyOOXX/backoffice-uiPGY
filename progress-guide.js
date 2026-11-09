@@ -44,7 +44,7 @@ const DECISION = [
   ['多個步驟的流程', '步驟導覽 Steps', '步驟有名字，進度條只有數字'],
 ]
 
-// 示範用的初始值。推進與重設都整組重畫，不在 DOM 上逐條改屬性——
+// 示範用的初始值。推進與重置都整組重畫，不在 DOM 上逐條改屬性——
 // 逐條改要同時維護寬度、aria-valuenow、數字與配色四樣，很容易漏掉其中一個。
 const DEMO_BARS = [
   ['存款額度', 32, '存款額度已用', 'auto'],
@@ -74,7 +74,7 @@ window.renderProgressPage = () => guidePage({
       body: `<div class="guide-stage progress-demo" data-progress-demo>${renderBars()}</div>
         <div class="message-guide-actions">
           <button type="button" class="semantic-btn btn-edit" data-progress-step>推進 10%</button>
-          <button type="button" class="semantic-btn btn-neutral" data-progress-reset>${icon('reset')}重設</button>
+          <button type="button" class="semantic-btn btn-neutral" data-progress-reset>${icon('reset')}重置</button>
         </div>`,
     },
     { heading: '什麼時候用進度條', body: decisionTable(DECISION) },

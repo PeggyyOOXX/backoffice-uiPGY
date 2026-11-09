@@ -1,8 +1,39 @@
 /* Radio and Checkbox: one row per option, control first, label right after it. */
 .choice-control{display:inline-flex;align-items:flex-start;gap:0.5rem;min-width:0;font-size:0.875rem;font-weight:400;line-height:1.6;cursor:pointer}
-.choice-control input{flex:none;width:1rem;height:1rem;margin:0.25rem 0 0;accent-color:var(--brand);cursor:pointer}
-.choice-control input:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
-.choice-control input:disabled{cursor:not-allowed}
+/* 勾選框的外觀：凹槽。延續 Switch 的軌道——內凹、上緣一道暗部、1px 內描邊；
+   選取後換成和按鈕同一條「由深到亮」的品牌色漸層，配白色記號。
+   先前是原生控制加 accent-color，整顆沒有深度也沒有框線，放在漸層按鈕與金屬開關
+   旁邊像是另一套元件。
+
+   用 appearance:none 自繪，但畫的仍然是原生的 <input>：鍵盤、報讀器、indeterminate、
+   label 關聯全部不變。不得改用 <span>、圖片或圖示字型模擬——那會把這些一起弄丟。
+   記號是 CSS 邊框畫的（旋轉 45 度的右＋下兩條邊），不用 SVG 也不用文字字元。
+
+   Radio 與 Checkbox 共用同一組表面，差別只有圓角與記號的形狀，所以兩者一定一致。
+   顏色全部取自 token，這一段是全站唯一的定義處，不得在頁面或彈窗另外覆寫。 */
+.choice-control input,
+.choice-card input{-webkit-appearance:none;appearance:none;position:relative;flex:none;width:1rem;height:1rem;margin:0.25rem 0 0;border:0;border-radius:0.25rem;background:var(--input-bg);box-shadow:inset 0 0 0 1px var(--input-line),inset 0 1px 0.1875rem rgba(0,0,0,.2);transition:background .14s,box-shadow .14s}
+.choice-control input{cursor:pointer}
+.choice-card input{cursor:inherit}
+.choice-control input[type=radio],.choice-card input[type=radio]{border-radius:50%}
+/* 打勾是旋轉 45 度的右＋下兩條邊；半選是一條橫線；圓鈕是中心的實心圓。 */
+.choice-control input[type=checkbox]::after,.choice-card input[type=checkbox]::after{content:"";position:absolute;left:0.3125rem;top:0.125rem;width:0.25rem;height:0.5rem;border:solid transparent;border-width:0 2px 2px 0;transform:rotate(45deg);transition:border-color .14s}
+.choice-control input[type=checkbox]:indeterminate::after,.choice-card input[type=checkbox]:indeterminate::after{left:0.1875rem;top:0.4375rem;width:0.625rem;height:0;border-width:0 0 2px 0;transform:none}
+/* :indeterminate 一律要連 [type=checkbox] 一起寫。CSS 的 :indeterminate 不只配對半選的
+   checkbox——「一整組 radio 都沒有選」時，那一組每一顆 radio 也都會配對到它。
+   只寫 input:indeterminate 的話，任何沒有預設值的 radio 群組會整排被畫成已選取。 */
+.choice-control input[type=radio]::after,.choice-card input[type=radio]::after{content:"";position:absolute;inset:0.3125rem;border-radius:50%;background:transparent;transition:background .14s}
+.choice-control input:not(:disabled):hover,.choice-card input:not(:disabled):hover{box-shadow:inset 0 0 0 1px var(--input-line-hover),inset 0 1px 0.1875rem rgba(0,0,0,.24)}
+.choice-control input:checked,.choice-control input[type=checkbox]:indeterminate,.choice-card input:checked,.choice-card input[type=checkbox]:indeterminate{background:linear-gradient(180deg,color-mix(in srgb,var(--brand) 72%,#000) 0%,var(--brand) 45%,color-mix(in srgb,var(--brand) 86%,#fff) 100%);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--brand) 62%,#000),inset 0 1px 0.1875rem rgba(0,0,0,.35)}
+.choice-control input:checked::after,.choice-control input[type=checkbox]:indeterminate::after,.choice-card input:checked::after,.choice-card input[type=checkbox]:indeterminate::after{border-color:#fff}
+.choice-control input[type=radio]:checked::after,.choice-card input[type=radio]:checked::after{background:#fff}
+/* 停用與「關閉」要分得出來，跟開關同一條規則：可操作的是實心有深度，停用的是淡底加描邊。 */
+.choice-control input:disabled,.choice-card input:disabled{background:var(--input-disabled-bg);box-shadow:inset 0 0 0 1px var(--input-disabled-line);cursor:not-allowed}
+.choice-control input:disabled:checked,.choice-control input:disabled:indeterminate,.choice-card input:disabled:checked,.choice-card input:disabled:indeterminate{background:var(--brand-tint);box-shadow:inset 0 0 0 1px var(--brand-line)}
+.choice-control input:disabled:checked::after,.choice-control input:disabled:indeterminate::after,.choice-card input:disabled:checked::after,.choice-card input:disabled:indeterminate::after{border-color:var(--brand-line)}
+.choice-control input[type=radio]:disabled:checked::after,.choice-card input[type=radio]:disabled:checked::after{background:var(--brand-line)}
+/* 聚焦光圈與按鈕、開關同一個：3px 的淡品牌色外圈，不是實線描邊。 */
+.choice-control input:focus-visible,.choice-card input:focus-visible{outline:3px solid color-mix(in srgb,var(--brand) 35%,transparent);outline-offset:2px}
 .choice-control:has(input:disabled){color:var(--text-faint);cursor:not-allowed}
 .choice-control>span{min-width:0;overflow-wrap:anywhere}
 /* 只有控制項的變化：文案留給報讀器，畫面上只剩勾選框，整個 label 仍然可點。 */
@@ -13,12 +44,14 @@
 .choice-group{display:flex;flex-direction:column;gap:0.75rem;border:0;padding:0;margin:0;min-width:0}
 .choice-group.is-inline{flex-direction:row;flex-wrap:wrap;gap:0.75rem 1.5rem}
 .choice-group>legend{padding:0;margin-bottom:0.5rem;font-size:0.75rem;font-weight:600}
-.choice-group[aria-invalid=true] .choice-control input{outline:2px solid var(--danger);outline-offset:2px}
+/* 錯誤：照輸入框那一套（--input-error 的內描邊 ＋ --input-shadow-error 的紅色光圈），
+   不是再外掛一圈實線。16px 的圓鈕套上 2px 實線外框再加 2px offset，會變成一個靶心，
+   而且全站只剩這裡還在用舊的「實線描邊」語言。整組都標紅是對的——錯的是這一組沒選，
+   不是某一個選項。焦點光圈仍由 :focus-visible 的 outline 負責，兩者不會互相蓋掉。 */
+.choice-group[aria-invalid=true] .choice-control input{box-shadow:inset 0 0 0 1px var(--input-error),var(--input-shadow-error)}
 .choice-card{display:flex;align-items:flex-start;gap:0.5rem;min-width:0;padding:0.5rem;border:1px solid var(--line-control);border-radius:0.5rem;cursor:pointer}
 .choice-card:has(input:checked),.choice-card.is-selected{background:var(--brand-tint);border-color:var(--brand)}
 .choice-card:has(input:disabled){background:var(--surface);color:var(--text-faint);cursor:not-allowed}
-.choice-card input{flex:none;width:1rem;height:1rem;margin:0.25rem 0 0;accent-color:var(--brand);cursor:inherit}
-.choice-card input:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
 .choice-card>span{min-width:0}
 .choice-card strong{display:block;font-size:0.875rem;font-weight:600;line-height:1.5;overflow-wrap:anywhere}
 .choice-card small{display:block;margin-top:0.25rem;font-size:0.75rem;line-height:1.6;color:var(--text-muted);overflow-wrap:anywhere}

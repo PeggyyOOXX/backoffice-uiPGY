@@ -122,9 +122,15 @@ run(
 );
 run("sortable.js", ON + ICON, ";window.sortable=sortable;window.reorder=reorder");
 run(
+  "promotion-content.js",
+  MODAL + MSG + "const tabs=window.tabs,uploadSlot=window.uploadSlot;",
+  ";window.promotionContentDialog=promotionContentDialog",
+);
+run(
   "example-mixed.js",
   TABLE + TAG + MODAL + MSG + ON + ICON + BTN +
-    "const tabs=window.tabs,tabPanels=window.tabPanels,choiceCard=window.choiceCard,sortable=window.sortable,reorder=window.reorder;",
+    "const tabs=window.tabs,tabPanels=window.tabPanels,choiceCard=window.choiceCard,sortable=window.sortable,reorder=window.reorder," +
+    "promotionContentDialog=window.promotionContentDialog;",
 );
 run(
   "example-dashboard.js",
@@ -244,7 +250,7 @@ assert.ok(q(".example-toolbar.member-actions"), "空狀態時列表工具列仍�
 ok("列表頁：篩選生效，無結果時走共用空狀態且工具列不動");
 
 click(q("[data-gift-reset]"));
-assert.equal(bodyRows().length, 10, "重設後應回到每頁 10 筆");
+assert.equal(bodyRows().length, 10, "重置後應回到每頁 10 筆");
 
 // 停用／啟用切換
 const toggleRow = () => bodyRows()[0].querySelector("[data-gift-toggle]");
@@ -676,6 +682,32 @@ snapshot.querySelector("[data-promo-close]").click();
 assert.equal(d.querySelector("dialog"), null);
 ok("混合型：唯讀快照沿用共用彈窗外殼");
 
+// 活動內容編輯：先前是側欄上獨立的一頁，現在是這張列表上「編輯」開的寬版彈窗。
+// 要驗的是容器對不對、上傳用的是共用元件、以及主語系必填的驗證會切回該語系。
+// （CKEditor 本體是動態 import，jsdom 下不會載起來，所以不驗編輯器內部。）
+click(q('[data-mixed-promo="edit"]'));
+const editor = q("dialog[open]");
+assert.ok(editor.classList.contains("bo-modal"), "內容編輯要沿用共用彈窗外殼");
+assert.ok(editor.classList.contains("is-wide"), "內容編輯是寬版彈窗（848px），不是預設寬度");
+assert.equal(editor.querySelectorAll(".upload-dropzone").length, 4,
+  "四張圖都用共用的 uploadSlot()，不自己拼一份拖放區");
+assert.ok(!/content-image-stage/.test(editor.innerHTML),
+  "不得再出現第二份私有拖放區");
+assert.equal(editor.querySelectorAll(".bo-tab").length, 9,
+  "九個語系頁籤，與正式後台一致");
+assert.ok(editor.querySelector('[data-promo-content-date]'),
+  "活動期間用共用日期元件，彈窗內也要掛");
+// 主語系標題清空後送出：要留在欄位下方報錯，不是發 Toast
+const titleField = editor.querySelector("[data-promo-content-title]");
+titleField.value = "";
+editor.querySelector("form").dispatchEvent(new w.Event("submit", { cancelable: true, bubbles: true }));
+assert.ok(titleField.classList.contains("is-error"), "主語系標題必填，錯誤要標在欄位上");
+assert.equal(editor.querySelector("[data-promo-title-error]").hidden, false,
+  "錯誤文字要出現在欄位下方");
+assert.ok(d.querySelector("dialog[open]"), "驗證失敗時彈窗不關");
+editor.querySelector("[data-promo-content-close]").click();
+ok("混合型：活動內容走寬版彈窗、四張圖用共用上傳欄位、九語系、主語系必填");
+
 // ===== 搜尋結果型：會員列表 =====
 host().innerHTML = w.renderExampleMember();
 assert.ok(q(".example-member-page"), "會員列表範例畫不出來");
@@ -1090,13 +1122,13 @@ const dashboardChecks = async () => {
     ok("儀表板：正負色只跟著輸贏走，其餘六張用一般文字色");
   }
 
-  // 篩選列：只有一格條件也照同一套版面，手機有共用開關，重設在前、搜尋在後
+  // 篩選列：只有一格條件也照同一套版面，手機有共用開關，重置在前、搜尋在後
   {
     assert.ok(q('[data-filter-toggle="dashboard-search-panel"]'),
       "儀表板的篩選列在手機上要有共用的 filterToggle 開關");
     const actions = qa(".example-dashboard-page .source-filter-actions button")
       .map((b) => b.textContent.trim());
-    assert.deepEqual(actions, ["重設", "搜尋"], "重設在前、搜尋在後");
+    assert.deepEqual(actions, ["重置", "搜尋"], "重置在前、搜尋在後");
     // 卡片上方不放任何說明或狀態文字：工具列之後直接就是卡片
     const cardsHost = q("[data-dashboard-cards]");
     assert.ok(cardsHost.previousElementSibling.classList.contains("example-toolbar"),
@@ -1129,13 +1161,13 @@ const dashboardChecks = async () => {
     ok("儀表板：按搜尋才查，查詢期間舊數字留在原地變淡");
   }
 
-  // 重設＝回到預設站台再查一次，不是把條件清空
+  // 重置＝回到預設站台再查一次，不是把條件清空
   {
     click(q("[data-dashboard-reset]"));
     assert.equal(q('.example-dashboard-page [name="branch"]').value, "101 BEST",
-      "重設要回到預設站台，不是留一個空的下拉");
+      "重置要回到預設站台，不是留一個空的下拉");
     await sleep(600);
-    ok("儀表板：重設回到預設站台並自動查一次");
+    ok("儀表板：重置回到預設站台並自動查一次");
   }
 };
 

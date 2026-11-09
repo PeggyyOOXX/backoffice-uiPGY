@@ -16,6 +16,7 @@ import { prepareModal } from './modal-system.js'
 import { icon } from './icons.js'
 import { on, onMatch } from './delegate.js'
 import { sortable, reorder } from './sortable.js'
+import { promotionContentDialog } from './promotion-content.js'
 import './example-page.css'
 import './example-mixed.css'
 
@@ -292,6 +293,8 @@ window.renderExampleMixed = () => `<section class="example-page example-mixed-pa
       <li><strong>欄位級錯誤</strong>：驗證失敗時切到出錯的頁籤、把錯誤留在欄位下方，不用 Toast</li>
       <li><strong>彈窗</strong>：新增與刪除活動要做決定，用置中彈窗；活動快照是唯讀，沿用同一套彈窗外殼</li>
       <li><strong>未儲存提醒</strong>：排序與編輯都只改草稿，按「儲存設定」才套用；離開前會先確認</li>
+      <li><strong>內容編輯</strong>：活動的九個語系、四張圖與富文字裝在同一個寬版彈窗裡，上傳用共用的 <code>uploadSlot()</code>，不自己拼一份拖放區</li>
+      <li><strong>送出驗證</strong>：主語系標題沒填時切到該語系頁籤、捲到欄位並聚焦，錯誤留在欄位下方，不另外發 Toast</li>
     </ul>
   </section>
 </section>`
@@ -472,6 +475,16 @@ onMatch('click', '[data-mixed-promo]', (event, button) => {
   const kind = button.dataset.mixedPromo
   if (kind === 'sort') { sorting = true; redraw(); return }
   const row = promotions.find(item => item.id === Number(button.dataset.promoId))
+  // 「編輯」開的是內容編輯彈窗——正式後台的 promotionEditDialog 就是一個彈窗把
+  // 活動類型、期間與九個語系的標題／圖片／內文全部裝進去，不是分成兩個入口。
+  if (kind === 'edit') {
+    promotionContentDialog({
+      row,
+      categories: CATEGORIES.slice(1),
+      onSave: values => { Object.assign(row, values); redraw() },
+    })
+    return
+  }
   promotionDialog(kind, row)
 }, { owner: 'example-mixed' })
 

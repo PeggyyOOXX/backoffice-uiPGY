@@ -14,7 +14,7 @@
 | --- | --- | --- | --- |
 | `select.js` | `el-select` / `el-option` / `el-option-group` | `SearchForm.vue` | 見下方「Select 屬性對照」 |
 | `date-picker.js` | `el-date-picker` | `SearchForm.vue` | 快捷選項原型只有 3 個（本日／本週／本月），正式後台有 7 個，以正式後台為準 |
-| 內容編輯 | CKEditor 5 Classic 41.4.2 | `CkEditor.vue` | 版本與正式後台相同，行為一致 |
+| 內容編輯 | CKEditor 5 Classic 41.4.2 | `CkEditor.vue` | 版本與正式後台相同，行為一致。沒有獨立規範頁——它是整包套件，落在「組合範例－混合」優惠活動列上的編輯彈窗（`promotion-content.js`）。外觀走 `--ck-*` 變數接 token，不改套件；原生 <dialog> 需把 `.ck-body-wrapper` 搬進彈窗內，移植到 `el-dialog` 時拿掉 |
 
 ### Select 屬性對照
 
@@ -48,14 +48,14 @@
 | 右側抽屜 | `el-drawer` | 無（目前自製） | 唯讀詳情用，底部只有「關閉」 |
 | `header.js` 帳號選單 | `el-popover` | `Header.vue` 的 `account-popper` | 已在用，面板寬度與六個欄位照規範頁；不得再加第三顆按鈕 |
 | `form-guide.js` | `el-form` / `el-form-item` | 59 個 view 已在用 | 已符合：label-position="top"、require-asterisk-position="right"、rules 的 trigger 一律 blur。**缺的是送出失敗後的處理**——全站 0 處 `scrollToField`，要補上「捲到第一個錯誤並聚焦」 |
-| `search-guide.js` | `SearchForm.vue`（內部用 el-form ＋ el-input/el-select/el-date-picker） | **65 / 72 個 view** | 設定驅動，概念沿用。三處要改：搜尋與重設改成帶文字的語意按鈕、按鈕固定在格線最後一欄靠右（重設在前、搜尋在後，不再因為有沒有進階條件而置中）、進階收合鈕要有文字並自成一列 |
+| `search-guide.js` | `SearchForm.vue`（內部用 el-form ＋ el-input/el-select/el-date-picker） | **65 / 72 個 view** | 設定驅動，概念沿用。三處要改：搜尋與重置改成帶文字的語意按鈕、按鈕固定在格線最後一欄靠右（重置在前、搜尋在後，不再因為有沒有進階條件而置中）、進階收合鈕要有文字並自成一列 |
 | `.guide-fields` 格線 | `el-row` / `el-col` | 全站的 `:gutter` 與 `:sm/:md/:lg/:xl` | 原型把欄數收成一條 CSS 格線（手機 1／768 起 2／992 起 3／1200 起 4／1920 起 6，gutter 16），表單欄位與 `dashboard.vue` 的八張統計卡都吃同一份。移植時 `:gutter` 統一成 16（目前有 10／20／16 三種），`el-col` 一律 `:sm="12" :md="8" :lg="6" :xl="4"`；統計卡的 `:span="6"` 要改成同一組，否則手機會擠成四欄 |
 | `sortable.js` | 無（EP 沒有拖曳排序），用 `vue-draggable-plus` | `sortSetting/index.vue` | 只從把手開始拖（`handle`）。SortableJS 預設會即時把佔位列移到新位置；要沿用原型的「插入線＋來源列留在原位」，在 `onMove` 裡標記目標列的 `is-drop-before／after` 並回傳 false，放下時再改資料。方向鍵排序與 aria-live 播報要自己補 |
 | `permission-guide.js` | 不是 EP 元件，對應 `usePermission.ts` | 61 個檔案已在用 | `v-if` 141 處與 `:disabled` 161 處混用且無判準。統一成「動作沒了就不渲染，資料沒了就停用」 |
 | `header.js` 待辦角標 | `el-badge` 或自繪 | `Header.vue` 的絕對定位 `<div>`（自繪） | 數字來自 `/api/v0/notifications`，WebSocket 推播更新。EP 的 `el-badge` 預設 `is-fixed` 位置與規範的 `-2px` 不同，要覆寫；`:max="99"` 與規範的 99+ 一致 |
 | `tooltip.js` | `el-tooltip` | `IconBtn.vue`、`TruncateTooltip.vue` | `data-tooltip-placement` → `placement`；自動翻面 EP 內建 |
 | `icon-button.js` | `el-button` + `el-tooltip` | `IconBtn.vue` | 尺寸 32×32（觸控 44×44）、圓角 4px 要覆寫 EP 預設 |
-| `choice-controls.js` | `el-radio` / `el-checkbox` + `-group` | 全站已在用 | 16×16、`accent-color #927039`、間距 8px 要覆寫；部分選取用 `indeterminate` |
+| `choice-controls.js` | `el-radio` / `el-checkbox` + `-group` | 全站已在用 | 16×16、凹槽式自繪外觀（`appearance:none` ＋ CSS 邊框記號，見 choice-controls.css）、間距 8px 要覆寫；部分選取用 `indeterminate` |
 | `table-sort.js` | `el-table-column` `sortable` + `@sort-change` | `CustomTable.vue` | EP 預設也是雙箭頭三態循環，**顏色與尺寸要覆寫**成規範的灰／品牌色 |
 | `unified-table-system` | `el-table` | `CustomTable.vue` | 表頭底色、字色、內距、框線全部改在 `_element-ui.scss` |
 | 開關排列 Switch | `el-switch` | `CustomSwitch.vue` | 42×24px 要覆寫 EP 預設尺寸；文案字重 400 |

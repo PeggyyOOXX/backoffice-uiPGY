@@ -11,9 +11,12 @@ import './role.js'
 import './example-audit.js'
 import './switch-layout-guide.js'
 import './icon-button.js'
+// table-sort.js 定義 window.tableSortExamples，表格規範頁會呼叫它。
+// 它先前是靠已刪除的 editor-guide.js 間接載入的——那支一刪，表格頁就整頁畫不出來。
+// 共用元件要由進入點直接載，不能掛在別的頁面的 import 鏈上。
+import './table-sort.js'
 import './table-guide.js'
 import './bulk-guide.js'
-import './editor-guide.js'
 import './choice-controls.js'
 import './select-advanced.js'
 import './tabs-guide.js'

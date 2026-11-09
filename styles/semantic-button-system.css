@@ -51,6 +51,14 @@
   --btn-edge: color-mix(in srgb, var(--button-color) 58%, #000);
   --btn-ink: color-mix(in srgb, var(--button-color) 78%, #000);
   --btn-soft: color-mix(in srgb, var(--button-color) 40%, #fff);
+  /* 表面漸層、文字色與聚焦光圈也收成變數。Element Plus 自己的 .el-button 會蓋掉
+     這三項，掛了 semantic-btn 的 EP 按鈕（目前是日期面板的清空／確認）得把它們寫回去，
+     而算法只留在這裡一份——那邊只准引用變數，不得自己挑色碼。 */
+  --btn-face:
+    radial-gradient(90% 60% at 50% 120%, var(--btn-glow) 0%, transparent 70%),
+    linear-gradient(180deg, var(--btn-face-top) 0%, var(--button-color) 55%, var(--btn-face-low) 100%);
+  --btn-text: #fff;
+  --btn-outline: 3px solid color-mix(in srgb, var(--button-color) 35%, transparent);
   --btn-highlight: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0.7) 0%,
@@ -81,11 +89,9 @@
   /* 底色與漸層分開寫：瀏覽器不支援 color-mix 時，background-image 整條失效，
      background-color 仍在，按鈕退回實色而不是白底白字。 */
   background-color: var(--button-color);
-  background-image:
-    radial-gradient(90% 60% at 50% 120%, var(--btn-glow) 0%, transparent 70%),
-    linear-gradient(180deg, var(--btn-face-top) 0%, var(--button-color) 55%, var(--btn-face-low) 100%);
+  background-image: var(--btn-face);
   box-shadow: var(--btn-shadow);
-  color: #fff;
+  color: var(--btn-text);
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.38);
   /* 字級與內容高度是兩回事：14px 的字放在 16px 的行高裡，高度由行高決定。 */
   font-size: 0.875rem;
@@ -140,7 +146,7 @@
   transform: translateY(1px);
 }
 .semantic-btn:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--button-color) 35%, transparent);
+  outline: var(--btn-outline);
   outline-offset: 2px;
 }
 .semantic-btn:disabled {
@@ -201,8 +207,7 @@
     0 0.5rem 0.75rem -2px color-mix(in srgb, var(--button-color) 35%, transparent),
     0 1px 2px rgba(0, 0, 0, 0.1);
   --btn-shadow-active: inset 0 2px 0.25rem color-mix(in srgb, var(--button-color) 25%, transparent);
-  background-color: #fff;
-  background-image:
+  --btn-face:
     radial-gradient(90% 60% at 50% 120%, color-mix(in srgb, var(--button-color) 18%, #fff) 0%, transparent 70%),
     linear-gradient(
       180deg,
@@ -210,7 +215,10 @@
       color-mix(in srgb, var(--button-color) 8%, #fff) 55%,
       color-mix(in srgb, var(--button-color) 20%, #fff) 100%
     );
-  color: var(--btn-ink);
+  --btn-text: var(--btn-ink);
+  background-color: #fff;
+  background-image: var(--btn-face);
+  color: var(--btn-text);
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 .button-guide-grid {

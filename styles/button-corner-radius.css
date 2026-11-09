@@ -1,5 +1,8 @@
 /* All button shapes share one radius; change it here only. */
 .semantic-btn,
+/* Element Plus 自己的按鈕掛上 semantic-btn 時（日期面板的清空／確認），
+   .el-button--small 會帶來另一個圓角，這一條把它壓回同一個值。 */
+.el-button.semantic-btn,
 .primary,
 .secondary,
 .icon-btn,

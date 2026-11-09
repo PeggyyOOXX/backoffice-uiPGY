@@ -18,7 +18,7 @@ const ICONS = [
   ['loginRecord', '登入紀錄', 'btn-record', '查看詳情、歷程與預覽。'],
   ['download', '匯出', 'btn-export', '下載或產生報表檔案。'],
   ['add', '新增', 'btn-add', '建立新資料。'],
-  ['refresh', '刷新', 'btn-neutral', '刷新、重設與關閉等不改變資料的操作。'],
+  ['refresh', '刷新', 'btn-neutral', '刷新、重置與關閉等不改變資料的操作。'],
   ['delete', '刪除', 'btn-danger', '刪除、拒絕等高風險操作。'],
 ]
 
