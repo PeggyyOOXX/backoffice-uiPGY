@@ -3,11 +3,22 @@
    欄寬固定，一列不夠就留空，不平分拉寬。先前是 auto-fit 配最小 240px——寬螢幕會排到
    四五欄，而 848px 的彈窗裡剛好擠成三欄加一個落單的，封面圖與活動內頁被切在同一列。
    彈窗是固定規格寬度，不跟視窗走，所以彈窗內固定 2 欄、手機 1 欄。 */
+/* 上傳欄位的格線跟表單欄位（.guide-fields）不一樣，這是刻意的：
+
+   表單欄位是「一列很多個短輸入框」，所以欄寬固定、一列放不下就留空——欄位對齊比填滿重要。
+   上傳欄位相反，一個功能通常只有 2 個（Web／H5）或 4 個（封面圖＋活動內頁），數量是
+   固定的少數，而且每一格要裝得下預覽圖。欄寬固定的話，4 個欄位在 6 欄的格線裡只佔
+   四格，右邊空兩格，而每一格又被壓到不必要的窄。
+
+   欄數一律是偶數：手機 1 欄，768 起 2 欄，1200 起 4 欄。**不會有 3 欄**——
+   上傳欄位成對出現（Web／H5 是同一張圖的兩個尺寸），3 欄會把第四格推到下一排變成
+   3＋1，一對就被拆在兩排。偶數欄保證永遠是 2＋2 或一整排 4。
+   也不用 auto-fit：它的軌道數由容器寬算出來，中等寬度會算出 3 欄。 */
 .upload-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:1rem}
 @media(min-width:768px){.upload-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(min-width:992px){.upload-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(min-width:1200px){.upload-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
-@media(min-width:1920px){.upload-grid{grid-template-columns:repeat(6,minmax(0,1fr))}}
+/* 彈窗是固定規格寬度、不跟視窗走，欄數也就固定：848px 的寬版放 2 欄剛好，
+   交給 auto-fit 會算成三欄加一個落單的。手機 1 欄。 */
 .bo-modal .upload-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media(max-width:767px){.bo-modal .upload-grid{grid-template-columns:minmax(0,1fr)}}
 .upload-slot{min-width:0}
