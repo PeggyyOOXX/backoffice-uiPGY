@@ -1,8 +1,9 @@
 import { emptyState, emptyRow, errorState, skeletonTable, loadingWrap, STATE_COPY } from './states.js'
 import './state-guide.css'
+import { tabs } from './tabs.js'
 import { on } from './delegate.js'
 // 事件委派統一走 delegate.js：每種事件只掛一個 document 監聽，並登記擁有權。
-const OWNED = ["[data-state-demo]"]
+const OWNED = ['[data-tabs="state-demo"]']
 const listen = (type, handler, capture = false) => on(type, handler, { owner: 'state-guide', claims: OWNED, capture })
 
 
@@ -34,10 +35,10 @@ const SWITCHER = [
 ]
 let current = 'data'
 
+// 切換狀態是「同一張表的不同切面」，用卡片型頁籤；面板只有一個，切換時由這裡重畫。
 const demoMarkup = () => `<div data-state-demo-root>
-    <div class="state-switcher">${SWITCHER.map(([key, label]) =>
-      `<button type="button" class="semantic-btn ${key === current ? 'btn-search' : 'btn-neutral'}" data-state-demo="${key}" aria-pressed="${key === current}">${label}</button>`).join('')}</div>
-    <div class="state-demo-stage">${STATES[current]()}</div>
+    ${tabs({ id: 'state-demo', label: '表格狀態', items: SWITCHER.map(([key, label]) => ({ key, label })), active: current, variant: 'card', mobile: 'scroll', controls: 'state-demo-stage' })}
+    <div class="state-demo-stage" id="state-demo-stage" role="tabpanel" aria-labelledby="state-demo-tab-${current}">${STATES[current]()}</div>
   </div>`
 
 const copyRow = (kind, when) => `<tr><td><code>${kind}</code></td><td>${esc(when)}</td><td><strong>${esc(STATE_COPY[kind].title)}</strong><br><span>${esc(STATE_COPY[kind].text)}</span></td></tr>`
@@ -50,7 +51,7 @@ window.renderStateGuide = () => `<div class="style-guide state-guide-page">
 
   <section class="card state-guide">
     <h3>互動範例</h3>
-    <p class="component-description">同一張表在四種狀態下的樣子。切換看看它們的差別，特別是「首次載入」與「重新查詢」。</p>
+    <p class="component-description">同一張表在五種狀態下的樣子。切換看看它們的差別，特別是「首次載入」與「重新查詢」。</p>
     ${demoMarkup()}
   </section>
 
@@ -136,15 +137,12 @@ window.renderStateGuide = () => `<div class="style-guide state-guide-page">
   </section>
 </div>`
 
-function redraw() {
-  const root = document.querySelector('[data-state-demo-root]')
-  if (root) root.outerHTML = demoMarkup()
-}
-
-listen('click', event => {
-  const pick = event.target.closest('[data-state-demo]')
-  if (!pick) return
-  current = pick.dataset.stateDemo
-  redraw()
-  document.querySelector(`[data-state-demo="${current}"]`)?.focus()
+// 頁籤本身由 tabs.js 切換；這裡只換面板內容，焦點留在頁籤上。
+listen('tab-change', event => {
+  if (event.target.dataset?.tabs !== 'state-demo') return
+  current = event.detail.key
+  const stage = document.getElementById('state-demo-stage')
+  if (!stage) return
+  stage.innerHTML = STATES[current]()
+  stage.setAttribute('aria-labelledby', `state-demo-tab-${current}`)
 })

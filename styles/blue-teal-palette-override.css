@@ -72,6 +72,17 @@
      色相，因為整列反白時要和「選取」讀起來是同一個系統。AGENTS.md 本來就寫了
      這個值，只是一直沒有名字。 */
   --surface-row-hover: #fbf8f2;
+  /* 儀表板統計卡的八個卡片色，一張一色、依 dashboard.vue 的順序。只用在統計卡的底色漸層、框與裝飾，
+     不拿來表示狀態——語意色（--success／--danger…）不夠用，因為八張卡要八個分得開的色相，
+     而語意色只有四個且各自有意思。六色與語意按鈕同色相，青綠、玫瑰由相鄰兩色混出。 */
+  --kpi-gold: #927039;
+  --kpi-blue: #4169c9;
+  --kpi-green: #12b157;
+  --kpi-amber: #f59e0b;
+  --kpi-purple: #8354bc;
+  --kpi-slate: #6d8aae;
+  --kpi-teal: #27918a;
+  --kpi-rose: #b43b6a;
   /* 狀態色。先前站上有兩套並存：base.css 的 --green/--red/--amber，以及語意色的
      btn-export／btn-danger／btn-warning——同一個「成功」是兩個不同的綠，而元件要用
      時兩套都沒有變數，只好寫死色碼（光是 #DC2626 就被寫死 19 次）。

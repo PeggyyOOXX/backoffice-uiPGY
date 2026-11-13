@@ -90,6 +90,10 @@
             >圖片上傳 Upload
           </div>
           <div class="nav-item" data-route-key="搜尋篩選列"><span class="ico" data-icon="searchForm" data-icon-size="20"></span>搜尋篩選列 SearchForm</div>
+          <div class="nav-item" data-route-key="頁籤">
+            <span class="ico" data-icon="tabsGuide" data-icon-size="20"></span
+            >頁籤 Tabs
+          </div>
           <div class="nav-item" data-route-key="表格">
             <span
               class="ico"
@@ -98,16 +102,16 @@
             ></span
             >表格 Table
           </div>
+          <div class="nav-item" data-route-key="批量操作">
+            <span class="ico" data-icon="bulkActions" data-icon-size="20"></span
+            >批量操作 Bulk
+          </div>
           <div class="nav-item" data-route-key="拖曳排序"><span class="ico" data-icon="drag" data-icon-size="20"></span>拖曳排序 Sortable</div>
           <div class="nav-item" data-route-key="標籤">
             <span class="ico" data-icon="memberTag" data-icon-size="20"></span
             >標籤 Tag
           </div>
           <div class="nav-item" data-route-key="進度條"><span class="ico" data-icon="trend" data-icon-size="20"></span>進度條 Progress</div>
-          <div class="nav-item" data-route-key="頁籤">
-            <span class="ico" data-icon="tabsGuide" data-icon-size="20"></span
-            >頁籤 Tabs
-          </div>
           <div class="nav-item" data-route-key="導覽"><span class="ico" data-icon="menu" data-icon-size="20"></span>導覽 Navigation</div>
           <div class="nav-item" data-route-key="頁首"><span class="ico" data-icon="headerBar" data-icon-size="20"></span>頁首 Header</div>
           <div class="nav-item" data-route-key="步驟導覽">
@@ -133,10 +137,6 @@
           <div class="nav-item" data-route-key="載入與空狀態">
             <span class="ico" data-icon="stateGuide" data-icon-size="20"></span
             >載入與空狀態 States
-          </div>
-          <div class="nav-item" data-route-key="批量操作">
-            <span class="ico" data-icon="bulkActions" data-icon-size="20"></span
-            >批量操作 Bulk
           </div>
                     <div class="nav-tree is-open">
             <!-- 會展開子選單的項目要是可聚焦的控制項：收合之後它開的是飛出面板，
@@ -169,12 +169,8 @@
             </div>
           </div>
         </nav>
-        <!-- 收合側欄的開關：側欄左下角的一顆 32 × 32 純圖示按鈕。
-             先前是一整列（圖示＋「收合側欄」＋快捷鍵標示），語意清楚但佔掉整條側欄寬，
-             在畫面上太像一個區塊。改成只佔 32 × 32，文字與快捷鍵交給 Tooltip——
-             純圖示按鈕本來就一定要有 aria-label 與同文字的提示。
-             圖示是 Lucide 的 panel-left，與 VS Code、Notion、shadcn/ui 的
-             SidebarTrigger 同一個。理由見「導覽 Navigation」規範頁。 -->
+        <!-- 收合側欄的開關：側欄左下角、.nav 捲動區外的一顆 24 × 24 純圖示按鈕（panel-left），
+             名稱與快捷鍵在 aria-label 與 Tooltip。只有桌機有。規範見「導覽 Navigation」。 -->
         <button
           type="button"
           class="nav-item nav-collapse"
@@ -190,7 +186,7 @@
       </aside>
       <main class="main">
         <header class="topbar">
-          <!-- 只有手機會出現：桌機的側欄收合開關在側欄自己的右緣（.nav-rail）。 -->
+          <!-- 只有手機會出現（開側欄抽屜）：桌機的收合開關在側欄左下角（#navCollapse）。 -->
           <button
             type="button"
             class="icon-btn menu-btn"

@@ -7,7 +7,7 @@
 // 這一型特有的東西：
 //   1. 版面只有一組卡片，直接套全站的 12 欄格線（guide-page.css 的 .guide-fields），
 //      不另外排一套——手機 1 欄、768 起 2 欄、992 起 3 欄、1200 起 4 欄、1920 起 6 欄。
-//   2. 數值呈現的三條規則在這一頁同時看得到：千分位、tabular-nums、正負色。
+//   2. 數值呈現：千分位、tabular-nums；統計卡是彩色底，數字不分正負一律一般文字色。
 //   3. 重新查詢時舊數字留在原地變淡（loadingWrap 的遮罩），不換成骨架。
 import { message } from './message.js'
 import { icon } from './icons.js'
@@ -37,16 +37,16 @@ const money = n => Number(n).toLocaleString('en-US', { minimumFractionDigits: 2,
 const people = n => Number(n).toLocaleString('en-US')
 
 // 八張卡、順序與 dashboard.vue 的 el-col 一字不差。
-// signed 的那兩張是輸贏，會是負的，正負色就靠它們示範。
+// icon 是卡片右側的裝飾大圖示，tone 對應 --kpi-* 的卡片色；signed 的兩張是輸贏，數字可能是負的。
 const METRICS = [
-  { key: 'todayValidBetAmount', label: '今日總有效投注額', kind: 'amount', range: [8_000_000, 24_000_000] },
-  { key: 'todayDepositPlayers', label: '今日存款玩家數', kind: 'people', range: [320, 1_800] },
-  { key: 'todayDepositAmount', label: '今日總存款金額', kind: 'amount', range: [1_200_000, 6_400_000] },
-  { key: 'todayFirstDeposit', label: '今日首存玩家數', kind: 'people', range: [18, 240] },
-  { key: 'todayProfitLoss', label: '今日總輸贏', kind: 'amount', signed: true, range: [-1_800_000, 1_400_000] },
-  { key: 'totalPlayers', label: '總玩家數', kind: 'people', range: [24_000, 186_000] },
-  { key: 'todayRegisterPlayers', label: '今日註冊玩家數', kind: 'people', range: [42, 620] },
-  { key: 'monthProfitLoss', label: '本月遊戲總輸贏', kind: 'amount', signed: true, range: [-12_000_000, 9_600_000] },
+  { key: 'todayValidBetAmount', icon: 'bet', tone: 'gold', label: '今日總有效投注額', kind: 'amount', range: [8_000_000, 24_000_000] },
+  { key: 'todayDepositPlayers', icon: 'members', tone: 'blue', label: '今日存款玩家數', kind: 'people', range: [320, 1_800] },
+  { key: 'todayDepositAmount', icon: 'finance', tone: 'green', label: '今日總存款金額', kind: 'amount', range: [1_200_000, 6_400_000] },
+  { key: 'todayFirstDeposit', icon: 'star', tone: 'amber', label: '今日首存玩家數', kind: 'people', range: [18, 240] },
+  { key: 'todayProfitLoss', icon: 'trend', tone: 'purple', label: '今日總輸贏', kind: 'amount', signed: true, range: [-1_800_000, 1_400_000] },
+  { key: 'totalPlayers', icon: 'personalCenter', tone: 'slate', label: '總玩家數', kind: 'people', range: [24_000, 186_000] },
+  { key: 'todayRegisterPlayers', icon: 'user', tone: 'teal', label: '今日註冊玩家數', kind: 'people', range: [42, 620] },
+  { key: 'monthProfitLoss', icon: 'gameProvider', tone: 'rose', label: '本月遊戲總輸贏', kind: 'amount', signed: true, range: [-12_000_000, 9_600_000] },
 ]
 
 const dataset = branch => {
@@ -57,21 +57,19 @@ const dataset = branch => {
   }))
 }
 
-// 正負色是站台層級的決定，不開放個人化：負數 --danger、正數 --success、零用一般文字色。
-// 正式後台的 formatNegativeColor 讓每個使用者自選「負紅正綠／負綠正紅」，
-// 而對帳有一半靠截圖轉傳完成——收到圖的人無從得知對方用的是哪一套。
-const tone = (value, signed) => {
-  if (!signed || value === 0) return ''
-  return value < 0 ? ' is-negative' : ' is-positive'
-}
-
 const cell = metric => {
   const text = metric.kind === 'amount'
     ? `${metric.value < 0 ? '-' : ''}$${money(Math.abs(metric.value))}`
     : people(metric.value)
-  return `<article class="card example-card example-kpi">
+  // 卡片是彩色底，數字不分正負一律一般文字色，正負只靠負號（規範見 AGENTS.md「數值呈現」）。
+  return `<article class="example-kpi" style="--kpi: var(--kpi-${metric.tone})">
+    <span class="example-kpi-art" aria-hidden="true">
+      <span class="example-kpi-glow"></span><span class="example-kpi-ring-lg"></span><span class="example-kpi-ring"></span>
+      <span class="example-kpi-dot is-a"></span><span class="example-kpi-dot is-b"></span><span class="example-kpi-dot is-c"></span>
+      ${icon(metric.icon, 88)}
+    </span>
     <h3 class="example-kpi-title">${esc(metric.label)}</h3>
-    <p class="example-kpi-value${tone(metric.value, metric.signed)}">${esc(text)}</p>
+    <p class="example-kpi-value">${esc(text)}</p>
   </article>`
 }
 
@@ -120,7 +118,8 @@ window.renderExampleDashboard = () => `<section class="example-page example-dash
     <ul>
       <li><strong>版面格線</strong>：八張卡片直接套 <code>.guide-fields</code>（手機 1 欄、768 起 2 欄、992 起 3 欄、1200 起 4 欄、1920 起 6 欄），這一頁不自己宣告欄數也不改欄寬</li>
       <li><strong>非必要不寫死寬高</strong>：卡片高度由標題與數字撐開。正式後台釘在 122px，換成長一點的語系（「今日總有效投注額」在 bn-bd 是三行）第三行會溢出</li>
-      <li><strong>數值呈現</strong>：千分位、<code>tabular-nums</code>、金額固定兩位小數；<strong>負數 <code>--danger</code>、正數 <code>--success</code>、零用一般文字色</strong>，而且這組配色是站台層級的，不跟著個人設定走</li>
+      <li><strong>數值呈現</strong>：千分位、<code>tabular-nums</code>、金額固定兩位小數；統計卡是彩色底，<strong>數字不分正負一律一般文字色</strong>，正負只靠負號</li>
+      <li><strong>統計卡</strong>：一張一色（<code>--kpi-*</code> 八色），淺到深的橫向漸層底＋2px 同色漸層框，右側是白色半透明的圓光、圓環、光點與 88px 出血大圖示，全部是裝飾（<code>aria-hidden</code>）</li>
       <li><strong>搜尋篩選列</strong>：只有一格條件也照同一套版面——標籤在欄位上方、重置在前搜尋在後、按下搜尋才查；重置是回到預設站台並自動查一次，不是清空</li>
       <li><strong>載入與空狀態</strong>：重新整理時舊數字留在原地變淡（遮罩），不換成骨架；遮罩期間底下的操作停用</li>
       <li><strong>訊息提示</strong>：更新完成用 Toast 並帶受詞（「已更新 101 BEST 的儀表板」），不在卡片上方留一行狀態文字</li>

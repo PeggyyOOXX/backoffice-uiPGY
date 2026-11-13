@@ -75,7 +75,7 @@ window.renderChoiceGuide = () =>
       ["Switch 停用・關", "底 #F1F3F6，內描邊 #D4DBE4"],
       ["Switch Focus", "3px #92703955，offset 3px"],
       ["Switch 旋鈕", "18px 拉絲金屬圓鈕（圓錐漸層）：關為銀色（白＋--line-strong），開為香檳金（--nav-active-from／--nav-active-to）；可操作帶 0 1px 4px 落影與白色內緣，停用為白色平貼"],
-      ["控制尺寸", "16 × 16px"],
+      ["控制尺寸", "20 × 20px"],
       ["未選取", "--input-bg 凹槽：1px --input-line 內描邊 ＋ 上緣 inset 0 1px 3px 暗部，與 Switch 軌道同一套"],
       ["已選取", "品牌色由深到亮的漸層（#927039 72%黑 → #927039 → 86%白），白色記號"],
       ["停用", "--input-disabled-bg 淡底加 --input-disabled-line 描邊；已選取改 --brand-tint 底、--brand-line 記號"],

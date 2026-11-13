@@ -54,6 +54,22 @@ window.renderMessageGuide = () => `<div class="style-guide message-guide-page">
   </section>
 
   <section class="card message-guide">
+    <h3>堆疊與重複</h3>
+    <p class="component-description">相同型別＋相同文案在畫面上時只累加計數，不再疊一則。正式後台沒有開 <code>grouping</code>，連按十次儲存就會疊出十個「成功」。同時最多顯示 ${MAX_VISIBLE} 則，超過移除最舊的。</p>
+    <div class="message-guide-actions">
+      <button type="button" class="semantic-btn btn-add" data-message-repeat>連按同一則 ×5（合併計數）</button>
+      <button type="button" class="semantic-btn btn-edit" data-message-flood>連發 7 則不同的（上限 ${MAX_VISIBLE}）</button>
+      <button type="button" class="semantic-btn btn-neutral" data-message-clear>${icon('close')}全部清除</button>
+    </div>
+
+    <h3>與彈窗並存</h3>
+    <p class="component-description">原型的彈窗是原生 <code>&lt;dialog&gt;</code> 搭配 <code>showModal()</code>，會進入瀏覽器的 top layer——畫在所有 <code>z-index</code> 之上。所以單純用 <code>z-index</code> 的 Toast 從彈窗裡觸發時會被蓋住看不見，而「彈窗按下儲存之後」正是最常發 Toast 的時機。這裡的 Toast 容器用 <code>popover</code> 一起進 top layer，而且每次新增都重新 <code>showPopover()</code>，排到堆疊最上面。</p>
+    <div class="message-guide-actions">
+      <button type="button" class="semantic-btn btn-edit" data-message-modal>開啟彈窗，從裡面發 Toast</button>
+    </div>
+  </section>
+
+  <section class="card message-guide">
     <h3>什麼時候用 Toast，什麼時候不要</h3>
     <p class="component-description">用錯層級比用錯顏色嚴重得多——該攔的沒攔住，使用者會以為操作成功了。</p>
     <div class="table-wrap">
@@ -142,22 +158,6 @@ window.renderMessageGuide = () => `<div class="style-guide message-guide-page">
         </ul>
         <p>動詞＋受詞。錯誤一律「代碼＋原因」同一行，與狀態區的 <code>errorState()</code> 一致。</p>
       </div>
-    </div>
-  </section>
-
-  <section class="card message-guide">
-    <h3>堆疊與重複</h3>
-    <p class="component-description">相同型別＋相同文案在畫面上時只累加計數，不再疊一則。正式後台沒有開 <code>grouping</code>，連按十次儲存就會疊出十個「成功」。同時最多顯示 ${MAX_VISIBLE} 則，超過移除最舊的。</p>
-    <div class="message-guide-actions">
-      <button type="button" class="semantic-btn btn-add" data-message-repeat>連按同一則 ×5（合併計數）</button>
-      <button type="button" class="semantic-btn btn-edit" data-message-flood>連發 7 則不同的（上限 ${MAX_VISIBLE}）</button>
-      <button type="button" class="semantic-btn btn-neutral" data-message-clear>${icon('close')}全部清除</button>
-    </div>
-
-    <h3>與彈窗並存</h3>
-    <p class="component-description">原型的彈窗是原生 <code>&lt;dialog&gt;</code> 搭配 <code>showModal()</code>，會進入瀏覽器的 top layer——畫在所有 <code>z-index</code> 之上。所以單純用 <code>z-index</code> 的 Toast 從彈窗裡觸發時會被蓋住看不見，而「彈窗按下儲存之後」正是最常發 Toast 的時機。這裡的 Toast 容器用 <code>popover</code> 一起進 top layer，而且每次新增都重新 <code>showPopover()</code>，排到堆疊最上面。</p>
-    <div class="message-guide-actions">
-      <button type="button" class="semantic-btn btn-edit" data-message-modal>開啟彈窗，從裡面發 Toast</button>
     </div>
   </section>
 

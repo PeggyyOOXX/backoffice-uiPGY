@@ -35,6 +35,14 @@ const sideDemo = () => `<div class="nav-demo-shell sidebar">
   </nav>
 </div>`
 
+// 收合開關的示範：同一個側欄示範，底部多一顆真正的 .nav-collapse（不帶 id，所以按了不會真的收合）。
+const collapseDemo = () => `<div class="nav-demo-shell sidebar nav-demo-collapse">
+  <nav class="nav" aria-label="側欄導覽示意">
+    ${SIDE_ITEMS.map(item => `<div class="nav-item">${icon(item.icon, 20)}<span class="nav-demo-label">${item.label}</span></div>`).join('')}
+  </nav>
+  <button type="button" class="nav-item nav-collapse" aria-label="收合側欄（示意）" data-tooltip="收合側欄（Ctrl + B）" data-tooltip-placement="right">${icon('panelLeft', 16)}</button>
+</div>`
+
 const crumbDemo = () => `<nav class="crumb-demo" aria-label="麵包屑示意">
   <ol>
     <li><a href="#nav-guide" onclick="event.preventDefault()">會員管理</a></li>
@@ -70,36 +78,15 @@ window.renderNavPage = () => guidePage({
       body: `<div class="guide-stage">${crumbDemo()}</div>
         <p class="component-description">只在<strong>側欄標不到的層級</strong>出現：從列表進到某一筆詳情時，側欄仍停在「會員列表」，麵包屑補上這一筆是誰。最後一層是目前位置，不是連結，標 <code>aria-current="page"</code>。</p>`,
     },
-    { heading: '哪個元件回答哪個問題', body: decisionTable(DECISION) },
-    {
-      heading: '與工作區頁籤的關係',
-      body: `<p class="component-description">三者各自獨立，不要互相連動：</p>
-        <ul class="nav-guide-list">
-          <li><strong>側欄</strong>＝站台有什麼功能（固定不變）</li>
-          <li><strong>工作區頁籤</strong>＝我開了哪些頁面（使用者自己決定，有上限 10 個）</li>
-          <li><strong>麵包屑</strong>＝目前這一頁在哪一層（跟著內容走）</li>
-        </ul>
-        <p class="component-description">常見的錯是把麵包屑做成可以「往回關掉頁籤」，或讓側欄隨工作區頁籤跳動。切換工作區頁籤時側欄的作用中項目要跟著換，但<strong>反過來不成立</strong>——點側欄是開新頁，不是切換已開的頁籤。</p>`,
-    },
     {
       heading: '收合側欄',
-      body: `<p class="component-description">正式後台已經有這件事：<code>Header.vue</code> 最左邊那顆 <code>hamburger</code> 圖示呼叫 <code>useSidebarStore().toggle()</code>，<code>Side.vue</code> 的 <code>el-menu</code> 收到 <code>:collapse</code> 之後從 <code>w-[280px]</code> 縮成 <code>w-[72px]</code>。原型照同一套做，補上它沒做的四件：用 <code>&lt;button&gt;</code> 而不是帶 <code>cursor-pointer</code> 的 <code>&lt;svg&gt;</code>、<code>aria-expanded</code>、收合後每一項的 Tooltip、以及鍵盤快捷鍵。</p>
-        <p class="component-description">開關放哪裡，市面上四種做法：</p>
-        ${decisionTable([
-          ['<strong>側欄底部</strong>', 'Ant Design 的 <code>Layout.Sider</code>（<code>triggerHeight: 48</code>）', '<strong>本站採用，但只取位置。</strong>在側欄裡，不碰內容區；在最底下，不跟導覽搶視線。Ant 那條是 48px 的實心橫條，本站縮成 32 × 32 的純圖示'],
-          ['頁首最左的漢堡', 'Gmail、多數後台框架、<strong>正式後台的 Header.vue</strong>', '位置與圖示都是既定語彙；但它佔的是內容區的頁首，而側欄的開關不是內容的事'],
-          ['側欄右緣的細條', 'Linear（點側欄邊框）、shadcn/ui 的 <code>SidebarRail</code>', '最不打擾，但<strong>沒有人會知道側欄可以收</strong>。原型試過，結論是不行'],
-          ['<code>«</code> / <code>»</code> 按鈕', 'Notion（<code>cmd/ctrl + \\</code>）', '方向明確，但那兩個字元不在本專案的圖示清單上'],
-        ], ['做法', '誰在用', '取捨'])}
-        <p class="component-description"><strong>「不明顯」有三件事要分開談：位置、面積、亮度。</strong>原型在這裡改了五版才收斂：頁首的箭頭（被讀成「回到上一頁」）→ 頁首的漢堡（佔的是內容區的頁首）→ 側欄右緣只有 hover 才顯形的細條（沒有人知道可以收）→ 側欄底部一整列帶文字（語意最清楚，但那是一個 <strong>224 × 36 的色塊</strong>貼在側欄底部，壓再淡都還是一個「區塊」）→ 現在的版本。</p>
-        <p class="component-description">現在是<strong>側欄左下角、距邊 4px 的一顆 24 × 24 純圖示按鈕</strong>，圖示 16px。文字與快捷鍵由 Tooltip 承擔——純圖示按鈕本來就一定要有 aria-label 與同文字的提示，所以這不是把資訊丟掉，是換一個不佔版面的地方放。</p>
-        <p class="component-description"><strong>24 × 24 是全站唯一比 32 小的控制項，而且是具名例外。</strong>理由：它不是對資料的操作，不與任何輸入框對齊，另有 <code>Ctrl / Cmd + B</code> 這條快車道，而 24 × 24 仍踩在 WCAG 2.5.8 AA 的下限上。這個尺寸<strong>不得帶到任何其他按鈕</strong>——站上先前有四種按鈕高度，就是從「這裡小一點」開始的。</p>
-        <p class="component-description"><strong>hover 不變亮、不加底色。</strong>導覽項目的 hover 是白字加一層白底，那是「這一列可以點」的回饋；這一顆的目的是盡量不存在，所以顏色三態都鎖在 <code>var(--text-faint)</code>，只有透明度在動：靜止 <code>.3</code>、游標進到側欄 <code>.45</code>、滑到它自己身上 <code>.7</code>。回饋交給游標與 Tooltip 就夠了。</p>
-        <p class="component-description">這一層的關鍵是 <strong>hover 的範圍是整個側欄，不是那顆按鈕本身</strong>。Notion 的側欄控制項也是這樣——平時不在，游標靠近才出現。先前那條 8px 的細條之所以失敗，是因為要先找到它才看得到它；側欄是導覽，使用者本來就會把游標移過去。收合之後這顆是唯一的回頭路，靜止透明度提高到 <code>.5</code>。</p>
-        <p class="component-description">圖示用 Lucide 的 <code>panel-left</code>，與 VS Code 的 Toggle Primary Side Bar、Notion、shadcn/ui 的 <code>SidebarTrigger</code> 同一個。<strong>不要用箭頭</strong>：左上角的 <code>←</code> 在整個網路上都是「回到上一頁」。快捷鍵是 <code>Ctrl / Cmd + B</code>（VS Code 與 shadcn/ui 都是這個鍵，照用不自創），寫在 Tooltip 的名稱後面：<code>收合側欄（Ctrl + B）</code>。</p>
-        <p class="component-description"><strong>開關放在 <code>.nav</code> 外面。</strong>側欄的捲動區有 35 個項目，開關如果在裡面就會跟著捲走——GitLab 正是踩了這個，收合後的開關跟著頁面捲動，使用者得先捲回頂端才找得到。</p>
-        <p class="component-description"><strong>收成 72px 的圖示軌，不要整條收掉。</strong>收掉之後導覽完全消失，使用者得先想起「它在哪」才找得回來。每一項要掛 Tooltip（純圖示一定要同時有 aria-label 與同文字的提示），而且<strong>不能只靠 hover</strong>：觸控裝置沒有 hover，所以手機不做收合，側欄維持抽屜，開關換回頁首的漢堡。</p>
-        <p class="component-description">原型的側欄是<strong>平鋪 35 項</strong>，收起來是一長條圖示，要捲很久才找得到最底下那一個；正式後台是兩層選單，收合後只剩約 10 個第一層圖示。移植時不必照抄原型的密度。</p>`,
+      body: `${collapseDemo()}
+        <p class="component-description"><strong>位置：側欄左下角，放在 <code>.nav</code> 捲動區的外面</strong>，距左、下邊各 4px。側欄有幾十個項目會捲動，開關在捲動區外面才不會跟著捲走。只有桌機（721px 以上）有這顆；手機的側欄是抽屜，開關是頁首左側的漢堡。</p>
+        <p class="component-description"><strong>外觀：24 × 24 的純圖示按鈕</strong>，圖示 Lucide <code>panel-left</code> 16px，顏色 <code>var(--text-faint)</code>、沒有底色，hover 也不變色、不加底色，只有透明度在變：靜止 <code>.3</code>、游標進到側欄 <code>.45</code>、滑到按鈕本身或鍵盤聚焦 <code>.7</code>；收合後它是唯一的回頭路，靜止提高到 <code>.5</code>、游標進到側欄 <code>.7</code>，並在 72px 的圖示軌裡置中。hover 的範圍是<strong>整個側欄</strong>，不必先找到按鈕才看得到它。</p>
+        <p class="component-description"><strong>24 × 24 是全站唯一比 32px 小的控制項，是具名例外</strong>：它不是對資料的操作、不與任何輸入框對齊、另有快捷鍵可用，而且仍在 WCAG 2.5.8 AA 的 24 × 24 下限上。這個尺寸不得帶到任何其他按鈕。</p>
+        <p class="component-description"><strong>名稱與快捷鍵放在 aria-label 與 Tooltip</strong>，兩邊文字一致：展開時「收合側欄（Ctrl + B）」、收合後「展開側欄（Ctrl + B）」，Tooltip 朝右。按鈕帶 <code>aria-expanded</code> 與 <code>aria-controls="sidebar"</code>。快捷鍵 <code>Ctrl / Cmd + B</code>。圖示不用箭頭——左上角的箭頭讀起來是「回到上一頁」。</p>
+        <p class="component-description"><strong>收合後是 72px 的圖示軌，不整條收掉</strong>：第一層只剩圖示，每一項掛同名的 Tooltip（朝右），展開時拿掉；有子選單的項目點下去開飛出面板（見下一段）。logo 區高度不變，圖片等比縮進軌寬內。</p>
+        <p class="component-description"><strong>移植：</strong>正式後台的開關是 <code>Header.vue</code> 左側的 <code>hamburger</code> 圖示，呼叫 <code>useSidebarStore().toggle()</code>，<code>Side.vue</code> 的 <code>el-menu</code> 收到 <code>:collapse</code> 後縮成 <code>w-[72px]</code>。移植時把開關搬到側欄底部，改成 <code>&lt;button&gt;</code>，補上 <code>aria-expanded</code>、Tooltip 與快捷鍵；收合的狀態仍由 <code>useSidebarStore</code> 管。</p>`,
     },
     {
       heading: '收合後的第二、三層：飛出面板',
@@ -110,6 +97,17 @@ window.renderNavPage = () => guidePage({
         <p class="component-description"><strong>搬過去之後要把 <code>display</code> 打開。</strong><code>.nav-children</code> 在側欄裡預設是 <code>display: none</code>，靠父層的 <code>.is-open</code> 才打開；搬到面板之後那個父層不在了，少了這一條面板會是一個空盒子，看起來還是「點了沒反應」。</p>
         <p class="component-description"><strong>作用中項目的「滿版」要在面板裡關掉。</strong>側欄的作用中項目是刻意滿版的：<code>width: calc(100% + 16px)</code> 配左右各 −8px 的外推、方角、再加一個咬進內容區的白色尖角，為的是讓它從側欄的一邊延伸到另一邊。搬進 176px 的面板之後這一套全錯——色塊會超出面板的圓角邊界，尖角則指向一片空白。面板裡的作用中項目要回到一般的盒子：不外推、有圓角、不畫尖角，字級也維持 12px（側欄的作用中會放大到 16px，在窄面板裡會讓高度每開一次都不一樣）。</p>
         <p class="component-description"><strong>關閉的出口要齊。</strong>點面板外面、選了其中一項、按 Esc、側欄捲動、視窗改變大小都要關；按 Esc 還要把焦點送回那個圖示，否則焦點會掉回畫面開頭。面板一次只開一個，而且側欄一展開就關掉並把子選單搬回側欄——否則展開之後第二、三層會整個不見。</p>`,
+    },
+    { heading: '哪個元件回答哪個問題', body: decisionTable(DECISION) },
+    {
+      heading: '與工作區頁籤的關係',
+      body: `<p class="component-description">三者各自獨立，不要互相連動：</p>
+        <ul class="nav-guide-list">
+          <li><strong>側欄</strong>＝站台有什麼功能（固定不變）</li>
+          <li><strong>工作區頁籤</strong>＝我開了哪些頁面（使用者自己決定，有上限 10 個）</li>
+          <li><strong>麵包屑</strong>＝目前這一頁在哪一層（跟著內容走）</li>
+        </ul>
+        <p class="component-description">常見的錯是把麵包屑做成可以「往回關掉頁籤」，或讓側欄隨工作區頁籤跳動。切換工作區頁籤時側欄的作用中項目要跟著換，但<strong>反過來不成立</strong>——點側欄是開新頁，不是切換已開的頁籤。</p>`,
     },
   ],
   tokens: [
@@ -127,9 +125,9 @@ window.renderNavPage = () => guidePage({
     ['作用中寬度', '滿版，左右各外推 8px'],
     ['最多層數', '3'],
     ['收合後的側欄寬度', '72px（圖示軌，同正式後台 w-[72px]）'],
-    ['收合開關', '側欄左下角 24 × 24（具名例外）'],
+    ['收合開關', '側欄左下角 24 × 24（具名例外），.nav 捲動區外'],
     ['開關距邊', '4px'],
-    ['開關透明度', '0.3 ／ 側欄 hover 0.45 ／ 自身 hover 0.7'],
+    ['開關透明度', '0.3 ／ 側欄 hover 0.45 ／ 自身 hover 0.7；收合後 0.5 ／ 側欄 hover 0.7'],
     ['開關顏色', 'var(--text-faint)，三態不變'],
     ['收合開關圖示', 'panel-left（16px）'],
     ['收合快捷鍵', 'Ctrl / Cmd + B（寫在 Tooltip 裡）'],
@@ -150,10 +148,10 @@ window.renderNavPage = () => guidePage({
     ['最後一層不是連結', '目前位置不該可點；標 aria-current="page" 讓報讀器讀得出來。'],
     ['三者不互相連動', '側欄＝有什麼功能、工作區頁籤＝開了哪些頁、麵包屑＝在哪一層，各自獨立。'],
     ['用 nav + ol', '麵包屑本質是有序清單，分隔符號要 aria-hidden，不要讓報讀器唸出箭頭。'],
-    ['收合開關放側欄左下角', '不要放頁首（那是內容區的頁首）。24 × 24、距邊 4px，文字與快捷鍵交給 Tooltip——不明顯不只是壓亮度，面積更關鍵：一整列再淡都還是一個區塊。'],
+    ['收合開關放側欄左下角', '在 .nav 捲動區外面、距邊 4px，不放頁首。24 × 24 純圖示，名稱與快捷鍵在 aria-label 與 Tooltip。'],
     ['24 × 24 只有這一顆', '具名例外：不是對資料的操作、不與輸入框對齊、另有快捷鍵，而且踩在 WCAG 2.5.8 AA 的下限上。不得帶到其他按鈕。'],
     ['hover 不變亮、不加底色', '顏色三態鎖在 var(--text-faint)，只有透明度動（.3 / 側欄 hover .45 / 自身 hover .7）。回饋交給游標與 Tooltip。'],
-    ['hover 的範圍是整個側欄', '不是把控制項藏到「要先找到它才看得到」的地方。'],
+    ['hover 的範圍是整個側欄', '游標進到側欄，開關就稍微浮出來；不必先找到按鈕才看得到它。'],
     ['面板裡要關掉滿版', '側欄的作用中項目左右各外推 8px 又是方角，搬進 176px 的面板會超出圓角邊界；尖角也要關，它連的是側欄與內容區。'],
     ['不要用箭頭，用 panel-left', '左上角的箭頭是「回到上一頁」。panel-left 是 VS Code、Notion、shadcn/ui 共用的側欄開關圖示。'],
     ['快捷鍵寫在 Tooltip 名稱後面', 'Ctrl / Cmd + B。純圖示按鈕的提示本來就要出現，順道把鍵帶出去，不必另外佔一塊版面。'],

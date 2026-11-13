@@ -29,21 +29,34 @@
 .bo-tabs-line .bo-tab.is-active{color:var(--tab-on);border-bottom-color:var(--tab-on)}
 
 /* 卡片型：內容區塊的次層切換，與底線型不可在同一層級混用。
-   保留傳統頁籤的框線：每個頁籤都有 1px 外框與上方圓角，相鄰頁籤共用一條邊，
-   整排坐在 rail 的底線上。作用中把整圈外框換成主題色、底色換成與內容相同的白，
-   並把下框線改白讓底線在它下方斷開 —— 框線本身就是指標，不另加色條或陰影。
-   未選取用比白明顯的 var(--surface-hover)，才不會變成「白配白」看不出作用中。 */
-.bo-tabs-card .bo-tabs-rail{border-bottom:1px solid var(--tab-line)}
-.bo-tabs-card .bo-tabs-scroll{gap:0.25rem;align-items:stretch;margin-bottom:-1px}
-.bo-tabs-card .bo-tab{min-height:2.3125rem;padding:0 1rem;border:1px solid var(--tab-line);border-radius:0.25rem 0.25rem 0 0;background:var(--surface-hover)}
-.bo-tabs-card .bo-tab:hover:not(:disabled):not(.is-active){background:var(--line-control);color:var(--text)}
-.bo-tabs-card .bo-tab.is-active{background:#fff;color:var(--tab-on);font-weight:700;border-color:var(--tab-on);border-bottom-color:#fff;position:relative;z-index:1}
-.bo-tabs-card .bo-tab:disabled{background:var(--surface)}
+   相連群組：整組共用一圈 1px --line-strong 外框、白底、外圓角 4px，項目之間 1px --line-control 分隔，
+   寬度跟著內容走、不拉滿整列。作用中是由上往下 --nav-active-to → --brand（70%）→ --brand-ink 的漸層，
+   上緣 1px 白色亮線、內側 1px --brand-ink 框、白字帶文字陰影、字重 700；沒有鏡面高光也沒有落影，
+   和凸起的語意按鈕分得開。未選取透明底、--text-muted 字，hover --surface-hover。
+   框線與分隔都是 inset box-shadow，不佔高度；高 32px，與按鈕、輸入框同高，不分斷點。 */
+.bo-tabs-card .bo-tabs-rail{display:flex}
+.bo-tabs-card .bo-tabs-scroll{flex:0 1 auto;align-items:stretch;border-radius:0.25rem;background:var(--card);box-shadow:inset 0 0 0 1px var(--line-strong)}
+.bo-tabs-card .bo-tab{position:relative;min-height:2rem;padding:0 0.75rem;box-shadow:inset -1px 0 0 var(--line-control)}
+.bo-tabs-card .bo-tab:first-child{border-radius:0.25rem 0 0 0.25rem}
+.bo-tabs-card .bo-tab:last-child{border-radius:0 0.25rem 0.25rem 0;box-shadow:none}
+.bo-tabs-card .bo-tab:only-child{border-radius:0.25rem}
+.bo-tabs-card .bo-tab:hover:not(:disabled):not(.is-active){background:var(--surface-hover);color:var(--text)}
+.bo-tabs-card .bo-tab.is-active{z-index:1;background:linear-gradient(180deg,var(--nav-active-to) 0%,var(--brand) 70%,var(--brand-ink) 100%);color:#fff;font-weight:700;text-shadow:0 1px 1px rgba(0,0,0,.35);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),inset 0 0 0 1px var(--brand-ink)}
+.bo-tabs-card .bo-tab.is-active:focus-visible{outline-color:#fff}
+.bo-tabs-card .bo-tab.is-active .bo-tab-count{background:rgba(255,255,255,.24);color:#fff;text-shadow:none}
 
-/* 工作區頁籤：可關閉，只用於 shell 的已開啟頁面列。 */
-.bo-tabs-workspace .bo-tabs-scroll{gap:0.25rem;align-items:center;padding:0.25rem 0}
-.bo-tabs-workspace .bo-tab{min-height:1.6875rem;padding:0 0.5rem;border:1px solid var(--line-control);border-radius:0.25rem;background:#fff;font-size:0.75rem;font-weight:400}
-.bo-tabs-workspace .bo-tab.is-active{background:var(--tab-on);border-color:var(--tab-on);color:#fff}
+/* 工作區頁籤：可關閉，只用於 shell 的已開啟頁面列。
+   頁首下方那一排（.quick-tabs button）與規範頁示範（.bo-tabs-workspace .bo-tab）共用這一份外觀，
+   styles/ 裡的 .quick-tabs 只管列的版面與 sticky／手機固定位置。
+   列底 --surface-hover。未選取：白底、1px --line-control 框、--text-muted 字 12px／400；hover 框加深成 --line-strong。
+   作用中：由上往下 --card → --nav-active-from 的暖白漸層、1px --brand 框、上緣 1px 白色亮線、淡落影、
+   --brand-ink 字 700——在最多 10 個頁籤的一長排裡，靠金棕輪廓一眼找到目前這一頁。
+   高 28px；框線都是 inset box-shadow，不佔高度。 */
+.bo-tabs-workspace .bo-tabs-scroll{gap:0.25rem;align-items:center;padding:0.25rem 0.5rem;border-radius:0.25rem;background:var(--surface-hover)}
+.bo-tabs-workspace .bo-tab,.quick-tabs button{min-height:1.75rem;gap:0.25rem;padding:0 0.5rem 0 0.75rem;border:0;border-radius:0.25rem;background:var(--card);box-shadow:inset 0 0 0 1px var(--line-control);color:var(--text-muted);font-size:0.75rem;font-weight:400;line-height:1.25;cursor:pointer;transition:box-shadow .15s,color .15s}
+.bo-tabs-workspace .bo-tab:hover:not(.is-active),.quick-tabs button:hover:not(.active){color:var(--text);box-shadow:inset 0 0 0 1px var(--line-strong)}
+.bo-tabs-workspace .bo-tab.is-active,.quick-tabs button.active{background:linear-gradient(180deg,var(--card),var(--nav-active-from));color:var(--brand-ink);font-weight:700;box-shadow:0 1px 2px color-mix(in srgb,var(--surface-inverse) 14%,transparent),0 2px 6px -2px color-mix(in srgb,var(--surface-inverse) 12%,transparent),inset 0 0 0 1px var(--brand),inset 0 1px 0 #fff}
+.quick-tabs button:focus-visible{outline:2px solid var(--brand);outline-offset:-3px}
 .bo-tab-close{font-style:normal;font-size:0.875rem;line-height:1;opacity:.8;cursor:pointer}
 .bo-tab-close:hover{opacity:1}
 
@@ -53,8 +66,8 @@
 @media(max-width:720px){
   .bo-tab{min-height:2.75rem}
   .bo-tabs-line .bo-tab{min-height:2.75rem}
-  .bo-tabs-card .bo-tab{min-height:2.8125rem} /* 多的 1px 是壓在底線上的重疊 */
-  .bo-tabs-workspace .bo-tab{min-height:2rem}
+  .bo-tabs-card .bo-tab{min-height:2rem}
+  .bo-tabs-workspace .bo-tab{min-height:1.75rem}
   .bo-tabs[data-tabs-mobile=select] .bo-tabs-rail{display:none}
   .bo-tabs[data-tabs-mobile=select] .bo-tabs-select{display:block}
 }

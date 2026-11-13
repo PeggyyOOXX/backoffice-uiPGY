@@ -27,6 +27,8 @@ index.html 原本把 41 個 `<style>` 區塊全寫在 `<head>` 裡（共 5,022 �
 | `.quick-tabs` | 4 | quick-tabs-and-grid-alignment → compact-quick-tab-spacing → sticky-topbar-and-workspace-tabs → mobile-wrapped-static-navigation-and-actions |
 | `.source-filter-grid` | 4 | member-source-layout → labeled-filter-component-override → strict-four-column-filter-grid → six-column-member-filter |
 
+> `.quick-tabs button`（工作區頁籤本身）的外觀不在這裡：尺寸、框、配色與作用中都在根目錄的 `tabs.css`，與規範頁的工作區頁籤共用；styles/ 這幾支只排版與定位。
+
 > 這張表是 `.topbar` 的 sticky 失效 bug 的來源：第一個檔案寫了 `position: sticky`，後面的主題檔把它改成 `position: relative`。現在由 `sticky-topbar-and-workspace-tabs.css` 統一管。
 
 ## 已刪除的檔案

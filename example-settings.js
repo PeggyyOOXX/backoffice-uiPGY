@@ -212,7 +212,7 @@ window.renderExampleSettings = () => `<section class="example-page example-setti
     <h2>分站設定</h2>
     <p class="component-description">組合範例（設定型），照正式後台 <code>branchSetting/index.vue</code> 做。沒有表格也沒有分頁，走的是另一條動線：頁籤 → 表單 → 未儲存提醒 → 儲存。</p>
   </div>
-  ${tabs({ id: TAB_ID, label: '分站設定分類', items: TABS, active: draft.active, variant: 'card', mobile: 'select', panels: true })}
+  ${tabs({ id: TAB_ID, label: '分站設定分類', items: TABS, active: draft.active, variant: 'line', mobile: 'select', panels: true })}
   ${tabPanels(TAB_ID, TABS.map(t => [t.key, t.key === draft.active ? panel() : '']), draft.active)}
   <footer class="example-savebar">
     <div class="example-save-status" role="status">${dirty() ? '有尚未儲存的變更' : '儲存後才會套用'}</div>

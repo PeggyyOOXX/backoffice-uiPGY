@@ -128,7 +128,6 @@ on('keydown', event => {
 // 但不帶任何 data-* 掛勾，所以不會真的開面板、也不會換頁。
 const stripDemo = () => `<div class="header-demo">
   <div class="topbar">
-    <button type="button" class="icon-btn" aria-hidden="true" tabindex="-1">${icon('menu', 20)}</button>
     <div class="topbar-title">會員列表</div>
     <div class="top-actions">
       <button type="button" class="icon-btn" aria-hidden="true" tabindex="-1">${icon('download', 20)}<span class="header-badge is-task">2</span></button>
@@ -162,7 +161,7 @@ const DECISION = [
 window.renderHeaderPage = () => guidePage({
   slug: 'header',
   title: '頁首 Header',
-  intro: '全站唯一一條、固定在捲動容器頂端的列。左側是側欄開關與目前頁名，右側是六個常駐位置。正式後台為 <code>Header.vue</code>；這一頁的內容只包含它<strong>實際在跑</strong>的部分，被 <code>&lt;!-- 暫時隱藏 --&gt;</code> 註解掉的不算規範。',
+  intro: '全站唯一一條、固定在捲動容器頂端的列。左側是目前頁名，右側是六個常駐位置。桌機的頁首沒有側欄開關——收合側欄的開關在側欄左下角（見「導覽 Navigation」）；手機的側欄是抽屜，頁名左邊才有一顆開抽屜的漢堡。正式後台為 <code>Header.vue</code>；這一頁的內容只包含它<strong>實際在跑</strong>的部分，被 <code>&lt;!-- 暫時隱藏 --&gt;</code> 註解掉的不算規範。',
   sections: [
     {
       heading: '六個位置',

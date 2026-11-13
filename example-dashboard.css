@@ -1,36 +1,113 @@
 /* 組合範例（統計卡型）。共用版面在 example-page.css，這裡只放統計卡多出來的東西：
-   卡片內距、格線欄數、按鈕配色都不在這支裡，它們各自只有一個來源。 */
+   格線欄數、按鈕配色都不在這支裡，它們各自只有一個來源。
 
-/* 卡片高度由內容撐開，不寫 height——正式後台釘在 122px，
-   同一個標題在 9 個語系裡最多差 3 倍長，第二、三行會直接溢出。 */
+   統計卡：一張一色（--kpi，取 --kpi-* 八色之一，由 example-dashboard.js 依卡片指定）。
+   - 底：由左往右的淺到深漸層，左側本色 6%（放文字）→ 65% 處本色 40% → 右緣本色 75%，不留純白。
+   - 框：2px 本色漸層框（本色 40% 淺 → 本色 → 本色 75% 深），圓角 8px，落影 --shadow-sm。
+   - 右側裝飾：一顆大圓光、一大一小兩圈圓環、三顆光點，與一個 88px 的白色半透明大圖示，
+     圖示離右緣 12px、從下緣出血。全部是白色、不同透明度，放在文字底下。
+   - 文字：標題本色 55% 混一般文字色，數字一律一般文字色（不分正負，正負只靠負號）。 */
+
+/* 卡片高度由內容撐開，不寫 height——同一個標題在 9 個語系裡最多差 3 倍長。 */
 .example-kpi {
+  --kpi: var(--kpi-gold);
+  position: relative;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
   justify-content: center;
+  gap: 0.25rem;
+  min-height: 6.75rem;
+  margin: 0;
+  padding: 1rem;
+  border: 2px solid transparent;
+  border-radius: 0.5rem;
+  background:
+    linear-gradient(
+        110deg,
+        color-mix(in srgb, var(--kpi) 6%, var(--card)) 35%,
+        color-mix(in srgb, var(--kpi) 40%, var(--card)) 65%,
+        color-mix(in srgb, var(--kpi) 75%, var(--card))
+      )
+      padding-box,
+    linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--kpi) 40%, var(--card)),
+        var(--kpi),
+        color-mix(in srgb, var(--kpi) 75%, black)
+      )
+      border-box;
+  box-shadow: var(--shadow-sm);
+}
+
+.example-kpi-title,
+.example-kpi-value {
+  position: relative;
+  z-index: 1;
+  margin: 0;
 }
 
 .example-kpi-title {
-  margin: 0;
   font-size: 0.75rem;
-  font-weight: 400;
-  color: var(--text-muted);
+  font-weight: 600;
+  color: color-mix(in srgb, var(--kpi) 55%, var(--text));
 }
 
 /* 等寬數字：八張卡片排成一列時，位數對得齊才看得出哪一個比較大。 */
 .example-kpi-value {
-  margin: 0;
   font-size: 1.25rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   color: var(--text);
 }
 
-/* 正負色取語意色，不另外調一支紅綠——這裡的紅跟刪除鈕、錯誤訊息是同一個意思。 */
-.example-kpi-value.is-negative {
-  color: var(--danger);
+/* ---- 右側裝飾：只是裝飾，aria-hidden，不吃滑鼠 ---- */
+.example-kpi-art {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: 10rem;
+  pointer-events: none;
 }
-
-.example-kpi-value.is-positive {
-  color: var(--success);
+.example-kpi-art > * {
+  position: absolute;
+  display: block;
+}
+.example-kpi-glow {
+  right: -2.5rem;
+  top: -3rem;
+  width: 9.375rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--card) 13%, transparent);
+}
+.example-kpi-ring {
+  right: 6rem;
+  top: 0.75rem;
+  width: 1rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--card) 52%, transparent);
+}
+.example-kpi-ring-lg {
+  right: -1.25rem;
+  bottom: -1.75rem;
+  width: 8.75rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--card) 29%, transparent);
+}
+.example-kpi-dot {
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--card) var(--dot-alpha), transparent);
+}
+.example-kpi-dot.is-a { --dot-alpha: 58%; right: 7rem; bottom: 1.25rem; width: 0.4375rem; aspect-ratio: 1; }
+.example-kpi-dot.is-b { --dot-alpha: 45%; right: 1.5rem; top: 0.75rem; width: 0.3125rem; aspect-ratio: 1; }
+.example-kpi-dot.is-c { --dot-alpha: 32%; right: 4.5rem; top: 1.75rem; width: 0.25rem; aspect-ratio: 1; }
+/* 88px 的大圖示是插圖不是圖示：線寬由 icon() 依尺寸算，不在這裡覆寫 */
+.example-kpi-art > .icon {
+  right: 0.75rem;
+  bottom: -0.75rem;
+  width: 5.5rem;
+  aspect-ratio: 1;
+  color: color-mix(in srgb, var(--card) 31%, transparent);
 }

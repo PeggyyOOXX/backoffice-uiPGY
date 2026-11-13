@@ -57,6 +57,7 @@ const DEFAULT_PROMOTIONS = [
 const STATE_TAG = { 進行中: 'success', 已預約: 'info', 已過期: 'warning' }
 const CATEGORIES = ['全部活動', '新會員優惠', '存款優惠', '會員回饋']
 const FILTERS = ['全部', '進行中', '已預約', '已過期']
+const FILTER_TAB_ID = 'mixed-promo-state'
 
 const clone = value => JSON.parse(JSON.stringify(value))
 
@@ -238,10 +239,8 @@ const promotionPanel = () => `<section class="card example-settings-card">
     </div>
   </div>
   <div class="example-mixed-divider" role="separator"></div>
-  <div class="example-mixed-filters" role="group" aria-label="活動狀態">
-    ${FILTERS.map(state => `<button type="button" class="semantic-btn ${filter === state ? 'btn-search' : 'btn-neutral outline'}"
-      data-mixed-filter="${state}" aria-pressed="${filter === state}">${state}</button>`).join('')}
-  </div>
+  ${tabs({ id: FILTER_TAB_ID, label: '活動狀態', items: FILTERS.map(state => ({ key: state, label: state })), active: filter, variant: 'card', mobile: 'scroll', controls: `${FILTER_TAB_ID}-panel` })}
+  <div id="${FILTER_TAB_ID}-panel" role="tabpanel" aria-labelledby="${FILTER_TAB_ID}-tab-${filter}">
   <div class="example-toolbar member-actions">
     <button type="button" class="semantic-btn btn-add" data-mixed-promo="add">${icon('add')}新增活動</button>
     <button type="button" class="semantic-btn btn-edit" data-mixed-promo="sort" aria-pressed="${sorting}" ${sorting ? 'disabled' : ''}>${icon('sort')}${sorting ? '排序中' : '排序'}</button>
@@ -266,6 +265,7 @@ const promotionPanel = () => `<section class="card example-settings-card">
     pagination: false,
     empty: '無資料',
   })}
+  </div>
 </section>`
 
 const PANELS = { transfer: transferPanel, deposit: depositPanel, notify: notifyPanel, basic: basicPanel, rebate: rebatePanel, promotions: promotionPanel }
@@ -275,7 +275,7 @@ window.renderExampleMixed = () => `<section class="example-page example-mixed-pa
     <h2>財務與活動設定</h2>
     <p class="component-description">組合範例（混合型），照正式後台 <code>financialSettings</code>、<code>rebateSettings</code> 與 <code>promotionActivity</code> 做。它和「設定型」範例的差別是設定裡還包著表格：一張整表可編輯，一張可拖曳排序。</p>
   </div>
-  ${tabs({ id: TAB_ID, label: '設定分類', items: TABS, active, variant: 'card', mobile: 'select', panels: true })}
+  ${tabs({ id: TAB_ID, label: '設定分類', items: TABS, active, variant: 'line', mobile: 'select', panels: true })}
   ${tabPanels(TAB_ID, TABS.map(t => [t.key, t.key === active ? PANELS[t.key]() : '']), active)}
   <footer class="example-savebar example-mixed-savebar">
     <div class="example-save-status" role="status">${dirty() ? '有尚未儲存的變更' : '儲存後才會套用'}</div>
@@ -375,9 +375,11 @@ onMatch('click', '[data-mixed-rule-apply]', () => {
   message.success(`已將 ${value}% 套用至全部分類`)
 }, { owner: 'example-mixed' })
 
-onMatch('click', '[data-mixed-filter]', (event, button) => {
-  filter = button.dataset.mixedFilter
+// 狀態頁籤只換表格的篩選，不退出排序
+onMatch('tab-change', `[data-tabs="${FILTER_TAB_ID}"]`, event => {
+  filter = event.detail.key
   redraw()
+  document.getElementById(`${FILTER_TAB_ID}-tab-${filter}`)?.focus()
 }, { owner: 'example-mixed' })
 
 onMatch('tab-change', `[data-tabs="${TAB_ID}"]`, event => {

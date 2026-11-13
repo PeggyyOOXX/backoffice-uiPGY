@@ -127,9 +127,9 @@ window.renderStepsPage = () => guidePage({
       heading: '三種狀態',
       body: `<p class="component-description">已完成顯示勾號而不是數字——數字只代表位置，勾號代表結果。這一點正式後台的 <code>StepLine.vue</code> 已經做對了（<code>activeStep &gt; index + 1</code> 時換成 check 圖示）。</p>
         <table class="steps-state-table"><thead><tr><th>狀態</th><th>標記</th><th>顏色</th></tr></thead><tbody>
-          <tr><td>已完成</td><td>勾號</td><td>品牌色底、白色勾號</td></tr>
-          <tr><td>目前</td><td>數字</td><td>品牌色底、白字、字重 700</td></tr>
-          <tr><td>未完成</td><td>數字</td><td>淺灰底、灰字</td></tr>
+          <tr><td>已完成</td><td>勾號</td><td>香檳到金棕的上下漸層、白色勾號</td></tr>
+          <tr><td>目前</td><td>數字</td><td>同已完成的漸層、白字、字重 700，外圈多一圈 4px 淡香檳光暈</td></tr>
+          <tr><td>未完成</td><td>數字</td><td>白底、1px 灰框、灰字</td></tr>
         </tbody></table>`,
     },
     {
@@ -141,15 +141,16 @@ window.renderStepsPage = () => guidePage({
     },
   ],
   tokens: [
-    ['標記尺寸', '26 × 26px'],
+    ['標記尺寸', '28 × 28px'],
     ['標記圓角', '50%'],
     ['連接線', '2px，寬度自適應'],
     ['步驟間距', '16px'],
     ['標題', '12px / 600'],
     ['說明', '12px / #718096'],
-    ['目前步驟', '品牌色 #927039'],
-    ['已完成', '品牌色底 ＋ 白色勾號'],
-    ['未完成', '#EDF1F5 底 / #718096 字'],
+    ['已完成與目前', '上→下 #EAC09E → #927039 → #6E542B ／ 內側 1px #6E542B ／ 白字'],
+    ['目前步驟', '外圈 4px 光暈 #EAC09E 35%'],
+    ['已完成', '勾號（不用數字）'],
+    ['未完成', '白底 / 1px #C6D1DB 框 / #718087 字'],
     ['正式後台步數', '開站 3 步、新增代理 2 步'],
     ['手機排列', '改為直向'],
     ['無障礙', 'ol + li，目前步驟標 aria-current="step"'],

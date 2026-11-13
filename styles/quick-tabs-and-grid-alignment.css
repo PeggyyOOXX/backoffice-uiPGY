@@ -14,24 +14,12 @@
   border-bottom: 1px solid var(--line-control);
   scrollbar-width: thin;
 }
+/* 頁籤的外觀（尺寸、框、配色、作用中）在 tabs.css，與規範頁的工作區頁籤共用同一份；這裡只排版。 */
 .quick-tabs button {
-  min-height: 1.6875rem;
   flex: none;
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
-  padding: 0 0.5rem;
-  border: 1px solid var(--line-control);
-  border-radius: 0.25rem;
-  background: #fff;
-  color: var(--text-muted);
-  font-size: 0.75rem;
   white-space: nowrap;
-}
-.quick-tabs button.active {
-  border-color: var(--brand);
-  background: var(--brand);
-  color: #fff;
 }
 .quick-tabs button span {
   font-size: 0.875rem;

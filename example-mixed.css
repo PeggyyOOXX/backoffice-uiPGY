@@ -9,8 +9,15 @@
   gap: 1rem;
 }
 
-.example-mixed-page .bo-tabs {
+/* 只清第一層（設定分類）的外距，間距交給面板的 gap */
+.example-mixed-page > .bo-tabs {
   margin: 0;
+}
+
+/* 第二層（活動狀態）切換的是底下整組工具列＋表格：
+   頁籤 → 工具列 16px，比工具列 → 表格的 8px 大一階，工具列才會和表格讀成同一組 */
+.example-settings-card .bo-tabs-card {
+  margin-bottom: 1rem;
 }
 
 /* 設定區塊之間的分隔線。只是一條線，不是另一種卡片。 */
@@ -37,14 +44,6 @@
 
 .example-mixed-bulk-action {
   justify-content: flex-end;
-}
-
-/* 狀態篩選：一排小按鈕，沿用語意按鈕，不自製第三種樣式 */
-.example-mixed-filters {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  margin-bottom: 0.75rem;
 }
 
 /* 這一頁的工具列在卡片裡，直接給工具列 → 表格的 8px */

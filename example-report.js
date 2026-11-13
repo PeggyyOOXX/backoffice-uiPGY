@@ -144,7 +144,7 @@ window.renderExampleReport = () => `<section class="example-page example-report-
     <p class="component-description">組合範例（報表型），照正式後台 <code>gameRevenueReport/index.vue</code> 做。報表和一般列表的差別全在這一頁：多維度頁籤、查詢區間有天數上限、合計列、金額格式與非同步匯出。</p>
   </div>
   ${filters()}
-  ${tabs({ id: TAB_ID, label: '報表維度', items: TABS, active: STATE.tab, variant: 'card', mobile: 'select', panels: true })}
+  ${tabs({ id: TAB_ID, label: '報表維度', items: TABS, active: STATE.tab, variant: 'line', mobile: 'select', panels: true })}
   ${toolbar()}
   ${tabPanels(TAB_ID, TABS.map(t => [t.key, t.key === STATE.tab ? `<section class="card example-card" data-report-list>${report()}</section>` : '']), STATE.tab)}
   <section class="card example-note">

@@ -24,7 +24,7 @@ export const choiceBody = () => `
   <p class="component-description">Radio 用於數個互斥選項擇一，Checkbox 用於可複選或單一開關。兩者都是控制在左、文案緊接在右，間距 8px，點文案即可切換。選項超過六個改用下拉。</p>
   <h3>狀態</h3>
   <div class="choice-guide-panel">
-    <div><h4>Radio</h4>${group('', radios('guide-radio-state', [['未選取','none'],['已選取','checked'],['停用','disabled'],['停用已選取','disabled-checked']]))}</div>
+    <div><h4>Radio</h4>${group('', [...radios('guide-radio-state', [['未選取','none'],['已選取','checked'],['停用','disabled']]), ...radios('guide-radio-state-disabled', [['停用已選取','disabled-checked']])])}</div>
     <div><h4>Checkbox</h4>${group('', boxes([['未選取','none'],['已選取','checked'],['部分選取','mixed'],['停用','disabled'],['停用已選取','disabled-checked']]))}</div>
   </div>
   <h3>排列</h3>
@@ -48,7 +48,7 @@ export const choiceBody = () => `
   <fieldset class="choice-group is-inline" aria-invalid="true" aria-describedby="choice-guide-error"><legend>代理層級<span class="required-mark" aria-hidden="true"> *</span></legend>${radios('guide-radio-error', [['一般代理','none'],['總代理','none']]).map(choiceControl).join('')}</fieldset>
   <small class="error-text" id="choice-guide-error">請選擇代理層級</small>
   <dl>
-    <div><dt>控制尺寸</dt><dd>1rem(16px) × 1rem(16px)</dd></div>
+    <div><dt>控制尺寸</dt><dd>1.25rem(20px) × 1.25rem(20px)</dd></div>
     <div><dt>未選取</dt><dd>--input-bg 凹槽，內描邊 --input-line，上緣暗部 inset 0 1px 3px</dd></div>
     <div><dt>已選取</dt><dd>品牌色由深到亮的漸層（#927039 ±），白色記號</dd></div>
     <div><dt>文案</dt><dd>0.875rem(14px)／400，不加粗</dd></div>

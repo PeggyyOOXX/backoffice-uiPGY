@@ -1088,7 +1088,7 @@ const dashboardChecks = async () => {
     assert.ok(!/(^|[\s;{])height\s*:/.test(css),
       "統計卡不得寫死高度，交給標題與數字撐開");
     assert.ok(!/#[0-9a-fA-F]{3,8}\b/.test(css),
-      "example-dashboard.css 不得寫死色碼，正負色取 --danger／--success");
+      "example-dashboard.css 不得寫死色碼，卡片色取 --kpi-*");
   }
   ok("儀表板：格線套 .guide-fields，卡片不寫死高度、不寫死色碼");
 
@@ -1105,21 +1105,25 @@ const dashboardChecks = async () => {
     }
     ok("儀表板：金額千分位加兩位小數、筆數不帶小數");
 
-    // 正負色只掛在兩張輸贏卡上，而且跟著數字的正負走；其餘六張一律一般文字色
+    // 統計卡是彩色底：數字不分正負一律一般文字色，不掛正負色
     const cards = qa(".example-dashboard-page .example-kpi-value");
     cards.forEach((el, index) => {
-      const negative = el.textContent.trim().startsWith("-");
-      const signed = index === 4 || index === 7;
-      assert.equal(
-        el.classList.contains("is-negative"), signed && negative,
-        `${LABELS[index]} 的負數色掛錯了`,
-      );
-      assert.equal(
-        el.classList.contains("is-positive"), signed && !negative,
-        `${LABELS[index]} 的正數色掛錯了`,
+      assert.ok(
+        !el.classList.contains("is-negative") && !el.classList.contains("is-positive"),
+        `${LABELS[index]} 在彩色底的統計卡上不得掛正負色`,
       );
     });
-    ok("儀表板：正負色只跟著輸贏走，其餘六張用一般文字色");
+    // 一張一色、各有一個裝飾大圖示，裝飾對報讀器隱藏
+    const kpis = qa(".example-dashboard-page .example-kpi");
+    const tones = kpis.map((el) => el.getAttribute("style") ?? "");
+    assert.equal(new Set(tones).size, 8, "八張統計卡要各用一個 --kpi-* 卡片色");
+    tones.forEach((style) => assert.match(style, /--kpi:\s*var\(--kpi-[a-z]+\)/, "卡片色要取 --kpi-* token"));
+    kpis.forEach((el, index) => {
+      const art = el.querySelector(".example-kpi-art");
+      assert.ok(art && art.getAttribute("aria-hidden") === "true" && art.querySelector("svg"),
+        `${LABELS[index]} 右側要有 aria-hidden 的裝飾大圖示`);
+    });
+    ok("儀表板：數字一律一般文字色，八張各一色並帶裝飾大圖示");
   }
 
   // 篩選列：只有一格條件也照同一套版面，手機有共用開關，重置在前、搜尋在後

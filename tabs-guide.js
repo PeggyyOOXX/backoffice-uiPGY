@@ -51,11 +51,11 @@ window.renderTabsGuide = () => `<div class="style-guide tabs-guide-page">
     </div>
     <div class="tabs-demo">
       <h4>卡片型 card</h4>
-      <p>內容區塊內的次層切換，例如編輯頁的分區。</p>
+      <p>內容區塊內的次層切換，例如編輯頁的分區、列表上方的狀態篩選。整組是一條相連的群組，作用中那一格用香檳到金棕的漸層；它沒有按鈕的鏡面高光與落影，放在工具列按鈕上方也不會被讀成另一排按鈕。</p>
       ${demo({ id: 'demo-card', label: '卡片型範例', items: CARD, variant: 'card' })}
     </div>
     <h3>工作區 workspace</h3>
-    <p class="component-description">只用於 shell 的已開啟頁面列，一般頁面內不要用這個變化。一個頁籤代表一個還活著、狀態被保留的頁面（搜尋條件與填到一半的表單都還在），X 就是釋放它的手段：關閉會一併清掉該頁的快取與暫存的搜尋條件，然後接到相鄰的頁籤。首頁是常駐頁籤，沒有關閉鈕；上限 10 個，開第 11 頁時自動關掉最舊的那一個。</p>
+    <p class="component-description">只用於 shell 的已開啟頁面列，一般頁面內不要用這個變化。一個頁籤代表一個還活著、狀態被保留的頁面（搜尋條件與填到一半的表單都還在），X 就是釋放它的手段：關閉會一併清掉該頁的快取與暫存的搜尋條件，然後接到相鄰的頁籤。首頁是常駐頁籤，沒有關閉鈕；上限 10 個，開第 11 頁時自動關掉最舊的那一個。外觀是未選取白底灰框、作用中暖白浮起加金棕框：一長排頁籤裡靠輪廓找到目前這一頁，不用實底色塊和按鈕或卡片型頁籤搶。頁首下方那一排與這裡是同一份樣式。</p>
     ${tabs({ id: 'demo-workspace', label: '工作區頁籤範例', items: WORKSPACE, variant: 'workspace', active: 'guide', panels: false })}
   </section>
 
@@ -69,9 +69,12 @@ window.renderTabsGuide = () => `<div class="style-guide tabs-guide-page">
       <span>作用中底線</span><strong>3px #927039</strong>
       <span>未作用文字</span><strong>#718096</strong>
       <span>分隔線</span><strong>1px #DCE2EB</strong>
-      <span>卡片型高度</span><strong>36px / 圓角 4px 4px 0 0</strong>
-      <span>卡片型作用中</span><strong>白底 / 整圈 #927039 外框 / 字重 700</strong>
-      <span>卡片型未選取</span><strong>#F1F4F8 底 / #DCE2EB 外框</strong>
+      <span>卡片型外框</span><strong>32px / 外圓角 4px / 1px #C6D1DB / 項目間 1px #DCE2EB</strong>
+      <span>卡片型作用中</span><strong>上→下 #EAC09E → #927039 → #6E542B / 白字 700 / 內側 1px #6E542B</strong>
+      <span>卡片型未選取</span><strong>白底 / #718087 字 / hover #F1F4F8</strong>
+      <span>工作區高度</span><strong>28px / 圓角 4px / 字級 12px</strong>
+      <span>工作區未選取</span><strong>白底 / 1px #DCE2EB 框 / hover 框 #C6D1DB</strong>
+      <span>工作區作用中</span><strong>上→下 #FFFFFF → #FEF7E8 / 1px #927039 框 / #6E542B 字 700 / 淡落影</strong>
       <span>計數標記</span><strong>12px / 圓角 8px</strong>
       <span>作用中計數</span><strong>#F8F3EA / #927039</strong>
       <span>停用文字</span><strong>#B6C0CC</strong>

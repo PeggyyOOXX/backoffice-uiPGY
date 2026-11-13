@@ -1,10 +1,14 @@
 /* 步驟導覽。這是元件樣式本身，其他頁面要用就套 .bo-steps。 */
 .bo-steps{display:flex;list-style:none;margin:0 0 1rem;padding:0;gap:1rem}
 .bo-step{flex:1;display:flex;align-items:center;gap:0.5rem;min-width:0;padding:0.75rem 0;border-bottom:2px solid var(--line-control);color:var(--text-muted)}
+/* 標記：28px 圓形。未完成白底、1px --line-strong 內框、灰字；
+   已完成與目前同一個圓點：由上往下 --nav-active-to → --brand → --brand-ink 的漸層、白字帶文字陰影、
+   上緣白色亮線、內側 1px --brand-ink 框；已完成放勾號，目前放數字並多一圈 4px 淡香檳光暈（--nav-active-to 35%）。 */
 .bo-step-mark{
   display:grid;place-items:center;flex:none;
-  width:1.625rem;height:1.625rem;border-radius:50%;
-  background:var(--line-faint);color:var(--text-muted);font-size:0.75rem;font-weight:600;
+  width:1.75rem;height:1.75rem;border-radius:50%;
+  background:var(--card);box-shadow:inset 0 0 0 1px var(--line-strong);
+  color:var(--text-muted);font-size:0.75rem;font-weight:600;font-variant-numeric:tabular-nums;
 }
 .bo-step-text{display:flex;flex-direction:column;gap:2px;min-width:0}
 .bo-step-text strong{font-size:0.75rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -12,8 +16,9 @@
 
 /* 已完成與目前都用品牌色；差別在標記是勾號還是數字，理由寫在使用規則 */
 .bo-step.is-done,.bo-step.is-current{border-bottom-color:var(--brand);color:var(--text)}
-.bo-step.is-done .bo-step-mark,.bo-step.is-current .bo-step-mark{background:var(--brand);color:#fff}
-.bo-step.is-current .bo-step-mark{font-weight:700}
+.bo-step.is-done .bo-step-mark,.bo-step.is-current .bo-step-mark{background:linear-gradient(180deg,var(--nav-active-to) 0%,var(--brand) 70%,var(--brand-ink) 100%);color:#fff;font-weight:700;text-shadow:0 1px 1px rgba(0,0,0,.35);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.4),inset 0 0 0 1px var(--brand-ink)}
+.bo-step.is-current .bo-step-mark{box-shadow:inset 0 1px 0 rgba(255,255,255,.4),inset 0 0 0 1px var(--brand-ink),0 0 0 0.25rem color-mix(in srgb,var(--nav-active-to) 35%,transparent)}
 
 .steps-demo-actions{display:flex;gap:0.5rem;justify-content:flex-start}
 .steps-demo-actions .semantic-btn{display:inline-flex;align-items:center}

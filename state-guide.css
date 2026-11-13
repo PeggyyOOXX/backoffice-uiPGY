@@ -2,7 +2,6 @@
 .state-guide{padding:0.5rem}
 .state-guide>.component-description{margin:0 0 0.75rem}
 
-.state-switcher{display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem}
 /* 舞台只負責「切換狀態時高度不跳動」，不自己加外框——
    先前這裡有 border + radius，讓這一頁的表格變成全站唯一被框起來的那張。
    表格長什麼樣一律由 unified-table-system 決定，頁面不另外包一層。 */
@@ -27,6 +26,4 @@
 .state-token{margin-bottom:0}
 
 @media(max-width:720px){
-  .state-guide{padding:0.5rem}
-  .state-switcher .semantic-btn{flex:1 1 calc(50% - 0.25rem)}
-}
+  .state-guide{padding:0.5rem}}
